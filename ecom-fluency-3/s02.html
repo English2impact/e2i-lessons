@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Three Kinds of AI Tool — E-com Fluency 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Shared English2impact brand colours. This session keeps its own
+     layout; only the colours come from the shared file, so a rebrand reaches it. -->
+<link rel="stylesheet" href="../assets/e2i-brand.css">
+<style>
+:root{
+--ef3-ink:var(--ink,#1a1a19); --ef3-mute:#6a6a63; --ef3-line:#e6e4df; --ef3-line2:#f2f1ed;
+--ef3-salmon:var(--salmon,#d97757); --ef3-salmonText:var(--salmon-ink,#c3512b);
+--ef3-listen:var(--s1,#006838); --ef3-speak:var(--s2,#26a426); --ef3-read:var(--s3,#6dcb1c); --ef3-write:var(--s4,#abdd4a);
+--ef3-ok:#1f7a3f; --ef3-okbg:#eef6ef; --ef3-no:#b23b2e; --ef3-nobg:#fbeeec;
+--ef3-hud:54px; --ef3-warm:#fdf9f7; --ef3-c2:#e9ded8;
+--ef3-rail:150px; --ef3-gutter:26px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--ef3-ink);font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:400;font-size:16px;line-height:1.62}
+.wrap{container-type:inline-size;width:100%;max-width:1080px;margin:0 auto;padding:0 20px 56px}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;letter-spacing:-.01em;margin:0}
+p{margin:0 0 .85em}
+a{color:var(--ef3-salmonText)}
+.head{padding:4px 0 22px}
+.head h1{font-size:clamp(28px,5cqi,44px);line-height:1.12;max-width:26ch}
+.kicker{font-size:13px;color:var(--ef3-mute);margin:0 0 14px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;font-size:13.5px;color:var(--ef3-mute)}
+.meta b{font-weight:500;color:var(--ef3-ink)}
+.aim{margin-top:18px;font-size:15px;color:#3d3d38;max-width:68ch}
+/* ---------- the promise: three things you will be able to do ---------- */
+.targets{margin:20px 0 0;padding:0;list-style:none;display:grid;gap:7px;max-width:68ch}
+.targets li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:#3d3d38}
+.targets .tk{flex:0 0 auto;width:17px;height:17px;border-radius:50%;border:1.5px solid var(--ef3-line);
+margin-top:4px;position:relative;transition:.25s}
+.targets li.hit .tk{background:var(--ef3-speak);border-color:var(--ef3-speak)}
+.targets .tk::after{content:"";position:absolute;left:5px;top:2px;width:4px;height:8px;
+border:solid #fff;border-width:0 1.6px 1.6px 0;transform:rotate(45deg) scale(0);transition:.25s}
+.targets li.hit .tk::after{transform:rotate(45deg) scale(1)}
+.targets li.hit{color:var(--ef3-mute)}
+/* pinned heads-up bar */
+.hudwrap{position:sticky;top:0;height:var(--ef3-hud);z-index:60;background:#fff}
+html.framed .hudwrap{position:relative;top:auto}
+.hud{height:var(--ef3-hud);background:#fff;border-bottom:1px solid var(--ef3-line);
+margin:0 -20px;padding:0 20px;
+display:flex;align-items:center;gap:14px}
+html.framed .hud{position:relative;top:0}
+.hud.pinned{box-shadow:0 6px 14px -12px rgba(0,0,0,.45)}
+.hud .lbl{font-size:12.5px;color:var(--ef3-mute);white-space:nowrap}
+.hud .lbl b{color:var(--ef3-ink);font-weight:500;font-variant-numeric:tabular-nums}
+.hud .track2{flex:1 1 auto;min-width:50px}
+.hud .sc{font-size:12.5px;color:var(--ef3-mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+.hud .sec{display:none;flex:1 1 auto;min-width:0;font-size:12.5px;color:var(--ef3-mute);
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hud .streak{display:none;font-size:11.5px;font-weight:500;color:var(--ef3-ok);background:var(--ef3-okbg);
+padding:3px 9px;border-radius:2px;white-space:nowrap}
+.hud .streak.on{display:inline-block;animation:pop .3s ease}
+@keyframes pop{0%{transform:scale(.82)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+.nextbtn{font:inherit;font-size:12.5px;padding:6px 13px;border:1px solid var(--ef3-ink);border-radius:3px;
+background:#fff;color:var(--ef3-ink);cursor:pointer;white-space:nowrap}
+.nextbtn:hover{background:var(--ef3-ink);color:#fff}
+.nextbtn.done{border-color:var(--ef3-line);color:var(--ef3-mute);cursor:default;background:#fff}
+/* toast */
+.toastwrap{position:absolute;left:0;right:0;top:100%;display:flex;justify-content:center;
+pointer-events:none;z-index:70}
+.toast{margin-top:12px;background:var(--ef3-ink);color:#fff;font-size:13px;line-height:1.3;
+padding:8px 15px;border-radius:3px;opacity:0;transform:translateY(-7px);
+transition:opacity .28s ease,transform .28s ease;box-shadow:0 10px 24px -18px rgba(0,0,0,.9)}
+.toast.on{opacity:1;transform:none}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.track2{height:3px;background:var(--ef3-line2);border-radius:3px;overflow:hidden}
+.track2 i{display:block;height:100%;width:0;background:var(--ef3-salmon);transition:width .35s ease}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) var(--ef3-rail);gap:var(--ef3-gutter);align-items:start;padding-top:10px}
+@container (max-width: 760px){ .cols{--ef3-rail:136px;--ef3-gutter:20px} }
+@container (max-width: 560px){ .cols{grid-template-columns:minmax(0,1fr);gap:0} .railwrap{display:none} }
+.main{min-width:0}
+.railwrap{position:relative;align-self:stretch}
+.rail{position:sticky;top:calc(var(--ef3-hud) + 18px);padding-top:26px}
+html.framed .rail{position:relative;top:0}
+.rail h4{font-family:inherit;font-size:12px;font-weight:500;color:var(--ef3-mute);margin:0 0 12px;
+letter-spacing:.02em;text-transform:uppercase}
+.rail ol{list-style:none;margin:0;padding:0}
+.rail li{margin:0 0 2px}
+.rail a{display:block;text-decoration:none;color:var(--ef3-mute);font-size:12.5px;padding:5px 0 6px}
+.rail .row{display:flex;gap:7px;align-items:center}
+.dot{flex:0 0 auto;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--c);
+background:#fff;opacity:.45;transition:.25s}
+.rail a.part .dot{opacity:.9;box-shadow:inset 0 0 0 2px #fff, inset 0 0 0 4px var(--c)}
+.rail a.done .dot{background:var(--c);opacity:1}
+.rail a:hover{color:var(--ef3-ink)}
+.rail a.on{color:var(--ef3-ink);font-weight:500}
+.rail .ttl{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rail .ck{flex:0 0 auto;color:var(--c);font-size:11px;opacity:0;transition:.25s}
+.rail a.done .ck{opacity:1}
+.rail .rbar{height:2px;background:var(--ef3-line2);border-radius:2px;margin:5px 0 0 15px;overflow:hidden}
+.rail .rbar i{display:block;height:100%;width:0;background:var(--c);opacity:.7;transition:width .35s ease}
+.rail a.on .rbar i{opacity:1}
+.rail .railbar{margin:16px 0 8px}
+.railpct{font-size:12px;color:var(--ef3-mute);margin:0}
+.railsc{font-size:12px;color:var(--ef3-mute);margin:3px 0 0;font-variant-numeric:tabular-nums}
+.reset{font:inherit;font-size:12px;color:var(--ef3-mute);background:none;border:0;padding:6px 0 0;
+cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--ef3-line)}
+.reset:hover{color:var(--ef3-salmonText)}
+.reset.arm{color:var(--ef3-no);text-decoration-color:var(--ef3-no)}
+.results .reset{padding-top:14px;font-size:12.5px}
+/* the four-leaf rule — one segment per skill, in clover order */
+.leafrule{display:flex;gap:3px;margin:20px 0 0;max-width:200px}
+.leafrule i{height:4px;border-radius:2px;flex:1 1 0}
+.leafrule i:nth-child(1){background:var(--ef3-listen)}
+.leafrule i:nth-child(2){background:var(--ef3-speak)}
+.leafrule i:nth-child(3){background:var(--ef3-read)}
+.leafrule i:nth-child(4){background:var(--ef3-write)}
+.brandline{margin-top:18px;font-size:12.5px;color:var(--ef3-mute)}
+.brandline b{color:var(--ef3-salmonText);font-weight:500;letter-spacing:.01em}
+.stage{padding:34px 0 8px;border-top:1px solid var(--ef3-line);margin-top:34px}
+.stage:first-child{border-top:0;margin-top:0;padding-top:22px}
+.stage>.sh{display:flex;gap:13px;align-items:flex-start}
+.spine{flex:0 0 auto;width:3px;align-self:stretch;background:var(--c);border-radius:2px;opacity:.55;transition:opacity .3s}
+.stage.cleared .spine{opacity:1}
+.sh .num{flex:0 0 auto;font-family:"Playfair Display",Georgia,serif;font-size:clamp(30px,4cqi,42px);
+line-height:.95;color:var(--c);opacity:.9;font-weight:500;width:1.1em;text-align:right}
+.sh .txt{flex:1 1 auto;min-width:0}
+.sh h2{font-size:clamp(21px,2.6cqi,27px);margin-top:1px}
+.sh .time{flex:0 0 auto;font-size:13px;color:var(--ef3-mute);white-space:nowrap;font-variant-numeric:tabular-nums;padding-top:6px}
+.sh .skill{display:inline-block;font-size:11.5px;color:var(--c);font-weight:500;
+background:var(--ct);padding:2px 9px;border-radius:2px;margin-bottom:5px}
+.sh .clr{display:none;margin-left:7px;font-size:11.5px;font-weight:500;color:#fff;background:var(--c);
+padding:2px 9px;border-radius:2px;vertical-align:1px}
+.stage.cleared .sh .clr{display:inline-block;animation:pop .34s ease}
+.lead{margin:12px 0 20px 17px;max-width:68ch;color:#3d3d38}
+.block{margin:0 0 26px 17px;max-width:72ch}
+@container (max-width: 700px){ .block,.strip,.meter{margin-left:12px} .lead{margin-left:12px} .hold{margin-left:12px} }
+/* ---------- microsteps ---------- */
+.meter{display:flex;align-items:center;gap:9px;margin:2px 0 20px 17px;font-size:12.5px;color:var(--ef3-mute)}
+.meter .pips{display:flex;gap:4px}
+.meter .pips i{width:20px;height:4px;border-radius:2px;background:var(--ef3-line2);transition:background .3s}
+.meter .pips i.on{background:var(--c)}
+.meter b{font-weight:500;color:var(--ef3-ink);font-variant-numeric:tabular-nums}
+.stage.cleared .meter b{color:var(--c)}
+.sthead{display:flex;align-items:center;gap:9px;margin:0 0 10px;font-size:13px;color:var(--ef3-ink)}
+.sthead .pin{flex:0 0 auto;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--ef3-line);
+display:flex;align-items:center;justify-content:center;font-size:11px;color:#a3a29c;background:#fff;
+font-variant-numeric:tabular-nums;transition:.25s}
+.step.doing .sthead .pin{border-color:var(--ef3-salmon);color:var(--ef3-salmonText)}
+.step.done .sthead .pin{border-color:var(--c);background:var(--c);color:#fff;font-size:0}
+.step.done .sthead .pin::after{content:"";width:4px;height:8px;border:solid #fff;
+border-width:0 1.6px 1.6px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.sthead .lbl{font-weight:500}
+.step.done .sthead .lbl{color:var(--ef3-mute)}
+.sthead .st{margin-left:auto;font-size:11.5px;color:#a3a29c;white-space:nowrap;font-variant-numeric:tabular-nums}
+.step.done .sthead .st{color:var(--ef3-ok);font-weight:500}
+.step{scroll-margin-top:80px}
+.tag{font-size:12px;color:var(--ef3-mute);margin:0 0 6px}
+.tag b{color:var(--c);font-weight:500}
+h3{font-size:16.5px;margin:0 0 10px}
+.note{font-size:14px;color:var(--ef3-mute);margin:8px 0 0}
+.prompt{border-left:3px solid var(--c);background:var(--ef3-warm);padding:16px 18px;border-radius:0 4px 4px 0}
+.prompt .q{font-family:"Playfair Display",Georgia,serif;font-size:19px;line-height:1.4}
+.ts{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:#a3a29c;flex:0 0 40px;padding-top:4px}
+.strip{margin:4px 0 0 17px;max-width:72ch;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;
+border-top:1px solid var(--ef3-line2);padding-top:12px;font-size:13px;color:var(--ef3-mute);font-variant-numeric:tabular-nums}
+.strip b{font-weight:500;color:var(--ef3-ink)}
+.strip .bar{flex:1 1 110px;min-width:90px;height:3px;background:var(--ef3-line2);border-radius:3px;overflow:hidden}
+.strip .bar i{display:block;height:100%;width:0;background:var(--c);transition:width .3s ease}
+.strip .win{color:var(--c);font-weight:500}
+.strip .jump{font:inherit;font-size:12.5px;border:0;background:none;color:var(--ef3-salmonText);cursor:pointer;
+padding:0;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--ef3-c2)}
+.strip .jump:hover{text-decoration-color:var(--ef3-salmon)}
+textarea,input[type=text]{font:inherit;font-size:15px;width:100%;border:1px solid var(--ef3-line);border-radius:3px;padding:10px 12px;background:#fff;color:var(--ef3-ink)}
+textarea{min-height:76px;resize:vertical;line-height:1.55}
+textarea:focus,input[type=text]:focus{outline:2px solid var(--ef3-salmon);outline-offset:1px;border-color:transparent}
+.lines{display:grid;gap:8px}
+.lines .ln{display:flex;align-items:center;gap:9px}
+.lines .ln .dn{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:var(--ef3-line);transition:.25s}
+.lines .ln.filled .dn{background:var(--ef3-speak)}
+.guess{border:1px solid var(--ef3-line);border-radius:4px;padding:16px 18px}
+.guess .pips{display:flex;gap:3px;margin:0 0 14px}
+.guess .pips i{flex:1 1 0;height:4px;border-radius:2px;background:var(--ef3-line2);transition:background .25s}
+.guess .pips i.k{background:var(--ef3-ok)}
+.guess .pips i.r{background:var(--ef3-speak)}
+.guess .pips i.m{background:#e3a79e}
+.guess .pips i.at{background:var(--ef3-ink);height:5px;margin-top:-.5px}
+.guess .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+.guess .ix,.guess .tally{font-size:12.5px;color:var(--ef3-mute);font-variant-numeric:tabular-nums}
+.guess .tally .k{color:var(--ef3-ok)}
+.guess .tally .m{color:var(--ef3-no)}
+.guess .vn{font-family:"Playfair Display",Georgia,serif;font-size:23px;line-height:1.25;margin:0 0 4px}
+.guess .def{font-size:14.5px;color:var(--ef3-mute);margin:0 0 12px}
+.guess .eg{font-size:14.5px;line-height:1.55;margin:0 0 16px;padding:11px 14px;background:var(--ef3-warm);border-left:2px solid var(--ef3-c2);border-radius:0 3px 3px 0}
+.guess .eg .src{display:block;font-size:11.5px;color:#a3a29c;margin-bottom:3px}
+.guess .eg u{text-decoration:none;border-bottom:1px solid var(--ef3-salmon);padding:0 16px}
+.guess .eg b{font-weight:500;color:var(--ef3-ok)}
+.guess .opts{display:grid;gap:7px}
+.guess .opts button{font:inherit;font-size:15px;text-align:left;padding:11px 14px;border:1px solid var(--ef3-line);background:#fff;color:var(--ef3-ink);border-radius:3px;cursor:pointer;display:flex;gap:10px;align-items:baseline}
+.guess .opts button:hover{border-color:var(--ef3-ink)}
+.guess .opts button .kb{flex:0 0 auto;font-size:11px;color:#b8b7b1;font-family:"JetBrains Mono",monospace;
+border:1px solid var(--ef3-line2);border-radius:2px;padding:0 4px;line-height:15px}
+.guess .opts button.hit{background:var(--ef3-okbg);border-color:transparent;color:var(--ef3-ok);font-weight:500}
+.guess .opts button.miss{background:var(--ef3-nobg);border-color:transparent;color:var(--ef3-no)}
+.guess .drillbar{font-size:12px;color:var(--ef3-salmonText);background:#fdf2ee;border-radius:2px;
+padding:5px 10px;margin:0 0 12px;display:inline-block}
+.guess .verdict{margin:13px 0 0;font-size:14px;display:none;align-items:center;gap:9px;flex-wrap:wrap}
+.guess .verdict.show{display:flex}
+.guess .badge{font-size:12px;font-weight:500;padding:3px 9px;border-radius:2px}
+.guess .badge.k{background:var(--ef3-okbg);color:var(--ef3-ok)}
+.guess .badge.m{background:var(--ef3-nobg);color:var(--ef3-no)}
+.guess .nav{display:flex;gap:8px;margin-top:16px;align-items:center}
+.guess .nav button{font:inherit;font-size:13.5px;padding:7px 14px;border:1px solid var(--ef3-line);background:#fff;color:var(--ef3-ink);border-radius:3px;cursor:pointer}
+.guess .nav button:hover{border-color:var(--ef3-ink)}
+.guess .nav button[disabled]{opacity:.4;cursor:default}
+.guess .nav button.go{border-color:var(--ef3-ink)}
+.guess .nav .hint{font-size:11.5px;color:#b8b7b1;margin-left:auto}
+.guess .fin{display:none}
+.guess.finished>.card,.guess.finished>.nav{display:none}
+.guess.finished .fin{display:block}
+.guess .fin .sc{font-family:"Playfair Display",Georgia,serif;font-size:26px;margin:0 0 6px}
+.guess .fin .mastered{color:var(--ef3-ok)}
+.missed{margin:12px 0 0;padding:0;list-style:none;font-size:14.5px}
+.missed li{padding:5px 0;border-bottom:1px solid var(--ef3-line2)}
+.missed li b{font-weight:500}
+.missed li span{color:var(--ef3-mute)}
+.vocab{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:6px}
+.vocab th{text-align:left;font-weight:500;font-size:12.5px;color:var(--ef3-mute);padding:0 10px 8px 0;border-bottom:1px solid var(--ef3-line)}
+.vocab td{padding:9px 10px 9px 0;border-bottom:1px solid var(--ef3-line2);vertical-align:top}
+.vocab td.t{font-weight:500;width:30%}
+.vocab td.g{color:var(--ef3-mute);width:26%}
+.vocab tr.drill td.t{box-shadow:inset 3px 0 0 var(--ef3-salmon);padding-left:11px}
+.legend{font-size:12.5px;color:var(--ef3-mute);margin-top:10px}
+.legend i{display:inline-block;width:3px;height:11px;background:var(--ef3-salmon);vertical-align:-1px;margin-right:5px}
+.match{display:block}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:4px}
+@container (max-width: 620px){ .mgrid{grid-template-columns:1fr} }
+.match button{font:inherit;font-size:14.5px;text-align:left;padding:10px 12px;line-height:1.4;border:1px solid var(--ef3-line);background:#fff;color:var(--ef3-ink);border-radius:3px;cursor:pointer}
+.match button:hover{border-color:var(--ef3-ink)}
+.match button.sel{border-color:var(--ef3-salmon);box-shadow:inset 0 0 0 1px var(--ef3-salmon)}
+.match button.hit{border-color:transparent;background:var(--ef3-okbg);color:var(--ef3-ok);cursor:default;animation:settle .3s ease}
+.match button.miss{border-color:var(--ef3-no);animation:shake .28s}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+@keyframes settle{0%{transform:scale(1.03)}100%{transform:scale(1)}}
+.matchbar{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ef3-mute);margin:0 0 10px}
+.matchbar .pips{display:flex;gap:3px}
+.matchbar .pips i{width:14px;height:4px;border-radius:2px;background:var(--ef3-line2)}
+.matchbar .pips i.on{background:var(--ef3-ok)}
+.matchbar .perfect{color:var(--ef3-ok);font-weight:500}
+.matchbar .redeal{font:inherit;font-size:12px;border:0;background:none;color:var(--ef3-salmonText);
+cursor:pointer;padding:0;margin-left:auto;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--ef3-c2)}
+.gap{margin:0;padding:0;list-style:none}
+.gap.numbered{counter-reset:g}
+.gap.numbered li::before{counter-increment:g;content:counter(g) ".";flex:0 0 20px;
+color:#b8b7b1;font-size:12.5px;padding-top:4px;font-variant-numeric:tabular-nums}
+.tf.numbered{counter-reset:t}
+.tf.numbered li::before{counter-increment:t;content:counter(t) ".";flex:0 0 20px;
+color:#b8b7b1;font-size:12.5px;padding-top:4px;font-variant-numeric:tabular-nums}
+.qn{flex:0 0 20px;color:#b8b7b1;font-size:12.5px;padding-top:3px;font-weight:400;
+font-variant-numeric:tabular-nums}
+.gap li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--ef3-line2);font-size:15px;line-height:1.62}
+.gap .s{flex:1 1 auto}
+.gap input{display:inline-block;width:auto;min-width:104px;padding:2px 8px;border:0;border-bottom:1px solid var(--ef3-salmon);border-radius:0;font-size:15px;text-align:center}
+.gap input:focus{outline:0;background:#fdf5f2}
+.gap input.hit{color:var(--ef3-ok);border-color:var(--ef3-ok);font-weight:500}
+.gap input.miss{color:var(--ef3-no);border-color:var(--ef3-no)}
+.gap input.pend{border-bottom-style:dashed;background:#fbfaf8}
+.gap .mv{flex:0 0 auto;font-size:11.5px;color:var(--c);background:var(--ct);padding:2px 8px;
+border-radius:2px;margin-top:4px;white-space:nowrap;font-weight:500}
+.checkbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+.checkbtn{font:inherit;font-size:13.5px;padding:8px 17px;border:1px solid var(--ef3-ink);
+background:#fff;color:var(--ef3-ink);border-radius:3px;cursor:pointer}
+.checkbtn:hover{background:var(--ef3-ink);color:#fff}
+.checkbtn[disabled]{opacity:.45;cursor:default;background:#fff;color:var(--ef3-ink)}
+.checkbtn.ready{background:var(--ef3-ink);color:#fff;animation:pop .3s ease}
+.checkbar .res{font-size:13px;color:var(--ef3-mute);font-variant-numeric:tabular-nums}
+.checkbar .res b{color:var(--ef3-ink);font-weight:500}
+.bank{font-size:13.5px;color:var(--ef3-mute);margin:0 0 12px}
+.bank b{color:var(--ef3-ink);font-weight:400}
+.mcq{margin:0 0 22px}
+.mcq .q{display:flex;gap:10px;font-size:15.5px;font-weight:500;margin:0 0 9px;line-height:1.45}
+.mcq .opts{display:grid;gap:7px}
+.mcq button{font:inherit;font-size:14.5px;text-align:left;line-height:1.45;padding:10px 13px;border:1px solid var(--ef3-line);background:#fff;color:var(--ef3-ink);border-radius:3px;cursor:pointer}
+.mcq button:hover{border-color:var(--ef3-ink)}
+.mcq button.sel{border-color:var(--ef3-salmon);box-shadow:inset 0 0 0 1px var(--ef3-salmon);background:#fdf6f3}
+.mcq button.hit{background:var(--ef3-okbg);border-color:transparent;color:var(--ef3-ok);font-weight:500}
+.mcq button.miss{background:var(--ef3-nobg);border-color:transparent;color:var(--ef3-no)}
+.why{font-size:14px;color:var(--ef3-mute);margin:9px 0 0 50px;display:none}
+.why.show{display:block}
+.tf{list-style:none;margin:0;padding:0}
+.tf li{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--ef3-line2)}
+.tf .s{flex:1 1 auto;font-size:15px;line-height:1.5}
+.tf .bts{flex:0 0 auto;display:flex;gap:6px}
+.tf .bts button{font:inherit;font-size:13px;width:38px;padding:5px 0;border:1px solid var(--ef3-line);background:#fff;color:var(--ef3-ink);border-radius:3px;cursor:pointer}
+.tf .bts button:hover{border-color:var(--ef3-ink)}
+.tf .bts button.sel{border-color:var(--ef3-salmon);box-shadow:inset 0 0 0 1px var(--ef3-salmon);background:#fdf6f3}
+.tf .bts button.hit{background:var(--ef3-okbg);border-color:transparent;color:var(--ef3-ok);font-weight:500}
+.tf .bts button.miss{background:var(--ef3-nobg);border-color:transparent;color:var(--ef3-no)}
+.frames{display:grid;gap:10px;margin-top:4px}
+.frame{border:1px solid var(--ef3-line);border-left:3px solid var(--c);border-radius:0 3px 3px 0;padding:13px 15px}
+.frame .n{font-size:12.5px;color:var(--ef3-mute);margin-bottom:5px}
+.frame .f{font-family:"JetBrains Mono",monospace;font-size:14.5px;line-height:1.6;margin:0}
+.frame .f u{text-decoration:none;border-bottom:1px solid var(--ef3-salmon);padding:0 20px}
+.model{background:var(--ef3-warm);border-radius:4px;padding:14px 16px;font-size:15px;line-height:1.6;margin-top:12px}
+.model .lbl{font-size:12.5px;color:var(--ef3-mute);margin-bottom:6px}
+.scn{border:1px solid var(--ef3-line);border-radius:4px;padding:16px 18px;margin-bottom:16px}
+.scn .hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}
+.scn .hd h3{margin:0}
+.scn .who{font-size:12.5px;color:var(--ef3-mute);white-space:nowrap}
+.scn .setup{font-size:14px;color:var(--ef3-mute);margin:0 0 12px}
+.audio audio{width:100%;height:36px;margin-bottom:12px;display:block}
+.audio iframe{width:100%;height:120px;border:0;display:block}
+.audio .credit{font-size:11px;color:#b8b7b1;margin:5px 0 12px;line-height:1.4;
+overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.audio .credit a{color:#b8b7b1;text-decoration:none}
+.audio .credit a:hover{color:var(--ef3-mute)}
+.audio .pending{font-size:13px;color:var(--ef3-mute);border:1px dashed var(--ef3-line);border-radius:3px;padding:9px 12px;margin-bottom:12px}
+.script{background:var(--ef3-warm);border-radius:4px;padding:14px 16px}
+.script p{display:flex;gap:10px;font-size:15px;line-height:1.55;margin:0 0 7px}
+.script p:last-child{margin-bottom:0}
+.script .sp{flex:0 0 56px;color:var(--ef3-mute);font-size:13.5px;padding-top:2px}
+.rev{margin-top:10px}
+.rev>button{font:inherit;font-size:13.5px;padding:6px 13px;border:1px solid var(--ef3-line);background:#fff;color:var(--ef3-salmonText);border-radius:3px;cursor:pointer}
+.rev>button:hover{border-color:var(--ef3-salmonText)}
+.rev .body{display:none;margin-top:10px;background:var(--ef3-warm);border-radius:4px;padding:13px 15px;font-size:14.5px;line-height:1.6}
+.rev .body.bare{background:none;padding:0}
+.rev.open .body{display:block}
+.rev.open>button{display:none}
+.ck{list-style:none;margin:0;padding:0}
+.ck li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:15px;line-height:1.5}
+.ck input{width:16px;height:16px;margin-top:4px;accent-color:var(--ef3-salmon);flex:0 0 auto;cursor:pointer}
+.ck label{cursor:pointer}
+.ck li.on label{color:var(--ef3-mute)}
+.video{position:relative;width:100%;aspect-ratio:16/9;background:#f2f1ed;border-radius:4px;overflow:hidden;margin-top:4px}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.hold{font-size:14px;color:var(--ef3-mute);border-left:3px solid var(--ef3-line);padding:2px 0 2px 13px;margin:0 0 18px 17px;max-width:66ch}
+.part{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ef3-salmonText);margin:0 0 4px}
+.push{border-top:1px solid var(--ef3-line2);padding-top:18px;margin-top:18px}
+.push:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.push .said{font-family:"Playfair Display",Georgia,serif;font-size:17.5px;line-height:1.45;margin-bottom:4px}
+.push .rd{font-size:12.5px;color:var(--ef3-mute);margin-bottom:8px}
+.results{border:1px solid var(--ef3-line);border-radius:4px;padding:18px 20px}
+.results .big{font-family:"Playfair Display",Georgia,serif;font-size:30px;margin:0 0 2px}
+.results .sub{font-size:13.5px;color:var(--ef3-mute);margin:0 0 16px}
+.results table{width:100%;border-collapse:collapse;font-size:14px}
+.results td{padding:7px 0;border-bottom:1px solid var(--ef3-line2)}
+.results td.n{color:var(--ef3-mute)}
+.results td.v{text-align:right;font-variant-numeric:tabular-nums;width:74px}
+.results td.b{width:38%;padding-left:14px}
+.results .mini{display:block;height:3px;background:var(--ef3-line2);border-radius:3px;overflow:hidden}
+.results .mini i{display:block;height:100%;width:0;background:var(--c);transition:width .3s ease}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:0 0 18px}
+@container (max-width: 620px){ .stats{grid-template-columns:1fr 1fr} }
+.stat{border:1px solid var(--ef3-line);border-radius:4px;padding:11px 13px}
+.stat b{display:block;font-family:"Playfair Display",Georgia,serif;font-size:23px;font-weight:600;line-height:1.2}
+.stat span{font-size:11.5px;color:var(--ef3-mute);line-height:1.35;display:block;margin-top:2px}
+.tvn{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+@container (max-width: 620px){ .tvn{grid-template-columns:1fr} }
+.tvn .col{border:1px solid var(--ef3-line);border-radius:4px;padding:14px 16px}
+.tvn .col.now{border-color:var(--ef3-c2);background:var(--ef3-warm)}
+.tvn h4{font-family:inherit;font-size:12px;font-weight:500;color:var(--ef3-mute);margin:0 0 9px;
+text-transform:uppercase;letter-spacing:.02em}
+.tvn ol{margin:0;padding-left:17px;font-size:14.5px;line-height:1.5}
+.tvn li{margin-bottom:6px}
+.tvn .empty{font-size:13.5px;color:#a3a29c;margin:0}
+.tvn .arrowline{font-size:12.5px;color:var(--ef3-mute);margin:12px 0 0}
+.fin-banner{display:none;margin-top:18px;border:1px solid var(--ef3-c2);background:var(--ef3-warm);
+border-radius:4px;padding:16px 18px}
+.fin-banner.on{display:block;animation:pop .4s ease}
+.fin-banner h3{font-size:19px;margin:0 0 4px}
+.fin-banner p{font-size:14.5px;color:#3d3d38;margin:0}
+.end{margin-top:40px;padding-top:22px;border-top:1px solid var(--ef3-line);font-size:14px;color:var(--ef3-mute)}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--ef3-salmon);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ---------- narrow layouts ---------- */
+@container (max-width: 760px){
+.head{padding:2px 0 18px}
+.meta{gap:4px 14px;font-size:13px}
+.aim{font-size:14.5px}
+.leafrule{margin-top:16px;max-width:168px}
+.stage{padding:26px 0 8px;margin-top:26px}
+.stage>.sh{gap:10px}
+.sh .num{font-size:clamp(24px,6cqi,34px)}
+.sh .time{font-size:12px;padding-top:5px}
+.guess{padding:13px 14px}
+.guess .vn{font-size:20px}
+.guess .opts button{font-size:14.5px;padding:10px 12px}
+.guess .nav .hint{display:none}
+.scn{padding:13px 14px}
+.scn .hd{flex-wrap:wrap;gap:2px 10px}
+.scn .who{white-space:normal}
+.script{padding:12px 13px}
+.script .sp{flex:0 0 46px;font-size:12.5px}
+.gap input{min-width:86px}
+.frame .f u{padding:0 14px}
+.results{padding:15px 16px}
+.vocab{min-width:440px}
+}
+@container (max-width: 560px){
+.hudwrap{--ef3-hud:64px}
+.hud{flex-wrap:wrap;row-gap:8px;gap:10px;align-content:center}
+.hud .lbl span{display:none}
+.hud .sec{display:block}
+.hud .sc{display:none}
+.hud .track2{flex:1 0 100%;order:9}
+.block,.strip,.meter{margin-left:0}
+.lead,.hold{margin-left:0}
+.spine{width:2px}
+.sh .num{width:auto}
+.sh .time{margin-left:0;order:3;flex-basis:100%;padding-top:2px}
+.stage>.sh{flex-wrap:wrap}
+.sh .txt{flex:1 1 60%}
+.ts{flex:0 0 auto;padding-top:0}
+.gap.numbered li::before,.tf.numbered li::before{flex:0 0 auto;padding-top:0}
+.qn{flex:0 0 auto;padding-top:0}
+.gap li .s,.tf li .s{flex:1 1 100%}
+.mcq .q>span:last-child{flex:1 1 100%}
+.tf li{flex-wrap:wrap;gap:6px}
+.tf .bts{margin-left:auto}
+.gap li{flex-wrap:wrap}
+.mcq .q{flex-wrap:wrap}
+.why{margin-left:0}
+.results td.b{display:none}
+.results .big{font-size:26px}
+.checkbar{gap:10px}
+.meter .pips i{width:16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="head">
+<p class="kicker">E-com Fluency 3 · Session 2</p>
+<h1>The three kinds of AI tool</h1>
+<div class="meta"><span><b>Advanced</b></span><span>90 min</span><span>Coaching &amp; self-study</span><span>Video: Jeff Su, 9 min</span></div>
+<p class="aim">Six stages, eighteen small steps. Tick them off and by the end you can do these three things at speed:</p>
+<ul class="targets" id="targets">
+<li data-goal="classify"><span class="tk"></span><span>Classify any AI tool you use at work — and say why it sits there.</span></li>
+<li data-goal="technique"><span class="tk"></span><span>Explain one prompting technique in your own words.</span></li>
+<li data-goal="risk"><span class="tk"></span><span>Name the risk that comes with it, and when it stops mattering.</span></li>
+</ul>
+<div class="leafrule" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+</header>
+<div class="hudwrap" id="hudwrap">
+<div class="hud" id="hud">
+<span class="lbl"><span>Progress </span><b id="topPct">0%</b></span>
+<span class="sec" id="hudSec"></span>
+<span class="track2"><i id="topBar"></i></span>
+<span class="streak" id="topStreak"></span>
+<span class="sc" id="topSc">0/0 correct</span>
+<button type="button" class="nextbtn" id="nextBtn">Start ↓</button>
+</div>
+<div class="toastwrap"><div class="toast" id="toast"></div></div>
+</div>
+<div class="cols">
+<main class="main">
+<section class="stage" id="s1" style="--c:var(--ef3-speak);--ct:#eaf7ea">
+<div class="sh"><span class="spine"></span><span class="num">1</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Say it cold</h2></div><span class="time">8 min</span></div>
+<p class="lead">No preparation. Talk for about a minute. Whatever you cannot say today is the list you check again at the end.</p>
+<div class="block step" data-step="Talk for a minute, with nothing prepared">
+<div class="prompt"><p class="q" style="margin:0">Which AI tool do you actually use at work, and what do you use it for?</p></div>
+<ul class="ck" style="margin-top:12px">
+<li><input type="checkbox" class="track save" data-k="s1said" id="s1said"><label for="s1said">Said it out loud — about a minute, no notes</label></li>
+</ul>
+</div>
+<div class="block step" data-step="Log three things you couldn't say">
+<p class="tag"><b>Understand</b> · where you are now</p>
+<h3>Three things I wanted to say but couldn't</h3>
+<div class="lines">
+<input type="text" class="track save" data-k="cold1" placeholder="1.">
+<input type="text" class="track save" data-k="cold2" placeholder="2.">
+<input type="text" class="track save" data-k="cold3" placeholder="3.">
+</div>
+<p class="note">Write them in Vietnamese if that's faster. These three come back at the end, next to what you can say by then.</p>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage" id="s2" style="--c:var(--ef3-read);--ct:#f1f9e8">
+<div class="sh"><span class="spine"></span><span class="num">2</span><div class="txt"><span class="skill">Reading</span><span class="clr">cleared</span><h2>Term lab</h2></div><span class="time">18 min</span></div>
+<p class="lead">Twelve terms, all from the video. Guess each one, then drill only the ones you miss until all twelve are yours.</p>
+<div class="block step" data-step="Guess twelve terms, then drill the misses">
+<p class="tag"><b>Understand</b> · guess the term</p>
+<div class="guess track" data-k="guess"></div>
+</div>
+<div class="block" style="max-width:none">
+<div class="rev"><button type="button">Show all twelve as a list</button><div class="body bare">
+<div class="tablewrap">
+<table class="vocab">
+<thead><tr><th>Term</th><th>Nghĩa tiếng Việt</th><th>What it means</th></tr></thead>
+<tbody>
+<tr class="drill"><td class="t">standalone tool</td><td class="g">công cụ độc lập</td><td>AI software you open on its own</td></tr>
+<tr class="drill"><td class="t">integrated AI feature</td><td class="g">tính năng AI tích hợp sẵn</td><td>AI built into software you already use</td></tr>
+<tr class="drill"><td class="t">custom AI solution</td><td class="g">giải pháp AI xây riêng</td><td>A system built to solve one specific problem</td></tr>
+<tr class="drill"><td class="t">implied context</td><td class="g">ngữ cảnh ngầm hiểu</td><td>What you know but haven't said out loud</td></tr>
+<tr class="drill"><td class="t">to surface something</td><td class="g">nêu rõ ra</td><td>To bring hidden information into the open</td></tr>
+<tr class="drill"><td class="t">hallucination</td><td class="g">thông tin bịa</td><td>An AI output that is confidently wrong</td></tr>
+<tr><td class="t">few-shot prompting</td><td class="g">prompt có nhiều ví dụ mẫu</td><td>Giving the model two or more examples</td></tr>
+<tr><td class="t">chain of thought</td><td class="g">chuỗi tư duy từng bước</td><td>Splitting one big task into ordered steps</td></tr>
+<tr><td class="t">bias in the data</td><td class="g">thiên lệch dữ liệu</td><td>A skew in what the model was trained on</td></tr>
+<tr><td class="t">cutoff date</td><td class="g">mốc dữ liệu dừng lại</td><td>The point after which the model knows nothing</td></tr>
+<tr><td class="t">generic output</td><td class="g">kết quả chung chung</td><td>Too general to be useful to you</td></tr>
+<tr><td class="t">high-stakes task</td><td class="g">việc rủi ro cao</td><td>Work where being wrong costs a lot</td></tr>
+</tbody>
+</table>
+</div>
+<p class="legend"><i></i>Marked terms are the six you will say out loud in section 3.</p>
+</div></div>
+</div>
+<div class="block step" data-step="Match the six you'll say">
+<p class="tag"><b>Remember</b> · match, round 1</p>
+<h3>The six you'll produce</h3>
+<div class="match track" data-k="m1"></div>
+</div>
+<div class="block step" data-step="Match the six you'll recognise">
+<p class="tag"><b>Remember</b> · match, round 2</p>
+<h3>The six you'll recognise</h3>
+<div class="match track" data-k="m2"></div>
+</div>
+<div class="block step" data-step="Six collocations, one word each">
+<p class="tag"><b>Remember</b> · collocations from the video</p>
+<h3>One word per gap</h3>
+<p class="bank">Word bank: <b>surface · double · tailor · cutoff · curated · ingest</b></p>
+<ul class="gap numbered">
+<li><span class="s">You have to <input type="text" class="gapin track" data-k="g1" data-a="surface"> the implied context before you write the prompt.</span></li>
+<li><span class="s">For a high-stakes task you want to <span style="white-space:nowrap"><input type="text" class="gapin track" data-k="g2" data-a="double">-check</span> the answer.</span></li>
+<li><span class="s">A custom solution is <span style="white-space:nowrap"><input type="text" class="gapin track" data-k="g3" data-a="tailor">-made</span> for one problem.</span></li>
+<li><span class="s">The model has a <input type="text" class="gapin track" data-k="g4" data-a="cutoff"> date, so recent events are missing.</span></li>
+<li><span class="s">The course ends with a <input type="text" class="gapin track" data-k="g5" data-a="curated"> list of tools for beginners.</span></li>
+<li><span class="s">The system can <input type="text" class="gapin track" data-k="g6" data-a="ingest"> all the information about 200 clients.</span></li>
+</ul>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage" id="s3" style="--c:var(--ef3-speak);--ct:#eaf7ea">
+<div class="sh"><span class="spine"></span><span class="num">3</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Three moves</h2></div><span class="time">14 min</span></div>
+<p class="lead">The video does three jobs: it classifies, it explains a technique, it flags a risk. Those three are your moves. Read one exchange, listen to another, then build your own.</p>
+<div class="block">
+<p class="tag"><b>Understand</b> · the frames</p>
+<div class="frames">
+<div class="frame"><p class="n">Move 1 — classify it</p><p class="f">Technically it's a <u></u>, because <u></u>.</p></div>
+<div class="frame"><p class="n">Move 2 — explain the technique</p><p class="f">The move is to <u></u> before you <u></u>.</p></div>
+<div class="frame"><p class="n">Move 3 — flag the risk</p><p class="f">For <u></u> that's fine, but for <u></u> I'd double-check <u></u>.</p></div>
+</div>
+</div>
+<div class="block step" data-step="Spot the moves in a read exchange">
+<p class="tag"><b>Understand</b> · read it</p>
+<div class="scn">
+<div class="hd"><h3>A — Three subscriptions</h3><span class="who">Claire · Nathan</span></div>
+<p class="setup">A marketing lead and her colleague review the tools they pay for. Find all three moves in Nathan's lines.</p>
+<div class="script">
+<p><span class="sp">Claire</span><span>We're paying for three AI tools now. Do we actually need all three?</span></p>
+<p><span class="sp">Nathan</span><span>Depends what each one is. Technically Jasper is a standalone tool, because you open it on its own and it never touches our stack.</span></p>
+<p><span class="sp">Claire</span><span>And the one inside HubSpot?</span></p>
+<p><span class="sp">Nathan</span><span>That's an integrated AI feature. The move is to check where the work happens before you compare prices.</span></p>
+<p><span class="sp">Claire</span><span>So which one do we drop?</span></p>
+<p><span class="sp">Nathan</span><span>For quick subject lines the HubSpot one is fine, but for a full campaign brief I'd double-check whether it can even see last quarter's numbers.</span></p>
+</div>
+<div class="mcq track" data-k="sa1" style="margin-top:16px">
+<p class="q"><span>Why does Nathan say the two tools aren't the same thing?</span></p>
+<div class="opts" data-a="2">
+<button type="button">One is more expensive than the other.</button>
+<button type="button">One is newer than the other.</button>
+<button type="button">One runs on its own; the other lives inside software they already use.</button>
+<button type="button">One is made by Google.</button>
+</div>
+<p class="why" style="margin-left:0">Move 1 in action. He classifies before he compares, and that's what lets him answer at all.</p>
+</div>
+<div class="mcq track" data-k="sa2">
+<p class="q"><span>What does he say to check before comparing prices?</span></p>
+<div class="opts" data-a="1">
+<button type="button">How many people on the team use it.</button>
+<button type="button">Where the work actually happens.</button>
+<button type="button">Which model it runs on.</button>
+<button type="button">Whether it has a free tier.</button>
+</div>
+<p class="why" style="margin-left:0">That's move 2 — he names the technique, not the tool.</p>
+</div>
+</div>
+</div>
+<div class="block step" data-step="Rebuild the moves from the audio">
+<p class="tag"><b>Understand</b> · listen for the moves</p>
+<div class="scn">
+<div class="hd"><h3>B — Where did 40% come from?</h3><span class="who">Nathan · Claire</span></div>
+<p class="setup">The same two people check an AI-drafted report before it goes to a client. Listen first. Only open the script if you need it.</p>
+<div class="audio"
+data-src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2400820653&amp;color=%23d97757&amp;inverse=false&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;show_teaser=false&amp;visual=false"
+data-track="Dialogue_The basic of AI"
+data-track-url="https://soundcloud.com/english2impact/dialogue_the-basic-of-ai"
+data-artist="English2impact"
+data-artist-url="https://soundcloud.com/english2impact"></div>
+<div class="rev"><button type="button">Show the script</button><div class="body bare">
+<div class="script">
+<p><span class="sp">Nathan</span><span>The draft quotes a forty percent lift. Where did that come from?</span></p>
+<p><span class="sp">Claire</span><span>Nowhere. That's a hallucination. It sounds specific, which is exactly why it's dangerous.</span></p>
+<p><span class="sp">Nathan</span><span>So we stop using it for reports?</span></p>
+<p><span class="sp">Claire</span><span>For brainstorming that's fine, but for anything the client reads I'd double-check every number against the dashboard.</span></p>
+<p><span class="sp">Nathan</span><span>And what changes in the prompt?</span></p>
+<p><span class="sp">Claire</span><span>The move is to surface the implied context before you write it. Tell it which quarter, which market, which product line.</span></p>
+</div>
+</div></div>
+<div class="bank" style="margin-top:18px">Listen again and rebuild Claire's three moves. Word bank: <b>brainstorming · context · double-check · hallucination · specific · surface</b></div>
+<ul class="gap">
+<li><span class="mv">Move 1</span><span class="s">Nowhere. That's a <input type="text" class="gapin track" data-k="sb1" data-a="hallucination">. It sounds <input type="text" class="gapin track" data-k="sb2" data-a="specific">, which is exactly why it's dangerous.</span></li>
+<li><span class="mv">Move 3</span><span class="s">For <input type="text" class="gapin track" data-k="sb3" data-a="brainstorming"> that's fine, but for anything the client reads I'd <input type="text" class="gapin track" data-k="sb4" data-a="double-check|double check"> every number against the dashboard.</span></li>
+<li><span class="mv">Move 2</span><span class="s">The move is to <input type="text" class="gapin track" data-k="sb5" data-a="surface"> the implied <input type="text" class="gapin track" data-k="sb6" data-a="context"> before you write it.</span></li>
+</ul>
+<p class="note">Claire runs the moves out of order: she classifies, flags the risk, then explains the fix. That is how the three moves behave in a real conversation — the order is yours to choose.</p>
+</div>
+</div>
+<div class="block step" data-step="Write your chain, then say it three times">
+<p class="tag"><b>Apply</b> · your turn</p>
+<div class="model">
+<p class="lbl">Worked example — all three moves, about 25 seconds</p>
+<p style="margin:0">Technically Gemini in Google Docs is an integrated AI feature, because you never leave the document. The move is to surface the implied context before you write the prompt. For a first draft that's fine, but for a client-facing quote I'd double-check the numbers.</p>
+</div>
+<h3 style="margin-top:18px">Build your own chain</h3>
+<p class="note" style="margin:0 0 12px">Write it once, then say it three times: move 1 alone, then moves 1 and 2, then all three in one breath. Make it shorter each time.</p>
+<div class="lines">
+<input type="text" class="track save" data-k="mv1" data-goal="classify" placeholder="Move 1 — Technically … is a …, because …">
+<input type="text" class="track save" data-k="mv2" data-goal="technique" placeholder="Move 2 — The move is to … before you …">
+<input type="text" class="track save" data-k="mv3" data-goal="risk" placeholder="Move 3 — For … that's fine, but for … I'd double-check …">
+</div>
+<ul class="ck">
+<li><input type="checkbox" class="track save" data-k="ld1" id="ld1"><label for="ld1">Said move 1 alone</label></li>
+<li><input type="checkbox" class="track save" data-k="ld2" id="ld2"><label for="ld2">Chained moves 1 and 2</label></li>
+<li><input type="checkbox" class="track save" data-k="ld3" id="ld3"><label for="ld3">All three in one breath, without reading them</label></li>
+</ul>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage" id="s4" style="--c:var(--ef3-listen);--ct:#e8f1ec">
+<div class="sh"><span class="spine"></span><span class="num">4</span><div class="txt"><span class="skill">Listening</span><span class="clr">cleared</span><h2>Media decode</h2></div><span class="time">20 min</span></div>
+<p class="lead">Now the video, in three parts. Watch one part, answer everything in its task, then press Check. Nothing is marked until you do, so you can change your mind and you never find out mid-task whether you are on the right track. The timestamp beside each item tells you where the answer sits.</p>
+<p class="hold">There is a sponsor break inside part 1, roughly 1:45 to 2:45. Don't skip it — the last true/false statement comes from it. He signals the return with "back to my takeaways."</p>
+<div class="block" style="max-width:none">
+<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/nVyD6THcvDQ" title="99% of Beginners Don't Know the Basics of AI" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+</div>
+<div class="block step" data-group="p1" data-step="Part 1 · six true-or-false calls">
+<p class="part">Part 1 · 0:00 – 2:55 · the three types of tool</p>
+<p class="tag"><b>Understand</b> · true or false</p>
+<ul class="tf numbered track" data-k="tf" data-a="T,T,F,T,F,F">
+<li><span class="ts">0:15</span><span class="s">He made the video partly to recover what the course cost him.</span></li>
+<li><span class="ts">0:45</span><span class="s">Standalone tools can be used without connecting them to any other software.</span></li>
+<li><span class="ts">1:10</span><span class="s">Gemini working inside Google Docs is an example of a standalone tool.</span></li>
+<li><span class="ts">1:35</span><span class="s">The sepsis detection system he describes raised diagnostic accuracy sharply.</span></li>
+<li><span class="ts">2:00</span><span class="s">He says custom AI solutions always demand technical skill from the person using them.</span></li>
+<li><span class="ts">2:25</span><span class="s">He advises buying the AI Essentials course on its own.</span></li>
+</ul>
+<div class="checkbar"><button type="button" class="checkbtn">Check part 1</button><span class="res"></span></div>
+<div class="rev"><button type="button">Why those answers</button><div class="body">
+<p style="margin:0 0 6px">3 is false. Docs is the software, so the AI inside it is an integrated feature. The standalone version of the same job is opening a chatbot separately.</p>
+<p style="margin:0 0 6px">5 is false, and it's his whole point — a well-built custom solution hides the engineering from the person using it.</p>
+<p style="margin:0">6 is false, and it sits inside the sponsor break. He says don't buy it alone, because it comes bundled with another Google certificate.</p>
+</div></div>
+</div>
+<div class="block step" data-group="p2" data-step="Part 2 · four questions on context">
+<p class="part">Part 2 · 2:55 – 6:00 · context and prompting</p>
+<p class="tag"><b>Remember</b> · multiple choice</p>
+<div class="mcq track" data-k="md2a">
+<p class="q"><span class="qn">1.</span><span class="ts">3:10</span><span>In the vegetarian friend example, what makes the context <i>implied</i> rather than stated?</span></p>
+<div class="opts" data-a="1">
+<button type="button">The friend mentions it, but only briefly.</button>
+<button type="button">Both people already know it, so neither says it aloud.</button>
+<button type="button">It is written down somewhere else.</button>
+<button type="button">It only becomes relevant later in the conversation.</button>
+</div>
+<p class="why">You act on it without being told. The model can't, because nobody told it either.</p>
+</div>
+<div class="mcq track" data-k="md2b">
+<p class="q"><span class="qn">2.</span><span class="ts">3:50</span><span>In the pay-rise example, what is the cost of leaving the context out?</span></p>
+<div class="opts" data-a="0">
+<button type="button">The advice comes back generic enough to fit anyone.</button>
+<button type="button">The model refuses to answer.</button>
+<button type="button">The model asks a series of follow-up questions.</button>
+<button type="button">The answer becomes too specific to reuse.</button>
+</div>
+<p class="why">Last year's rise, your ranking on the team, the industry average. Without those three the output is advice, not your advice.</p>
+</div>
+<div class="mcq track" data-k="md2c">
+<p class="q"><span class="qn">3.</span><span class="ts">4:35</span><span>What is the difference between a one-shot and a few-shot prompt?</span></p>
+<div class="opts" data-a="2">
+<button type="button">One-shot allows a single attempt; few-shot allows several.</button>
+<button type="button">One-shot is shorter; few-shot is longer.</button>
+<button type="button">One-shot includes one example; few-shot includes two or more.</button>
+<button type="button">One-shot works on any model; few-shot needs a paid one.</button>
+</div>
+<p class="why">A "shot" is an example, not an attempt. That's the trap in option 1, and it's the one most people pick.</p>
+</div>
+<div class="mcq track" data-k="md2d">
+<p class="q"><span class="qn">4.</span><span class="ts">5:30</span><span>Why does the cover-letter method produce a better result than one big prompt?</span></p>
+<div class="opts" data-a="3">
+<button type="button">It uses fewer tokens, so the model has more room.</button>
+<button type="button">It lets you leave the resume out entirely.</button>
+<button type="button">The model writes faster in short bursts.</button>
+<button type="button">You correct each section before it feeds the next one.</button>
+</div>
+<p class="why">Hook first, adjust it, paste it back, then the body. The error never gets a chance to travel.</p>
+</div>
+<div class="checkbar"><button type="button" class="checkbtn">Check part 2</button><span class="res"></span></div>
+</div>
+<div class="block step" data-group="p3" data-step="Part 3 · six gaps on the limits">
+<p class="part">Part 3 · 6:00 – 9:00 · limits and verdict</p>
+<p class="tag"><b>Apply</b> · fill the gaps</p>
+<p class="bank">Word bank: <b>biased · cutoff · hallucinations · high-stakes · vague · visual</b></p>
+<ul class="gap numbered">
+<li><span class="ts">6:15</span><span class="s">First limit: the data used to train a model may be <input type="text" class="gapin track" data-k="d1" data-a="biased">.</span></li>
+<li><span class="ts">6:35</span><span class="s">Second limit: the model has a <input type="text" class="gapin track" data-k="d2" data-a="cutoff"> date, so recent events are missing.</span></li>
+<li><span class="ts">6:55</span><span class="s">Third limit: <input type="text" class="gapin track" data-k="d3" data-a="hallucinations|hallucination"> are outputs that are simply factually wrong.</span></li>
+<li><span class="ts">7:20</span><span class="s">He would double-check the answer on any <input type="text" class="gapin track" data-k="d4" data-a="high-stakes|high stakes"> task.</span></li>
+<li><span class="ts">7:50</span><span class="s">His main criticism: the examples in the course stay too <input type="text" class="gapin track" data-k="d5" data-a="vague"> for experienced users.</span></li>
+<li><span class="ts">8:25</span><span class="s">His verdict: the course is strong for beginners and <input type="text" class="gapin track" data-k="d6" data-a="visual"> learners.</span></li>
+</ul>
+<div class="checkbar"><button type="button" class="checkbtn">Check part 3</button><span class="res"></span></div>
+</div>
+<div class="block step" data-step="Two sentences of your own">
+<p class="tag"><b>Apply</b> · the one that needs an opinion</p>
+<p style="font-size:15.5px;font-weight:500;margin:0 0 9px">What exactly was wrong with the course's customer-service example?</p>
+<textarea class="track save" data-k="q5" placeholder="Two sentences."></textarea>
+<div class="rev"><button type="button">Compare with a model answer</button><div class="body">
+It stopped at the result — a company cut its response times using AI — and never said how. He wanted to know which of the three tool types they used, how the staff were trained on it, and how they stopped it hallucinating at customers. The complaint is about missing mechanism, not missing proof.
+</div></div>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage" id="s5" style="--c:var(--ef3-speak);--ct:#eaf7ea">
+<div class="sh"><span class="spine"></span><span class="num">5</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Pushback lab</h2></div><span class="time">18 min</span></div>
+<p class="lead">Three statements that are wrong, lazy, or too confident. Disagree with each one using <b>one term from section 2</b> and <b>one move from section 3</b>. Expect to be interrupted and asked "why?"</p>
+<div class="block step" data-step="Round 1 — the categories are just marketing">
+<div class="push">
+<p class="rd">Round 1</p>
+<p class="said">"The three categories are just marketing. If a tool has AI inside, it's an AI tool. Done."</p>
+<textarea class="track save" data-k="p1" data-goal="classify" placeholder="Your counter — one term, one move."></textarea>
+<ul class="ck"><li><input type="checkbox" class="save" data-k="p1a" id="p1a"><label for="p1a">Used a target term</label></li><li><input type="checkbox" class="save" data-k="p1b" id="p1b"><label for="p1b">Used one of the three moves</label></li></ul>
+<div class="rev"><button type="button">Model answer</button><div class="body">The category isn't marketing, it's about where the work happens. Technically Gemini in Docs is an integrated AI feature, because you never leave the document, and that changes how you use it. If I want to compare five drafts I go to a standalone tool instead. Same model underneath, different workflow.</div></div>
+</div>
+</div>
+<div class="block step" data-step="Round 2 — it should work the context out">
+<div class="push" style="border-top:0;padding-top:0;margin-top:0">
+<p class="rd">Round 2</p>
+<p class="said">"You shouldn't have to give AI all that context. If it's actually intelligent, it should work it out."</p>
+<textarea class="track save" data-k="p2" data-goal="technique" placeholder="Your counter — one term, one move."></textarea>
+<ul class="ck"><li><input type="checkbox" class="save" data-k="p2a" id="p2a"><label for="p2a">Used a target term</label></li><li><input type="checkbox" class="save" data-k="p2b" id="p2b"><label for="p2b">Used one of the three moves</label></li></ul>
+<div class="rev"><button type="button">Model answer</button><div class="body">It can't work out what it was never told. Your colleague can't either — you just forget how much they already know. The move is to surface the implied context before you write the prompt, otherwise you get generic output that would fit any company in the market.</div></div>
+</div>
+</div>
+<div class="block step" data-step="Round 3 — hallucination is just a bug">
+<div class="push" style="border-top:0;padding-top:0;margin-top:0">
+<p class="rd">Round 3 — hardest</p>
+<p class="said">"Hallucination is just a bug. The next model will fix it, so there's no point worrying about it."</p>
+<textarea class="track save" data-k="p3" data-goal="risk" placeholder="Your counter — one term, one move."></textarea>
+<ul class="ck"><li><input type="checkbox" class="save" data-k="p3a" id="p3a"><label for="p3a">Used a target term</label></li><li><input type="checkbox" class="save" data-k="p3b" id="p3b"><label for="p3b">Used one of the three moves</label></li></ul>
+<div class="rev"><button type="button">Model answer</button><div class="body">Calling it a bug misses what it is. The same behaviour that invents a fake statistic is what gives you thirty campaign angles in ten seconds. For brainstorming that's fine, but for anything client-facing I'd double-check every number. You don't remove it, you decide which tasks you'll accept it on.</div></div>
+</div>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage" id="s6" style="--c:var(--ef3-write);--ct:#f6fbe9">
+<div class="sh"><span class="spine"></span><span class="num">6</span><div class="txt"><span class="skill">Writing</span><span class="clr">cleared</span><h2>Output &amp; recap</h2></div><span class="time">10 min</span></div>
+<p class="lead">Same question as the start. Then go back and read what you wrote in section 1.</p>
+<div class="block step" data-step="Answer the opening question again">
+<p class="tag"><b>Apply</b> · say it again</p>
+<div class="prompt"><p class="q" style="margin:0">Which AI tool do you actually use at work, and what do you use it for?</p></div>
+<p class="note">Second run: explain one of the five takeaways to a colleague who hasn't watched. All three moves, about a minute.</p>
+<ul class="ck" style="margin-top:10px">
+<li><input type="checkbox" class="track save" data-k="s6said" id="s6said"><label for="s6said">Said it again — all three moves, no notes</label></li>
+</ul>
+</div>
+<div class="block step" data-step="Five self-checks">
+<p class="tag"><b>Remember</b> · self-check</p>
+<ul class="ck">
+<li><input type="checkbox" class="track save" data-k="sc1" data-goal="classify" id="sc1"><label for="sc1">I can name the three tool types and place my own tools in them</label></li>
+<li><input type="checkbox" class="track save" data-k="sc2" data-goal="technique" id="sc2"><label for="sc2">I can explain implied context with my own example</label></li>
+<li><input type="checkbox" class="track save" data-k="sc3" data-goal="risk" id="sc3"><label for="sc3">I can say when a hallucination helps and when it costs</label></li>
+<li><input type="checkbox" class="track save" data-k="sc4" id="sc4"><label for="sc4">I used all three moves without reading them</label></li>
+<li><input type="checkbox" class="track save" data-k="sc5" id="sc5"><label for="sc5">I said at least one of the three things I couldn't say at the start</label></li>
+</ul>
+</div>
+<div class="block step" data-step="Set up the homework">
+<p class="tag"><b>Apply</b> · homework</p>
+<h3>One real prompt, rewritten</h3>
+<p style="margin:0 0 10px">Take a prompt you actually sent this week. Rewrite it with the implied context surfaced. Bring both versions next session and say what changed in the output.</p>
+<textarea class="track save" data-k="hw" placeholder="Original prompt / rewritten prompt / what changed"></textarea>
+<p class="note">Plus the Quizlet set — twelve terms, until you get 12/12 twice.</p>
+</div>
+<div class="block" style="max-width:none">
+<p class="tag"><b>Result</b> · what today actually moved</p>
+<div class="results" id="results">
+<p class="big" id="rTotal">0/0</p>
+<p class="sub" id="rSub">Nothing checked yet</p>
+<div class="stats" id="rStats"></div>
+<div class="tvn">
+<div class="col"><h4>At the start you couldn't say</h4><div id="tvnThen"><p class="empty">Section 1 is still empty — write the three lines and they appear here.</p></div></div>
+<div class="col now"><h4>By the end you said</h4><div id="tvnNow"><p class="empty">Your move chain from section 3 lands here.</p></div></div>
+</div>
+<p class="arrowline" id="tvnLine" style="font-size:12.5px;color:var(--ef3-mute);margin:12px 0 0"></p>
+<table style="margin-top:18px"><tbody id="rRows"></tbody></table>
+<div class="fin-banner" id="finBanner">
+<h3>Session complete</h3>
+<p id="finText"></p>
+</div>
+<button type="button" class="reset" data-reset>Reset progress</button>
+</div>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<p class="end">Session 2 complete. Your answers are saved in this browser, on this device.</p>
+<p class="brandline"><b>English2impact</b> · Bạn giỏi nghề. Giờ giỏi cả tiếng Anh.</p>
+</main>
+<div class="railwrap">
+<nav class="rail" id="rail" aria-label="Lesson progress">
+<h4>Progress</h4>
+<ol id="railList"></ol>
+<div class="track2 railbar"><i id="railBar"></i></div>
+<p class="railpct" id="railPct">0% complete</p>
+<p class="railsc" id="railSc">0/0 correct</p>
+<button type="button" class="reset" data-reset>Reset progress</button>
+</nav>
+</div>
+</div>
+</div>
+<script>
+(function(){
+"use strict";
+/* term, VN, EN definition, example from the video (term blanked), correct, distractors */
+var TERMS = [
+["công cụ độc lập","AI software you open on its own, separate from everything else",
+"You reach ChatGPT or Perplexity straight from a browser, so each one counts as a ___.",
+"standalone tool",["integrated AI feature","custom AI solution"]],
+["tính năng AI tích hợp sẵn","AI built into software you already use",
+"Instead of copying your text out to a chatbot, you rewrite it inside Google Docs using an ___.",
+"integrated AI feature",["standalone tool","custom AI solution"]],
+["giải pháp AI xây riêng","A system built to solve one specific problem",
+"Johns Hopkins built a ___ whose only job was to detect sepsis earlier.",
+"custom AI solution",["standalone tool","integrated AI feature"]],
+["ngữ cảnh ngầm hiểu","What you know but haven't said out loud",
+"Your friend never says “make it vegetarian”, but that is the ___ you act on anyway.",
+"implied context",["generic output","chain of thought"]],
+["nêu rõ ra","To bring hidden information into the open",
+"Before asking about a pay rise, ___ last year's increase and the industry average.",
+"to surface something",["to ingest something","to double-check something"]],
+["thông tin bịa","An AI output that is confidently wrong",
+"A precise-sounding statistic the model simply invented is a ___.",
+"hallucination",["bias in the data","cutoff date"]],
+["prompt có nhiều ví dụ mẫu","Giving the model two or more examples",
+"Show it two opening lines that already worked, and you are using ___.",
+"few-shot prompting",["zero-shot prompting","chain of thought"]],
+["chuỗi tư duy từng bước","Splitting one big task into ordered steps",
+"Write the hook, fix it, then ask for the body paragraph — that is ___.",
+"chain of thought",["few-shot prompting","implied context"]],
+["thiên lệch dữ liệu","A skew in what the model was trained on",
+"A model trained only on minimal graphics struggles with bold design, which shows ___.",
+"bias in the data",["hallucination","cutoff date"]],
+["mốc dữ liệu dừng lại","The point after which the model knows nothing",
+"Ask about last week and it may have nothing past its ___.",
+"cutoff date",["bias in the data","high-stakes task"]],
+["kết quả chung chung","Too general to be useful to you",
+"Leave the numbers out of your prompt and you get ___ that would fit any company.",
+"generic output",["implied context","hallucination"]],
+["việc rủi ro cao","Work where being wrong costs a lot",
+"Choosing a supplement for your own health goals is a ___, so verify the answer.",
+"high-stakes task",["custom AI solution","high-volume task"]]
+];
+var PAIRS = {
+m1:[["standalone tool","You open it on its own"],
+["integrated AI feature","It lives inside another app"],
+["custom AI solution","Built for one problem only"],
+["implied context","True, but never stated"],
+["to surface something","Say the quiet part out loud"],
+["hallucination","Confidently wrong"]],
+m2:[["few-shot prompting","Two or more examples"],
+["chain of thought","One task, ordered steps"],
+["bias in the data","A skew in the training set"],
+["cutoff date","Nothing after this point"],
+["generic output","True for anyone, useful to no one"],
+["high-stakes task","Being wrong is expensive"]]
+};
+var GOALS = {classify:"Classify any AI tool", technique:"Explain a prompting technique", risk:"Name the risk"};
+var KEY = "e2i-ef3-s02", store = {}, t = null, RESETTERS = [], PAINTERS = [];
+try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ store = {}; }
+function flush(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+function save(){ clearTimeout(t); t = setTimeout(flush, 250); }
+function set(k,v){ store[k] = v; save(); }
+function get(k){ return store[k]; }
+function each(sel, fn, root){ Array.prototype.forEach.call((root||document).querySelectorAll(sel), fn); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+var FE = null;
+try { FE = window.frameElement; } catch(e){ FE = null; }
+if (FE) document.documentElement.className += " framed";
+/* The inner document never scrolls when framed, so its own rects are really
+document offsets. Shift by the frame position to get the parent viewport. */
+function frameTop(){
+if (!FE) return 0;
+try { return FE.getBoundingClientRect().top; } catch(e){ return 0; }
+}
+function vTop(el){ return el.getBoundingClientRect().top + frameTop(); }
+function HUDH(){
+var w = document.getElementById("hudwrap");
+return (w && w.offsetHeight) || 54;
+}
+function goTo(el){
+if (!el) return;
+var y = vTop(el) - HUDH() - 16;
+if (FE){ try { window.parent.scrollBy({ top: y, behavior:"smooth" }); return; } catch(err){} }
+window.scrollBy({ top: y, behavior:"smooth" });
+}
+/* ---------- toast + streak (the quiet reward layer) ---------- */
+var toastEl = document.getElementById("toast"), toastT = null;
+function toast(msg){
+if (!toastEl) return;
+toastEl.textContent = msg;
+toastEl.className = "toast on";
+clearTimeout(toastT);
+toastT = setTimeout(function(){ toastEl.className = "toast"; }, 2300);
+}
+var streak = 0, best = get("best"); if (typeof best !== "number") best = 0;
+var streakEl = document.getElementById("topStreak");
+function paintStreak(){
+if (!streakEl) return;
+if (streak >= 2){ streakEl.textContent = streak + " in a row"; streakEl.className = "streak on"; }
+else { streakEl.textContent = ""; streakEl.className = "streak"; }
+}
+function hit(ok){
+if (ok){
+streak++;
+if (streak > best){ best = streak; set("best", best); }
+if (streak === 3 || streak === 5 || streak === 8 || streak === 12) toast(streak + " correct in a row");
+} else { streak = 0; }
+paintStreak();
+}
+/* ---------- audio slot: soundcloud url, direct mp3, or pending ---------- */
+function credit(box){
+var t = box.getAttribute("data-track"), u = box.getAttribute("data-track-url");
+var who = box.getAttribute("data-artist") || "English2impact";
+var whoUrl = box.getAttribute("data-artist-url") || "https://soundcloud.com/english2impact";
+if (!t) return;
+var p = document.createElement("p");
+p.className = "credit";
+p.innerHTML = '<a href="' + whoUrl + '" target="_blank" rel="noopener">' + esc(who) + '</a> · ' +
+(u ? '<a href="' + u + '" target="_blank" rel="noopener">' + esc(t) + '</a>' : esc(t));
+box.appendChild(p);
+}
+each(".audio", function(box){
+var src = (box.getAttribute("data-src") || "").trim();
+var placeholder = (!src || src.indexOf("SOUNDCLOUD_URL") === 0 || src.indexOf("AUDIO_URL") === 0);
+if (placeholder){
+var d = document.createElement("div");
+d.className = "pending";
+d.textContent = "Audio not attached yet — have it read aloud, or open the script below.";
+box.appendChild(d);
+return;
+}
+if (src.indexOf("w.soundcloud.com/player") > -1){
+var fw = document.createElement("iframe");
+fw.setAttribute("allow", "autoplay; encrypted-media");
+fw.setAttribute("scrolling", "no");
+fw.setAttribute("title", "Scenario audio");
+fw.src = src;
+box.appendChild(fw);
+credit(box);
+return;
+}
+if (src.indexOf("soundcloud.com") > -1){
+var f = document.createElement("iframe");
+f.setAttribute("allow", "autoplay; encrypted-media");
+f.setAttribute("scrolling", "no");
+f.setAttribute("title", "Scenario audio");
+f.src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(src) +
+"&color=%23d97757&auto_play=false&hide_related=true&show_comments=false" +
+"&show_user=false&show_reposts=false&show_teaser=false&visual=false";
+box.appendChild(f);
+credit(box);
+} else {
+var a = document.createElement("audio");
+a.controls = true; a.preload = "none"; a.src = src;
+box.appendChild(a);
+credit(box);
+}
+});
+/* ---------- saved fields ---------- */
+each(".save", function(el){
+var k = el.getAttribute("data-k"), v = get(k);
+if (el.type === "checkbox"){
+if (v === true) el.checked = true;
+el.addEventListener("change", function(){ set(k, el.checked); refresh(); });
+RESETTERS.push(function(){ el.checked = false; });
+} else {
+if (typeof v === "string") el.value = v;
+el.addEventListener("input", function(){ set(k, el.value); refresh(); });
+RESETTERS.push(function(){ el.value = ""; });
+}
+});
+/* ---------- the three answer lines get a filled dot each ---------- */
+each(".lines", function(box){
+Array.prototype.forEach.call(box.querySelectorAll("input"), function(inp){
+var ln = document.createElement("div"); ln.className = "ln";
+var dn = document.createElement("span"); dn.className = "dn";
+box.insertBefore(ln, inp);
+ln.appendChild(dn); ln.appendChild(inp);
+PAINTERS.push(function(){
+if ((inp.value || "").trim().length > 1) ln.classList.add("filled");
+else ln.classList.remove("filled");
+});
+});
+});
+each(".ck li", function(li){
+var inp = li.querySelector("input");
+if (!inp) return;
+PAINTERS.push(function(){ li.classList[inp.checked ? "add" : "remove"]("on"); });
+});
+/* ---------- gap fill ---------- */
+each(".gapin", function(inp){
+var k = inp.getAttribute("data-k"), v0 = get(k);
+if (typeof v0 === "string") inp.value = v0;
+function ok(){
+var ans = (inp.getAttribute("data-a")||"").toLowerCase().split("|");
+var val = inp.value.trim().toLowerCase().replace(/[.,]$/,"");
+return ans.indexOf(val) > -1;
+}
+inp.correct = ok;
+function mark(){
+inp.className = inp.className.replace(/ ?(hit|miss|pend)/g,"");
+if (inp.deferred && !inp.graded){
+if (inp.value.trim()) inp.className += " pend";
+refresh(); return;
+}
+if (inp.value.trim()){
+var good = ok();
+inp.className += good ? " hit" : " miss";
+if (!inp.counted){ inp.counted = true; hit(good); }
+}
+refresh();
+}
+inp.grade = function(){ inp.graded = true; mark(); };
+inp.render = mark;
+inp.addEventListener("input", function(){
+set(k, inp.value);
+if (/\b(hit|miss)\b/.test(inp.className)) mark(); else refresh();
+});
+inp.addEventListener("blur", mark);
+inp.addEventListener("keydown", function(e){
+if (e.key !== "Enter") return;
+e.preventDefault(); mark();
+var list = inp.closest ? inp.closest("ul") : null;
+if (!list) return;
+var all = Array.prototype.slice.call(list.querySelectorAll(".gapin"));
+var n = all[all.indexOf(inp) + 1];
+if (n) n.focus();
+else { var b = (inp.closest(".block")||document).querySelector(".checkbtn"); if (b && !b.disabled) b.focus(); }
+});
+RESETTERS.push(function(){
+inp.value = ""; inp.graded = false; inp.counted = false;
+inp.className = inp.className.replace(/ ?(hit|miss|pend)/g,"");
+});
+if (inp.value){ inp.counted = true; mark(); }
+});
+/* ---------- multiple choice ---------- */
+each(".mcq", function(box){
+var k = box.getAttribute("data-k");
+var opts = box.querySelector(".opts");
+var correct = parseInt(opts.getAttribute("data-a"), 10);
+var why = box.querySelector(".why");
+var btns = opts.querySelectorAll("button");
+box.correctIndex = correct;
+function pick(i, quiet){
+if (box.deferred && !box.graded){
+Array.prototype.forEach.call(btns, function(b,j){ b.className = (j === i) ? "sel" : ""; });
+if (!quiet){ set(k, i); refresh(); }
+return;
+}
+Array.prototype.forEach.call(btns, function(b,j){
+b.className = (j === correct) ? "hit" : (j === i ? "miss" : "");
+b.disabled = true;
+});
+if (why) why.className = "why show";
+if (!quiet){ set(k, i); refresh(); }
+if (!box.counted){ box.counted = true; hit(i === correct); }
+}
+box.grade = function(){
+box.graded = true;
+var v = get(k);
+if (typeof v === "number") pick(v, true);
+};
+box.render = function(){
+var v = get(k);
+if (typeof v === "number"){ pick(v, true); return; }
+Array.prototype.forEach.call(btns, function(b){ b.className = ""; b.disabled = false; });
+if (why) why.className = "why";
+};
+Array.prototype.forEach.call(btns, function(b,i){ b.addEventListener("click", function(){ pick(i,false); }); });
+RESETTERS.push(function(){
+box.graded = false; box.counted = false;
+Array.prototype.forEach.call(btns, function(b){ b.className = ""; b.disabled = false; });
+if (why) why.className = "why";
+});
+var prev = get(k);
+if (typeof prev === "number"){ box.counted = true; pick(prev, true); }
+});
+/* ---------- true / false ---------- */
+each(".tf", function(box){
+var k = box.getAttribute("data-k");
+var key = (box.getAttribute("data-a")||"").split(",");
+var saved = get(k);
+if (!(saved instanceof Array)) saved = [];
+function paint(li, i){
+var chosen = saved[i];
+each("button", function(b){
+var v = b.getAttribute("data-v");
+if (!chosen){ b.className = ""; b.disabled = false; return; }
+if (box.deferred && !box.graded){ b.className = (v === chosen) ? "sel" : ""; b.disabled = false; return; }
+b.disabled = true;
+b.className = (v === key[i]) ? "hit" : (v === chosen ? "miss" : "");
+}, li);
+}
+function repaint(){ Array.prototype.forEach.call(box.querySelectorAll("li"), function(li,i){ paint(li,i); }); }
+box.grade = function(){
+box.graded = true;
+if (!box.counted){
+box.counted = true;
+for (var i = 0; i < key.length; i++){ if (saved[i]) hit(saved[i] === key[i]); }
+}
+repaint();
+};
+box.render = repaint;
+Array.prototype.forEach.call(box.querySelectorAll("li"), function(li, i){
+var bts = document.createElement("span");
+bts.className = "bts";
+["T","F"].forEach(function(v){
+var b = document.createElement("button");
+b.type = "button"; b.textContent = v; b.setAttribute("data-v", v);
+b.addEventListener("click", function(){
+if (saved[i] && !(box.deferred && !box.graded)) return;
+saved[i] = v; set(k, saved); paint(li, i); refresh();
+});
+bts.appendChild(b);
+});
+li.appendChild(bts);
+paint(li, i);
+});
+box.score = function(){
+var c = 0, a = 0;
+for (var i = 0; i < key.length; i++){ if (saved[i]){ a++; if (saved[i] === key[i]) c++; } }
+return [c, a, key.length];
+};
+RESETTERS.push(function(){ saved = []; box.graded = false; box.counted = false; repaint(); });
+});
+/* ---------- matching ---------- */
+each(".match", function(box){
+var k = box.getAttribute("data-k"), pairs = PAIRS[k];
+if (!pairs) return;
+var done = get(k);
+if (!(done instanceof Array)) done = [];
+var misses = 0, colL, colR, sel = null, bar, grid;
+function paintBar(){
+var pips = "";
+for (var i = 0; i < pairs.length; i++) pips += '<i class="' + (i < done.length ? "on" : "") + '"></i>';
+var right = done.length >= pairs.length;
+bar.innerHTML = '<span class="pips">' + pips + '</span>' +
+'<span>' + done.length + ' of ' + pairs.length + ' matched</span>' +
+(right ? '<span class="perfect">' + (misses ? "✓ done" : "✓ perfect round") + '</span>' : '') +
+'<button type="button" class="redeal">Shuffle</button>';
+bar.querySelector(".redeal").addEventListener("click", function(){
+done = []; misses = 0; set(k, done); deal(); refresh();
+});
+}
+function make(item, col, side){
+var b = document.createElement("button");
+b.type = "button"; b.textContent = item.t;
+b.setAttribute("data-i", item.i); b.setAttribute("data-s", side);
+if (done.indexOf(item.i) > -1) b.className = "hit";
+b.addEventListener("click", function(){
+if (b.className.indexOf("hit") > -1) return;
+if (!sel){ sel = b; b.className = "sel"; return; }
+if (sel === b){ sel = null; b.className = ""; return; }
+if (sel.getAttribute("data-s") === side){ sel.className = ""; sel = b; b.className = "sel"; return; }
+if (sel.getAttribute("data-i") === b.getAttribute("data-i")){
+sel.className = "hit"; b.className = "hit";
+done.push(parseInt(b.getAttribute("data-i"),10));
+set(k, done); sel = null; hit(true); paintBar();
+if (done.length >= pairs.length) toast(misses ? "Round matched" : "Perfect round — no misses");
+refresh();
+} else {
+var a = sel; b.className = "miss"; a.className = "miss"; sel = null;
+misses++; hit(false); paintBar();
+setTimeout(function(){ if(a.className==="miss") a.className=""; if(b.className==="miss") b.className=""; }, 420);
+}
+});
+col.appendChild(b);
+}
+function deal(){
+box.innerHTML = "";
+bar = document.createElement("div"); bar.className = "matchbar";
+grid = document.createElement("div"); grid.className = "mgrid";
+box.appendChild(bar); box.appendChild(grid);
+colL = document.createElement("div"); colR = document.createElement("div");
+colL.style.display = colR.style.display = "grid";
+colL.style.gap = colR.style.gap = "8px";
+grid.appendChild(colL); grid.appendChild(colR);
+sel = null;
+var right = pairs.map(function(p,i){ return {t:p[1], i:i}; });
+for (var i = right.length - 1; i > 0; i--){
+var j = Math.floor(Math.random()*(i+1)), tmp = right[i]; right[i] = right[j]; right[j] = tmp;
+}
+pairs.forEach(function(p,i){ make({t:p[0], i:i}, colL, "L"); });
+right.forEach(function(x){ make(x, colR, "R"); });
+box.setAttribute("data-total", pairs.length);
+paintBar();
+}
+deal();
+RESETTERS.push(function(){ done = []; misses = 0; deal(); });
+});
+/* ---------- term lab: guess, then drill the misses to mastery ---------- */
+each(".guess", function(box){
+var k = box.getAttribute("data-k"), items = TERMS;
+var res = get(k + ":res"); if (!(res instanceof Array)) res = [];
+var mode = get(k + ":mode"); if (mode !== "drill") mode = "main";
+var queue = get(k + ":q");
+var at = get(k + ":at"); if (typeof at !== "number") at = 0;
+if (!(queue instanceof Array) || !queue.length){
+queue = items.map(function(_, i){ return i; }); mode = "main"; if (at > queue.length) at = 0;
+}
+var card = document.createElement("div");
+card.className = "card";
+card.innerHTML =
+'<div class="pips"></div>' +
+'<div class="drillbar" style="display:none"></div>' +
+'<div class="top"><span class="ix"></span><span class="tally"></span></div>' +
+'<p class="vn"></p><p class="def"></p><p class="eg"></p><div class="opts"></div>' +
+'<div class="verdict"><span class="badge"></span><span class="txt"></span></div>';
+var nav = document.createElement("div");
+nav.className = "nav";
+nav.innerHTML = '<button type="button" class="prev">Back</button>' +
+'<button type="button" class="go next">Next</button>' +
+'<span class="hint">1 2 3 to answer · Enter for next</span>';
+var fin = document.createElement("div");
+fin.className = "fin";
+box.appendChild(card); box.appendChild(nav); box.appendChild(fin);
+var pipsEl = card.querySelector(".pips"), drillEl = card.querySelector(".drillbar");
+var ix = card.querySelector(".ix"), tal = card.querySelector(".tally");
+var vn = card.querySelector(".vn"), def = card.querySelector(".def"), eg = card.querySelector(".eg");
+var opts = card.querySelector(".opts"), verd = card.querySelector(".verdict");
+var badge = verd.querySelector(".badge"), txt = verd.querySelector(".txt");
+var prevB = nav.querySelector(".prev"), nextB = nav.querySelector(".next");
+function counts(){
+var kn = 0, rc = 0, ms = 0;
+res.forEach(function(r){ if (r === 1) kn++; else if (r === 2) rc++; else if (r === 0) ms++; });
+return [kn, rc, ms];
+}
+box.termStats = counts;
+function order(i, salt){
+var all = [TERMS[i][3]].concat(TERMS[i][4]);
+var s = (i * 5 + 2 + (salt || 0)) % 3;
+return [all[s], all[(s+1)%3], all[(s+2)%3]];
+}
+function pips(cur){
+var h = "";
+for (var i = 0; i < items.length; i++){
+var c = (i === cur) ? "at" : (res[i] === 1 ? "k" : res[i] === 2 ? "r" : res[i] === 0 ? "m" : "");
+h += '<i class="' + c + '"></i>';
+}
+pipsEl.innerHTML = h;
+}
+function draw(){
+if (at >= queue.length){ finish(); return; }
+box.className = "guess track";
+var i = queue[at], it = items[i], c = counts();
+pips(i);
+if (mode === "drill"){
+drillEl.style.display = "inline-block";
+drillEl.textContent = "Drill round · " + queue.length + " term" + (queue.length > 1 ? "s" : "") + " to recover";
+} else { drillEl.style.display = "none"; }
+ix.textContent = (at + 1) + " of " + queue.length;
+tal.innerHTML = '<span class="k">Known ' + (c[0] + c[1]) + '</span> · <span class="m">To drill ' + c[2] + '</span>';
+vn.textContent = it[0];
+def.textContent = it[1];
+var answered = (res[i] === 0 || res[i] === 1 || res[i] === 2);
+eg.innerHTML = '<span class="src">From the video</span>' +
+esc(it[2]).replace("___", answered ? '<b>' + esc(it[3]) + '</b>' : '<u></u>');
+opts.innerHTML = "";
+var chosen = get(k + ":pick" + i);
+order(i, mode === "drill" ? 1 : 0).forEach(function(label, n){
+var b = document.createElement("button");
+b.type = "button";
+b.innerHTML = '<span class="kb">' + (n+1) + '</span><span>' + esc(label) + '</span>';
+if (answered){
+b.disabled = true;
+b.className = (label === it[3]) ? "hit" : (label === chosen ? "miss" : "");
+}
+b.addEventListener("click", function(){ answer(label); });
+opts.appendChild(b);
+});
+if (answered){
+verd.className = "verdict show";
+if (res[i] === 0){
+badge.className = "badge m"; badge.textContent = "To drill";
+txt.textContent = "Correct term: " + it[3];
+} else {
+badge.className = "badge k";
+badge.textContent = (res[i] === 2) ? "Recovered" : "Knew it";
+txt.textContent = (res[i] === 2) ? "Second time lucky — that one is yours now."
+: "No drilling needed on this one.";
+}
+} else { verd.className = "verdict"; }
+prevB.disabled = (at === 0);
+nextB.disabled = !answered;
+nextB.textContent = (at === queue.length - 1) ? "See result" : "Next";
+if (answered && wantFocus){ wantFocus = false; try { nextB.focus({preventScroll:true}); } catch(e){} }
+resize();
+}
+var wantFocus = false;
+function answer(label){
+wantFocus = true;
+var i = queue[at], it = items[i];
+if (res[i] === 0 || res[i] === 1 || res[i] === 2) return;
+var good = (label === it[3]);
+res[i] = good ? (mode === "drill" ? 2 : 1) : 0;
+set(k + ":res", res); set(k + ":pick" + i, label);
+hit(good);
+draw(); refresh();
+}
+function finish(){
+box.className = "guess track finished";
+var c = counts(), miss = [];
+items.forEach(function(it,i){ if (res[i] === 0) miss.push([it,i]); });
+var known = c[0] + c[1], html = "";
+if (!miss.length && known >= items.length){
+html += '<p class="sc mastered">' + items.length + ' of ' + items.length + ' mastered</p>' +
+'<p class="note" style="margin:0">Knew ' + c[0] + ' cold, recovered ' + c[1] +
+' in the drill. Every term is now one you can produce, not just recognise.</p>';
+} else {
+html += '<p class="sc">' + known + ' of ' + items.length + ' known</p>' +
+'<p class="note" style="margin:0">' +
+(miss.length ? 'These ' + miss.length + ' are not yours yet. Drill them now — it takes a minute.'
+: 'Nothing missed so far.') + '</p>';
+}
+if (miss.length){
+html += '<ul class="missed">';
+miss.forEach(function(m){ html += '<li><b>' + esc(m[0][3]) + '</b> <span>— ' + esc(m[0][0]) + '</span></li>'; });
+html += '</ul>';
+}
+html += '<div class="nav">';
+if (miss.length) html += '<button type="button" class="go drill">Drill these ' + miss.length + '</button>';
+html += '<button type="button" class="again">Start again</button></div>';
+fin.innerHTML = html;
+var dB = fin.querySelector(".drill");
+if (dB) dB.addEventListener("click", function(){
+queue = miss.map(function(m){ return m[1]; });
+miss.forEach(function(m){ res[m[1]] = undefined; set(k + ":pick" + m[1], null); });
+mode = "drill"; at = 0;
+set(k + ":res", res); set(k + ":q", queue); set(k + ":mode", mode); set(k + ":at", at);
+draw(); refresh();
+});
+fin.querySelector(".again").addEventListener("click", function(){
+res = []; at = 0; mode = "main"; queue = items.map(function(_,i){ return i; });
+set(k + ":res", res); set(k + ":at", at); set(k + ":mode", mode); set(k + ":q", queue);
+items.forEach(function(_,i){ set(k + ":pick" + i, null); });
+draw(); refresh();
+});
+if (!miss.length && known >= items.length && !get(k + ":done")){
+set(k + ":done", true); toast("All twelve terms mastered");
+}
+resize();
+}
+box.addEventListener("keydown", function(e){
+var n = ["1","2","3"].indexOf(e.key);
+if (n > -1){
+var b = opts.children[n];
+if (b && !b.disabled){ e.preventDefault(); b.click(); }
+return;
+}
+if (e.key === "Enter" && !nextB.disabled && box.className.indexOf("finished") < 0){
+e.preventDefault(); nextB.click();
+}
+});
+prevB.addEventListener("click", function(){ if (at > 0){ at--; set(k+":at", at); draw(); } });
+nextB.addEventListener("click", function(){ at++; set(k+":at", at); draw(); refresh(); });
+box.score = function(){ var c = counts(); return [c[0] + c[1], c[0] + c[1] + c[2], items.length]; };
+RESETTERS.push(function(){
+res = []; at = 0; mode = "main"; queue = items.map(function(_,i){ return i; });
+store[k + ":done"] = undefined;
+draw();
+});
+draw();
+});
+/* ---------- reveals ---------- */
+each(".rev", function(r){
+r.querySelector("button").addEventListener("click", function(){ r.className = "rev open"; resize(); });
+});
+/* ---------- rail ---------- */
+var sections = Array.prototype.slice.call(document.querySelectorAll(".stage"));
+var list = document.getElementById("railList"), links = [];
+sections.forEach(function(sec){
+var li = document.createElement("li"), a = document.createElement("a");
+a.href = "#" + sec.id;
+a.innerHTML = '<span class="row"><span class="dot"></span><span class="ttl"></span>' +
+'<span class="ck">✓</span></span><span class="rbar"><i></i></span>';
+var numEl = sec.querySelector(".num");
+a.querySelector(".ttl").textContent =
+(numEl ? numEl.textContent + ". " : "") + sec.querySelector("h2").textContent;
+a.style.setProperty("--c", getComputedStyle(sec).getPropertyValue("--c"));
+a.addEventListener("click", function(e){ e.preventDefault(); goTo(sec); });
+li.appendChild(a); list.appendChild(li); links.push(a);
+});
+/* ---------- microsteps ---------- */
+var STEPS = [];
+sections.forEach(function(sec){
+var blocks = Array.prototype.slice.call(sec.querySelectorAll(".block.step"));
+var meter = document.createElement("p");
+meter.className = "meter";
+var anchor = sec.querySelector(".hold") || sec.querySelector(".lead") || sec.querySelector(".sh");
+if (blocks.length && anchor) anchor.parentNode.insertBefore(meter, anchor.nextSibling);
+sec.meterEl = blocks.length ? meter : null;
+blocks.forEach(function(b, i){
+var head = document.createElement("div");
+head.className = "sthead";
+head.innerHTML = '<span class="pin">' + (i+1) + '</span><span class="lbl"></span><span class="st"></span>';
+head.querySelector(".lbl").textContent = b.getAttribute("data-step") || ("Step " + (i+1));
+b.insertBefore(head, b.firstChild);
+STEPS.push({ el:b, sec:sec, head:head, st:head.querySelector(".st"), n:i+1, was:false });
+});
+sec.steps = blocks;
+});
+function stepDone(b){
+var g = b.getAttribute("data-group");
+if (g) return !!(b.isGraded && b.isGraded());
+var s = tally(b);
+return s[1] > 0 && s[0] >= s[1];
+}
+function firstOpen(){
+for (var i = 0; i < STEPS.length; i++){ if (!STEPS[i].el.classList.contains("done")) return STEPS[i]; }
+return null;
+}
+/* ---------- scoring ---------- */
+function tally(sec){
+var d = 0, tt = 0, c = 0, at = 0;
+each(".track", function(el){
+var cl = " " + el.className + " ";
+var hidden = (el.deferred && !el.graded);   /* answered, but not checked yet */
+if (hidden){
+if (cl.indexOf(" tf ") > -1){ var sh = el.score(); tt += sh[2]; d += sh[1]; return; }
+if (cl.indexOf(" mcq ") > -1){ tt += 1; if (typeof get(el.getAttribute("data-k")) === "number") d += 1; return; }
+tt += 1; if ((el.value||"").trim()) d += 1; return;
+}
+if (cl.indexOf(" guess ") > -1){
+var s = el.score(); tt += s[2]; d += s[1]; c += s[0]; at += s[1];
+} else if (cl.indexOf(" match ") > -1){
+var n = parseInt(el.getAttribute("data-total"),10) || 0;
+var hits = el.querySelectorAll("button.hit").length / 2;
+tt += n; d += hits; c += hits; at += hits;
+} else if (cl.indexOf(" tf ") > -1){
+var s2 = el.score(); tt += s2[2]; d += s2[1]; c += s2[0]; at += s2[1];
+} else if (cl.indexOf(" mcq ") > -1){
+tt += 1;
+var v = get(el.getAttribute("data-k"));
+if (typeof v === "number"){ d += 1; at += 1; if (v === el.correctIndex) c += 1; }
+} else if (cl.indexOf(" gapin ") > -1){
+tt += 1;
+if ((el.value||"").trim()){ d += 1; at += 1; if (el.correct()) c += 1; }
+} else if (el.type === "checkbox"){
+tt += 1; if (el.checked) d += 1;
+} else {
+tt += 1; if ((el.value||"").trim().length > 1) d += 1;
+}
+}, sec);
+return [Math.round(d), tt, c, at];
+}
+/* ---------- the three targets in the header ---------- */
+var goalRows = Array.prototype.slice.call(document.querySelectorAll("#targets li"));
+function paintGoals(){
+goalRows.forEach(function(li){
+var g = li.getAttribute("data-goal"), ok = true, any = false;
+each('[data-goal="' + g + '"]', function(el){
+if (el === li) return;
+any = true;
+if (el.type === "checkbox"){ if (!el.checked) ok = false; }
+else if ((el.value || "").trim().length < 2) ok = false;
+});
+var on = any && ok;
+if (on && !li.classList.contains("hit")){
+li.classList.add("hit");
+if (booted) toast("Target reached — " + (GOALS[g] || g));
+} else if (!on){ li.classList.remove("hit"); }
+});
+}
+/* ---------- refresh everything ---------- */
+var booted = false;
+function refresh(){
+if (!sections) return;
+var D = 0, T = 0, C = 0, A = 0, rows = "";
+PAINTERS.forEach(function(f){ try { f(); } catch(e){} });
+STEPS.forEach(function(st){
+var s = tally(st.el);
+var done = stepDone(st.el);
+st.el.classList.remove("doing");
+if (done){
+st.el.classList.add("done");
+st.st.textContent = "done";
+if (!st.was && booted) { /* silent — the stage clear carries the reward */ }
+st.was = true;
+} else {
+st.el.classList.remove("done");
+st.st.textContent = s[1] ? (s[0] + "/" + s[1]) : "";
+st.was = false;
+}
+});
+var open = firstOpen();
+if (open) open.el.classList.add("doing");
+sections.forEach(function(sec,i){
+var s = tally(sec);
+D += s[0]; T += s[1]; C += s[2]; A += s[3];
+var pct = s[1] ? Math.round(s[0]/s[1]*100) : 0;
+var steps = sec.steps || [], sdone = 0;
+steps.forEach(function(b){ if (b.classList.contains("done")) sdone++; });
+var cleared = steps.length > 0 && sdone >= steps.length;
+if (cleared && !sec.classList.contains("cleared")){
+sec.classList.add("cleared");
+if (booted) toast("Stage " + (i+1) + " cleared — " + sec.querySelector("h2").textContent.toLowerCase());
+} else if (!cleared){ sec.classList.remove("cleared"); }
+if (sec.meterEl){
+var pipsH = "";
+steps.forEach(function(b,n){ pipsH += '<i class="' + (n < sdone ? "on" : "") + '"></i>'; });
+sec.meterEl.innerHTML = '<span class="pips">' + pipsH + '</span><span><b>' + sdone +
+'</b> of ' + steps.length + ' steps</span>';
+}
+links[i].querySelector(".rbar i").style.width = pct + "%";
+links[i].classList.toggle("done", !!cleared);
+links[i].classList.toggle("part", !cleared && s[0] > 0);
+var strip = sec.querySelector("[data-strip]");
+if (strip){
+if (cleared){
+strip.innerHTML = '<span class="win">✓ Stage cleared</span>' +
+'<span class="bar"><i style="width:100%"></i></span>' +
+'<span>' + (s[3] ? '<b>' + s[2] + '/' + s[3] + '</b> correct' : 'all steps done') + '</span>' +
+(i < sections.length - 1 ? '<button type="button" class="jump" data-jump="' + (i+1) + '">Next stage ↓</button>' : '');
+} else {
+strip.innerHTML = '<span><b>' + sdone + '</b> of ' + steps.length + ' steps done</span>' +
+'<span class="bar"><i style="width:' + (steps.length ? Math.round(sdone/steps.length*100) : 0) + '%"></i></span>' +
+'<span>' + (s[3] ? '<b>' + s[2] + '/' + s[3] + '</b> correct' : 'nothing checked yet') + '</span>';
+}
+var jb = strip.querySelector("[data-jump]");
+if (jb) jb.addEventListener("click", function(){ goTo(sections[parseInt(jb.getAttribute("data-jump"),10)]); });
+}
+var nEl = sec.querySelector(".num");
+rows += '<tr style="--c:' + getComputedStyle(sec).getPropertyValue("--c") + '">' +
+'<td class="n">' + (nEl ? nEl.textContent + ". " : "") +
+esc(sec.querySelector("h2").textContent) + '</td>' +
+'<td class="b"><span class="mini"><i style="width:' + (s[3] ? Math.round(s[2]/s[3]*100) : 0) + '%"></i></span></td>' +
+'<td class="v">' + (s[3] ? s[2] + '/' + s[3] : "—") + '</td></tr>';
+});
+each("[data-group]", function(g){ if (g.paintBar) g.paintBar(); });
+paintGoals();
+var pctAll = T ? Math.round(D/T*100) : 0;
+document.getElementById("topBar").style.width = pctAll + "%";
+document.getElementById("topPct").textContent = pctAll + "%";
+document.getElementById("topSc").textContent = C + "/" + A + " correct";
+document.getElementById("railBar").style.width = pctAll + "%";
+document.getElementById("railPct").textContent = pctAll + "% complete";
+document.getElementById("railSc").textContent = C + "/" + A + " correct";
+document.getElementById("rTotal").textContent = C + "/" + A;
+document.getElementById("rSub").textContent = A ?
+("Checked answers so far · " + Math.round(C/A*100) + "% right") : "Nothing checked yet";
+document.getElementById("rRows").innerHTML = rows;
+paintNext(open);
+report(C, A);
+resize();
+}
+var nextBtn = document.getElementById("nextBtn");
+function paintNext(open){
+if (!nextBtn) return;
+if (open){
+nextBtn.className = "nextbtn";
+nextBtn.textContent = booted ? "Next step ↓" : "Start ↓";
+nextBtn.title = open.sec.querySelector("h2").textContent + " — " + (open.el.getAttribute("data-step")||"");
+} else {
+nextBtn.className = "nextbtn done";
+nextBtn.textContent = "All steps done ✓";
+nextBtn.title = "See your result";
+}
+}
+if (nextBtn) nextBtn.addEventListener("click", function(){
+var open = firstOpen();
+goTo(open ? open.el : document.getElementById("results"));
+});
+/* ---------- the payoff report ---------- */
+function lines(keys){
+var out = [];
+keys.forEach(function(kk){ var v = (get(kk) || "").trim(); if (v.length > 1) out.push(v); });
+return out;
+}
+function report(C, A){
+var gbox = document.querySelector(".guess");
+var ts = (gbox && gbox.termStats) ? gbox.termStats() : [0,0,0];
+var mastery = A ? Math.round(C/A*100) : 0;
+var statsEl = document.getElementById("rStats");
+if (statsEl){
+statsEl.innerHTML =
+'<div class="stat"><b>' + mastery + '%</b><span>right on everything you checked</span></div>' +
+'<div class="stat"><b>' + A + '</b><span>answers marked today</span></div>' +
+'<div class="stat"><b>' + best + '</b><span>longest correct run</span></div>' +
+'<div class="stat"><b>' + (ts[0] + ts[1]) + '/12</b><span>terms known · ' + ts[1] + ' recovered by drilling</span></div>';
+}
+var then = lines(["cold1","cold2","cold3"]), now = lines(["mv1","mv2","mv3"]);
+var thenEl = document.getElementById("tvnThen"), nowEl = document.getElementById("tvnNow");
+if (thenEl){
+thenEl.innerHTML = then.length
+? '<ol><li>' + then.map(esc).join('</li><li>') + '</li></ol>'
+: '<p class="empty">Section 1 is still empty — write the three lines and they appear here.</p>';
+}
+if (nowEl){
+nowEl.innerHTML = now.length
+? '<ol><li>' + now.map(esc).join('</li><li>') + '</li></ol>'
+: '<p class="empty">Your move chain from section 3 lands here.</p>';
+}
+var lineEl = document.getElementById("tvnLine");
+if (lineEl){
+lineEl.textContent = (then.length && now.length)
+? "Read the left column, then the right one out loud. Ninety minutes is the whole distance between them."
+: "Fill both sides and this turns into the shortest proof of progress you own.";
+}
+var doneAll = sections.every(function(sec){ return sec.classList.contains("cleared"); });
+var banner = document.getElementById("finBanner"), ft = document.getElementById("finText");
+if (banner && ft){
+if (doneAll){
+if (!banner.classList.contains("on")){
+banner.classList.add("on");
+if (booted) toast("Session complete — all six stages");
+}
+ft.textContent = "All six stages cleared. " + C + " of " + A + " marked answers right, " +
+(ts[0] + ts[1]) + " of 12 terms yours, longest correct run " + best +
+". Next session you bring one rewritten prompt — and the three lines above stop being a list of what you couldn't say.";
+} else { banner.classList.remove("on"); }
+}
+}
+function active(){
+var cur = 0;
+var H = HUDH();
+sections.forEach(function(sec,i){ if (vTop(sec) - H - 60 <= 0) cur = i; });
+links.forEach(function(a,i){ a.classList.toggle("on", i === cur); });
+var hs = document.getElementById("hudSec");
+if (hs && sections[cur]){
+var nEl = sections[cur].querySelector(".num");
+hs.textContent = (nEl ? nEl.textContent + ". " : "") + sections[cur].querySelector("h2").textContent;
+}
+}
+/* ---------- frame sizing ---------- */
+function contentHeight(){
+var h = 0;
+Array.prototype.forEach.call(document.body.children, function(el){
+var cs = getComputedStyle(el);
+if (cs.position === "fixed" || cs.position === "absolute") return;
+var r = el.getBoundingClientRect(), top = el.offsetTop || 0;
+if (top + r.height > h) h = top + r.height;
+});
+return Math.ceil(h + 40);
+}
+var lastH = 0;
+function resize(){
+if (!FE) return;
+var h = contentHeight();
+if (Math.abs(h - lastH) > 2){ lastH = h; FE.style.height = h + "px"; }
+}
+/* ---------- pin the bar and the rail to the parent's scroll ---------- */
+var hudwrap = document.getElementById("hudwrap"), hud = document.getElementById("hud");
+var railwrap = document.querySelector(".railwrap"), rail = document.getElementById("rail");
+var docEnd = document.querySelector(".end");
+function pin(){
+var pinned = false;
+if (FE){
+var top;
+try { top = FE.getBoundingClientRect().top; } catch(e){ return; }
+var wantH = -top - hudwrap.offsetTop;
+var maxH = (docEnd.offsetTop - hudwrap.offsetTop - HUDH() - 20);
+if (wantH < 0) wantH = 0;
+if (maxH < 0) maxH = 0;
+if (wantH > maxH) wantH = maxH;
+hud.style.top = wantH + "px";
+pinned = wantH > 0;
+if (getComputedStyle(railwrap).display !== "none"){
+var wantR = -top + HUDH() + 18 - railwrap.offsetTop;
+var maxR = railwrap.offsetHeight - rail.offsetHeight - 20;
+if (wantR < 0) wantR = 0;
+if (maxR < 0) maxR = 0;
+if (wantR > maxR) wantR = maxR;
+rail.style.top = wantR + "px";
+}
+} else {
+pinned = hud.getBoundingClientRect().top <= 1 && window.scrollY > 4;
+}
+hud.className = pinned ? "hud pinned" : "hud";
+}
+/* ---------- deferred check groups (Media Decode) ---------- */
+each("[data-group]", function(group){
+var gk = "chk:" + group.getAttribute("data-group");
+var btn = group.querySelector(".checkbtn"), res = group.querySelector(".res");
+var members = [];
+each(".mcq, .tf, .gapin", function(el){ el.deferred = true; members.push(el); }, group);
+group.members = members;
+function graded(){ return get(gk) === true; }
+group.isGraded = graded;
+function score(){
+var c = 0, tot = 0, ans = 0;
+members.forEach(function(el){
+if (el.score){ var s = el.score(); c += s[0]; ans += s[1]; tot += s[2]; }
+else if (el.correctIndex !== undefined){
+tot += 1;
+var v = get(el.getAttribute("data-k"));
+if (typeof v === "number"){ ans += 1; if (v === el.correctIndex) c += 1; }
+} else {
+tot += 1;
+if ((el.value||"").trim()){ ans += 1; if (el.correct()) c += 1; }
+}
+});
+return [c, ans, tot];
+}
+group.groupScore = score;
+function paintBar(){
+var s = score();
+if (graded()){
+btn.disabled = true;
+btn.className = "checkbtn";
+btn.textContent = "Checked";
+res.innerHTML = '<b>' + s[0] + '/' + s[2] + '</b> correct' +
+(s[1] < s[2] ? ' · ' + (s[2]-s[1]) + ' left blank' : '');
+} else {
+var ready = (s[1] >= s[2]);
+btn.disabled = !ready;                      /* no peeking part-way through */
+btn.className = ready ? "checkbtn ready" : "checkbtn";
+btn.textContent = btn.getAttribute("data-label") || btn.textContent;
+res.textContent = ready ? "All answered — ready to check"
+: (s[1] + " of " + s[2] + " answered");
+}
+}
+group.paintBar = paintBar;
+btn.setAttribute("data-label", btn.textContent);
+btn.addEventListener("click", function(){
+set(gk, true);
+members.forEach(function(el){ if (el.grade) el.grade(); });
+var s = score();
+paintBar(); refresh();
+toast(s[0] + " of " + s[2] + " right — " + (group.getAttribute("data-step")||"part checked"));
+});
+members.forEach(function(el){ if (graded()){ if (el.grade){ el.counted = true; el.grade(); } } else if (el.render) el.render(); });
+RESETTERS.push(function(){
+store[gk] = undefined;
+members.forEach(function(el){ el.graded = false; el.counted = false; });
+btn.disabled = false;
+btn.className = "checkbtn";
+btn.textContent = btn.getAttribute("data-label");
+paintBar();
+});
+paintBar();
+});
+/* ---------- reset progress (two clicks, no browser dialog) ---------- */
+each("[data-reset]", function(btn){
+var armed = false, back = null;
+btn.addEventListener("click", function(){
+if (!armed){
+armed = true;
+btn.className = "reset arm";
+btn.textContent = "Tap again to erase everything";
+back = setTimeout(function(){ armed = false; btn.className = "reset"; btn.textContent = "Reset progress"; }, 5000);
+return;
+}
+clearTimeout(back);
+store = {};
+try { localStorage.removeItem(KEY); } catch(e){}
+RESETTERS.forEach(function(f){ try { f(); } catch(e){} });
+each("[data-reset]", function(b){ b.className = "reset"; b.textContent = "Reset progress"; });
+each(".rev", function(r){ r.className = "rev"; });
+STEPS.forEach(function(st){ st.was = false; });
+sections.forEach(function(s){ s.classList.remove("cleared"); });
+streak = 0; best = 0; paintStreak();
+armed = false;
+refresh();
+goTo(document.querySelector(".head"));
+});
+});
+function onScroll(){ pin(); active(); }
+window.addEventListener("scroll", onScroll, { passive:true });
+if (FE){
+try {
+window.parent.addEventListener("scroll", onScroll, { passive:true });
+window.parent.addEventListener("resize", function(){ resize(); pin(); });
+} catch(e){}
+}
+window.addEventListener("resize", function(){ resize(); pin(); });
+window.addEventListener("beforeunload", flush);
+if (window.ResizeObserver){ new ResizeObserver(function(){ resize(); pin(); }).observe(document.body); }
+refresh(); active(); pin(); paintStreak();
+booted = true;
+paintNext(firstOpen());
+setTimeout(function(){ resize(); pin(); }, 400);
+setTimeout(function(){ resize(); pin(); }, 1600);
+})();
+</script>
+</body>
+</html>

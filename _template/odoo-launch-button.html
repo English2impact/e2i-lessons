@@ -1,49 +1,271 @@
 <!-- =========================================================================
-     ENGLISH2IMPACT — ODOO LAUNCH BUTTON
+     ENGLISH2IMPACT — ODOO LESSON LAUNCH CARD  (v2)
 
-     Paste this into your Odoo article's Embed Code block.
-     Every colour is written out in full because Odoo strips CSS classes.
+     Paste into the Odoo article or eLearning slide using an Embed Code block.
 
-     THREE THINGS TO CHANGE — search for the word CHANGE below:
-       1. The lesson URL (appears twice — the big button and the small link)
+     FOUR THINGS TO CHANGE — search for the word CHANGE below:
+       1. The lesson link (one place, near the bottom)
        2. The course name and session number
-       3. The headline and the one-line description
+       3. The title and the one-line description
+       4. The three chips
+
+     Everything is inside one uniquely-named box, so nothing here can affect
+     the rest of your Odoo page, and your Odoo theme cannot affect this card.
+
+     It sizes itself to the COLUMN it sits in, not the browser window — which
+     is why it stays right in Odoo's narrow lesson view, in fullscreen, and
+     on a phone.
      ========================================================================= -->
 
-<div style="font-family:'Be Vietnam Pro','Segoe UI',system-ui,-apple-system,sans-serif;max-width:720px;margin:0 auto;padding:28px 20px;background:#fbf8f5;border:1px solid #e8e0d8;border-radius:10px;">
+<div id="e2i-launch">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* Everything is prefixed with #e2i-launch so it cannot leak into your Odoo
+   page, and Odoo's own styling cannot leak in here. */
+
+#e2i-launch{
+  --e2il-navy:#001b45;
+  --e2il-navy-2:#000c20;
+  --e2il-salmon:#d97757;
+  --e2il-salmon-d:#c3512b;
+  --e2il-ink:#1a1a19;
+  --e2il-ink-2:#56514b;
+  --e2il-ink-3:#847c73;
+  --e2il-paper:#ffffff;
+  --e2il-surface:#fbf8f5;
+  --e2il-line:#e8e0d8;
+  --e2il-line-2:#d6cabd;
+
+  --e2il-display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --e2il-body:"Be Vietnam Pro","Segoe UI",system-ui,-apple-system,sans-serif;
+  --e2il-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+
+  container-type:inline-size;
+  display:block;
+  max-width:680px;
+  margin:0 auto;
+  font-family:var(--e2il-body);
+  line-height:1.6;
+  text-align:left;
+  box-sizing:border-box;
+}
+#e2i-launch *{box-sizing:border-box}
+
+#e2i-launch .e2il-card{
+  background:var(--e2il-paper);
+  border:1px solid var(--e2il-line);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 2px rgba(26,26,25,.04),0 10px 30px rgba(26,26,25,.07);
+}
+
+/* ---------- navy header band ---------- */
+#e2i-launch .e2il-band{
+  background:linear-gradient(135deg,var(--e2il-navy) 0%,var(--e2il-navy-2) 100%);
+  color:#fff;
+  padding:16px clamp(18px,4.4cqi,28px);
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+#e2i-launch .e2il-band-txt{min-width:0;flex:1}
+#e2i-launch .e2il-course{
+  font-family:var(--e2il-mono);
+  font-size:11px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:#ffc9b3;
+  font-weight:600;
+  margin:0 0 2px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+#e2i-launch .e2il-sess{
+  font-family:var(--e2il-mono);
+  font-size:12px;
+  color:#a8bcdd;
+  margin:0;
+  letter-spacing:.04em;
+}
+#e2i-launch .e2il-num{
+  font-family:var(--e2il-display);
+  font-size:clamp(28px,7cqi,40px);
+  line-height:1;
+  color:rgba(255,255,255,.22);
+  font-weight:700;
+  flex:none;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---------- card body ---------- */
+#e2i-launch .e2il-body{
+  padding:clamp(20px,5cqi,30px) clamp(18px,4.4cqi,28px) clamp(20px,4.6cqi,28px);
+}
+#e2i-launch .e2il-title{
+  font-family:var(--e2il-display);
+  font-size:clamp(23px,6.4cqi,34px);
+  line-height:1.16;
+  letter-spacing:-.01em;
+  color:var(--e2il-navy);
+  font-weight:600;
+  margin:0;
+  text-wrap:balance;
+}
+#e2i-launch .e2il-title em{font-style:italic;color:var(--e2il-salmon-d)}
+
+#e2i-launch .e2il-blurb{
+  margin:12px 0 0;
+  font-size:clamp(14.5px,3.2cqi,15.5px);
+  line-height:1.62;
+  color:var(--e2il-ink-2);
+  max-width:56ch;
+}
+/* Odoo sometimes colours stray words. This forces them back. */
+#e2i-launch .e2il-blurb *{color:inherit;font-family:inherit}
+
+/* ---------- chips ---------- */
+#e2i-launch .e2il-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:18px 0 0;
+  padding:0;
+  list-style:none;
+}
+#e2i-launch .e2il-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12.5px;
+  font-weight:500;
+  color:var(--e2il-ink-2);
+  background:var(--e2il-surface);
+  border:1px solid var(--e2il-line-2);
+  border-radius:999px;
+  padding:5px 12px;
+  white-space:nowrap;
+}
+#e2i-launch .e2il-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--e2il-salmon);
+  flex:none;
+}
+
+/* ---------- call to action ---------- */
+#e2i-launch .e2il-go{
+  margin:22px 0 0;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+#e2i-launch .e2il-cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  background:var(--e2il-salmon);
+  border:1px solid var(--e2il-salmon);
+  color:#fff !important;
+  font-family:var(--e2il-body);
+  font-size:16px;
+  font-weight:600;
+  text-decoration:none !important;
+  padding:14px 26px;
+  border-radius:9px;
+  line-height:1.2;
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+  box-shadow:0 2px 6px rgba(217,119,87,.28);
+}
+#e2i-launch .e2il-cta:hover{
+  background:var(--e2il-salmon-d);
+  border-color:var(--e2il-salmon-d);
+  transform:translateY(-1px);
+  box-shadow:0 5px 14px rgba(217,119,87,.34);
+  text-decoration:none !important;
+}
+#e2i-launch .e2il-cta:focus-visible{
+  outline:3px solid var(--e2il-navy);
+  outline-offset:2px;
+}
+#e2i-launch .e2il-arrow{font-size:17px;line-height:1;transition:transform .15s ease}
+#e2i-launch .e2il-cta:hover .e2il-arrow{transform:translateX(3px)}
+
+#e2i-launch .e2il-aside{
+  font-size:12.5px;
+  color:var(--e2il-ink-3);
+  line-height:1.5;
+  margin:0;
+  flex:1 1 220px;
+  min-width:0;
+}
+
+/* ---------- narrow column / phone ---------- */
+@container (max-width:430px){
+  #e2i-launch .e2il-num{display:none}
+  #e2i-launch .e2il-cta{width:100%}
+  #e2i-launch .e2il-aside{flex:1 1 100%}
+  #e2i-launch .e2il-go{gap:12px}
+}
+/* Fallback for older browsers with no container-query support */
+@media (max-width:430px){
+  #e2i-launch .e2il-title{font-size:23px}
+  #e2i-launch .e2il-num{display:none}
+  #e2i-launch .e2il-cta{width:100%}
+}
+
+@media (prefers-reduced-motion:reduce){
+  #e2i-launch .e2il-cta,#e2i-launch .e2il-arrow{transition:none}
+  #e2i-launch .e2il-cta:hover{transform:none}
+}
+</style>
+
+<div class="e2il-card">
 
   <!-- CHANGE 2: course name and session number -->
-  <div style="font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#847c73;margin-bottom:10px;">
-    English2impact · <span style="color:#c3512b;font-weight:600;">English Reflex 2</span> · Session 01 / 24
+  <div class="e2il-band">
+    <div class="e2il-band-txt">
+      <p class="e2il-course">English2impact · IELTS 78</p>
+      <p class="e2il-sess">Session 01 of 24 · Calibrate</p>
+    </div>
+    <div class="e2il-num">01</div>
   </div>
 
-  <!-- CHANGE 3: the headline -->
-  <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:30px;line-height:1.15;color:#001b45;margin:0 0 12px 0;font-weight:600;">
-    “We rolled out the new system <em style="color:#c3512b;">last quarter</em>.”
-  </h2>
+  <div class="e2il-body">
 
-  <!-- CHANGE 3: the one-line description -->
-  <p style="font-size:15px;line-height:1.62;color:#56514b;margin:0 0 20px 0;">
-    Ten terms, four forms, seven measured steps. Work through the page and you have finished the session — your answers save as you go.
-  </p>
+    <!-- CHANGE 3: the title. <em> makes a phrase salmon and italic. -->
+    <h2 class="e2il-title">AI’s Energy <em>Appetite</em></h2>
 
-  <!-- Small facts row. Delete any chip you do not need. -->
-  <div style="margin:0 0 24px 0;">
-    <span style="display:inline-block;font-size:12px;font-weight:500;padding:5px 11px;border-radius:999px;border:1px solid #d6cabd;background:#ffffff;color:#56514b;margin:0 6px 6px 0;">90 minutes</span>
-    <span style="display:inline-block;font-size:12px;font-weight:500;padding:5px 11px;border-radius:999px;border:1px solid #d6cabd;background:#ffffff;color:#56514b;margin:0 6px 6px 0;">10 terms</span>
-    <span style="display:inline-block;font-size:12px;font-weight:500;padding:5px 11px;border-radius:999px;border:1px solid #d6cabd;background:#ffffff;color:#56514b;margin:0 6px 6px 0;">Self-study or with a coach</span>
+    <!-- CHANGE 3: one or two sentences -->
+    <p class="e2il-blurb">
+      Microsteps for IELTS preparation — listening, reading, speaking and
+      writing on one topic. Work through the page and the session is done.
+    </p>
+
+    <!-- CHANGE 4: the chips. Delete any you do not need. -->
+    <ul class="e2il-meta">
+      <li class="e2il-chip"><span class="e2il-dot"></span>90 minutes</li>
+      <li class="e2il-chip">All four skills</li>
+      <li class="e2il-chip">Self-study</li>
+    </ul>
+
+    <div class="e2il-go">
+      <!-- CHANGE 1: the lesson link -->
+      <a class="e2il-cta"
+         href="https://YOUR-USERNAME.github.io/e2i-lessons/ielts-7-to-8/s01.html"
+         target="_blank" rel="noopener">
+        Bắt đầu buổi học
+        <span class="e2il-arrow" aria-hidden="true">→</span>
+      </a>
+
+      <p class="e2il-aside">
+        Mở trong tab mới. Tiến độ được lưu trên thiết bị này —
+        đóng tab và quay lại lúc khác vẫn còn nguyên.
+      </p>
+    </div>
+
   </div>
-
-  <!-- CHANGE 1: the lesson URL, here in href -->
-  <a href="https://YOUR-USERNAME.github.io/e2i-lessons/reflex-2/s01.html"
-     target="_blank" rel="noopener"
-     style="display:inline-block;background:#d97757;color:#ffffff;font-size:16px;font-weight:600;text-decoration:none;padding:14px 28px;border-radius:8px;border:1px solid #d97757;">
-    Bắt đầu buổi học →
-  </a>
-
-  <p style="font-size:12.5px;color:#847c73;margin:16px 0 0 0;line-height:1.5;">
-    Mở trong tab mới. Tiến độ của bạn được lưu trên chính thiết bị này —
-    đóng tab và quay lại lúc khác vẫn còn nguyên.
-  </p>
-
+</div>
 </div>
