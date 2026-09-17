@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<!-- =========================================================================
+     ENGLISH2IMPACT — LESSON TEMPLATE
+
+     HOW TO USE THIS FILE
+     1. Copy it into the course folder (e.g. reflex-2/) and rename it s05.html
+     2. Fill in every place marked  <<< FILL IN >>>
+     3. Upload to GitHub. Done.
+
+     Do not change the two <link> lines below — that is what connects this
+     lesson to your shared brand colours and layout.
+     ========================================================================= -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- <<< FILL IN >>> Shown in the browser tab and when the link is shared -->
+<title>Course name — Session 00</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<!-- Shared English2impact styling — four layers.
+     The first three are the same in EVERY lesson. Leave them alone.
+     1 brand      colours and fonts
+     2 lesson     page shell (masthead, rail, steps, footer)
+     3 activities the activity library (drills, tables, dialogue, games) -->
+<link rel="stylesheet" href="../assets/e2i-brand.css">
+<link rel="stylesheet" href="../assets/e2i-lesson.css">
+<link rel="stylesheet" href="../assets/e2i-activities.css">
+
+<!-- 4 type — <<< FILL IN >>> change "grammar" to this course's type.
+     Existing types are in assets/types/. If this course needs a new one,
+     see "Adding a new course type" in the README. -->
+<link rel="stylesheet" href="../assets/types/grammar.css">
+</head>
+
+<body data-mode="self">
+
+<header class="masthead">
+  <div class="shell">
+    <div class="eyebrow">
+      <span>English2impact</span><span>·</span>
+      <!-- <<< FILL IN >>> course name and session number -->
+      <b>Course Name</b><span>·</span><span>Session 00 / 24</span>
+    </div>
+
+    <!-- <<< FILL IN >>> the lesson headline. <em> makes a phrase salmon + italic -->
+    <h1>The lesson headline goes <em>here</em>.</h1>
+
+    <!-- <<< FILL IN >>> one or two sentences telling the student what they will do -->
+    <p class="subline">What this session covers and what the student walks away able to do.</p>
+
+    <!-- <<< FILL IN >>> short labels. Delete any you do not need -->
+    <div class="chips">
+      <span class="chip"><span class="dot"></span>Stage 1 · Topic</span>
+      <span class="chip">Level</span>
+      <span class="chip">90 minutes</span>
+      <span class="chip">10 terms</span>
+    </div>
+
+    <!-- OPTIONAL navy bar for a grammar pattern. Delete if not needed -->
+    <div class="structure">
+      <span>Structure</span> S + V + O
+    </div>
+
+    <div class="modebar">
+      <span class="lab">Mode</span>
+      <div class="seg" role="group" aria-label="Lesson mode">
+        <button type="button" id="mode-self" aria-pressed="true">Self-study</button>
+        <button type="button" id="mode-coach" aria-pressed="false">Coaching</button>
+      </div>
+      <span class="lab" id="mode-note">Teacher notes and timings are hidden</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <main id="main">
+
+    <!-- ===================================================================
+         A STEP. Copy this whole block for each step of the lesson.
+         =================================================================== -->
+    <section class="step" id="step-1">
+      <div class="step-head">
+        <div class="step-n">1</div>
+        <div>
+          <h2>Step title</h2>
+          <div class="goal">One line saying what this step trains.</div>
+        </div>
+        <div class="step-score">0 / 0</div>
+      </div>
+
+      <div class="step-body">
+
+        <p class="lede">Introduction paragraph for the step.</p>
+
+        <!-- A rule box (salmon, for the key point) -->
+        <div class="rule">
+          <b>The rule in one line.</b>
+          <span class="ex">✓ a correct example · ✗ a wrong example</span>
+        </div>
+
+        <!-- Teacher-only note. Hidden in Self-study mode automatically. -->
+        <details class="teach coach-only">
+          <summary>Teacher note</summary>
+          <div class="inner">
+            <p>Timing, what to watch for, how to correct.</p>
+          </div>
+        </details>
+
+        <!-- A vocabulary table -->
+        <div class="vocab-wrap"><div class="vocab-scroll">
+          <table class="vocab">
+            <thead>
+              <tr><th>Term</th><th>IPA</th><th>Vietnamese</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr class="band"><td colspan="4">Daily</td></tr>
+              <tr>
+                <td class="term">term</td>
+                <td class="ipa">/tɜːm/</td>
+                <td class="vi">nghĩa tiếng Việt</td>
+                <td class="ex">An example sentence.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div></div>
+
+        <!-- Dialogue audio. Paste your SoundCloud track URL in the src. -->
+        <div class="audio-card">
+          <iframe class="sc" title="Dialogue" scrolling="no" frameborder="no" allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=PASTE_SOUNDCLOUD_TRACK_URL&color=%23d97757&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+          <div class="sc-credit">
+            <a href="https://soundcloud.com/english2impact" target="_blank" rel="noopener">English2impact</a>
+          </div>
+        </div>
+
+        <!-- A dialogue -->
+        <div class="dlg">
+          <div class="line"><span class="who">Anna</span><span class="txt">First line of the dialogue.</span></div>
+          <div class="line"><span class="who">Mark</span><span class="txt">Second line of the dialogue.</span></div>
+        </div>
+
+        <!-- A speaking task -->
+        <div class="task-card">
+          <span class="kind">Speaking</span>
+          <h4>Task title</h4>
+          <p>What the student has to say, and for how long.</p>
+        </div>
+
+      </div>
+    </section>
+    <!-- === end of a step. Copy from <section class="step"> to here. === -->
+
+  </main>
+
+  <aside class="rail" aria-label="Progress and contents">
+    <div class="rail-card">
+      <div class="ring-row">
+        <svg class="ring" viewBox="0 0 44 44" aria-hidden="true">
+          <circle class="track" cx="22" cy="22" r="18"></circle>
+          <circle class="bar" id="ring-bar" cx="22" cy="22" r="18" stroke-dasharray="0 113" transform="rotate(-90 22 22)"></circle>
+          <text class="ring-num" id="ring-num" x="22" y="26" text-anchor="middle">0%</text>
+        </svg>
+        <div class="ring-lab">
+          <b id="prog-head">Session progress</b>
+          <span id="prog-sub">0 of 0 steps complete</span>
+        </div>
+      </div>
+      <ul class="toc" id="toc"></ul>
+      <button type="button" class="rail-reset" id="reset-all">Reset progress</button>
+    </div>
+    <div class="rail-card rail-note">
+      <b>How progress counts.</b> Your answers stay in this browser — close the tab and come back to them.
+    </div>
+  </aside>
+</div>
+
+<footer class="foot">
+  <div class="shell" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;width:100%">
+    <span>English2impact · <!-- <<< FILL IN >>> -->Course Name, Session 00</span>
+    <span>english2impact.odoo.com</span>
+  </div>
+</footer>
+
+<script>
+/* =========================================================================
+   Minimal shared behaviour: the mode switch, the contents list and the
+   progress ring. A lesson with interactive drills adds its own script
+   below this one — see reflex-2/s01.html for a full working example.
+   ========================================================================= */
+(function(){
+  "use strict";
+
+  /* --- Self-study / Coaching switch --- */
+  var mSelf = document.getElementById('mode-self');
+  var mCoach = document.getElementById('mode-coach');
+  var mNote = document.getElementById('mode-note');
+  function setMode(mode){
+    document.body.dataset.mode = mode;
+    mSelf.setAttribute('aria-pressed', mode === 'self');
+    mCoach.setAttribute('aria-pressed', mode === 'coach');
+    mNote.textContent = mode === 'self'
+      ? 'Teacher notes and timings are hidden'
+      : 'Teacher notes and timings are showing';
+  }
+  mSelf.addEventListener('click', function(){ setMode('self'); });
+  mCoach.addEventListener('click', function(){ setMode('coach'); });
+
+  /* --- Build the contents list from the steps on the page --- */
+  var steps = [].slice.call(document.querySelectorAll('.step'));
+  document.getElementById('toc').innerHTML = steps.map(function(s, i){
+    var h = s.querySelector('.step-head h2');
+    return '<li><a href="#' + s.id + '"><span class="n">' + (i+1) + '</span>' +
+           '<span>' + (h ? h.textContent : 'Step') + '</span><span class="cnt"></span></a></li>';
+  }).join('');
+  document.getElementById('prog-sub').textContent = '0 of ' + steps.length + ' steps complete';
+
+  /* --- Highlight the step the student is looking at --- */
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        links.forEach(function(a){
+          a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+        });
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    steps.forEach(function(s){ io.observe(s); });
+  }
+
+  /* --- Reset button --- */
+  document.getElementById('reset-all').addEventListener('click', function(){
+    try { localStorage.removeItem(document.title); } catch(e){}
+    location.reload();
+  });
+})();
+</script>
+
+</body>
+</html>

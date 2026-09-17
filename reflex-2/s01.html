@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reflex 2 Finished Past</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<!-- Shared English2impact styling — four layers, do not edit these lines.
+     1 brand      colours and fonts          (every lesson)
+     2 lesson     page shell                 (every lesson)
+     3 activities the activity library       (every lesson)
+     4 type       what THIS course type does (grammar / pronunciation / ...) -->
+<link rel="stylesheet" href="../assets/e2i-brand.css">
+<link rel="stylesheet" href="../assets/e2i-lesson.css">
+<link rel="stylesheet" href="../assets/e2i-activities.css">
+<link rel="stylesheet" href="../assets/types/grammar.css">
+
+</head>
+<body>
+<header class="masthead">
+  <div class="shell">
+    <div class="eyebrow">
+      <span>English2impact</span><span>·</span><b>English Reflex 2</b><span>·</span><span>Session 01 / 24</span>
+    </div>
+    <h1>“We rolled out the new system <em>last quarter</em>.”</h1>
+    <p class="subline">Ten terms, four forms, seven measured steps. Guess the terms, drill each form until it arrives without translating, then decode the dialogue at full speed — finish the page and you have finished the session.</p>
+    <div class="chips">
+      <span class="chip"><span class="dot"></span>Stage 1 · Time Control</span>
+      <span class="chip">Finished Past</span>
+      <span class="chip">Advanced</span>
+      <span class="chip">90 minutes</span>
+      <span class="chip">10 terms · 5 daily + 5 workplace</span>
+    </div>
+    <div class="structure">
+      <span>Structure</span> S + V (Past Simple) + O + [Finished Time Reference]
+    </div>
+    <div class="modebar">
+      <span class="lab">Mode</span>
+      <div class="seg" role="group" aria-label="Lesson mode">
+        <button type="button" id="mode-self" aria-pressed="true">Self-study</button>
+        <button type="button" id="mode-coach" aria-pressed="false">Coaching</button>
+      </div>
+      <span class="lab" id="mode-note">Teacher notes and timings are hidden</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <main id="main"></main>
+
+  <aside class="rail" aria-label="Progress and contents">
+    <div class="rail-card">
+      <div class="ring-row">
+        <svg class="ring" viewBox="0 0 44 44" aria-hidden="true">
+          <circle class="track" cx="22" cy="22" r="18"></circle>
+          <circle class="bar" id="ring-bar" cx="22" cy="22" r="18" stroke-dasharray="0 113" transform="rotate(-90 22 22)"></circle>
+          <text class="ring-num" id="ring-num" x="22" y="26" text-anchor="middle">0%</text>
+        </svg>
+        <div class="ring-lab"><b id="prog-head">Session progress</b><span id="prog-sub">0 of 8 steps complete</span></div>
+      </div>
+      <ul class="toc" id="toc"></ul>
+      <button type="button" class="rail-reset" id="reset-all">Reset progress</button>
+    </div>
+    <div class="rail-card rail-note">
+      <b>How progress counts.</b> Each step is complete when every item in it is answered correctly or self-marked. Your answers stay in this browser — close the tab and come back to them.
+    </div>
+  </aside>
+</div>
+<!-- Type-specific styling (term lab, exchange blocks) now lives in
+     assets/types/grammar.css so every grammar lesson shares it. -->
+<script>
+(function(){
+"use strict";
+
+/* ============================ content ============================ */
+
+const SOUNDCLOUD = "https://soundcloud.com/english2impact/dialogue_finished-past_we";
+const SC_TITLE   = "Dialogue_Finished Past_We rolled out the new system last quarter";
+const SC_USER    = "https://soundcloud.com/english2impact";
+
+const VOCAB = [
+  ["daily","get around to","sắp xếp được thời gian để làm","/ˌɡet əˈraʊnd tə/","[−] I did not <b>get around to</b> the supplier list until Friday."],
+  ["daily","end up (doing)","rốt cuộc lại (làm gì)","/ˌend ˈʌp/","[+] We <b>ended up</b> writing the script ourselves."],
+  ["daily","run into","tình cờ gặp; gặp phải (vấn đề)","/ˌrʌn ˈɪntə/","[Y/N ?] Did you <b>run into</b> any problems during the migration?"],
+  ["daily","sort out","giải quyết, xử lý ổn thỏa","/ˌsɔːt ˈaʊt/","[+] The team <b>sorted</b> the old data <b>out</b> manually."],
+  ["daily","the other day","hôm nọ, mấy hôm trước","/ði ˌʌðə ˈdeɪ/","[Wh- ?] Who did you meet <b>the other day</b>?"],
+  ["work","roll out","triển khai (hệ thống, sản phẩm)","/ˌrəʊl ˈaʊt/","[+] We <b>rolled out</b> the new system last quarter."],
+  ["work","sign off on","duyệt, phê duyệt chính thức","/ˌsaɪn ˈɒf ɒn/","[Y/N ?] Did the board <b>sign off on</b> the extra budget?"],
+  ["work","kick off","khởi động, bắt đầu (dự án)","/ˌkɪk ˈɒf/","[+] We <b>kicked off</b> in early January."],
+  ["work","wrap up","hoàn tất, kết thúc","/ˌræp ˈʌp/","[−] We did not <b>wrap up</b> the project before March."],
+  ["work","come in under budget","hoàn thành dưới mức ngân sách","/ˌkʌm ɪn ˌʌndə ˈbʌdʒɪt/","[+] The team <b>came in under budget</b> for the first time."]
+];
+
+/* term lab — vi prompt, english gloss, line from the dialogue, three options */
+const TERMS = [
+  {vi:"triển khai (hệ thống, sản phẩm)", en:"put a new system into use across the company",
+   line:"So — we <u></u> the new system last quarter. How did it actually go?",
+   opts:["signed off on","rolled out","wrapped up"], a:1, term:"roll out"},
+  {vi:"khởi động, bắt đầu (dự án)", en:"start a project",
+   line:"We <u></u> in early January and finished three weeks later.",
+   opts:["kicked off","came in under budget","got around to it"], a:0, term:"kick off"},
+  {vi:"duyệt, phê duyệt chính thức", en:"formally approve something",
+   line:"Did the board <u></u> the extra budget in the end?",
+   opts:["get around to","come in under","sign off on"], a:2, term:"sign off on"},
+  {vi:"hoàn thành dưới mức ngân sách", en:"spend less than the money set aside",
+   line:"They did, and we still <u></u> — which nobody saw coming.",
+   opts:["came in under budget","sorted it out","ran into it"], a:0, term:"come in under budget"},
+  {vi:"gặp phải (vấn đề); tình cờ gặp (ai đó)", en:"meet a problem — or a person — by accident",
+   line:"Did you <u></u> any problems during the migration?",
+   opts:["wrap up","run into","sort out"], a:1, term:"run into"},
+  {vi:"giải quyết, xử lý ổn thỏa", en:"fix a problem and finish with it",
+   line:"The old data did not transfer cleanly, so we <u></u> by hand.",
+   opts:["kicked it off","ran into it","sorted it out"], a:2, term:"sort out"},
+  {vi:"rốt cuộc lại (làm gì)", en:"finish by doing something you did not plan",
+   line:"Not all of it. We <u></u> writing a script, and that saved us ten days.",
+   opts:["ended up","got around to","signed off on"], a:0, term:"end up (doing)"},
+  {vi:"sắp xếp được thời gian để làm", en:"finally find the time to do it",
+   line:"I know. I just never <u></u> it — the whole thing moved too fast.",
+   opts:["ran into","got around to","wrapped up"], a:1, term:"get around to"},
+  {vi:"hôm nọ, mấy hôm trước", en:"a few days ago — finished time",
+   line:"I ran into Peter <u></u>, and he told me the rollout failed.",
+   opts:["by then","last quarter","the other day"], a:2, term:"the other day"},
+  {vi:"hoàn tất, kết thúc", en:"finish a piece of work",
+   line:"We <u></u> on the last Friday of March, two days before the deadline.",
+   opts:["ran into","wrapped up","ended up"], a:1, term:"wrap up"}
+];
+
+const SORT_WORDS = [
+  {w:"kick",  past:"kicked",       b:"t"},
+  {w:"wrap",  past:"wrapped",      b:"t"},
+  {w:"finish",past:"finished",     b:"t"},
+  {w:"ask",   past:"asked",        b:"t"},
+  {w:"roll",  past:"rolled",       b:"d"},
+  {w:"sign",  past:"signed",       b:"d"},
+  {w:"transfer",past:"transferred",b:"d"},
+  {w:"sort",  past:"sorted",       b:"id"},
+  {w:"end",   past:"ended",        b:"id"},
+  {w:"need",  past:"needed",       b:"id"},
+  {w:"run",   past:"ran",          b:"irr"},
+  {w:"come",  past:"came",         b:"irr"},
+  {w:"get",   past:"got",          b:"irr"}
+];
+const SORT_BUCKETS = [
+  {id:"t",  name:"/t/",  sub:"after a voiceless sound — k, p, s, f, ʃ, tʃ"},
+  {id:"d",  name:"/d/",  sub:"after a voiced sound — l, n, g, v, z, r, vowels"},
+  {id:"id", name:"/ɪd/", sub:"after t or d only — and only there"},
+  {id:"irr",name:"irregular", sub:"no ending at all — nothing to drop"}
+];
+
+const DIALOGUE = [
+  ["Clara","So — we rolled out the new system last quarter. How did it actually go?"],
+  ["Adam","Better than I expected. We kicked off in early January and wrapped it up three weeks later."],
+  ["Clara","Did the board sign off on the extra budget in the end?"],
+  ["Adam","They did, and we still came in under budget — which nobody saw coming."],
+  ["Clara","Did you run into any problems during the migration?"],
+  ["Adam","We ran into one big one. The old data did not transfer cleanly, so we sorted it out by hand."],
+  ["Clara","You sorted all of it out manually? That sounds like weeks of work."],
+  ["Adam","Not all of it. We ended up writing a script, and that saved us about ten days."],
+  ["Clara","Why did you not tell me? I had two spare people on my team in February."],
+  ["Adam","I know. I just never got around to it — the whole thing moved too fast."],
+  ["Clara","I ran into Peter the other day, and he told me the rollout failed."],
+  ["Adam","Peter is behind. He left the project in February, so he did not see the second phase."],
+  ["Clara","When exactly did you finish?"],
+  ["Adam","We wrapped up on the last Friday of March, two days before the deadline."],
+  ["Clara","And the client? Did they sign it off?"],
+  ["Adam","They signed off on it the same week. We did not hear a single complaint after that."]
+];
+
+const COMPREHENSION = [
+  ["When did the team kick off the project?","In early January."],
+  ["How long did the rollout take?","About three weeks."],
+  ["Did the board sign off on the extra budget?","Yes, they did — and the team still came in under budget."],
+  ["What problem did the team run into?","The old data did not transfer cleanly."],
+  ["How did they solve it in the end?","They sorted some of it out by hand, then ended up writing a script, which saved about ten days."],
+  ["Why did Adam not tell Clara about the problem?","He never got around to it — the project moved too fast."],
+  ["What did Peter tell Clara, and why was he wrong?","That the rollout failed. He left the project in February and did not see the second phase."],
+  ["When exactly did the team finish, and when did the client sign off?","On the last Friday of March, two days before the deadline; the client signed off on it the same week."]
+];
+
+const DRILL_A = [
+  {cue:"We rolled out the new system last quarter.", acc:["We did not roll out the new system last quarter."], trap:""},
+  {cue:"They signed off on the extra budget in February.", acc:["They did not sign off on the extra budget in February."], trap:""},
+  {cue:"We kicked off the project in early January.", acc:["We did not kick off the project in early January."], trap:""},
+  {cue:"The team wrapped it up three weeks later.", acc:["The team did not wrap it up three weeks later."], trap:"Trap: the pronoun stays in the middle — ✗ did not wrap up it."},
+  {cue:"I ran into Peter the other day.", acc:["I did not run into Peter the other day."], trap:"Trap: irregular — base form after did. ✗ did not ran into."},
+  {cue:"The old data transferred cleanly.", acc:["The old data did not transfer cleanly."], trap:""},
+  {cue:"She got around to the supplier list on Friday.", acc:["She did not get around to the supplier list on Friday."], trap:"Trap: got → get."},
+  {cue:"We came in under budget last quarter.", acc:["We did not come in under budget last quarter."], trap:"Trap: came → come."},
+  {cue:"They sorted it out by hand.", acc:["They did not sort it out by hand."], trap:"Trap: ✗ did not sort out it."},
+  {cue:"He ended up writing the script himself.", acc:["He did not end up writing the script himself."], trap:"Trap: end up is always followed by -ing."}
+];
+
+const DRILL_B = [
+  {cue:"you / roll out / the new system / last quarter", acc:["Did you roll out the new system last quarter?"], trap:""},
+  {cue:"the board / sign off on / the extra budget / in February", acc:["Did the board sign off on the extra budget in February?"], trap:""},
+  {cue:"they / run into / any problems / during the migration", acc:["Did they run into any problems during the migration?"], trap:"Trap: ✗ Did they ran into…"},
+  {cue:"the team / come in under budget / last quarter", acc:["Did the team come in under budget last quarter?"], trap:"Trap: ✗ Did the team came…"},
+  {cue:"you / wrap it up / before the deadline — surprised, you thought they did", acc:["Didn't you wrap it up before the deadline?"], trap:"Negative question: only the contraction goes to the front."},
+  {cue:"she / get around to / the supplier list / on Friday", acc:["Did she get around to the supplier list on Friday?"], trap:""},
+  {cue:"you / kick off / the project / in early January", acc:["Did you kick off the project in early January?"], trap:""},
+  {cue:"he / tell / Clara / about the delay — surprised, you thought he did", acc:["Didn't he tell Clara about the delay?"], trap:"Negative question."},
+  {cue:"they / sort it out / by hand", acc:["Did they sort it out by hand?"], trap:"Trap: the pronoun does not move. ✗ Did they sort out it?"},
+  {cue:"you / run into / Peter / the other day", acc:["Did you run into Peter the other day?"], trap:""}
+];
+
+const DRILL_C = [
+  {cue:"They rolled out the new system <b>last quarter</b>.", start:"When", acc:["When did they roll out the new system?"], trap:""},
+  {cue:"We kicked off <b>in early January</b>.", start:"When", acc:["When did you kick off?","When did we kick off?"], trap:"No object after the term — that is natural English."},
+  {cue:"<b>The board</b> signed off on the extra budget.", start:"Who", acc:["Who signed off on the extra budget?"], trap:"Subject question: no did, and the verb keeps its past form."},
+  {cue:"They sorted out <b>the old data</b> by hand.", start:"What", acc:["What did they sort out by hand?"], trap:""},
+  {cue:"He left the project <b>in February</b>.", start:"When", acc:["When did he leave the project?"], trap:""},
+  {cue:"<b>Peter</b> told Clara that the rollout failed.", start:"Who", acc:["Who told Clara that the rollout failed?"], trap:"Subject question — ✗ Who did tell…"},
+  {cue:"They wrapped it up <b>two days before the deadline</b>.", start:"When", acc:["When did they wrap it up?"], trap:"Trap: ✗ When did they wrap up it?"},
+  {cue:"She never got around to <b>the supplier list</b>.", start:"What", acc:["What did she never get around to?"], trap:""},
+  {cue:"The team came in under budget <b>because they wrote a script</b>.", start:"Why", acc:["Why did the team come in under budget?"], trap:"The answer needs a full clause, not a phrase."},
+  {cue:"<b>Adam and his team</b> ran into the migration problem.", start:"Who", acc:["Who ran into the migration problem?"], trap:"Subject question — ✗ Who run into…"}
+];
+
+/* Drill A · block 2 — spoken. A says [+], B says the same sentence in [−]. Nothing more. */
+const EXCHANGES = [
+  {a:"I ran into Peter the other day.",                         want:"−", b:"Really? I didn't run into him."},
+  {a:"We came in under budget.",                                want:"−", b:"Really? We didn't come in under budget."},
+  {a:"She got around to the report on Friday.",                 want:"−", b:"Really? She didn't get around to it on Friday."},
+  {a:"The team wrapped it up before the deadline.",             want:"−", b:"Really? They didn't wrap it up before the deadline."},
+  {a:"We sorted the problem out by hand.",                      want:"−", b:"Really? We didn't sort it out by hand."},
+  {a:"He ended up writing a script.",                           want:"−", b:"Really? He didn't end up writing a script."},
+  {a:"They kicked the project off in January.",                 want:"−", b:"Really? They didn't kick it off in January."},
+  {a:"The client signed it off the same week.",                 want:"−", b:"Really? They didn't sign it off the same week."},
+  {a:"The board signed off on the extra budget in February.",   want:"−", b:"Really? They didn't sign off on it in February."},
+  {a:"We rolled the new system out last quarter.",              want:"−", b:"Really? We didn't roll it out last quarter."}
+];
+
+/* Drill B · block 2 — spoken. A asks from cue words, B answers Yes, S + did / No, S + didn't. */
+const CONVOS = [
+  {a:"[?+] they / run into / any problems / during the migration", want:"+", b:"Yes, they did."},
+  {a:"[?+] the team / come in under budget / last quarter",        want:"−", b:"No, they didn't."},
+  {a:"[?−] you / wrap it up / before the deadline",                want:"+", b:"Yes, we did."},
+  {a:"[?+] she / get around to / the report / on Friday",          want:"−", b:"No, she didn't."},
+  {a:"[?+] you / sort it out / by hand",                           want:"+", b:"Yes, we did."},
+  {a:"[?−] he / tell / Clara / about the delay",                   want:"−", b:"No, he didn't."},
+  {a:"[?+] you / run into / Peter / the other day",                want:"+", b:"Yes, I did."},
+  {a:"[?+] they / kick off / the project / in January",            want:"−", b:"No, they didn't."},
+  {a:"[?+] your manager / sign off on / your last request",        want:"+", b:"Yes, she did."},
+  {a:"[?−] you / finish / the report / on Friday",                 want:"−", b:"No, I didn't."}
+];
+
+const EXIT = [
+  "I said a <b>[+]</b> sentence of my own, with one of today's terms and a finished time reference.",
+  "I turned the same sentence into <b>[−]</b> — did not + base form, ending audible.",
+  "I asked it as <b>[Y/N ?]</b> and my partner answered with a short form plus one clause.",
+  "I asked it as <b>[Wh- ?]</b>, starting with <b>When</b>.",
+  "I said one negative with an irregular term: <i>I didn't run into anyone / we didn't come in under budget</i>."
+];
+
+/* ============================ state ============================ */
+
+const SKEY="er2-s01-v2";
+let S = {mode:"self", audio:"", done:{}, text:{}, num:{}};
+try{ const raw=localStorage.getItem(SKEY); if(raw) S=Object.assign(S,JSON.parse(raw)); }catch(e){}
+function save(){ try{ localStorage.setItem(SKEY,JSON.stringify(S)); }catch(e){} }
+function mark(k,v){ if(v){S.done[k]=1;} else {delete S.done[k];} save(); refresh(); }
+function isDone(k){ return !!S.done[k]; }
+
+function norm(s){
+  return (s||"").toLowerCase()
+    .replace(/[‘’ʼ]/g,"'")
+    .replace(/[–—]/g,"-")
+    .replace(/n't\b/g," not")
+    .replace(/[.,!?;:"“”]/g,"")
+    .replace(/\s+/g," ").trim();
+}
+function matches(input,accepted){ const n=norm(input); return accepted.some(a=>norm(a)===n); }
+
+/* ============================ steps ============================ */
+
+const STEPS=[
+  {id:"warm", n:1, title:"Warm-up — the ending you cannot hear", goal:"Sort 13 verbs by their past-tense sound. Four minutes.", keys:SORT_WORDS.map(w=>"sort-"+w.w)},
+  {id:"lab",  n:2, title:"Term lab", goal:"Guess ten terms from the line they appear in, then drill the misses.", keys:TERMS.map((_,i)=>"t-"+i)},
+  {id:"drillA",n:3, title:"Drill A — [+] positive to [−] negative", goal:"Ten written transformations, then ten spoken exchanges.", keys:DRILL_A.map((_,i)=>"a-"+i).concat(EXCHANGES.map((_,i)=>"ax-"+i))},
+  {id:"drillB",n:4, title:"Drill B — [Y/N ?] Yes/No question", goal:"Ten written questions, then ten spoken short answers.", keys:DRILL_B.map((_,i)=>"b-"+i).concat(CONVOS.map((_,i)=>"bx-"+i))},
+  {id:"drillC",n:5, title:"Drill C — [Wh- ?] Wh- question", goal:"Ten questions. When is the signature question of Stage 1.", keys:DRILL_C.map((_,i)=>"c-"+i)},
+  {id:"decode",n:6, title:"Dialogue decode", goal:"Listen at full speed, then answer eight questions.", keys:COMPREHENSION.map((_,i)=>"q-"+i)},
+  {id:"exit", n:7, title:"Exit ticket", goal:"Five things to produce out loud before you leave.", keys:EXIT.map((_,i)=>"x-"+i)}
+];
+function stepDone(st){ return st.keys.filter(isDone).length; }
+const TOTAL_ITEMS = STEPS.reduce(function(n,st){return n+st.keys.length;},0);
+
+/* ============================ builders ============================ */
+
+function shell(st, inner){
+  return '<section class="step" id="'+st.id+'">'+
+    '<div class="step-head"><div class="step-n">'+st.n+'</div>'+
+    '<div><h2>'+st.title+'</h2><div class="goal">'+st.goal+'</div></div>'+
+    '<div class="step-score" data-score="'+st.id+'">0 / '+st.keys.length+'</div></div>'+
+    '<div class="step-body">'+inner+'</div></section>';
+}
+function teach(label, body){
+  return '<details class="teach coach-only"><summary>'+label+'</summary><div class="inner">'+body+'</div></details>';
+}
+
+/* --- 1 warm-up --- */
+function buildWarm(){
+  const pool = SORT_WORDS.map(w=>'<button type="button" class="word" data-word="'+w.w+'">'+w.w+'</button>').join("");
+  const buckets = SORT_BUCKETS.map(b=>
+    '<div class="bucket" data-bucket="'+b.id+'"><h4>'+b.name+'</h4><div class="sub">'+b.sub+'</div><div class="slot"></div></div>').join("");
+  return shell(STEPS[0],
+    '<p class="lede">Vietnamese does not close a syllable with a consonant cluster, so <i>rolled</i>, <i>signed</i>, <i>kicked</i> and <i>wrapped</i> lose their endings — and the tense goes with them. Fix the sound first; the grammar is already yours.</p>'+
+    '<div class="rule"><b>/ɪd/ only after t and d.</b><span class="ex"><span class="yes">✓</span> sorted /ˈsɔːtɪd/ &nbsp;·&nbsp; <span class="no">✗</span> rolled is not /ˈrəʊlɪd/ &nbsp;·&nbsp; <span class="no">✗</span> signed is not /ˈsaɪnɪd/</span></div>'+
+    '<p class="hint">Tap a verb, then tap the column it belongs in. Tap a placed verb to send it back.</p>'+
+    '<div class="pool" id="sort-pool">'+pool+'</div>'+
+    '<div class="sort-grid" id="sort-grid">'+buckets+'</div>'+
+    '<div class="toolbar"><button type="button" class="btn small" id="sort-check">Check the sort</button>'+
+    '<button type="button" class="btn small quiet" id="sort-show">Show answers</button>'+
+    '<span class="spacer"></span><span class="tally" id="sort-tally">0 / 13 placed correctly</span></div>'+
+    teach("Teacher — run this as a board race, 4 minutes",
+      "<p>Three columns on the board plus a fourth for the irregulars. Call the verb, the class says the past form and points.</p>"+
+      "<p>The payoff line to say out loud: <b>the ending is easiest when the next word starts with a vowel</b> — and particles usually do. <span class='tag'>rolled_out</span> <span class='tag'>sorted_it_out</span> <span class='tag'>ended_up</span> <span class='tag'>signed_off</span>.</p>"));
+}
+
+/* --- 2 term lab --- */
+function buildLab(){
+  let rows='<tr class="band"><td colspan="3">Daily — 5 terms</td></tr>';
+  VOCAB.filter(v=>v[0]==="daily").forEach(function(v){
+    rows+='<tr><td><div class="term">'+v[1]+'</div><div class="vi">'+v[2]+'</div></td><td class="ipa">'+v[3]+'</td><td class="ex">'+v[4]+'</td></tr>';
+  });
+  rows+='<tr class="band"><td colspan="3">Workplace — 5 terms</td></tr>';
+  VOCAB.filter(v=>v[0]==="work").forEach(function(v){
+    rows+='<tr><td><div class="term">'+v[1]+'</div><div class="vi">'+v[2]+'</div></td><td class="ipa">'+v[3]+'</td><td class="ex">'+v[4]+'</td></tr>';
+  });
+  return shell(STEPS[1],
+    '<p class="lede">Ten terms, each shown in the line where it actually appears. Guess it, and it is yours; miss it, and it comes back in the drill round.</p>'+
+    '<div class="lab" id="lab">'+
+      '<div class="lab-top"><span id="lab-count">1 of 10</span>'+
+      '<span><span class="known">Known <b id="lab-known">0</b></span> · <span class="todrill">To drill <b id="lab-drill">0</b></span></span></div>'+
+      '<div class="ticks" id="lab-ticks"></div>'+
+      '<div id="lab-card"></div>'+
+    '</div>'+
+    '<div class="toolbar"><button type="button" class="btn small quiet" id="lab-list">Show all ten as a list</button>'+
+    '<button type="button" class="btn small quiet" id="lab-restart">Start the lab again</button></div>'+
+    '<div id="lab-table" hidden>'+
+      '<div class="vocab-wrap"><div class="vocab-scroll"><table class="vocab"><thead><tr><th>Term — nghĩa</th><th>IPA</th><th>In the four forms</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'+
+      '<div class="toolbar"><button type="button" class="btn small quiet" id="copy-vocab">Copy the table as plain text</button><span class="hint">Paste-ready for Quizlet, Google Docs or a handout.</span></div>'+
+      '<textarea id="vocab-out" class="export" hidden aria-label="Plain-text vocabulary"></textarea>'+
+    '</div>'+
+    '<div class="rule"><b>A pronoun object goes INSIDE a separable term. It has no choice.</b>'+
+    '<span class="ex"><span class="yes">✓</span> We rolled <b>it</b> out. &nbsp; <span class="no">✗</span> We rolled out it.<br>'+
+    '<span class="yes">✓</span> I ran into <b>him</b>. &nbsp; <span class="no">✗</span> I ran him into.<br>'+
+    'Splits: roll out · sort out · wrap up · kick off &nbsp;|&nbsp; Never splits: run into · get around to · come in under · sign off on</span></div>'+
+    teach("Teacher — the error that survives the whole course",
+      "<p>✗ <i>We rolled out it.</i> Correct it out loud every single time it appears today, or you will still be correcting it in Session 12.</p>"+
+      "<p>Two columns on the board — <b>SPLITS</b> / <b>NEVER SPLITS</b> — left up for the full ninety minutes. Run the two hardest pairs back to back until nobody hesitates: <i>rolled it out / ran into him</i> and <i>signed it off / signed off on it</i>.</p>"+
+      "<p>Say the rule as one line: <b>a pronoun goes in the middle when the middle exists.</b></p>"));
+}
+
+/* --- 3–5 drills --- */
+function buildDrill(st, items, opts){
+  const list = items.map(function(it,i){
+    const start = it.start ? ' <span class="tag">start with '+it.start+'</span>' : "";
+    const cue = opts.mono ? '<span class="cue">'+it.cue+'</span>' : it.cue;
+    return '<div class="item" data-item="'+opts.key+'-'+i+'">'+
+      '<div class="prompt"><span class="idx">'+(i+1)+'</span><span>'+cue+start+'</span></div>'+
+      '<div class="answer-row"><input type="text" id="'+opts.key+'-'+i+'" data-text="'+opts.key+'-'+i+'" data-answer="'+opts.key+'-'+i+'" data-bank="'+opts.key+'" placeholder="Your answer…" autocomplete="off" spellcheck="false"></div>'+
+      '<div class="verdict" data-verdict="'+opts.key+'-'+i+'"><span class="mark"></span><span class="model"></span></div>'+
+      (it.trap?'<div class="trap" hidden>'+it.trap+'</div>':"")+
+      '</div>';
+  }).join("");
+  return shell(st, opts.intro+'<p class="hint">Work through all ten, then check them together. Enter moves to the next line. Showing the answers leaves what you typed alone — and never scores the item.</p>'+'<div class="drill">'+list+'</div>'+
+    '<div class="toolbar checkbar"><button type="button" class="btn accent" data-checkall="'+opts.key+'">Check my ten answers</button>'+
+    '<button type="button" class="btn small quiet" data-showall="'+opts.key+'">Show the answers</button>'+
+    '<span class="spacer"></span><span class="tally" data-tally="'+opts.key+'">0 / 10 correct</span></div>'+
+    (opts.extra||"")+
+    (opts.teach||""));
+}
+
+/* --- open-answer blocks: spoken exchanges (Drill A and Drill B) --- */
+function turn(who,pol,text){
+  return '<div class="turn"><span class="who-badge '+who+'">'+who.toUpperCase()+'</span><span>'+
+    (pol?'<span class="pol">'+pol+'</span>':"")+text+'</span></div>';
+}
+function sayItems(key, items, render){
+  return items.map(function(it,i){
+    const id=key+"-"+i;
+    return '<div class="item" data-item="'+id+'">'+
+      '<div class="prompt"><span class="idx">'+(i+1)+'</span><span style="flex:1">'+render(it)+'</span></div>'+
+      '<div class="say-row"><span class="who-badge b">B</span><span class="pol">'+(it.want==="+"?"[+]":"[−]")+'</span>'+
+      '<button type="button" class="blurred" data-say="'+id+'" aria-label="Reveal the answer after you have said it">'+it.b+'</button>'+
+      '<button type="button" class="btn small" data-sayreveal="'+id+'">Reveal</button>'+
+      '<button type="button" class="btn small quiet" data-said="'+id+'" hidden>I said it</button>'+
+      '<button type="button" class="btn small quiet" data-again="'+id+'" hidden>Again</button></div></div>';
+  }).join("");
+}
+function sayFoot(key){
+  return '<div class="toolbar"><button type="button" class="btn small quiet" data-revealall="'+key+'">Reveal all ten</button>'+
+    '<button type="button" class="btn small quiet" data-hideall="'+key+'">Blur them again</button>'+
+    '<span class="spacer"></span><span class="tally" data-tally="'+key+'">0 / 10 said</span></div>';
+}
+function buildExchangeBlock(){
+  return '<div class="block-head"><h3>Let\'s reflex with these exchanges!</h3>'+
+    '<span class="sub"><b>Speaking task — nothing to type.</b> A states it. You are B: say the same sentence back in the negative, out loud, at speed. Then reveal and check yourself.</span></div>'+
+    '<div class="worked"><span class="w">Two worked examples</span>'+
+    turn("a","[+]","We rolled out the new system last quarter.")+
+    turn("b","[−]","Really? We <b>didn\'t roll out</b> the new system last quarter.")+
+    turn("a","[+]","They signed off on the budget in February.")+
+    turn("b","[−]","Really? They <b>didn\'t sign off on</b> it in February.")+
+    '</div>'+
+    '<div class="drill" style="margin-top:10px">'+sayItems("ax",EXCHANGES,function(it){
+      return turn("a","[+]",it.a);
+    })+'</div>'+ sayFoot("ax")+
+    '<p class="hint">Say it before you reveal. The ending has to be audible — <i>didn\'t roll out</i>, <i>didn\'t sign off on</i> — and a pronoun stays in the middle: <i>didn\'t wrap <b>it</b> up</i>.</p>';
+}
+function buildConvoBlock(){
+  return '<div class="block-head"><h3>Let\'s tackle these exchanges!</h3>'+
+    '<span class="sub"><b>Speaking task — nothing to type.</b> A asks from the cue words. You are B: answer out loud with the short form only — <i>Yes, S + did</i> / <i>No, S + didn\'t</i>. Then reveal and check yourself.</span></div>'+
+    '<div class="worked"><span class="w">Two worked examples</span>'+
+    turn("a","[?+]","you / roll out / the system / last quarter")+
+    turn("b","[+]","<b>Yes, we did.</b>")+
+    turn("a","[?−]","the board / sign off on / the budget")+
+    turn("b","[−]","<b>No, they didn\'t.</b>")+
+    '</div>'+
+    '<div class="drill" style="margin-top:10px">'+sayItems("bx",CONVOS,function(it){
+      return turn("a", it.a.slice(0,it.a.indexOf("]")+1), it.a.slice(it.a.indexOf("]")+2));
+    })+'</div>'+ sayFoot("bx")+
+    '<p class="hint">Items 3, 6 and 10 are negative questions. Answer the <b>fact</b>, not the shape of the question — that is the one Vietnamese instinct reverses.</p>';
+}
+
+/* --- 6 dialogue decode --- */
+function buildDecode(){
+  const qs = COMPREHENSION.map(function(q,i){
+    return '<div class="qa" data-qa="'+i+'"><div class="q"><b>'+(i+1)+'.</b> '+q[0]+'</div>'+
+    '<textarea id="q-'+i+'" data-text="q-'+i+'" placeholder="Your answer…"></textarea>'+
+    '<div class="toolbar"><button type="button" class="btn small quiet" data-show="'+i+'">Show model answer</button>'+
+    '<button type="button" class="btn small" data-selfmark="'+i+'">I had this</button>'+
+    '<button type="button" class="btn small quiet" data-review="'+i+'">Review again</button></div>'+
+    '<div class="model-ans" data-model="'+i+'">'+q[1]+'</div></div>';
+  }).join("");
+  const script = DIALOGUE.map(function(L){
+    return '<div class="line"><div class="who">'+L[0]+'</div><div class="txt">'+L[1]+'</div></div>';
+  }).join("");
+  return shell(STEPS[5],
+    '<div class="audio-card">'+
+      '<iframe class="sc" title="Dialogue — We rolled out the new system last quarter" scrolling="no" frameborder="no" allow="autoplay" '+
+        'src="https://w.soundcloud.com/player/?url='+encodeURIComponent(SOUNDCLOUD)+'&color=%23d97757&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>'+
+      '<div class="sc-credit"><a href="'+SC_USER+'" target="_blank" rel="noopener">English2impact</a> · '+
+        '<a href="'+SOUNDCLOUD+'" target="_blank" rel="noopener">'+SC_TITLE+'</a></div>'+
+      '<p class="hint">Full speed on the first listen. The speed is the point.</p>'+
+    '</div>'+
+    '<p class="lede"><b>Before you listen:</b> Clara missed last quarter and has heard the rollout went badly. Every answer Adam gives is a finished event with a finished time attached. Listen once, books closed, then answer.</p>'+
+    '<div class="drill">'+qs+'</div>'+
+    '<div class="toolbar"><button type="button" class="btn small quiet" id="show-script">Show the transcript</button>'+'<span class="hint">Read it only after you have answered all eight.</span></div>'+
+    '<div class="transcript" id="transcript"><div class="dlg">'+script+'</div></div>'+
+    teach("Teacher — what to replay",
+      "<p>Stop at line 6: <i>The old data did not transfer cleanly, so we sorted it out by hand.</i> The whole grammar of the session in one breath — <i>did not</i> + base form on the left, past with a split phrasal verb on the right. Rebuild it orally before moving on.</p>"+
+      "<p>Line 2 vs line 14: <i>wrapped <b>it</b> up</i> / <i>wrapped up</i>. Same term, split once and whole once — ask the class why.</p>"+
+      "<p>Lines 15 and 16: <i>sign <b>it</b> off</i> / <i>signed <b>off on</b> it</i>. Play both back to back. Two terms sharing one verb; drill both, explain neither.</p>"+
+      "<p>Line 1 vs line 11: <i>rolled out</i> (verb, two words) vs <i>the rollout</i> (noun, one word).</p>"));
+}
+
+/* --- 7 exit --- */
+function buildExit(){
+  const items = EXIT.map(function(t,i){
+    return '<label class="checkline" data-check-line="x-'+i+'"><input type="checkbox" data-flag="x-'+i+'"><span>'+t+'</span></label>';
+  }).join("");
+  return shell(STEPS[6],
+    '<p class="lede">One term of your own, one pronoun object so the placement is audible, a finished time reference in every sentence. The last line is the one that proves you got the real lesson.</p>'+
+    '<div class="drill">'+items+'</div>'+
+    '<div class="rule"><b>The chain.</b><span class="ex">[+] We rolled it out last quarter. → [−] We didn\'t roll it out last quarter. → [Y/N ?] Did you roll it out last quarter? → [Wh- ?] When did you roll it out?</span></div>');
+}
+
+/* --- report --- */
+function buildReport(){
+  const tiles = STEPS.map(function(st){
+    return '<div class="rep-tile" data-tile="'+st.id+'"><div class="k">'+st.n+' · '+st.title.split("—")[0].trim()+'</div><div class="v" data-tilev="'+st.id+'">0/'+st.keys.length+'</div></div>';
+  }).join("");
+  return '<section class="step" id="report"><div class="report"><h3>Session report</h3>'+
+    '<p class="hint">Seven steps, '+TOTAL_ITEMS+' measured items. Copy the summary into your notebook, or send it to your teacher.</p>'+
+    '<div class="report-grid">'+tiles+'</div>'+
+    '<textarea class="export" id="export-box" readonly aria-label="Session summary"></textarea>'+
+    '<div class="toolbar"><button type="button" class="btn small accent" id="copy-report">Copy summary</button>'+
+    '<span class="hint" id="copy-note"></span></div></div>'+
+    '<footer class="foot"><span>English2impact · English Reflex 2 · Session 01 — Finished Past</span>'+
+    '<span>Bạn giỏi nghề. Giờ giỏi cả tiếng Anh.</span></footer></section>';
+}
+
+/* ============================ render ============================ */
+
+const main=document.getElementById("main");
+main.innerHTML = buildWarm()+buildLab()+
+  buildDrill(STEPS[2],DRILL_A,{key:"a",mono:false,extra:buildExchangeBlock(),intro:'<p class="lede">The past moves <b>off</b> the verb and <b>onto</b> <i>did</i>, and the verb goes back to its base form. Write the full form — the contraction is for speaking.</p><div class="rule"><b>One tense marker at a time.</b><span class="ex"><span class="yes">✓</span> We did not roll out the system. &nbsp; <span class="no">✗</span> We did not rolled out the system.</span></div>',
+    teach:teach("Teacher — items 4, 5, 8, 9, 10","<p><b>4 and 9:</b> the pronoun stays in the middle even in the negative — ✓ <i>did not wrap <b>it</b> up</i>. Expect ✗ <i>did not wrap up it</i>.</p><p><b>5 and 8:</b> the irregulars. ✓ <i>did not <b>run</b> into</i>, ✓ <i>did not <b>come</b> in under budget</i> — this is where most of the class slips.</p><p><b>10:</b> <i>end up</i> takes -ing, always. Do not open verb patterns today — Session 19 does that properly.</p>")})+
+  buildDrill(STEPS[3],DRILL_B,{key:"b",mono:true,extra:buildConvoBlock(),intro:'<p class="lede">Build the question from the prompt. Items 5 and 8 are <b>negative questions</b> — you are surprised, because you thought the opposite.</p><div class="rule"><b>Two rules, one line.</b><span class="ex"><span class="yes">✓</span> Did they sign <b>it</b> off? &nbsp; <span class="no">✗</span> Did they sign off it?<br><span class="yes">✓</span> Didn\'t you wrap it up? &nbsp; <span class="no">✗</span> Did not you wrap it up?</span></div>',
+    teach:teach("Teacher — the answer is where the terms live","<p>Vietnamese answers the <i>shape</i> of a negative question; English answers the <i>fact</i>. Let it happen once, then point at the board.</p><p>The spoken block drills the bare reflex — <i>Yes, we did</i> / <i>No, they didn't</i> — at speed. Once it is automatic, push the room one step further in Phase 2: short form <b>plus one clause</b>, <i>“Yes, we did — we finished two days early.”</i> Students allowed to answer in two words all term will still be answering in two words in Session 12.</p>")})+
+  buildDrill(STEPS[4],DRILL_C,{key:"c",mono:false,intro:'<p class="lede">Take a Yes/No question, remove <b>one</b> piece, and put the Wh- word in front. When the Wh- word <b>is</b> the subject, there is no <i>did</i> — and the verb keeps its past form.</p><div class="rule"><b>Two shapes.</b><span class="ex">Inverted: <b>When did</b> you finish? · <b>What did</b> they sign off on?<br>Subject: <b>Who signed</b> off on the budget? &nbsp; <span class="no">✗</span> Who did sign off…?</span></div>',
+    teach:teach("Teacher — write 3, 6 and 10 on the board together","<p>Subject questions: no <i>did</i>, past form kept. Expect ✗ <i>Who did sign off…?</i> and ✗ <i>Who run into…?</i> from half the room.</p><p>Drill <b>“When exactly?”</b> and <b>“How did it go?”</b> as terms — between them they open and close almost every professional conversation about something that has already happened.</p>")})+
+  buildDecode()+buildExit()+buildReport();
+
+const toc=document.getElementById("toc");
+toc.innerHTML = STEPS.map(function(st){
+  return '<li><a href="#'+st.id+'" data-toc="'+st.id+'"><span class="n">'+st.n+'</span><span>'+st.title.split("—")[0].trim()+'</span><span class="cnt" data-cnt="'+st.id+'">0/'+st.keys.length+'</span></a></li>';
+}).join("")+'<li><a href="#report" data-toc="report"><span class="n">★</span><span>Session report</span><span class="cnt"></span></a></li>';
+
+/* ============================ progress ============================ */
+
+function refresh(){
+  let sum=0, full=0;
+  STEPS.forEach(function(st){
+    const d=stepDone(st), t=st.keys.length;
+    sum += t? d/t : 0; if(t&&d===t) full++;
+    const sc=document.querySelector('[data-score="'+st.id+'"]');
+    if(sc){ sc.textContent=d+" / "+t; sc.classList.toggle("done", t>0&&d===t); }
+    const cnt=document.querySelector('[data-cnt="'+st.id+'"]'); if(cnt) cnt.textContent=d+"/"+t;
+    const a=document.querySelector('[data-toc="'+st.id+'"]'); if(a) a.classList.toggle("done", t>0&&d===t);
+    const tv=document.querySelector('[data-tilev="'+st.id+'"]');
+    if(tv){ tv.textContent=d+"/"+t; tv.parentElement.classList.toggle("done", t>0&&d===t); }
+  });
+  const pct=Math.round(sum/STEPS.length*100), C=2*Math.PI*18;
+  document.getElementById("ring-bar").setAttribute("stroke-dasharray",(C*pct/100).toFixed(1)+" "+C.toFixed(1));
+  document.getElementById("ring-num").textContent=pct+"%";
+  document.getElementById("prog-sub").textContent=full+" of "+STEPS.length+" steps complete";
+  const ex=document.getElementById("export-box");
+  if(ex){
+    ex.value="English Reflex 2 — S01 “We rolled out the new system last quarter.”\nOverall: "+pct+"%  ("+full+"/"+STEPS.length+" steps complete)\n"+
+      STEPS.map(function(st){return "  "+st.n+". "+st.title.split("—")[0].trim()+": "+stepDone(st)+"/"+st.keys.length;}).join("\n");
+  }
+}
+
+/* ============================ behaviour ============================ */
+
+document.addEventListener("input", function(e){
+  const el=e.target;
+  if(el.hasAttribute&&el.hasAttribute("data-text")){ S.text[el.getAttribute("data-text")]=el.value; save(); }
+});
+
+function setMode(m){
+  S.mode=m; save();
+  document.body.setAttribute("data-mode",m);
+  document.getElementById("mode-self").setAttribute("aria-pressed", m==="self");
+  document.getElementById("mode-coach").setAttribute("aria-pressed", m==="coach");
+  document.getElementById("mode-note").textContent = m==="self"
+    ? "Teacher notes and timings are hidden"
+    : "Teacher notes and error watch-lists are showing";
+}
+document.getElementById("mode-self").onclick=function(){setMode("self");};
+document.getElementById("mode-coach").onclick=function(){setMode("coach");};
+document.getElementById("reset-all").onclick=function(){
+  if(!confirm("Clear every answer and start this session again?")) return;
+  S={mode:S.mode,audio:S.audio,done:{},text:{},num:{}}; save(); location.reload();
+};
+
+/* ---- 1 sort ---- */
+let picked=null;
+const pool=document.getElementById("sort-pool");
+function placeWord(w,bucket){
+  const btn=document.querySelector('.word[data-word="'+w+'"]');
+  const slot=document.querySelector('.bucket[data-bucket="'+bucket+'"] .slot');
+  if(!btn||!slot) return;
+  slot.appendChild(btn); btn.setAttribute("aria-pressed","false");
+  S.text["sort-"+w]=bucket; save();
+}
+document.getElementById("sort-grid").addEventListener("click",function(e){
+  const wordBtn=e.target.closest(".word");
+  if(wordBtn){
+    const w=wordBtn.getAttribute("data-word");
+    pool.appendChild(wordBtn); wordBtn.className="word"; wordBtn.textContent=w;
+    delete S.text["sort-"+w]; mark("sort-"+w,false); return;
+  }
+  const b=e.target.closest(".bucket");
+  if(b&&picked){ placeWord(picked,b.getAttribute("data-bucket")); picked=null; }
+});
+pool.addEventListener("click",function(e){
+  const w=e.target.closest(".word"); if(!w) return;
+  document.querySelectorAll(".word").forEach(function(x){x.setAttribute("aria-pressed","false");});
+  picked=w.getAttribute("data-word"); w.setAttribute("aria-pressed","true");
+});
+function checkSort(reveal){
+  let ok=0;
+  SORT_WORDS.forEach(function(x){
+    const btn=document.querySelector('.word[data-word="'+x.w+'"]');
+    if(reveal && S.text["sort-"+x.w]!==x.b) placeWord(x.w,x.b);
+    const now=S.text["sort-"+x.w], good=(now===x.b);
+    btn.classList.toggle("ok",good&&!!now);
+    btn.classList.toggle("no",!!now&&!good);
+    btn.textContent = now ? x.w+" → "+x.past : x.w;
+    mark("sort-"+x.w, good&&!!now);
+    if(good&&now) ok++;
+  });
+  document.getElementById("sort-tally").textContent=ok+" / 13 placed correctly";
+}
+document.getElementById("sort-check").onclick=function(){checkSort(false);};
+document.getElementById("sort-show").onclick=function(){checkSort(true);};
+
+/* ---- 2 term lab ---- */
+let queue=[], qi=0, round=1, answered=false;
+function labInit(){
+  queue = TERMS.map(function(_,i){return i;}).filter(function(i){return !isDone("t-"+i);});
+  if(!queue.length){ queue=[]; }
+  qi=0; round=1; renderLab();
+}
+function renderTicks(){
+  const t=document.getElementById("lab-ticks");
+  t.innerHTML = TERMS.map(function(_,i){
+    const cur = queue[qi]===i ? " cur" : "";
+    return '<i class="'+(isDone("t-"+i)?"on":"")+cur+'"></i>';
+  }).join("");
+  const known=TERMS.filter(function(_,i){return isDone("t-"+i);}).length;
+  document.getElementById("lab-known").textContent=known;
+  document.getElementById("lab-drill").textContent=queue.length-qi>0?(queue.length-qi):0;
+  document.getElementById("lab-count").textContent = queue.length? (Math.min(qi+1,queue.length)+" of "+queue.length+(round>1?" · drill round":"")) : "10 of 10";
+}
+function renderLab(){
+  const card=document.getElementById("lab-card");
+  if(qi>=queue.length){
+    const missed=TERMS.map(function(_,i){return i;}).filter(function(i){return !isDone("t-"+i);});
+    if(missed.length){
+      queue=missed; qi=0; round++;
+      card.innerHTML='<div class="lab-banner">Drill round — '+missed.length+' term'+(missed.length>1?"s":"")+' to fix.</div>';
+      setTimeout(renderLab,0); return;
+    }
+    card.innerHTML='<div class="lab-done"><div class="big">All ten known.</div>'+
+      '<p class="hint">Say each one out loud in the past before you move on: roll out → rolled out · run into → <b>ran</b> into · come in under budget → <b>came</b> in under budget.</p></div>';
+    renderTicks(); return;
+  }
+  const i=queue[qi], t=TERMS[i];
+  card.innerHTML =
+    (round>1?'<div class="lab-banner">Drill round — the ones you missed.</div>':'')+
+    '<h3>'+t.vi+'</h3><div class="gloss">'+t.en+'</div>'+
+    '<div class="src"><span class="k">From the dialogue</span>'+t.line+'</div>'+
+    '<div class="opts">'+t.opts.map(function(o,n){
+      return '<button type="button" class="opt" data-opt="'+n+'"><span class="num">'+(n+1)+'</span><span>'+o+'</span></button>';
+    }).join("")+'</div>'+
+    '<div class="lab-foot"><button type="button" class="btn small quiet" id="lab-back"'+(qi===0?" disabled":"")+'>Back</button>'+
+    '<button type="button" class="btn small" id="lab-next" disabled>Next</button>'+
+    '<span class="keys">1 2 3 to answer · Enter for next</span></div>';
+  answered=false;
+  renderTicks();
+}
+function answerLab(n){
+  if(answered) return;
+  const i=queue[qi], t=TERMS[i];
+  answered=true;
+  document.querySelectorAll("#lab-card .opt").forEach(function(b){
+    const k=+b.getAttribute("data-opt");
+    b.disabled=true;
+    if(k===t.a) b.classList.add("ok");
+    else if(k===n) b.classList.add("no");
+  });
+  const slot=document.querySelector("#lab-card .src u");
+  if(slot) slot.innerHTML='<b>'+t.opts[t.a]+'</b>';
+  mark("t-"+i, n===t.a);
+  document.getElementById("lab-next").disabled=false;
+  renderTicks();
+}
+document.getElementById("lab-card").addEventListener("click",function(e){
+  const o=e.target.closest(".opt"); if(o){ answerLab(+o.getAttribute("data-opt")); return; }
+  if(e.target.id==="lab-next"){ qi++; renderLab(); return; }
+  if(e.target.id==="lab-back"){ qi=Math.max(0,qi-1); renderLab(); return; }
+});
+document.addEventListener("keydown",function(e){
+  const lab=document.getElementById("lab");
+  if(!lab) return;
+  const r=lab.getBoundingClientRect();
+  const inView = r.top < window.innerHeight*0.8 && r.bottom > 0;
+  if(!inView) return;
+  if(document.activeElement && /input|textarea/i.test(document.activeElement.tagName)) return;
+  if(e.key==="1"||e.key==="2"||e.key==="3"){ answerLab(+e.key-1); }
+  else if(e.key==="Enter"){ const nx=document.getElementById("lab-next"); if(nx&&!nx.disabled){ qi++; renderLab(); } }
+});
+document.getElementById("lab-list").onclick=function(){
+  const box=document.getElementById("lab-table");
+  box.hidden=!box.hidden;
+  this.textContent = box.hidden ? "Show all ten as a list" : "Hide the list";
+};
+document.getElementById("lab-restart").onclick=function(){
+  TERMS.forEach(function(_,i){ delete S.done["t-"+i]; });
+  save(); labInit(); refresh();
+};
+document.getElementById("copy-vocab").onclick=function(){
+  const txt="Term\tNghĩa\tIPA\tExample\n"+VOCAB.map(function(v){
+    return v[1]+"\t"+v[2]+"\t"+v[3]+"\t"+v[4].replace(/<[^>]+>/g,"");
+  }).join("\n");
+  const box=document.getElementById("vocab-out");
+  box.hidden=false; box.value=txt; box.select();
+  try{ const w=navigator.clipboard.writeText(txt); if(w&&w.catch) w.catch(function(){}); }catch(e){}
+  this.textContent="Copied — paste anywhere";
+};
+
+/* ---- 3–5 drills ---- */
+const BANKS={a:DRILL_A,b:DRILL_B,c:DRILL_C};
+const SAY={ax:EXCHANGES,bx:CONVOS};
+function paintPart(k){
+  const bank=BANKS[k];
+  const shown=!!S.num["show-"+k], checked=!!S.num["checked-"+k];
+  bank.forEach(function(it,i){
+    const key=k+"-"+i;
+    const inp=document.querySelector('[data-answer="'+key+'"]');
+    const box=document.querySelector('[data-item="'+key+'"]');
+    const v=document.querySelector('[data-verdict="'+key+'"]');
+    if(!inp||!box||!v) return;
+    const typed=(inp.value||"").trim()!=="";
+    const good=isDone(key);
+    if(checked||shown){
+      v.classList.add("show");
+      v.querySelector(".mark").textContent = checked ? (good?"✓ correct":(typed?"✗ not yet":"— not answered")) : "";
+      v.classList.toggle("is-ok",checked&&good);
+      v.classList.toggle("is-no",checked&&!good&&typed);
+      v.querySelector(".model").innerHTML = (shown||(checked&&!good)) ? it.acc[0] : "";
+    } else {
+      v.classList.remove("show","is-ok","is-no");
+      v.querySelector(".mark").textContent="";
+      v.querySelector(".model").innerHTML="";
+    }
+    box.classList.toggle("ok",checked&&good);
+    box.classList.toggle("no",checked&&!good&&typed);
+    const trap=box.querySelector(".trap");
+    if(trap) trap.hidden = !checked;
+  });
+  const btn=document.querySelector('[data-showall="'+k+'"]');
+  if(btn) btn.textContent = shown ? "Hide the answers" : "Show the answers";
+  tally(k);
+}
+function checkPart(k){
+  S.num["checked-"+k]=1;
+  BANKS[k].forEach(function(it,i){
+    const inp=document.querySelector('[data-answer="'+k+'-'+i+'"]');
+    if(inp) mark(k+"-"+i, matches(inp.value,it.acc) && inp.value.trim()!=="");
+  });
+  save(); paintPart(k);
+}
+function toggleAnswers(k){
+  if(S.num["show-"+k]) delete S.num["show-"+k]; else S.num["show-"+k]=1;
+  save(); paintPart(k);
+}
+function tally(k){
+  const bank=BANKS[k]||SAY[k];
+  const n=bank.filter(function(_,i){return isDone(k+"-"+i);}).length;
+  const el=document.querySelector('[data-tally="'+k+'"]');
+  if(el) el.textContent = n+" / "+bank.length+(BANKS[k]?" correct":" said");
+}
+
+/* spoken reflex blocks */
+function reveal(id,on){
+  const b=document.querySelector('[data-say="'+id+'"]');
+  const rv=document.querySelector('[data-sayreveal="'+id+'"]');
+  const sd=document.querySelector('[data-said="'+id+'"]');
+  const ag=document.querySelector('[data-again="'+id+'"]');
+  if(!b) return;
+  b.classList.toggle("show",on);
+  rv.hidden=on; sd.hidden=!on; ag.hidden=!on;
+}
+function sayMark(id,on){
+  const box=document.querySelector('[data-item="'+id+'"]');
+  if(box) box.classList.toggle("said",on);
+  if(on) reveal(id,true);
+  mark(id,on);
+  tally(id.split("-")[0]);
+}
+document.addEventListener("click",function(e){
+  const s=e.target.closest("[data-say]");            if(s){ reveal(s.getAttribute("data-say"),true); return; }
+  const rv=e.target.closest("[data-sayreveal]");     if(rv){ reveal(rv.getAttribute("data-sayreveal"),true); return; }
+  const sd=e.target.closest("[data-said]");          if(sd){ sayMark(sd.getAttribute("data-said"),true); return; }
+  const ag=e.target.closest("[data-again]");         if(ag){ const id=ag.getAttribute("data-again"); sayMark(id,false); reveal(id,false); return; }
+  const ra=e.target.closest("[data-revealall]");     if(ra){ const k=ra.getAttribute("data-revealall"); SAY[k].forEach(function(_,i){reveal(k+"-"+i,true);}); return; }
+  const ha=e.target.closest("[data-hideall]");       if(ha){ const k=ha.getAttribute("data-hideall"); SAY[k].forEach(function(_,i){reveal(k+"-"+i,false);}); }
+});
+document.addEventListener("click",function(e){
+  const all=e.target.closest("[data-checkall]");
+  if(all){
+    const k=all.getAttribute("data-checkall");
+    checkPart(k);
+    const first=document.querySelector('[data-item="'+k+'-0"]');
+    if(first) first.scrollIntoView({behavior:"smooth",block:"center"});
+    return;
+  }
+  const sa=e.target.closest("[data-showall]");
+  if(sa){ toggleAnswers(sa.getAttribute("data-showall")); }
+});
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Enter") return;
+  const el=e.target;
+  if(!(el.hasAttribute&&el.hasAttribute("data-answer"))) return;
+  e.preventDefault();
+  const k=el.getAttribute("data-bank");
+  const fields=Array.prototype.slice.call(document.querySelectorAll('[data-bank="'+k+'"]'));
+  const next=fields[fields.indexOf(el)+1];
+  if(next){ next.focus(); }
+  else { const btn=document.querySelector('[data-checkall="'+k+'"]'); if(btn) btn.click(); }
+});
+
+/* ---- 6 decode ---- */
+document.querySelectorAll("[data-qa]").forEach(function(card){
+  const i=+card.getAttribute("data-qa");
+  card.querySelector('[data-show="'+i+'"]').onclick=function(){ card.querySelector('[data-model="'+i+'"]').classList.add("show"); };
+  card.querySelector('[data-selfmark="'+i+'"]').onclick=function(){
+    card.querySelector('[data-model="'+i+'"]').classList.add("show");
+    card.classList.add("ok"); mark("q-"+i,true);
+  };
+  card.querySelector('[data-review="'+i+'"]').onclick=function(){ card.classList.remove("ok"); mark("q-"+i,false); };
+  if(isDone("q-"+i)) card.classList.add("ok");
+});
+
+
+
+const scriptBtn=document.getElementById("show-script");
+if(scriptBtn){
+  scriptBtn.onclick=function(){
+    const t=document.getElementById("transcript");
+    t.classList.toggle("show");
+    this.textContent = t.classList.contains("show") ? "Hide the transcript" : "Show the transcript";
+  };
+}
+
+/* ---- 7 exit ---- */
+document.addEventListener("change",function(e){
+  const cb=e.target.closest("[data-flag]"); if(!cb) return;
+  mark(cb.getAttribute("data-flag"),cb.checked);
+  const line=cb.closest(".checkline"); if(line) line.classList.toggle("done",cb.checked);
+});
+
+/* ---- report ---- */
+document.getElementById("copy-report").onclick=function(){
+  const box=document.getElementById("export-box"); box.select();
+  try{ const w=navigator.clipboard.writeText(box.value); if(w&&w.catch) w.catch(function(){}); }catch(e){}
+  document.getElementById("copy-note").textContent="Copied to your clipboard.";
+};
+
+/* ---- toc highlight ---- */
+const links={};
+document.querySelectorAll("[data-toc]").forEach(function(a){links[a.getAttribute("data-toc")]=a;});
+if("IntersectionObserver" in window){
+  const io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      const a=links[en.target.id];
+      if(a&&en.isIntersecting){
+        Object.keys(links).forEach(function(k){links[k].classList.remove("active");});
+        a.classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -70% 0px"});
+  document.querySelectorAll("section.step").forEach(function(s){io.observe(s);});
+}
+
+/* ---- boot ---- */
+document.querySelectorAll("[data-text]").forEach(function(el){
+  const k=el.getAttribute("data-text"); if(S.text[k]!==undefined) el.value=S.text[k];
+});
+document.querySelectorAll("[data-flag]").forEach(function(el){
+  const k=el.getAttribute("data-flag"); el.checked=isDone(k);
+  const line=el.closest(".checkline"); if(line) line.classList.toggle("done",el.checked);
+});
+setMode(S.mode||"self");
+SORT_WORDS.forEach(function(x){ const b=S.text["sort-"+x.w]; if(b) placeWord(x.w,b); });
+if(Object.keys(S.done).some(function(k){return k.indexOf("sort-")===0;})) checkSort(false);
+["a","b","c"].forEach(function(k){ paintPart(k); });
+["ax","bx"].forEach(function(k){
+  SAY[k].forEach(function(_,i){ const id=k+"-"+i; if(isDone(id)){ const box=document.querySelector('[data-item="'+id+'"]'); if(box) box.classList.add("said"); reveal(id,true); } });
+  tally(k);
+});
+labInit();
+refresh();
+})();
+</script>
+
+</body>
+</html>

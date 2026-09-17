@@ -1,0 +1,57 @@
+/* ==========================================================================
+   English2impact — BRAND
+   Colours, fonts and base typography. Shared by every lesson, every course.
+
+   CHANGE THINGS HERE AND EVERY LESSON CHANGES.
+   Edit a colour on line ~20 and all 200 lessons update at once.
+   Do not put lesson layout in this file — that belongs in e2i-lesson.css.
+   ========================================================================== */
+
+  :root{
+    --paper:#ffffff;
+    --surface:#fbf8f5;
+    --surface-2:#f4efe9;
+    --line:#e8e0d8;
+    --line-strong:#d6cabd;
+    --ink:#1a1a19;
+    --ink-2:#56514b;
+    --ink-3:#847c73;
+    --navy:#001b45;
+    --salmon:#d97757;
+    --salmon-ink:#c3512b;
+    --salmon-soft:#fdeee7;
+    --good:#006838;
+    --good-soft:#e9f3ec;
+    --bad:#a32b1c;
+    --bad-soft:#fbeceb;
+    --s1:#006838; --s2:#26a426; --s3:#6dcb1c; --s4:#abdd4a;
+    --display:"Playfair Display",Georgia,"Times New Roman",serif;
+    --body:"Be Vietnam Pro","Segoe UI",system-ui,-apple-system,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --radius:10px;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  html{scrollbar-width:none;-ms-overflow-style:none}
+  html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
+  body{overflow-x:hidden}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{margin:0;text-wrap:balance;font-weight:600}
+  p{margin:0}
+  a{color:var(--salmon-ink)}
+  button{font-family:inherit;font-size:inherit;color:inherit}
+  input,textarea{font-family:inherit;font-size:inherit;color:inherit}
+
+/* --- accessibility basics --- */
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+  }
+  :focus-visible{outline:2px solid var(--salmon);outline-offset:2px}
