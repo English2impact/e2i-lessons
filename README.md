@@ -24,6 +24,9 @@ e2i-lessons/
 │   ├── lesson-template.html       copy this to begin a new lesson
 │   └── odoo-launch-button.html    paste this into the Odoo article
 │
+├── _odoo/                      ← the finished Odoo button for each published
+│   └── ielts-7-to-8-s01.html      lesson, ready to copy and paste
+│
 ├── reflex-2/                   ← one folder per course
 │   └── s01.html                   one file per session
 ├── medical-english-2/
