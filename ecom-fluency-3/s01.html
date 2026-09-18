@@ -664,9 +664,8 @@ body{background:#fff}.wrap{max-width:none;padding:0}
 
 
 /* ---------- unified sticky header and stable lesson roadmap ---------- */
-:root{--ef3-header-height:170px;--ef3-viewport-height:100dvh}
-.lesson-masthead{position:sticky;top:0;z-index:80;margin-bottom:24px;border-radius:16px 16px 12px 12px;isolation:isolate}
-.lesson-masthead.is-pinned{box-shadow:0 8px 22px rgba(6,28,55,.14)}
+:root{--ef3-viewport-height:100dvh}
+.lesson-masthead{position:relative;top:auto;z-index:80;margin-bottom:24px;border-radius:16px 16px 12px 12px;isolation:isolate}
 .lesson-banner{border-bottom:0;padding:18px 24px 22px;gap:18px}
 .lesson-brand{display:block;width:72px;height:72px;border:0;border-radius:0;background:transparent}
 .lesson-brand img{display:block;width:100%;height:100%;object-fit:contain}
@@ -682,11 +681,11 @@ body{background:#fff}.wrap{max-width:none;padding:0}
 .header-utilities .nextbtn.done{color:#496647}
 .head{margin-bottom:0}
 .cols{padding-top:22px}
-.rail{position:sticky;top:calc(var(--ef3-header-height) + 18px);max-height:calc(var(--ef3-viewport-height) - var(--ef3-header-height) - 36px);overflow-y:auto;scrollbar-width:thin;overscroll-behavior:contain;overflow-anchor:none}
+.rail{position:sticky;top:18px;max-height:calc(var(--ef3-viewport-height) - 36px);overflow-y:auto;scrollbar-width:thin;overscroll-behavior:contain;overflow-anchor:none}
 .rail a,.rail a.on{font-weight:500}
 .rail .ck{display:block;visibility:hidden;width:10px;text-align:center}
 .rail a.done .ck{display:block;visibility:visible}
-.stage,.step{scroll-margin-top:calc(var(--ef3-header-height) + 18px)}
+.stage,.step{scroll-margin-top:18px}
 @container (max-width:1050px){
 .lesson-banner{padding:17px 20px 21px}
 .lesson-brand{width:62px;height:62px}
@@ -734,8 +733,8 @@ body{background:#fff}.wrap{max-width:none;padding:0}
 html,body{height:100%;overflow:hidden}
 .lesson-viewport{position:relative;height:100vh;height:100dvh;overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;overscroll-behavior-y:none;overflow-anchor:none;outline:none}
 .lesson-viewport>.wrap{min-height:100%;container-name:lesson;overflow:visible}
-.lesson-masthead{position:sticky;top:0;transform:translateZ(0);backface-visibility:hidden;will-change:transform;transition:box-shadow .18s ease}
-.rail{position:sticky;top:calc(var(--ef3-header-height) + 18px);transform:translateZ(0);backface-visibility:hidden;will-change:transform}
+.lesson-masthead{position:relative;top:auto;transform:none;will-change:auto}
+.rail{position:sticky;top:18px;transform:translateZ(0);backface-visibility:hidden;will-change:transform}
 .lesson-masthead,.rail{animation:none}
 .rail a,.rail a.on,.rail a.done{font-weight:500}
 .savebar{min-height:49px}
@@ -745,6 +744,32 @@ html,body{height:auto;overflow:visible}
 .lesson-viewport{height:auto;overflow:visible;scrollbar-gutter:auto}
 .lesson-viewport>.wrap{min-height:0}
 .lesson-masthead,.rail{position:static!important;transform:none!important;will-change:auto}
+}
+
+
+/* Compact roadmap: full contents, without a separate scrolling panel. */
+.cols{--ef3-rail:200px;--ef3-gutter:20px}
+.rail{padding:14px 10px;max-height:none;overflow:visible;scrollbar-width:auto;overscroll-behavior:auto}
+.rail h4{padding:0 5px;font-size:9px;letter-spacing:.12em;line-height:1.5;margin:0 0 3px}
+.rail-caption{padding:0 5px;font-size:10px;line-height:1.5;margin:0 0 10px}
+.rail li{margin:0 0 2px}
+.rail a{position:relative;padding:7px 6px 9px;min-height:32px;font-size:11px;line-height:1.45;border-radius:6px}
+.rail .row{gap:5px;align-items:center;min-height:16px}
+.rail .dot{width:6px;height:6px}
+.rail .ttl{white-space:normal;line-height:1.45}
+.rail .rtime{font-size:9px;line-height:1.4;flex:0 0 auto}
+.rail .ck{width:8px;font-size:9px}
+.rail .rbar{position:absolute;left:18px;right:6px;bottom:3px;margin:0;height:2px}
+.rail-summary{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 8px;margin:11px 5px 0;padding-top:11px}
+.rail-label{grid-column:1;grid-row:1;font-size:8px;letter-spacing:.1em;line-height:1.5;margin:0}
+.rail-count{grid-column:2;grid-row:1;gap:4px;font-size:11px;line-height:1.2;justify-content:flex-end}
+.rail-count b{font-size:22px;line-height:1.2}
+.rail .railbar{grid-column:1/-1;margin:1px 0;height:3px}
+.railpct,.railsc{font-size:9.5px;line-height:1.5;margin:0;white-space:nowrap}
+.railsc{text-align:right}
+.rail .reset{grid-column:1/-1;justify-self:start;margin:0;padding:4px 0;font-size:9.5px;line-height:1.5}
+@media(max-height:440px){
+.rail{position:static;top:auto;transform:none;will-change:auto}
 }
 
 </style>
@@ -1247,14 +1272,10 @@ try { FE = window.frameElement; } catch(e){ FE = null; }
 function vTop(el){
 return el.getBoundingClientRect().top - lessonViewport.getBoundingClientRect().top;
 }
-function HUDH(){
-var w = document.getElementById("lessonMasthead");
-return (w && w.offsetHeight) || 0;
-}
 function goTo(el){
 if (!el) return;
 lessonViewport.scrollBy({
-top:vTop(el) - HUDH() - 16,
+top:vTop(el) - 16,
 behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
 });
 }
@@ -2023,8 +2044,7 @@ ft.textContent = "All six stages cleared. " + C + " of " + A + " marked answers 
 var activeSection = -1;
 function active(){
 var cur = 0;
-var H = HUDH();
-sections.forEach(function(sec,i){ if (vTop(sec) - H - 60 <= 0) cur = i; });
+sections.forEach(function(sec,i){ if (vTop(sec) - 60 <= 0) cur = i; });
 if (cur === activeSection) return;
 activeSection = cur;
 links.forEach(function(a,i){ a.classList.toggle("on", i === cur); if (i === cur) a.setAttribute("aria-current", "step"); else a.removeAttribute("aria-current"); });
@@ -2036,10 +2056,9 @@ hs.textContent = (nEl ? nEl.textContent + ". " : "") + sections[cur].querySelect
 }
 }
 /* ---------- native sticky layout: measure only when dimensions change ---------- */
-var masthead = document.getElementById("lessonMasthead");
 var rail = document.getElementById("rail");
 var lessonWrap = document.getElementById("e2iLesson");
-var lastHeaderH = 0, lastViewportH = 0, layoutFrame = 0, layoutDirty = false;
+var lastViewportH = 0, layoutFrame = 0, layoutDirty = false;
 function fitHostFrame(){
 // Older versions expanded same-origin iframes to the entire lesson height.
 // Keep the lesson viewport bounded so the browser can handle sticky scrolling.
@@ -2052,19 +2071,11 @@ if (FE.style.height !== desiredHeight) FE.style.height = desiredHeight;
 } catch(e){}
 }
 function resize(){
-var headerH = HUDH(), viewH = lessonViewport.clientHeight;
-if (headerH !== lastHeaderH){
-lastHeaderH = headerH;
-document.documentElement.style.setProperty("--ef3-header-height", headerH + "px");
-}
+var viewH = lessonViewport.clientHeight;
 if (viewH !== lastViewportH){
 lastViewportH = viewH;
 document.documentElement.style.setProperty("--ef3-viewport-height", viewH + "px");
 }
-}
-function pin(){
-// Only a cosmetic shadow changes; CSS owns both positions at all times.
-if (masthead) masthead.classList.toggle("is-pinned", lessonViewport.scrollTop > 0 && vTop(masthead) <= .5);
 }
 function scheduleLayout(needsMeasure){
 if (needsMeasure) layoutDirty = true;
@@ -2072,7 +2083,7 @@ if (layoutFrame) return;
 layoutFrame = window.requestAnimationFrame(function(){
 layoutFrame = 0;
 if (layoutDirty){ layoutDirty = false; resize(); }
-pin(); active();
+active();
 });
 }
 /* ---------- deferred check groups (Media Decode) ---------- */
@@ -2174,10 +2185,9 @@ window.addEventListener("beforeunload", flush);
 if (window.ResizeObserver){
 var layoutObserver = new ResizeObserver(function(){ scheduleLayout(true); });
 layoutObserver.observe(lessonViewport);
-layoutObserver.observe(masthead);
 }
 fitHostFrame();
-refresh(); resize(); active(); pin(); paintStreak();
+refresh(); resize(); active(); paintStreak();
 booted = true;
 paintNext(firstOpen());
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ scheduleLayout(true); });
