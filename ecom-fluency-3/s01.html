@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Session 01 — The Three Kinds of AI Tool — E-com Fluency 3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -772,6 +772,162 @@ html,body{height:auto;overflow:visible}
 .rail{position:static;top:auto;transform:none;will-change:auto}
 }
 
+
+/* Focused lesson pages. The header stays in the normal document flow. */
+[hidden]{display:none!important}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.lesson-viewport{scroll-padding-bottom:100px;overscroll-behavior-y:auto}
+.lesson-viewport>.wrap{min-height:0;padding-bottom:12px}
+.lesson-masthead{position:relative;top:auto;margin-bottom:16px}
+.lesson-goals{background:#fff;border:1px solid var(--ef3-line);border-radius:12px}
+.lesson-goals>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;min-height:48px;cursor:pointer;list-style:none;color:var(--ef3-navy);font-size:13px;font-weight:500}
+.lesson-goals>summary::-webkit-details-marker{display:none}
+.lesson-goals>summary::after{content:'+';font-size:23px;line-height:1;font-weight:400}
+.lesson-goals[open]>summary::after{content:'−'}
+.lesson-goals>summary span:last-child{font-size:11px;color:var(--ef3-mute);margin-left:auto;font-weight:400}
+.lesson-goals .head{border:0;border-top:1px solid var(--ef3-line2);border-radius:0 0 12px 12px;box-shadow:none}
+.page-context{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 12px;color:#63706b;font-size:11px;letter-spacing:.04em}
+.page-context strong{font-weight:600;color:#42634e}
+.page-context span:last-child{letter-spacing:0}
+.stage,.stage:first-child{margin-bottom:0}
+.stage h2:focus{outline:none}
+.stage h2:focus-visible{outline:2px solid var(--ef3-salmon);outline-offset:5px;border-radius:3px}
+/* Keep the desktop contents panel narrow and short beside every page. */
+.cols{--ef3-rail:184px;--ef3-gutter:18px}
+.railwrap{padding-top:30px;min-width:0}
+.rail{padding:12px 8px;transform:none;backface-visibility:visible;will-change:auto;top:16px;max-height:none;overflow:visible}
+.rail-caption{font-size:9px;margin-bottom:8px}
+.rail a{min-height:34px;padding:6px 5px 8px;display:flex;align-items:center;font-size:10.5px;line-height:1.4}
+.rail .row{width:100%;gap:4px}
+.rail .rtime{font-size:8.5px}
+.rail .ck{width:7px;font-size:8px}
+.rail .rbar{left:15px;right:5px;bottom:2px}
+.rail a.on{background:#eaf0e6}
+.rail-summary{gap:4px 6px;margin:9px 4px 0;padding-top:9px}
+.rail-count b{font-size:18px}
+.rail .railbar{height:2px}
+.railpct,.railsc{font-size:9px}
+.rail .reset{padding-top:2px;font-size:9px}
+.header-utilities .lesson-jump,.header-utilities .nextbtn{display:none!important}
+.header-utilities{width:auto;flex:0 0 auto}
+.savebar{flex-wrap:nowrap}
+.save-message{flex:1;min-width:0}
+.save-now{min-height:40px}
+.page-navigation{display:flex;align-items:center;gap:12px;max-width:620px;margin:8px auto 26px;padding:12px;background:#fff;border:1px solid var(--ef3-line);border-radius:12px}
+.page-navigation button{font:inherit;font-size:13px;font-weight:500;border-radius:8px;border:1px solid #dbe1d8;min-height:46px;padding:10px 16px;background:#fff;color:var(--ef3-navy);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;touch-action:manipulation}
+.page-navigation .page-prev,.page-navigation .page-next{flex:1}
+.page-navigation .page-next{background:var(--ef3-navy);color:#fff;border-color:var(--ef3-navy)}
+.page-navigation button:disabled{color:#9ba29a;background:#f5f6f2;border-color:#e7e9e3;cursor:default}
+.page-navigation .page-parts{flex:0 0 auto;border-color:transparent;flex-direction:column;gap:0;line-height:1.3;padding:6px 18px}
+.page-parts small{font-size:10px;color:#647267;font-variant-numeric:tabular-nums;margin-top:3px}
+.page-navigation button:hover:not(:disabled){box-shadow:0 0 0 2px #d7e2d0}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--ef3-salmon);outline-offset:3px}
+.parts-dialog{width:min(440px,calc(100vw - 28px));max-height:calc(100dvh - 28px);padding:22px;border:1px solid #d6ddd1;border-radius:18px;color:var(--ef3-ink);background:#fbfcf8;box-shadow:0 24px 80px #061c3733;overflow-y:auto;overscroll-behavior:contain}
+.parts-dialog::backdrop{background:rgba(6,28,55,.55)}
+.parts-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+.parts-dialog-header p{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5a745d;margin:0 0 3px}
+.parts-dialog h2{font-size:26px;line-height:1.2;color:var(--ef3-navy)}
+.parts-close{font:inherit;font-size:26px;color:var(--ef3-navy);background:#fff;border:1px solid #dce2d7;cursor:pointer;border-radius:9px;min-width:44px;min-height:44px}
+.part-menu-list{display:grid;list-style:none;padding:0;margin:0;gap:7px}
+.part-menu-list a{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ef3-navy);padding:11px 12px;min-height:56px;border:1px solid #e1e6dc;border-radius:9px;background:#fff;font-size:13px;line-height:1.4}
+.part-menu-list a[aria-current="page"]{background:#eaf1e5;border-color:#aac49e}
+.part-number{display:grid;place-items:center;flex:0 0 auto;width:29px;height:31px;background:#f1f4ec;border:1px solid #dce4d6;border-radius:7px;font-size:11px;color:#55704f}
+.part-menu-list a.done .part-number{color:#fff;background:#426e50;border-color:#426e50}
+.part-name{font-weight:500;flex:1;min-width:0}
+.part-meta{flex:0 0 auto;text-align:right;color:#6d786c;font-size:10px}
+.part-state{display:block;font-size:9px;color:#456645;margin-top:2px}
+.parts-summary{font-size:11px;color:#657263;padding-top:14px;margin:14px 0 0;border-top:1px solid #e1e6dc}
+.page-announcement{pointer-events:none}
+.toastwrap{position:fixed;top:14px;bottom:auto;z-index:150}
+.toast{max-width:calc(100vw - 32px);margin:0;text-align:center}
+.lesson-end{margin-top:20px}
+@media(max-width:900px){
+ .wrap{padding:12px 14px 108px!important}
+ .cols{grid-template-columns:minmax(0,1fr);padding-top:18px;gap:0}
+ .railwrap{display:none}
+ .page-navigation{position:fixed;z-index:100;left:0;right:0;bottom:0;max-width:none;margin:0;border-width:1px 0 0;border-radius:0;gap:10px;padding:10px max(14px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));box-shadow:0 -5px 20px #061c3708}
+ .page-navigation button{min-height:46px}
+ .page-navigation .page-parts{padding:5px 18px}
+ .editing-answer .page-navigation{display:none}
+ .header-utilities{width:auto;flex:0 0 auto}
+ .save-message{flex:1 1 auto}
+ .savebar{font-size:11px;gap:12px;padding:8px 12px}
+ .header-completion{font-size:10px}
+ .stage,.stage:first-child{padding:22px}
+ .guess .opts button,.match button,.mcq button,.tf .bts button,.rev>button,.checkbtn,.guess .nav button{min-height:44px}
+ .ck label{min-height:44px;display:flex;align-items:flex-start}
+ .ck input{width:20px;height:20px;flex:0 0 20px}
+ .note{font-size:12px}
+ .strip .jump{min-height:44px;font-size:12px}
+}
+@media(max-width:540px){
+ .wrap{padding:8px 10px 106px!important}
+ .lesson-masthead{margin-bottom:12px}
+ .lesson-banner{gap:9px;padding:12px 13px 16px}
+ .lesson-brand{width:43px;height:48px;margin-top:0}
+ .lesson-heading{flex:1 1 calc(100% - 56px)}
+ .lesson-eyebrow{font-size:8px;line-height:1.6}
+ .lesson-banner h1{font-size:20px;line-height:1.25}
+ .lesson-actions{flex-basis:100%;gap:8px;margin-top:1px}
+ .session-clock{min-height:38px;padding:5px 10px}
+ .session-toggle{min-height:44px;padding:8px 12px;font-size:12px}
+ .savebar{align-items:center;gap:9px;flex-wrap:nowrap}
+ .save-message{font-size:10px;line-height:1.5}
+ .header-completion{display:none}
+ .header-utilities .save-now{min-width:66px;min-height:44px;font-size:10px;padding:7px 9px}
+ .lesson-goals>summary{font-size:12px;padding:11px 14px;gap:8px}
+ .lesson-goals>summary span:last-child{font-size:10px}
+ .lesson-goals .head{padding:18px 15px}
+ .page-context{font-size:10px;margin-bottom:10px}
+ .page-context span:last-child{font-size:10px}
+ .cols{padding-top:16px}
+ .stage,.stage:first-child{padding:20px 15px 16px}
+ .stage>.sh{gap:10px;flex-wrap:wrap;align-items:center}
+ .sh .num{width:36px;height:43px;font-size:13px}
+ .sh .txt{flex:1 1 calc(100% - 102px)}
+ .sh h2{font-size:25px}
+ .sh .time{font-size:9px;padding:4px 5px;flex:0 0 auto}
+ .lead,.ck li,.frame .f,.script p{font-size:14px;line-height:1.7}
+ .sthead{font-size:12px}
+ .sthead .st{font-size:10px}
+ .guess .opts button,.match button,.mcq button{font-size:14px;padding:11px 9px;overflow-wrap:anywhere}
+ .match .cols2{gap:8px}
+ .gap input{max-width:100%;font-size:16px}
+ textarea,input[type=text]{font-size:16px;scroll-margin-block:24px 110px}
+ .vocab{font-size:13px;table-layout:fixed}
+ .vocab th,.vocab td{overflow-wrap:anywhere;padding-right:6px}
+ .page-navigation{gap:8px;padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+ .page-navigation button{font-size:12px;padding:9px 12px;gap:6px}
+ .page-navigation .page-parts{padding:5px 12px}
+ .parts-dialog{padding:18px}
+ .part-menu-list a{font-size:13px;min-height:54px;padding:9px 10px}
+ .parts-summary{padding-top:11px;margin-top:11px}
+}
+@media(max-height:500px) and (min-width:540px){
+ .parts-dialog{width:min(650px,calc(100vw - 28px));padding:16px}
+ .part-menu-list{grid-template-columns:1fr 1fr}
+ .parts-dialog-header{margin-bottom:10px}
+ .parts-summary{margin-top:10px;padding-top:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+@media print{
+ .stage[hidden]{display:block!important}
+ .page-navigation,.parts-dialog,.page-context,.lesson-goals>summary{display:none!important}
+ .lesson-goals:not([open])>*:not(summary){display:block!important}
+ .wrap{padding:0!important}
+ .lesson-end[hidden]{display:block!important}
+ .railwrap{display:none!important}
+}
+
+/* Embedded Quizlet vocabulary practice. */
+.quizlet-practice{border:1px solid var(--ef3-line);border-radius:9px;margin:16px 0;background:#fff}
+.quizlet-practice summary{padding:12px 15px;min-height:44px;font-size:12px;font-weight:500;color:var(--ef3-salmonText);cursor:pointer}
+.quizlet-practice .quizlet-body{padding:0 12px 12px}
+.quizlet-practice iframe{display:block;width:100%;max-width:100%;height:500px;border:0;border-radius:8px;background:#fff}
+.quizlet-practice .note{margin:10px 0}
+@media print{.quizlet-practice{display:none}}
 </style>
 </head>
 <body>
@@ -802,6 +958,8 @@ html,body{height:auto;overflow:visible}
 </div>
 <div class="toastwrap"><div class="toast" id="toast" role="status"></div></div>
 </div>
+<details class="lesson-goals" id="lessonGoals">
+<summary><span>Session goals</span><span>3 goals · 90 minutes</span></summary>
 <section class="head" aria-labelledby="overviewTitle">
 <div class="lesson-overview">
 <p class="kicker">Your learning goals</p>
@@ -815,8 +973,10 @@ html,body{height:auto;overflow:visible}
 <li data-goal="risk"><span class="tk" aria-hidden="true"></span><span>Name the risk that comes with it, and when it stops mattering.</span></li>
 </ul>
 </section>
+</details>
 <div class="cols">
-<main class="main">
+<main class="main" id="lessonMain">
+<div class="page-context" id="pageContext"><strong id="pagePosition">PART 01 / 06</strong><span>E-com Fluency 3 · Session 01</span></div>
 <section class="stage" id="s1" style="--c:var(--ef3-speak);--ct:#eaf7ea">
 <div class="sh"><span class="spine"></span><span class="num">1</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Say it cold</h2></div><span class="time">8 min</span></div>
 <p class="lead">No preparation. Talk for about a minute. Whatever you cannot say today is the list you check again at the end.</p>
@@ -830,9 +990,9 @@ html,body{height:auto;overflow:visible}
 <p class="tag"><b>Understand</b> · where you are now</p>
 <h3>Three things I wanted to say but couldn't</h3>
 <div class="lines">
-<input type="text" class="track save" data-k="cold1" placeholder="1.">
-<input type="text" class="track save" data-k="cold2" placeholder="2.">
-<input type="text" class="track save" data-k="cold3" placeholder="3.">
+<input type="text" class="track save" data-k="cold1" placeholder="1." aria-label="1.">
+<input type="text" class="track save" data-k="cold2" placeholder="2." aria-label="2.">
+<input type="text" class="track save" data-k="cold3" placeholder="3." aria-label="3.">
 </div>
 <p class="note">Write them in Vietnamese if that's faster. These three come back at the end, next to what you can say by then.</p>
 </div>
@@ -844,6 +1004,14 @@ html,body{height:auto;overflow:visible}
 <div class="block step" data-step="Guess twelve terms, then drill the misses">
 <p class="tag"><b>Understand</b> · guess the term</p>
 <div class="guess track" data-k="guess"></div>
+<details class="quizlet-practice">
+<summary>Quizlet Match · practise the vocabulary</summary>
+<div class="quizlet-body">
+<p class="note">Match the terms with their examples. Repeat this practice as often as you like.</p>
+<iframe id="quizletMatch" data-media-src="https://quizlet.com/1210644883/match/embed?i=4y577v&amp;x=1jj1" height="500" width="100%" style="border:0" title="Quizlet Match — the three kinds of AI tool" loading="lazy" allowfullscreen></iframe>
+<p class="note"><a href="https://quizlet.com/1210644883/match/embed?i=4y577v&amp;x=1jj1" target="_blank" rel="noopener noreferrer">Open Quizlet Match in a new tab</a></p>
+</div>
+</details>
 </div>
 <div class="block" style="max-width:none">
 <div class="rev"><button type="button">Show all twelve as a list</button><div class="body bare">
@@ -979,9 +1147,9 @@ data-artist-url="https://soundcloud.com/english2impact"></div>
 <h3 style="margin-top:18px">Build your own chain</h3>
 <p class="note" style="margin:0 0 12px">Write it once, then say it three times: move 1 alone, then moves 1 and 2, then all three in one breath. Make it shorter each time.</p>
 <div class="lines">
-<input type="text" class="track save" data-k="mv1" data-goal="classify" placeholder="Move 1 — Technically … is a …, because …">
-<input type="text" class="track save" data-k="mv2" data-goal="technique" placeholder="Move 2 — The move is to … before you …">
-<input type="text" class="track save" data-k="mv3" data-goal="risk" placeholder="Move 3 — For … that's fine, but for … I'd double-check …">
+<input type="text" class="track save" data-k="mv1" data-goal="classify" placeholder="Move 1 — Technically … is a …, because …" aria-label="Move 1 — Technically … is a …, because …">
+<input type="text" class="track save" data-k="mv2" data-goal="technique" placeholder="Move 2 — The move is to … before you …" aria-label="Move 2 — The move is to … before you …">
+<input type="text" class="track save" data-k="mv3" data-goal="risk" placeholder="Move 3 — For … that's fine, but for … I'd double-check …" aria-label="Move 3 — For … that's fine, but for … I'd double-check …">
 </div>
 <ul class="ck">
 <li><input type="checkbox" class="track save" data-k="ld1" id="ld1"><label for="ld1">Said move 1 alone</label></li>
@@ -996,7 +1164,7 @@ data-artist-url="https://soundcloud.com/english2impact"></div>
 <p class="lead">Now the video, in three parts. Watch one part, answer everything in its task, then press Check. Nothing is marked until you do, so you can change your mind and you never find out mid-task whether you are on the right track. The timestamp beside each item tells you where the answer sits.</p>
 <p class="hold">There is a sponsor break inside part 1, roughly 1:45 to 2:45. Don't skip it — the last true/false statement comes from it. He signals the return with "back to my takeaways."</p>
 <div class="block" style="max-width:none">
-<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/nVyD6THcvDQ" title="99% of Beginners Don't Know the Basics of AI" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+<div class="video"><iframe data-media-src="https://www.youtube-nocookie.com/embed/nVyD6THcvDQ" title="99% of Beginners Don't Know the Basics of AI" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
 </div>
 <div class="block step" data-group="p1" data-step="Part 1 · six true-or-false calls">
 <p class="part">Part 1 · 0:00 – 2:55 · the three types of tool</p>
@@ -1078,7 +1246,7 @@ data-artist-url="https://soundcloud.com/english2impact"></div>
 <div class="block step" data-step="Two sentences of your own">
 <p class="tag"><b>Apply</b> · the one that needs an opinion</p>
 <p style="font-size:15.5px;font-weight:500;margin:0 0 9px">What exactly was wrong with the course's customer-service example?</p>
-<textarea class="track save" data-k="q5" placeholder="Two sentences."></textarea>
+<textarea class="track save" data-k="q5" placeholder="Two sentences." aria-label="Two sentences."></textarea>
 <div class="rev"><button type="button">Compare with a model answer</button><div class="body">
 It stopped at the result — a company cut its response times using AI — and never said how. He wanted to know which of the three tool types they used, how the staff were trained on it, and how they stopped it hallucinating at customers. The complaint is about missing mechanism, not missing proof.
 </div></div>
@@ -1092,7 +1260,7 @@ It stopped at the result — a company cut its response times using AI — and n
 <div class="push">
 <p class="rd">Round 1</p>
 <p class="said">"The three categories are just marketing. If a tool has AI inside, it's an AI tool. Done."</p>
-<textarea class="track save" data-k="p1" data-goal="classify" placeholder="Your counter — one term, one move."></textarea>
+<textarea class="track save" data-k="p1" data-goal="classify" placeholder="Your counter — one term, one move." aria-label="Your counter — one term, one move."></textarea>
 <ul class="ck"><li><input type="checkbox" class="save" data-k="p1a" id="p1a"><label for="p1a">Used a target term</label></li><li><input type="checkbox" class="save" data-k="p1b" id="p1b"><label for="p1b">Used one of the three moves</label></li></ul>
 <div class="rev"><button type="button">Model answer</button><div class="body">The category isn't marketing, it's about where the work happens. Technically Gemini in Docs is an integrated AI feature, because you never leave the document, and that changes how you use it. If I want to compare five drafts I go to a standalone tool instead. Same model underneath, different workflow.</div></div>
 </div>
@@ -1101,7 +1269,7 @@ It stopped at the result — a company cut its response times using AI — and n
 <div class="push" style="border-top:0;padding-top:0;margin-top:0">
 <p class="rd">Round 2</p>
 <p class="said">"You shouldn't have to give AI all that context. If it's actually intelligent, it should work it out."</p>
-<textarea class="track save" data-k="p2" data-goal="technique" placeholder="Your counter — one term, one move."></textarea>
+<textarea class="track save" data-k="p2" data-goal="technique" placeholder="Your counter — one term, one move." aria-label="Your counter — one term, one move."></textarea>
 <ul class="ck"><li><input type="checkbox" class="save" data-k="p2a" id="p2a"><label for="p2a">Used a target term</label></li><li><input type="checkbox" class="save" data-k="p2b" id="p2b"><label for="p2b">Used one of the three moves</label></li></ul>
 <div class="rev"><button type="button">Model answer</button><div class="body">It can't work out what it was never told. Your colleague can't either — you just forget how much they already know. The move is to surface the implied context before you write the prompt, otherwise you get generic output that would fit any company in the market.</div></div>
 </div>
@@ -1110,7 +1278,7 @@ It stopped at the result — a company cut its response times using AI — and n
 <div class="push" style="border-top:0;padding-top:0;margin-top:0">
 <p class="rd">Round 3 — hardest</p>
 <p class="said">"Hallucination is just a bug. The next model will fix it, so there's no point worrying about it."</p>
-<textarea class="track save" data-k="p3" data-goal="risk" placeholder="Your counter — one term, one move."></textarea>
+<textarea class="track save" data-k="p3" data-goal="risk" placeholder="Your counter — one term, one move." aria-label="Your counter — one term, one move."></textarea>
 <ul class="ck"><li><input type="checkbox" class="save" data-k="p3a" id="p3a"><label for="p3a">Used a target term</label></li><li><input type="checkbox" class="save" data-k="p3b" id="p3b"><label for="p3b">Used one of the three moves</label></li></ul>
 <div class="rev"><button type="button">Model answer</button><div class="body">Calling it a bug misses what it is. The same behaviour that invents a fake statistic is what gives you thirty campaign angles in ten seconds. For brainstorming that's fine, but for anything client-facing I'd double-check every number. You don't remove it, you decide which tasks you'll accept it on.</div></div>
 </div>
@@ -1142,7 +1310,7 @@ It stopped at the result — a company cut its response times using AI — and n
 <p class="tag"><b>Apply</b> · homework</p>
 <h3>One real prompt, rewritten</h3>
 <p style="margin:0 0 10px">Take a prompt you actually sent this week. Rewrite it with the implied context surfaced. Bring both versions next session and say what changed in the output.</p>
-<textarea class="track save" data-k="hw" placeholder="Original prompt / rewritten prompt / what changed"></textarea>
+<textarea class="track save" data-k="hw" placeholder="Original prompt / rewritten prompt / what changed" aria-label="Original prompt / rewritten prompt / what changed"></textarea>
 <p class="note">Plus the Quizlet set — twelve terms, until you get 12/12 twice.</p>
 </div>
 <div class="block" style="max-width:none">
@@ -1166,13 +1334,13 @@ It stopped at the result — a company cut its response times using AI — and n
 </div>
 <div class="strip" data-strip></div>
 </section>
-<p class="end">Session 1 complete. Your answers are saved in this browser, on this device.</p>
-<p class="brandline"><b>English2impact</b> · Bạn giỏi nghề. Giờ giỏi cả tiếng Anh.</p>
+<p class="end lesson-end" id="lessonEnd">Session 1 complete. Your answers are saved in this browser, on this device.</p>
+<p class="brandline lesson-end" id="lessonBrandline"><b>English2impact</b> · Bạn giỏi nghề. Giờ giỏi cả tiếng Anh.</p>
 </main>
 <div class="railwrap">
 <nav class="rail" id="rail" aria-label="Lesson progress">
-<h4>Lesson roadmap</h4>
-<p class="rail-caption">6 stages · 90 minutes</p>
+<h4>Lesson parts</h4>
+<p class="rail-caption">6 parts · 90 minutes</p>
 <ol id="railList"></ol>
 <div class="rail-summary">
 <p class="rail-label">Stages complete</p>
@@ -1186,7 +1354,21 @@ It stopped at the result — a company cut its response times using AI — and n
 </div>
 </div>
 </div>
+
+<nav class="page-navigation" aria-label="Lesson pages">
+<button type="button" class="page-prev" id="previousPage"><span aria-hidden="true">←</span><span>Previous</span></button>
+<button type="button" class="page-parts" id="partsToggle" aria-haspopup="dialog" aria-controls="partsDialog" aria-expanded="false"><span>Parts</span><small id="pageCount">1 / 6</small></button>
+<button type="button" class="page-next" id="nextPage"><span id="nextPageLabel">Next</span><span aria-hidden="true">→</span></button>
+</nav>
+<p class="sr-only page-announcement" id="pageAnnouncement" role="status" aria-live="polite" aria-atomic="true"></p>
 </div>
+
+<dialog class="parts-dialog" id="partsDialog" aria-labelledby="partsTitle">
+<div class="parts-dialog-header"><div><p>Session 01 · 90 minutes</p><h2 id="partsTitle">Your lesson, in six parts.</h2></div><button type="button" class="parts-close" id="closeParts" aria-label="Close lesson parts">×</button></div>
+<nav aria-label="Choose a lesson part"><ol class="part-menu-list" id="partMenuList"></ol></nav>
+<p class="parts-summary" id="partsSummary">Choose any part. Your answers stay saved as you move.</p>
+</dialog>
+<noscript><p style="padding:20px">Enable JavaScript for page navigation, exercises and saved progress. All six lesson parts are displayed below the header.</p></noscript>
 <script>
 (function(){
 "use strict";
@@ -1274,10 +1456,16 @@ return el.getBoundingClientRect().top - lessonViewport.getBoundingClientRect().t
 }
 function goTo(el){
 if (!el) return;
-lessonViewport.scrollBy({
-top:vTop(el) - 16,
-behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
-});
+var sec = el.closest ? el.closest(".stage") : null;
+if (sec && sections && currentPage !== sections.indexOf(sec)){
+showPage(sec.id, {history:"push", focus:true, target:el});
+return;
+}
+if (el.classList && el.classList.contains("head")){
+document.getElementById("lessonGoals").open = true;
+}
+lessonViewport.scrollBy({top:vTop(el) - 16,
+behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
 }
 /* ---------- toast + streak (the quiet reward layer) ---------- */
 var toastEl = document.getElementById("toast"), toastT = null;
@@ -1321,7 +1509,7 @@ timerButton.addEventListener("click", function(){
 if (sessionStarted !== null){ pauseSession(); return; }
 var first = sessionSeconds === 0;
 sessionStarted = Date.now(); paintTimer();
-if (first) goTo(document.getElementById("s1"));
+if (first) goTo(sections[currentPage] || document.getElementById("s1"));
 });
 setInterval(function(){ if (sessionStarted !== null) paintTimer(); }, 1000);
 setInterval(function(){ if (sessionStarted !== null) flush(); }, 10000);
@@ -1358,7 +1546,7 @@ var fw = document.createElement("iframe");
 fw.setAttribute("allow", "autoplay; encrypted-media");
 fw.setAttribute("scrolling", "no");
 fw.setAttribute("title", "Scenario audio");
-fw.src = src;
+fw.setAttribute("data-media-src", src);
 box.appendChild(fw);
 credit(box);
 return;
@@ -1368,9 +1556,9 @@ var f = document.createElement("iframe");
 f.setAttribute("allow", "autoplay; encrypted-media");
 f.setAttribute("scrolling", "no");
 f.setAttribute("title", "Scenario audio");
-f.src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(src) +
+f.setAttribute("data-media-src", "https://w.soundcloud.com/player/?url=" + encodeURIComponent(src) +
 "&color=%23d97757&auto_play=false&hide_related=true&show_comments=false" +
-"&show_user=false&show_reposts=false&show_teaser=false&visual=false";
+"&show_user=false&show_reposts=false&show_teaser=false&visual=false");
 box.appendChild(f);
 credit(box);
 } else {
@@ -1410,6 +1598,10 @@ each(".ck li", function(li){
 var inp = li.querySelector("input");
 if (!inp) return;
 PAINTERS.push(function(){ li.classList[inp.checked ? "add" : "remove"]("on"); });
+});
+each("[data-group] .mcq, [data-group] .tf, [data-group] .gapin", function(el){
+el.deferred = true;
+el.graded = get("chk:" + el.closest("[data-group]").getAttribute("data-group")) === true;
 });
 /* ---------- gap fill ---------- */
 each(".gapin", function(inp){
@@ -1467,7 +1659,8 @@ var btns = opts.querySelectorAll("button");
 box.correctIndex = correct;
 function pick(i, quiet){
 if (box.deferred && !box.graded){
-Array.prototype.forEach.call(btns, function(b,j){ b.className = (j === i) ? "sel" : ""; });
+if (why) why.className = "why";
+Array.prototype.forEach.call(btns, function(b,j){ b.className = (j === i) ? "sel" : ""; b.disabled = false; });
 if (!quiet){ set(k, i); refresh(); }
 return;
 }
@@ -1939,7 +2132,7 @@ if (cleared){
 strip.innerHTML = '<span class="win">✓ Stage cleared</span>' +
 '<span class="bar"><i style="width:100%"></i></span>' +
 '<span>' + (s[3] ? '<b>' + s[2] + '/' + s[3] + '</b> correct' : 'all steps done') + '</span>' +
-(i < sections.length - 1 ? '<button type="button" class="jump" data-jump="' + (i+1) + '">Next stage ↓</button>' : '');
+(i < sections.length - 1 ? '<button type="button" class="jump" data-jump="' + (i+1) + '">Next part →</button>' : '');
 } else {
 strip.innerHTML = '<span><b>' + sdone + '</b> of ' + steps.length + ' steps done</span>' +
 '<span class="bar"><i style="width:' + (steps.length ? Math.round(sdone/steps.length*100) : 0) + '%"></i></span>' +
@@ -1971,6 +2164,7 @@ document.getElementById("rSub").textContent = A ?
 ("Checked answers so far · " + Math.round(C/A*100) + "% right") : "Nothing checked yet";
 document.getElementById("rRows").innerHTML = rows;
 paintNext(open);
+updatePageNav();
 report(C, A);
 resize();
 }
@@ -2041,19 +2235,164 @@ ft.textContent = "All six stages cleared. " + C + " of " + A + " marked answers 
 } else { banner.classList.remove("on"); }
 }
 }
-var activeSection = -1;
-function active(){
-var cur = 0;
-sections.forEach(function(sec,i){ if (vTop(sec) - 60 <= 0) cur = i; });
-if (cur === activeSection) return;
-activeSection = cur;
-links.forEach(function(a,i){ a.classList.toggle("on", i === cur); if (i === cur) a.setAttribute("aria-current", "step"); else a.removeAttribute("aria-current"); });
-if (lessonJump && sections[cur]) lessonJump.value = sections[cur].id;
-var hs = document.getElementById("hudSec");
-if (hs && sections[cur]){
-var nEl = sections[cur].querySelector(".num");
-hs.textContent = (nEl ? nEl.textContent + ". " : "") + sections[cur].querySelector("h2").textContent;
+/* ---------- page navigation: one visible part, shared answers ---------- */
+var currentPage = -1, pageReady = false, pageFrame = 0;
+var pagePrev = document.getElementById("previousPage"), pageNext = document.getElementById("nextPage");
+var partsToggle = document.getElementById("partsToggle"), partsDialog = document.getElementById("partsDialog");
+var menuList = document.getElementById("partMenuList"), menuLinks = [], restoreMenuFocus = true;
+sections.forEach(function(sec, i){
+var heading = sec.querySelector("h2");
+heading.id = sec.id + "Title"; heading.tabIndex = -1;
+sec.setAttribute("aria-labelledby", heading.id);
+var li = document.createElement("li"), link = document.createElement("a");
+link.href = "#" + sec.id;
+link.innerHTML = '<span class="part-number">' + (i+1) + '</span><span class="part-name">' +
+esc(heading.textContent) + '</span><span class="part-meta">' + esc(sec.querySelector(".time").textContent) +
+'<span class="part-state"></span></span>';
+link.addEventListener("click", function(e){
+e.preventDefault(); closeParts(false); showPage(sec.id, {history:"push",focus:true});
+});
+li.appendChild(link); menuList.appendChild(li); menuLinks.push(link);
+});
+function pageIndex(id){
+return sections.findIndex(function(sec){ return sec.id === id; });
 }
+function routeFromHash(){
+var id = window.location.hash.slice(1);
+if (pageIndex(id) !== -1) return {id:id};
+var target = id ? document.getElementById(id) : null;
+var sec = target && target.closest ? target.closest(".stage") : null;
+return sec ? {id:sec.id,target:target} : null;
+}
+function syncPageMedia(){
+sections.forEach(function(sec, i){
+each("iframe[data-media-src]", function(frame){
+if (i === currentPage){
+if (!frame.hasAttribute("src")) frame.setAttribute("src",frame.getAttribute("data-media-src"));
+} else if (frame.hasAttribute("src")){ frame.removeAttribute("src"); }
+},sec);
+if (i !== currentPage) each("audio, video", function(media){ media.pause(); },sec);
+});
+}
+function updatePageNav(){
+if (!pageReady || currentPage < 0) return;
+var sec = sections[currentPage], last = currentPage === sections.length - 1;
+document.getElementById("pagePosition").textContent = "PART " + String(currentPage+1).padStart(2,"0") + " / 06";
+document.getElementById("pageCount").textContent = (currentPage+1) + " / " + sections.length;
+partsToggle.setAttribute("aria-label", "Choose a lesson part. Current part " + (currentPage+1) + " of " + sections.length + ": " + sec.querySelector("h2").textContent);
+pagePrev.disabled = currentPage === 0;
+pagePrev.setAttribute("aria-label", currentPage > 0 ? "Previous part: " + sections[currentPage-1].querySelector("h2").textContent : "Previous part, you are at the beginning");
+pageNext.setAttribute("aria-label", last ? "View your session results" : "Next part: " + sections[currentPage+1].querySelector("h2").textContent);
+document.getElementById("nextPageLabel").textContent = last ? "Results" : "Next";
+document.getElementById("lessonEnd").hidden = !last;
+document.getElementById("lessonBrandline").hidden = !last;
+links.forEach(function(a,i){
+a.classList.toggle("on",i === currentPage);
+if (i === currentPage) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+});
+menuLinks.forEach(function(a,i){
+var done = sections[i].classList.contains("cleared");
+a.classList.toggle("done",done);
+a.querySelector(".part-number").textContent = done ? "✓" : String(i+1);
+a.querySelector(".part-state").textContent = done ? "Complete" : (i === currentPage ? "Current" : "");
+if (i === currentPage) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+});
+lessonJump.value = sec.id;
+var count = sections.filter(function(s){return s.classList.contains("cleared");}).length;
+document.getElementById("partsSummary").textContent = count + " of 6 parts complete. You can move between parts at any time.";
+}
+function showPage(id, options){
+options = options || {};
+var index = pageIndex(id);
+if (index < 0) index = 0;
+var changed = index !== currentPage;
+currentPage = index;
+var sec = sections[index];
+sections.forEach(function(s,i){ s.hidden = i !== index; });
+document.getElementById("lessonGoals").open = false;
+store["navigation:page"] = sec.id;
+save();
+if (options.history){
+var hash = "#" + sec.id;
+try {
+if (options.history === "replace") window.history.replaceState(null,"",hash);
+else if (window.location.hash !== hash) window.history.pushState(null,"",hash);
+} catch(e){ if (window.location.hash !== hash) window.location.hash = hash; }
+}
+document.title = "Part " + (index+1) + " · " + sec.querySelector("h2").textContent + " — Session 01 · E-com Fluency 3";
+updatePageNav();
+syncPageMedia();
+if (changed || options.focus){
+document.getElementById("pageAnnouncement").textContent = "Part " + (index+1) + " of 6. " + sec.querySelector("h2").textContent;
+if (pageFrame) window.cancelAnimationFrame(pageFrame);
+pageFrame = window.requestAnimationFrame(function(){
+pageFrame = 0;
+if (options.focus){
+var target = options.target || sec;
+var focusTarget = options.target && options.target.id === "results" ? options.target : sec.querySelector("h2");
+focusTarget.setAttribute("tabindex","-1");
+focusTarget.focus({preventScroll:true});
+lessonViewport.scrollTo({top:Math.max(0,lessonViewport.scrollTop + vTop(target) - 16),behavior:"auto"});
+} else { lessonViewport.scrollTo({top:0,behavior:"auto"}); }
+resize();
+});
+}
+}
+function openParts(){
+restoreMenuFocus = true;
+updatePageNav();
+partsToggle.setAttribute("aria-expanded","true");
+partsDialog.showModal();
+menuLinks[currentPage].focus();
+}
+function closeParts(restore){
+restoreMenuFocus = restore !== false;
+if (partsDialog.open) partsDialog.close();
+}
+partsToggle.addEventListener("click",openParts);
+document.getElementById("closeParts").addEventListener("click",function(){closeParts(true);});
+partsDialog.addEventListener("close",function(){
+partsToggle.setAttribute("aria-expanded","false");
+if (restoreMenuFocus) partsToggle.focus({preventScroll:true});
+});
+partsDialog.addEventListener("click",function(e){
+if (e.target !== partsDialog) return;
+var r = partsDialog.getBoundingClientRect();
+if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeParts(true);
+});
+pagePrev.addEventListener("click",function(){
+if (currentPage > 0) showPage(sections[currentPage-1].id,{history:"push",focus:true});
+});
+pageNext.addEventListener("click",function(){
+if (currentPage < sections.length-1) showPage(sections[currentPage+1].id,{history:"push",focus:true});
+else {
+var result = document.getElementById("results");
+result.setAttribute("tabindex","-1"); result.focus({preventScroll:true}); goTo(result);
+}
+});
+function followHistory(){
+var route = routeFromHash();
+closeParts(false);
+showPage(route ? route.id : sections[0].id,{focus:true,target:route && route.target});
+}
+window.addEventListener("popstate",followHistory);
+window.addEventListener("hashchange",followHistory);
+document.querySelector(".skip-link").addEventListener("click",function(e){
+e.preventDefault(); showPage(sections[currentPage].id,{focus:true});
+});
+function editingState(){
+var el = document.activeElement;
+document.documentElement.classList.toggle("editing-answer",!!(el && (el.matches("input[type=text], textarea") || el.isContentEditable)));
+}
+document.addEventListener("focusin",editingState);
+document.addEventListener("focusout",function(){window.requestAnimationFrame(editingState);});
+function active(){ /* Page selection is explicit; scrolling cannot change it. */ }
+function initPages(){
+pageReady = true;
+var route = routeFromHash();
+var saved = get("navigation:page");
+var id = route ? route.id : (pageIndex(saved) >= 0 ? saved : sections[0].id);
+showPage(id,{history:route && route.target ? null : "replace",focus:!!route,target:route && route.target});
 }
 /* ---------- native sticky layout: measure only when dimensions change ---------- */
 var rail = document.getElementById("rail");
@@ -2170,7 +2509,7 @@ sections.forEach(function(s){ s.classList.remove("cleared"); });
 streak = 0; best = 0; paintStreak();
 armed = false;
 refresh();
-goTo(document.querySelector(".head"));
+showPage("s1",{history:"replace",focus:true});
 });
 });
 function onScroll(){ scheduleLayout(false); }
@@ -2187,7 +2526,7 @@ var layoutObserver = new ResizeObserver(function(){ scheduleLayout(true); });
 layoutObserver.observe(lessonViewport);
 }
 fitHostFrame();
-refresh(); resize(); active(); paintStreak();
+refresh(); initPages(); resize(); paintStreak();
 booted = true;
 paintNext(firstOpen());
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ scheduleLayout(true); });

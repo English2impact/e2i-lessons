@@ -1911,6 +1911,18 @@ document.getElementById("finText").textContent='All six parts complete. '+C+' of
 }
 /* ---------- page navigation: one visible part, shared answers ---------- */
 var currentPage = -1, pageReady = false, pageFrame = 0;
+var initialHeaderPending = true;
+try { window.history.scrollRestoration = "manual"; } catch(e){}
+function revealInitialHeader(){
+if (initialHeaderPending) lessonViewport.scrollTo({top:0,behavior:"auto"});
+}
+function releaseInitialHeader(){ initialHeaderPending = false; }
+["pointerdown","touchstart","wheel","keydown"].forEach(function(event){
+document.addEventListener(event,releaseInitialHeader,{capture:true,passive:true});
+});
+window.addEventListener("load",function(){
+if (initialHeaderPending) window.requestAnimationFrame(revealInitialHeader);
+},{once:true});
 var pagePrev = document.getElementById("previousPage"), pageNext = document.getElementById("nextPage");
 var partsToggle = document.getElementById("partsToggle"), partsDialog = document.getElementById("partsDialog");
 var menuList = document.getElementById("partMenuList"), menuLinks = [], restoreMenuFocus = true;
@@ -1977,6 +1989,7 @@ document.getElementById("partsSummary").textContent = count + " of 6 parts compl
 }
 function showPage(id, options){
 options = options || {};
+if (!options.initial) releaseInitialHeader();
 var index = pageIndex(id);
 if (index < 0) index = 0;
 var changed = index !== currentPage;
@@ -1996,12 +2009,14 @@ else if (window.location.hash !== hash) window.history.pushState(null,"",hash);
 document.title = "Part " + (index+1) + " · " + sec.querySelector("h2").textContent + " — Session 02 · E-com Fluency 3";
 updatePageNav();
 syncPageMedia();
-if (changed || options.focus){
+if (changed || options.focus || options.initial){
 document.getElementById("pageAnnouncement").textContent = "Part " + (index+1) + " of 6. " + sec.querySelector("h2").textContent;
 if (pageFrame) window.cancelAnimationFrame(pageFrame);
 pageFrame = window.requestAnimationFrame(function(){
 pageFrame = 0;
-if (options.focus){
+if (options.initial){
+revealInitialHeader();
+} else if (options.focus){
 var target = options.target || sec;
 var focusTarget = options.target && options.target.id === "results" ? options.target : sec.querySelector("h2");
 focusTarget.setAttribute("tabindex","-1");
@@ -2063,10 +2078,12 @@ document.addEventListener("focusout",function(){window.requestAnimationFrame(edi
 function active(){ /* Page selection is explicit; scrolling cannot change it. */ }
 function initPages(){
 pageReady = true;
+initialHeaderPending = true;
 var route = routeFromHash();
 var saved = get("navigation:page");
 var id = route ? route.id : (pageIndex(saved) >= 0 ? saved : sections[0].id);
-showPage(id,{history:route && route.target ? null : "replace",focus:!!route,target:route && route.target});
+showPage(id,{history:route && route.target ? null : "replace",initial:true,focus:false,target:route && route.target});
+revealInitialHeader();
 }
 /* ---------- native sticky layout: measure only when dimensions change ---------- */
 var rail = document.getElementById("rail");
