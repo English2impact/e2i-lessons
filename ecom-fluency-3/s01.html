@@ -4,11 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Session 01 — The Three Kinds of AI Tool — E-com Fluency 3</title>
+<script id="lessonStartup">
+(function(){
+var root = document.documentElement;
+root.classList.add("lesson-booting");
+root.setAttribute("data-lesson-entry-hash",window.location.hash);
+try {
+window.history.scrollRestoration = "manual";
+if (window.location.hash) window.history.replaceState(window.history.state,"",window.location.href.split("#")[0]);
+} catch(e){}
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=optional" rel="stylesheet">
 <!-- Lesson theme is included below so this file can also be opened on its own. -->
 <style>
+/* Reveal the prepared initial view once; no loading animation or scroll retry. */
+html.lesson-booting .lesson-viewport{visibility:hidden}
+html.lesson-booting .lesson-viewport *{visibility:hidden!important;animation:none!important;transition:none!important}
 :root{
 --ef3-ink:var(--ink,#1a1a19); --ef3-mute:#6a6a63; --ef3-line:#e6e4df; --ef3-line2:#f2f1ed;
 --ef3-salmon:var(--salmon,#d97757); --ef3-salmonText:var(--salmon-ink,#c3512b);
@@ -2257,8 +2271,8 @@ li.appendChild(link); menuList.appendChild(li); menuLinks.push(link);
 function pageIndex(id){
 return sections.findIndex(function(sec){ return sec.id === id; });
 }
-function routeFromHash(){
-var id = window.location.hash.slice(1);
+function routeFromHash(hash){
+var id = (typeof hash === "string" ? hash : window.location.hash).slice(1);
 if (pageIndex(id) !== -1) return {id:id};
 var target = id ? document.getElementById(id) : null;
 var sec = target && target.closest ? target.closest(".stage") : null;
@@ -2322,7 +2336,7 @@ else if (window.location.hash !== hash) window.history.pushState(null,"",hash);
 document.title = "Part " + (index+1) + " · " + sec.querySelector("h2").textContent + " — Session 01 · E-com Fluency 3";
 updatePageNav();
 syncPageMedia();
-if (changed || options.focus){
+if (!options.initial && (changed || options.focus)){
 document.getElementById("pageAnnouncement").textContent = "Part " + (index+1) + " of 6. " + sec.querySelector("h2").textContent;
 if (pageFrame) window.cancelAnimationFrame(pageFrame);
 pageFrame = window.requestAnimationFrame(function(){
@@ -2372,8 +2386,9 @@ result.setAttribute("tabindex","-1"); result.focus({preventScroll:true}); goTo(r
 });
 function followHistory(){
 var route = routeFromHash();
+var entryPage = !window.location.hash && window.history.state && window.history.state.lessonPage;
 closeParts(false);
-showPage(route ? route.id : sections[0].id,{focus:true,target:route && route.target});
+showPage(route ? route.id : (pageIndex(entryPage) >= 0 ? entryPage : sections[0].id),{focus:true,target:route && route.target});
 }
 window.addEventListener("popstate",followHistory);
 window.addEventListener("hashchange",followHistory);
@@ -2388,11 +2403,24 @@ document.addEventListener("focusin",editingState);
 document.addEventListener("focusout",function(){window.requestAnimationFrame(editingState);});
 function active(){ /* Page selection is explicit; scrolling cannot change it. */ }
 function initPages(){
+if (pageReady) return;
 pageReady = true;
-var route = routeFromHash();
+var root = document.documentElement;
+var entryHash = root.getAttribute("data-lesson-entry-hash");
+var route = routeFromHash(entryHash === null ? window.location.hash : entryHash);
 var saved = get("navigation:page");
 var id = route ? route.id : (pageIndex(saved) >= 0 ? saved : sections[0].id);
-showPage(id,{history:route && route.target ? null : "replace",focus:!!route,target:route && route.target});
+showPage(id,{initial:true,focus:false});
+// Keep the initial URL free of a fragment so the browser cannot jump after paint.
+// Remember this entry's part for Back navigation without changing its position.
+try {
+var state = Object.assign({},window.history.state || {},{lessonPage:id});
+window.history.replaceState(state,"",window.location.href.split("#")[0]);
+} catch(e){}
+lessonViewport.scrollTo({top:0,behavior:"auto"});
+resize();
+root.removeAttribute("data-lesson-entry-hash");
+root.classList.remove("lesson-booting");
 }
 /* ---------- native sticky layout: measure only when dimensions change ---------- */
 var rail = document.getElementById("rail");
