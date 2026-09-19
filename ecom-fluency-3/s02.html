@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Session 02 — Prompting like a marketer — E-com Fluency 3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -773,6 +773,155 @@ html,body{height:auto;overflow:visible}
 }
 
 
+/* Focused lesson pages. The header stays in the normal document flow. */
+[hidden]{display:none!important}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.lesson-viewport{scroll-padding-bottom:100px;overscroll-behavior-y:auto}
+.lesson-viewport>.wrap{min-height:0;padding-bottom:12px}
+.lesson-masthead{position:relative;top:auto;margin-bottom:16px}
+.lesson-goals{background:#fff;border:1px solid var(--ef3-line);border-radius:12px}
+.lesson-goals>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;min-height:48px;cursor:pointer;list-style:none;color:var(--ef3-navy);font-size:13px;font-weight:500}
+.lesson-goals>summary::-webkit-details-marker{display:none}
+.lesson-goals>summary::after{content:'+';font-size:23px;line-height:1;font-weight:400}
+.lesson-goals[open]>summary::after{content:'−'}
+.lesson-goals>summary span:last-child{font-size:11px;color:var(--ef3-mute);margin-left:auto;font-weight:400}
+.lesson-goals .head{border:0;border-top:1px solid var(--ef3-line2);border-radius:0 0 12px 12px;box-shadow:none}
+.page-context{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 12px;color:#63706b;font-size:11px;letter-spacing:.04em}
+.page-context strong{font-weight:600;color:#42634e}
+.page-context span:last-child{letter-spacing:0}
+.stage,.stage:first-child{margin-bottom:0}
+.stage h2:focus{outline:none}
+.stage h2:focus-visible{outline:2px solid var(--ef3-salmon);outline-offset:5px;border-radius:3px}
+/* Keep the desktop contents panel narrow and short beside every page. */
+.cols{--ef3-rail:184px;--ef3-gutter:18px}
+.railwrap{padding-top:30px;min-width:0}
+.rail{padding:12px 8px;transform:none;backface-visibility:visible;will-change:auto;top:16px;max-height:none;overflow:visible}
+.rail-caption{font-size:9px;margin-bottom:8px}
+.rail a{min-height:34px;padding:6px 5px 8px;display:flex;align-items:center;font-size:10.5px;line-height:1.4}
+.rail .row{width:100%;gap:4px}
+.rail .rtime{font-size:8.5px}
+.rail .ck{width:7px;font-size:8px}
+.rail .rbar{left:15px;right:5px;bottom:2px}
+.rail a.on{background:#eaf0e6}
+.rail-summary{gap:4px 6px;margin:9px 4px 0;padding-top:9px}
+.rail-count b{font-size:18px}
+.rail .railbar{height:2px}
+.railpct,.railsc{font-size:9px}
+.rail .reset{padding-top:2px;font-size:9px}
+.header-utilities .lesson-jump,.header-utilities .nextbtn{display:none!important}
+.header-utilities{width:auto;flex:0 0 auto}
+.savebar{flex-wrap:nowrap}
+.save-message{flex:1;min-width:0}
+.save-now{min-height:40px}
+.page-navigation{display:flex;align-items:center;gap:12px;max-width:620px;margin:8px auto 26px;padding:12px;background:#fff;border:1px solid var(--ef3-line);border-radius:12px}
+.page-navigation button{font:inherit;font-size:13px;font-weight:500;border-radius:8px;border:1px solid #dbe1d8;min-height:46px;padding:10px 16px;background:#fff;color:var(--ef3-navy);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;touch-action:manipulation}
+.page-navigation .page-prev,.page-navigation .page-next{flex:1}
+.page-navigation .page-next{background:var(--ef3-navy);color:#fff;border-color:var(--ef3-navy)}
+.page-navigation button:disabled{color:#9ba29a;background:#f5f6f2;border-color:#e7e9e3;cursor:default}
+.page-navigation .page-parts{flex:0 0 auto;border-color:transparent;flex-direction:column;gap:0;line-height:1.3;padding:6px 18px}
+.page-parts small{font-size:10px;color:#647267;font-variant-numeric:tabular-nums;margin-top:3px}
+.page-navigation button:hover:not(:disabled){box-shadow:0 0 0 2px #d7e2d0}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--ef3-salmon);outline-offset:3px}
+.parts-dialog{width:min(440px,calc(100vw - 28px));max-height:calc(100dvh - 28px);padding:22px;border:1px solid #d6ddd1;border-radius:18px;color:var(--ef3-ink);background:#fbfcf8;box-shadow:0 24px 80px #061c3733;overflow-y:auto;overscroll-behavior:contain}
+.parts-dialog::backdrop{background:rgba(6,28,55,.55)}
+.parts-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+.parts-dialog-header p{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5a745d;margin:0 0 3px}
+.parts-dialog h2{font-size:26px;line-height:1.2;color:var(--ef3-navy)}
+.parts-close{font:inherit;font-size:26px;color:var(--ef3-navy);background:#fff;border:1px solid #dce2d7;cursor:pointer;border-radius:9px;min-width:44px;min-height:44px}
+.part-menu-list{display:grid;list-style:none;padding:0;margin:0;gap:7px}
+.part-menu-list a{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ef3-navy);padding:11px 12px;min-height:56px;border:1px solid #e1e6dc;border-radius:9px;background:#fff;font-size:13px;line-height:1.4}
+.part-menu-list a[aria-current="page"]{background:#eaf1e5;border-color:#aac49e}
+.part-number{display:grid;place-items:center;flex:0 0 auto;width:29px;height:31px;background:#f1f4ec;border:1px solid #dce4d6;border-radius:7px;font-size:11px;color:#55704f}
+.part-menu-list a.done .part-number{color:#fff;background:#426e50;border-color:#426e50}
+.part-name{font-weight:500;flex:1;min-width:0}
+.part-meta{flex:0 0 auto;text-align:right;color:#6d786c;font-size:10px}
+.part-state{display:block;font-size:9px;color:#456645;margin-top:2px}
+.parts-summary{font-size:11px;color:#657263;padding-top:14px;margin:14px 0 0;border-top:1px solid #e1e6dc}
+.page-announcement{pointer-events:none}
+.toastwrap{position:fixed;top:14px;bottom:auto;z-index:150}
+.toast{max-width:calc(100vw - 32px);margin:0;text-align:center}
+.lesson-end{margin-top:20px}
+@media(max-width:900px){
+ .wrap{padding:12px 14px 108px!important}
+ .cols{grid-template-columns:minmax(0,1fr);padding-top:18px;gap:0}
+ .railwrap{display:none}
+ .page-navigation{position:fixed;z-index:100;left:0;right:0;bottom:0;max-width:none;margin:0;border-width:1px 0 0;border-radius:0;gap:10px;padding:10px max(14px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));box-shadow:0 -5px 20px #061c3708}
+ .page-navigation button{min-height:46px}
+ .page-navigation .page-parts{padding:5px 18px}
+ .editing-answer .page-navigation{display:none}
+ .header-utilities{width:auto;flex:0 0 auto}
+ .save-message{flex:1 1 auto}
+ .savebar{font-size:11px;gap:12px;padding:8px 12px}
+ .header-completion{font-size:10px}
+ .stage,.stage:first-child{padding:22px}
+ .guess .opts button,.match button,.mcq button,.tf .bts button,.rev>button,.checkbtn,.guess .nav button{min-height:44px}
+ .ck label{min-height:44px;display:flex;align-items:flex-start}
+ .ck input{width:20px;height:20px;flex:0 0 20px}
+ .note{font-size:12px}
+ .strip .jump{min-height:44px;font-size:12px}
+}
+@media(max-width:540px){
+ .wrap{padding:8px 10px 106px!important}
+ .lesson-masthead{margin-bottom:12px}
+ .lesson-banner{gap:9px;padding:12px 13px 16px}
+ .lesson-brand{width:43px;height:48px;margin-top:0}
+ .lesson-heading{flex:1 1 calc(100% - 56px)}
+ .lesson-eyebrow{font-size:8px;line-height:1.6}
+ .lesson-banner h1{font-size:20px;line-height:1.25}
+ .lesson-actions{flex-basis:100%;gap:8px;margin-top:1px}
+ .session-clock{min-height:38px;padding:5px 10px}
+ .session-toggle{min-height:44px;padding:8px 12px;font-size:12px}
+ .savebar{align-items:center;gap:9px;flex-wrap:nowrap}
+ .save-message{font-size:10px;line-height:1.5}
+ .header-completion{display:none}
+ .header-utilities .save-now{min-width:66px;min-height:44px;font-size:10px;padding:7px 9px}
+ .lesson-goals>summary{font-size:12px;padding:11px 14px;gap:8px}
+ .lesson-goals>summary span:last-child{font-size:10px}
+ .lesson-goals .head{padding:18px 15px}
+ .page-context{font-size:10px;margin-bottom:10px}
+ .page-context span:last-child{font-size:10px}
+ .cols{padding-top:16px}
+ .stage,.stage:first-child{padding:20px 15px 16px}
+ .stage>.sh{gap:10px;flex-wrap:wrap;align-items:center}
+ .sh .num{width:36px;height:43px;font-size:13px}
+ .sh .txt{flex:1 1 calc(100% - 102px)}
+ .sh h2{font-size:25px}
+ .sh .time{font-size:9px;padding:4px 5px;flex:0 0 auto}
+ .lead,.ck li,.frame .f,.script p{font-size:14px;line-height:1.7}
+ .sthead{font-size:12px}
+ .sthead .st{font-size:10px}
+ .guess .opts button,.match button,.mcq button{font-size:14px;padding:11px 9px;overflow-wrap:anywhere}
+ .match .cols2{gap:8px}
+ .gap input{max-width:100%;font-size:16px}
+ textarea,input[type=text]{font-size:16px;scroll-margin-block:24px 110px}
+ .vocab{font-size:13px;table-layout:fixed}
+ .vocab th,.vocab td{overflow-wrap:anywhere;padding-right:6px}
+ .page-navigation{gap:8px;padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+ .page-navigation button{font-size:12px;padding:9px 12px;gap:6px}
+ .page-navigation .page-parts{padding:5px 12px}
+ .parts-dialog{padding:18px}
+ .part-menu-list a{font-size:13px;min-height:54px;padding:9px 10px}
+ .parts-summary{padding-top:11px;margin-top:11px}
+}
+@media(max-height:500px) and (min-width:540px){
+ .parts-dialog{width:min(650px,calc(100vw - 28px));padding:16px}
+ .part-menu-list{grid-template-columns:1fr 1fr}
+ .parts-dialog-header{margin-bottom:10px}
+ .parts-summary{margin-top:10px;padding-top:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+@media print{
+ .stage[hidden]{display:block!important}
+ .page-navigation,.parts-dialog,.page-context,.lesson-goals>summary{display:none!important}
+ .lesson-goals:not([open])>*:not(summary){display:block!important}
+ .wrap{padding:0!important}
+ .lesson-end[hidden]{display:block!important}
+ .railwrap{display:none!important}
+}
+
+
 /* Session 02 learning resources */
 .field-label{display:block;font-size:12px;font-weight:500;color:var(--ef3-ink);margin:12px 0 5px;line-height:1.6}
 .lines>.field-label{margin:5px 0 -5px}
@@ -800,6 +949,31 @@ html,body{height:auto;overflow:visible}
 @container(max-width:560px){.brief-card{padding:14px}.brief-grid{grid-template-columns:1fr;gap:3px;font-size:12px}.brief-grid dd{margin-bottom:9px}.field-label{font-size:11px}.details-body{padding:0 10px 12px}.lesson-details summary{padding:11px;font-size:11px}.chunk-example{font-size:12px}}
 @media print{.lesson-details>.details-body{display:block}.lesson-details{break-inside:auto}.copy-btn,.audio .pending{display:none}}
 
+@media(max-width:900px){.copy-btn,.lesson-details summary{min-height:44px}}
+/* Phrase recall stays usable on narrow screens. */
+.recall-gaps .s{min-width:0}
+.recall-gaps input{max-width:100%;min-width:0;box-sizing:border-box;text-align:left;margin:4px 0;min-height:44px}
+.recall-label{display:block;font-size:11px;color:var(--ef3-mute);margin:0 0 5px}
+.gap-feedback{padding:16px 18px;margin-top:14px;background:#f1f5ed;border:1px solid #dce5d5;border-radius:8px;font-size:13px}
+.gap-feedback[hidden]{display:none!important}
+.gap-feedback ol{padding-left:20px}
+.gap-feedback li{margin:7px 0}
+.recall-gaps input:focus{outline:2px solid #b7704d;outline-offset:2px}
+/* Section-specific listening practice. */
+#s4 .media-section-player{min-height:200px}
+#s4 .media-cue{display:block;font-size:11px;color:var(--ef3-mute);font-variant-numeric:tabular-nums;margin:0 0 5px}
+#s4 .media-evidence{display:block;margin-top:5px;font-size:12px}
+#s4 .media-gaps .s{min-width:0}
+#s4 .media-gaps input{max-width:100%;min-width:0;min-height:44px;margin:4px 0;box-sizing:border-box;text-align:left}
+#s4 .media-gaps input:focus{outline:2px solid #b7704d;outline-offset:2px}
+#s4 .media-tf .bts button{min-width:44px;min-height:44px}
+#s4 .why{margin-left:0}
+/* Supplied vocabulary practice and compact audio player. */
+.quizlet-embed{display:block;width:100%;height:500px;max-width:100%;border:0;border-radius:8px;background:#fff}
+#dialogueAudio iframe{height:20px;width:100%;border:0}
+#dialogueAudio .credit{color:var(--ef3-mute);white-space:normal;overflow-wrap:anywhere;margin:7px 0 16px}
+#dialogueAudio .credit a{color:var(--ef3-mute)}
+@media print{.quizlet-embed,#dialogueAudio iframe{display:none}}
 </style>
 </head>
 <body>
@@ -830,19 +1004,22 @@ html,body{height:auto;overflow:visible}
 </div>
 <div class="toastwrap"><div class="toast" id="toast" role="status"></div></div>
 </div>
+<details class="lesson-goals" id="lessonGoals">
+<summary><span>Session goals</span><span>3 goals · 90 minutes</span></summary>
 <section class="head" aria-labelledby="overviewTitle">
 <div class="lesson-overview">
 <p class="kicker">Your learning goals</p>
-<h2 id="overviewTitle">Better briefs. Better first drafts.</h2>
-<div class="meta"><span><b>B2 → C1</b></span><span>Coaching &amp; self-study</span><span>Video: AWS Developers · ~7 min</span></div>
-<p class="aim">Five stages, one real marketing brief. Give clear instructions, set useful constraints, and ask for revisions that move the work forward.</p>
+<h2 id="overviewTitle">Sharper briefs. More useful answers.</h2>
+<div class="meta"><span><b>Advanced · C1</b></span><span>Coaching &amp; self-study</span><span>Video: AWS Developers · ~7 min</span></div>
+<p class="aim">Six parts, one practical marketing brief. Elicit a process, require a rationale and a measure, and specify a concise deliverable.</p>
 </div>
-<ul class="targets" id="targets"><li data-goal="brief"><span class="tk" aria-hidden="true"></span><span>Brief an AI assistant with a clear task, audience, and context.</span></li><li data-goal="limits"><span class="tk" aria-hidden="true"></span><span>Set limits on length, tone, facts, and output format.</span></li><li data-goal="refine"><span class="tk" aria-hidden="true"></span><span>Request one precise revision while preserving what works.</span></li></ul>
+<ul class="targets" id="targets"><li data-goal="process"><span class="tk" aria-hidden="true"></span><span>Elicit a process for a specific business objective.</span></li><li data-goal="rationale"><span class="tk" aria-hidden="true"></span><span>Require a rationale and a relevant success measure for each step.</span></li><li data-goal="format"><span class="tk" aria-hidden="true"></span><span>Combine a word budget with a useful output format.</span></li></ul>
 </section>
+</details>
 <div class="cols">
-<main class="main">
-<section class="stage" id="s1" style="--c:var(--ef3-listen);--ct:#e8f1ec"><div class="sh"><span class="spine"></span><span class="num">1</span><div class="txt"><span class="skill">Listening</span><span class="clr">complete</span><h2>Media decode</h2></div><span class="time">15 min</span></div><p class="lead">Meet the session clip, collect evidence, then bring one practical idea into a marketing brief. Use the second pass selectively so there is time to take notes.</p><div class="block step" data-step="Start with your own prompt · 1 min"><p class="tag"><b>Before watching</b> · a baseline, not a test</p><div class="prompt"><p class="q">You need an AI-generated Instagram caption for a new moisturiser. What would you type?</p></div><label class="field-label" for="coldPrompt">Your first prompt</label><textarea class="track save" data-k="coldPrompt" id="coldPrompt" placeholder="Write the prompt you would use now." ></textarea><p class="note">Keep this first attempt. You will compare it with your final brief in the recap.</p></div><div class="block step" data-step="Watch for the main idea · 7 min"><p class="tag"><b>Pass 1</b> · watch the full clip</p><div class="video"><iframe src="https://www.youtube-nocookie.com/embed/-Hjw0_PMyfQ" title="Learn Better Prompt Engineering in 7 Minutes — AWS Developers" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div><p class="media-credit"><a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ" target="_blank" rel="noopener">Learn Better Prompt Engineering in 7 Minutes</a> · AWS Developers · syllabus clip</p><p>Listen for one change you could make to your own prompt. Do not try to transcribe every sentence.</p><ul class="ck"><li><input type="checkbox" class="track save" data-k="watched" id="watched"><label for="watched">I watched the clip once for the main idea.</label></li></ul></div><div class="block step" data-step="Replay and collect evidence · 4 min"><p class="tag"><b>Pass 2</b> · replay the parts you need</p><p>Complete the listening grid in your own words. Add a timestamp so you or your teacher can check the evidence.</p><label class="field-label" for="mediaTip">One suggestion you heard</label><input type="text" class="track save" data-k="mediaTip" id="mediaTip" placeholder="Suggestion / timestamp" ><label class="field-label" for="mediaExample">One example or contrast you noticed</label><input type="text" class="track save" data-k="mediaExample" id="mediaExample" placeholder="What changed in the example? / timestamp" ><label class="field-label" for="mediaApply">One idea you will try at work</label><input type="text" class="track save" data-k="mediaApply" id="mediaApply" placeholder="My change / why it could help" ><p class="note">These are observation notes, not verbatim quotations. If a point is unclear, replay it or mark it as a question.</p></div><div class="block step" data-step="Capture five unfamiliar terms · 3 min"><p class="tag"><b>Notice</b> · build your own listening list</p><p>Write five words or phrases you want to check. If everything is familiar, choose five useful phrases to reuse.</p><div class="lines"><label class="field-label" for="heard1">Term 1</label><input type="text" class="track save" data-k="heard1" id="heard1" placeholder="English term / meaning or question" ><label class="field-label" for="heard2">Term 2</label><input type="text" class="track save" data-k="heard2" id="heard2" placeholder="English term / meaning or question" ><label class="field-label" for="heard3">Term 3</label><input type="text" class="track save" data-k="heard3" id="heard3" placeholder="English term / meaning or question" ><label class="field-label" for="heard4">Term 4</label><input type="text" class="track save" data-k="heard4" id="heard4" placeholder="English term / meaning or question" ><label class="field-label" for="heard5">Term 5</label><input type="text" class="track save" data-k="heard5" id="heard5" placeholder="English term / meaning or question" ></div></div><div class="strip" data-strip></div></section>
-<section class="stage" id="s2" style="--c:var(--ef3-read);--ct:#f1f9e8"><div class="sh"><span class="spine"></span><span class="num">2</span><div class="txt"><span class="skill">Vocabulary</span><span class="clr">complete</span><h2>Term lab</h2></div><span class="time">20 min</span></div><p class="lead">Twelve useful terms and five reusable chunks. The examples below are original marketing practice, not quotations from the video.</p><div class="block step" data-step="Learn twelve terms · 6 min"><p class="tag"><b>Understand</b> · guess, then review the misses</p><div class="guess track" data-k="guess"></div><details class="lesson-details"><summary>Open the twelve-term reference list</summary><div class="details-body"><div class="tablewrap"><table class="vocab"><thead><tr><th>Term</th><th>Tiếng Việt</th><th>Meaning</th></tr></thead><tbody><tr><td class="t">prompt</td><td class="g">câu lệnh cho AI</td><td>The instruction you give an AI model.</td></tr><tr><td class="t">context</td><td class="g">thông tin bối cảnh</td><td>Background information that helps explain the task.</td></tr><tr><td class="t">target audience</td><td class="g">nhóm khách hàng mục tiêu</td><td>The people a message is intended to reach.</td></tr><tr><td class="t">brand voice</td><td class="g">giọng điệu thương hiệu</td><td>The consistent personality of a brand’s communication.</td></tr><tr><td class="t">constraint</td><td class="g">điều kiện giới hạn</td><td>A rule that narrows what an acceptable answer can contain.</td></tr><tr><td class="t">word limit</td><td class="g">giới hạn số từ</td><td>The maximum length allowed, measured in words.</td></tr><tr><td class="t">output format</td><td class="g">định dạng đầu ra</td><td>The structure in which the answer should be presented.</td></tr><tr><td class="t">reference example</td><td class="g">ví dụ tham khảo</td><td>A sample that shows the kind of result or style you want.</td></tr><tr><td class="t">call to action</td><td class="g">lời kêu gọi hành động</td><td>The words that tell the reader what to do next.</td></tr><tr><td class="t">unsupported claim</td><td class="g">tuyên bố chưa có cơ sở</td><td>A statement that is not backed by the supplied evidence.</td></tr><tr><td class="t">iteration</td><td class="g">lần chỉnh sửa và thử lại</td><td>A new attempt made after reviewing an earlier version.</td></tr><tr><td class="t">acceptance criteria</td><td class="g">các tiêu chí đạt yêu cầu</td><td>The checks a result must pass before you accept it.</td></tr></tbody></table></div></div></details><details class="lesson-details"><summary>Copy the two-column Quizlet set</summary><div class="details-body"><p class="note">Each example replaces the target term with Vietnamese in brackets.</p><button type="button" class="copy-btn" data-copy="quizletText">Copy Quizlet set</button><pre id="quizletText" class="copy-text">prompt	The marketer rewrote the [câu lệnh cho AI] to tell the AI exactly what to produce.
+<main class="main" id="lessonMain"><div class="page-context" id="pageContext"><strong id="pagePosition">PART 01 / 06</strong><span>E-com Fluency 3 · Session 02</span></div>
+<section class="stage" id="s1" style="--c:var(--ef3-speak);--ct:#eaf7ea"><div class="sh"><span class="spine"></span><span class="num">1</span><div class="txt"><span class="skill">Speaking</span><span class="clr">complete</span><h2>Say it cold</h2></div><span class="time">8 min</span></div><p class="lead">No preparation. Give a short briefing, then notice the language you need. Keep your first attempt so you can compare it with the final version.</p><div class="block step" data-step="Talk for a minute, with nothing prepared · 4 min"><p class="tag"><b>Before practising</b> · a baseline, not a test</p><div class="prompt"><p class="q">You need a launch caption for a new moisturiser. How would you ask an AI assistant for a plan to develop and evaluate it?</p></div><label class="field-label" for="coldPrompt">Your first prompt</label><textarea class="track save" data-k="coldPrompt" id="coldPrompt" placeholder="Write the prompt you would use now." ></textarea><p class="note">Keep this first attempt. You will compare it with your final brief in the recap.</p><p>Speak for about one minute with no prepared wording. Then write the prompt you would actually send.</p><ul class="ck"><li><input type="checkbox" class="track save" data-k="coldSpoken" id="coldSpoken"><label for="coldSpoken">I gave my first briefing aloud before looking at the model.</label></li></ul></div><div class="block step" data-step="Log three things you couldn’t say · 4 min"><p>Which process, rationale, or output requirement was difficult to express? Keep three notes to revisit at the end.</p><div class="lines"><label class="field-label" for="coldGap1">1. A missing phrase or unclear instruction</label><input type="text" class="track save" data-k="coldGap1" id="coldGap1" placeholder="What I wanted to say / what came out instead" ><label class="field-label" for="coldGap2">2. A missing phrase or unclear instruction</label><input type="text" class="track save" data-k="coldGap2" id="coldGap2" placeholder="What I wanted to say / what came out instead" ><label class="field-label" for="coldGap3">3. A missing phrase or unclear instruction</label><input type="text" class="track save" data-k="coldGap3" id="coldGap3" placeholder="What I wanted to say / what came out instead" ></div></div><div class="strip" data-strip></div></section>
+<section class="stage" id="s2" style="--c:var(--ef3-read);--ct:#f1f9e8"><div class="sh"><span class="spine"></span><span class="num">2</span><div class="txt"><span class="skill">Vocabulary</span><span class="clr">complete</span><h2>Term lab</h2></div><span class="time">18 min</span></div><p class="lead">Twelve useful terms for a marketing brief. Guess first, match the language, then complete six short instructions.</p><div class="block step" data-step="Guess twelve terms, then drill the misses · 6 min"><p class="tag"><b>Understand</b> · guess, then review the misses</p><div class="guess track" data-k="guess"></div><details class="lesson-details"><summary>Open the twelve-term reference list</summary><div class="details-body"><div class="tablewrap"><table class="vocab"><thead><tr><th>Term</th><th>Tiếng Việt</th><th>Meaning</th></tr></thead><tbody><tr><td class="t">prompt</td><td class="g">câu lệnh cho AI</td><td>The instruction you give an AI model.</td></tr><tr><td class="t">context</td><td class="g">thông tin bối cảnh</td><td>Background information that helps explain the task.</td></tr><tr><td class="t">target audience</td><td class="g">nhóm khách hàng mục tiêu</td><td>The people a message is intended to reach.</td></tr><tr><td class="t">brand voice</td><td class="g">giọng điệu thương hiệu</td><td>The consistent personality of a brand’s communication.</td></tr><tr><td class="t">constraint</td><td class="g">điều kiện giới hạn</td><td>A rule that narrows what an acceptable answer can contain.</td></tr><tr><td class="t">word limit</td><td class="g">giới hạn số từ</td><td>The maximum length allowed, measured in words.</td></tr><tr><td class="t">output format</td><td class="g">định dạng đầu ra</td><td>The structure in which the answer should be presented.</td></tr><tr><td class="t">reference example</td><td class="g">ví dụ tham khảo</td><td>A sample that shows the kind of result or style you want.</td></tr><tr><td class="t">call to action</td><td class="g">lời kêu gọi hành động</td><td>The words that tell the reader what to do next.</td></tr><tr><td class="t">unsupported claim</td><td class="g">tuyên bố chưa có cơ sở</td><td>A statement that is not backed by the supplied evidence.</td></tr><tr><td class="t">iteration</td><td class="g">lần chỉnh sửa và thử lại</td><td>A new attempt made after reviewing an earlier version.</td></tr><tr><td class="t">acceptance criteria</td><td class="g">các tiêu chí đạt yêu cầu</td><td>The checks a result must pass before you accept it.</td></tr></tbody></table></div></div></details><details class="lesson-details"><summary>Copy the two-column Quizlet set</summary><div class="details-body"><p class="note">Each example replaces the target term with Vietnamese in brackets.</p><button type="button" class="copy-btn" data-copy="quizletText">Copy Quizlet set</button><pre id="quizletText" class="copy-text">prompt	The marketer rewrote the [câu lệnh cho AI] to tell the AI exactly what to produce.
 context	The campaign goal and product details give the AI useful [thông tin bối cảnh] before it writes.
 target audience	Our [nhóm khách hàng mục tiêu] is busy office workers buying this moisturiser for the first time.
 brand voice	The caption should match our [giọng điệu thương hiệu]: friendly, practical, and calm.
@@ -853,34 +1030,34 @@ reference example	Attach a [ví dụ tham khảo] to demonstrate the tone, witho
 call to action	End the caption with a clear [lời kêu gọi hành động]: Shop the launch.
 unsupported claim	The brief contains no clinical results, so erases wrinkles overnight is an [tuyên bố chưa có cơ sở].
 iteration	In the next [lần chỉnh sửa và thử lại], change the opening and check whether the caption improves.
-acceptance criteria	Correct facts, the required CTA, and the right length are our [các tiêu chí đạt yêu cầu].</pre></div></details></div><div class="block step" data-step="Match six useful collocations · 4 min"><p class="tag"><b>Remember</b> · words that work together</p><div class="match track" data-k="m1"></div></div><div class="block step" data-step="Say the five communication chunks · 6 min"><p class="tag"><b>Say it</b> · give a brief, set limits, refine</p><div class="frames"><div class="frame"><p class="n">1. Give the task</p><p class="f">Write ___ for ___.</p><p class="chunk-example">Write three Instagram captions for first-time buyers.</p></div><div class="frame"><p class="n">2. Set a requirement</p><p class="f">Make sure it ___.</p><p class="chunk-example">Make sure it mentions the launch discount.</p></div><div class="frame"><p class="n">3. Set a limit</p><p class="f">Keep it under ___.</p><p class="chunk-example">Keep it under forty-five words per caption.</p></div><div class="frame"><p class="n">4. Name a source and a boundary</p><p class="f">Use ___, and avoid ___.</p><p class="chunk-example">Use the product brief, and avoid unsupported claims.</p></div><div class="frame"><p class="n">5. Request a focused revision</p><p class="f">Revise ___ so that ___, while keeping ___.</p><p class="chunk-example">Revise the opening so that it feels more practical, while keeping the offer.</p></div></div><p class="note">Use the base verb for an instruction: <b>Write / Use / Avoid / Revise</b>. After <b>Make sure it</b>, use a complete clause: <b>mentions</b>, <b>sounds</b>, <b>includes</b>. “Under 45 words” means 44 words at most.</p><ul class="ck"><li><input type="checkbox" class="track save" data-k="chunksSaid" id="chunksSaid"><label for="chunksSaid">I said all five chunks aloud and changed one detail in each.</label></li></ul></div><div class="block step" data-step="Complete the six instruction lines · 4 min" data-group="chunks"><p class="bank">Word bank: <b>and · for · keeping · so · sure · under</b></p><ul class="gap numbered"><li><span class="s">Write three captions <input type="text" class="gapin track" data-k="g1" data-a="for" aria-label="Missing word in: Write three captions ___ first-time buyers." autocomplete="off" size="9"> first-time buyers.</span></li><li><span class="s">Make <input type="text" class="gapin track" data-k="g2" data-a="sure" aria-label="Missing word in: Make ___ it mentions the offer." autocomplete="off" size="9"> it mentions the offer.</span></li><li><span class="s">Keep it <input type="text" class="gapin track" data-k="g3" data-a="under" aria-label="Missing word in: Keep it ___ forty-five words." autocomplete="off" size="9"> forty-five words.</span></li><li><span class="s">Use the brief, <input type="text" class="gapin track" data-k="g4" data-a="and" aria-label="Missing word in: Use the brief, ___ avoid unsupported claims." autocomplete="off" size="9"> avoid unsupported claims.</span></li><li><span class="s">Revise the opening <input type="text" class="gapin track" data-k="g5" data-a="so" aria-label="Missing word in: Revise the opening ___ that it sounds more practical." autocomplete="off" size="9"> that it sounds more practical.</span></li><li><span class="s">Shorten the caption while <input type="text" class="gapin track" data-k="g6" data-a="keeping" aria-label="Missing word in: Shorten the caption while ___ the call to action." autocomplete="off" size="9"> the call to action.</span></li></ul><div class="checkbar"><button type="button" class="checkbtn">Check the six lines</button><span class="res" role="status"></span></div></div><div class="strip" data-strip></div></section>
-<section class="stage" id="s3" style="--c:var(--ef3-speak);--ct:#eaf7ea"><div class="sh"><span class="spine"></span><span class="num">3</span><div class="txt"><span class="skill">Speaking</span><span class="clr">complete</span><h2>Structured speaking</h2></div><span class="time">20 min</span></div><p class="lead">Hear how a real briefing conversation develops, then give the instructions yourself. The dialogue has twelve exchanges and keeps one campaign running from problem to revision.</p><div class="brief-card"><p class="part">Practice brief · fictional product</p><h3>LumaAir Daily Gel Moisturiser</h3><dl class="brief-grid">
-<dt>Approved facts</dt><dd>50 ml · lightweight gel · fragrance-free · absorbs quickly</dd>
-<dt>Audience</dt><dd>Busy office workers trying LumaAir for the first time</dd>
-<dt>Goal</dt><dd>Encourage visits to the product page</dd>
-<dt>Offer</dt><dd>10% off until Sunday</dd>
-<dt>Deliverable</dt><dd>Three English Instagram captions in a numbered list</dd>
-<dt>Limits</dt><dd>Under 45 words per caption, including the CTA; no emojis or hashtags</dd>
-<dt>Voice</dt><dd>Friendly and practical</dd>
-<dt>Required ending</dt><dd>Shop the launch.</dd>
-</dl><p class="note">These are practice facts. Add no performance promises, clinical results, scarcity claims, or extra offers.</p></div><div class="block step" data-step="Read the briefing dialogue in roles · 6 min"><p class="tag"><b>Model dialogue</b> · fix the brief before the copy</p><p class="note">Claire, a marketing lead, and Nathan, an e-commerce specialist, refine an AI prompt for a fictional LumaAir moisturiser launch. They need usable Instagram captions, not vague or exaggerated copy.</p><div class="audio" id="dialogueAudio" data-src="" data-track="Prompting like a marketer — briefing dialogue" data-artist="English2impact"></div><details class="lesson-details"><summary>Open the dialogue transcript</summary><div class="details-body"><div class="script" id="dialogueTranscript"><p><span class="sp">Claire</span><span>The AI captions sound polished, but none of them are usable. What did you ask for?</span></p><p><span class="sp">Nathan</span><span>Just, &#x27;Write an exciting caption for our new moisturiser.&#x27; I thought it would infer the rest.</span></p><p><span class="sp">Claire</span><span>That&#x27;s the problem. Start with the task and the target audience.</span></p><p><span class="sp">Nathan</span><span>Write three Instagram captions for busy office workers trying LumaAir for the first time. Is that specific enough?</span></p><p><span class="sp">Claire</span><span>Better. Add the context: we want people to visit the product page, not necessarily buy immediately.</span></p><p><span class="sp">Nathan</span><span>I&#x27;ll include the approved facts: it&#x27;s a fifty-millilitre, lightweight, fragrance-free gel moisturiser that absorbs quickly.</span></p><p><span class="sp">Claire</span><span>Good. Make sure it mentions the ten percent launch discount and says the offer ends on Sunday.</span></p><p><span class="sp">Nathan</span><span>What about the brand voice? The current drafts sound like they&#x27;re shouting.</span></p><p><span class="sp">Claire</span><span>Make sure it sounds friendly and practical, not overexcited.</span></p><p><span class="sp">Nathan</span><span>Keep it under forty-five words per caption. Does that include the call to action?</span></p><p><span class="sp">Claire</span><span>Yes, everything. Use the product brief, and avoid unsupported claims.</span></p><p><span class="sp">Nathan</span><span>So the line about erasing wrinkles overnight has to go. That isn&#x27;t in the brief.</span></p><p><span class="sp">Claire</span><span>Exactly. Add one reference example, but tell it to imitate the tone, not copy the wording.</span></p><p><span class="sp">Nathan</span><span>Here&#x27;s one: &#x27;Lightweight care for a busy day. Explore a simple addition to your routine.&#x27;</span></p><p><span class="sp">Claire</span><span>That works. What output format will make the drafts easy to compare?</span></p><p><span class="sp">Nathan</span><span>A numbered list of three captions. Each one should end with &#x27;Shop the launch.&#x27;</span></p><p><span class="sp">Claire</span><span>Now the second version is closer, but the opening still reads like a product catalogue.</span></p><p><span class="sp">Nathan</span><span>Revise the opening so that it speaks to a busy morning, while keeping the offer and call to action.</span></p><p><span class="sp">Claire</span><span>Good. Change that part only, so we don&#x27;t lose the other constraints.</span></p><p><span class="sp">Nathan</span><span>And for the next iteration, I&#x27;ll compare the new opening with the old one and check the word limit again.</span></p><p><span class="sp">Claire</span><span>What are our acceptance criteria?</span></p><p><span class="sp">Nathan</span><span>Three captions, under forty-five words each, approved facts only, the correct offer, a friendly voice, and the exact call to action.</span></p><p><span class="sp">Claire</span><span>Great. Save the prompt and the chosen draft together, so the team can reuse the brief.</span></p><p><span class="sp">Nathan</span><span>Got it. I&#x27;ll review every claim and count the words before anything goes live.</span></p></div></div></details><div class="transcript-actions"><button type="button" class="copy-btn" id="copyDialogue">Copy dialogue</button><button type="button" class="copy-btn" id="downloadDialogue">Download transcript</button></div><p class="note">Until the recording is added, read in pairs or read both roles aloud. Then explain which prompt detail made the biggest difference.</p><ul class="ck"><li><input type="checkbox" class="track save" data-k="dialogueRead" id="dialogueRead"><label for="dialogueRead">I read or listened to the full dialogue and practised the two roles.</label></li></ul></div><div class="block step" data-step="Check the briefing decisions · 4 min" data-group="dialogue"><div class="mcq track" data-k="d1"><p class="q">Why was Nathan’s first prompt too weak?</p><div class="opts" data-a="0"><button type="button">It asked for a caption without enough audience, context, or constraints.</button><button type="button">It contained too many approved product facts.</button><button type="button">It used the wrong subscription plan.</button></div><p class="why" style="margin-left:0">The first prompt only asked for an exciting caption. The brief did not yet specify who, why, or what must stay within bounds.</p></div><div class="mcq track" data-k="d2"><p class="q">Which offer must the captions communicate?</p><div class="opts" data-a="1"><button type="button">50% off today only.</button><button type="button">10% off until Sunday.</button><button type="button">Free delivery for every order.</button></div><p class="why" style="margin-left:0">The approved offer is ten percent off until Sunday. No other discount or delivery promise appears in the brief.</p></div><div class="mcq track" data-k="d3"><p class="q">What output does Nathan ask for?</p><div class="opts" data-a="2"><button type="button">One long product description.</button><button type="button">Three captions with any closing line.</button><button type="button">A numbered list of three captions, each ending “Shop the launch.”</button></div><p class="why" style="margin-left:0">The count, structure, and exact call to action are explicit.</p></div><div class="mcq track" data-k="d4"><p class="q">What should the next revision change?</p><div class="opts" data-a="0"><button type="button">The opening, while keeping the offer and call to action.</button><button type="button">Every part of the draft, including the discount.</button><button type="button">Only the product name.</button></div><p class="why" style="margin-left:0">Nathan narrows the revision to the opening. The other constraints still apply.</p></div><div class="checkbar"><button type="button" class="checkbtn">Check the dialogue</button><span class="res" role="status"></span></div></div><div class="block step" data-step="Respond to five brief prompts · 5 min"><p>Use the five chunks in order. Say your sentence before you type. Then repeat with your own product.</p><label class="field-label" for="rf1">1. Three subject lines / returning customers</label><input type="text" class="track save" data-k="rf1" id="rf1" placeholder="Say it, then type your sentence." ><label class="field-label" for="rf2">2. Mention the launch discount</label><input type="text" class="track save" data-k="rf2" id="rf2" placeholder="Say it, then type your sentence." ><label class="field-label" for="rf3">3. Forty-five words per caption</label><input type="text" class="track save" data-k="rf3" id="rf3" placeholder="Say it, then type your sentence." ><label class="field-label" for="rf4">4. Approved product brief / invented benefits</label><input type="text" class="track save" data-k="rf4" id="rf4" placeholder="Say it, then type your sentence." ><label class="field-label" for="rf5">5. The opening / sound more practical / the offer</label><input type="text" class="track save" data-k="rf5" id="rf5" placeholder="Say it, then type your sentence." ><details class="lesson-details"><summary>Suggested reflex answers</summary><div class="details-body"><ol><li>Write three subject lines for returning customers.</li><li>Make sure it mentions the launch discount.</li><li>Keep it under forty-five words per caption.</li><li>Use the approved product brief, and avoid invented benefits.</li><li>Revise the opening so that it sounds more practical, while keeping the offer.</li></ol></div></details><ul class="ck"><li><input type="checkbox" class="track save" data-k="reflexSaid" id="reflexSaid"><label for="reflexSaid">I answered all five prompts aloud without reading the model.</label></li></ul></div><div class="block step" data-step="Build a complete prompt from the brief · 5 min"><p>Combine the task, audience, facts, voice, limits, and output format. Use at least three of the five chunks.</p><label class="field-label" for="structuredPrompt">Your complete prompt</label><textarea class="track save" data-k="structuredPrompt" id="structuredPrompt" data-goal="brief" placeholder="Write your instructions as if you were briefing an AI assistant." ></textarea><details class="lesson-details"><summary>Compare with one possible prompt</summary><div class="details-body"><div class="model model-pre">Write three English Instagram captions for busy office workers trying LumaAir Daily Gel Moisturiser for the first time. The goal is to encourage visits to the product page.
-Approved facts: 50 ml, lightweight gel, fragrance-free, absorbs quickly. The offer is 10% off until Sunday.
-Make sure each caption sounds friendly and practical and mentions the offer and its end date. Keep it under 45 words per caption, including the CTA. Use the approved facts, and avoid unsupported claims, emojis, and hashtags.
-Use this reference example for tone only; do not copy it: &#x27;Lightweight care for a busy day. Explore a simple addition to your routine.&#x27;
-Return a numbered list of three captions. End each one with &#x27;Shop the launch.&#x27;</div></div></details><p class="note">A prompt makes the request clearer; you still need to check the resulting copy.</p></div><div class="strip" data-strip></div></section>
-<section class="stage" id="s4" style="--c:var(--ef3-speak);--ct:#eaf7ea"><div class="sh"><span class="spine"></span><span class="num">4</span><div class="txt"><span class="skill">Speaking</span><span class="clr">complete</span><h2>Simulation</h2></div><span class="time">25 min</span></div><p class="lead">Run a briefing, challenge a weak draft, then respond to a tighter word limit. Your job is to make the next action clear and keep the agreed facts intact.</p><div class="block step" data-step="Run the first briefing · 5 min"><p class="tag"><b>Round 1</b> · marketer and creative partner</p><div class="tvn"><div class="col"><h4>Role A · Marketer</h4><p>Use the LumaAir brief. Ask for three captions and explain the audience, offer, voice, source, and limits. Do not read your prompt word for word.</p></div><div class="col now"><h4>Role B · Creative partner</h4><p>Ask: “Who exactly is this for?” “What must stay?” “What should I avoid?” “What format do you need?” Repeat the brief back and let A correct one detail.</p></div></div><p class="note">Self-study: record A’s brief, then answer B’s questions out loud. You can complete every task without opening an AI tool.</p><label class="field-label" for="briefGaps">What did the clarification questions reveal?</label><textarea class="track save" data-k="briefGaps" id="briefGaps" placeholder="One missing detail / the instruction I added." ></textarea><ul class="ck"><li><input type="checkbox" class="track save" data-k="briefSpoken" id="briefSpoken"><label for="briefSpoken">I gave the brief and answered the four clarification questions.</label></li></ul></div><div class="block step" data-step="Give precise feedback under challenge · 8 min"><div class="prompt draft-bad"><p class="tag"><b>Draft to reject</b> · deliberately flawed practice copy</p><p class="q">Erase wrinkles overnight with the world’s safest moisturiser. Half price, today only. Buy before it sells out!</p></div><p>Identify the unsupported promises, the incorrect offer, and the missing required CTA. Then respond to the two challenges below without approving invented facts.</p><div class="push"><p class="said">“Those claims are stronger. Can’t we leave them in?”</p><label class="field-label" for="push1">Your response</label><textarea class="track save" data-k="push1" id="push1" data-goal="limits" placeholder="Use the brief, and avoid … / Make sure it …" ></textarea></div><div class="push"><p class="said">“Fine. I’ll just tell the AI to make it better.”</p><label class="field-label" for="push2">Your response</label><textarea class="track save" data-k="push2" id="push2" data-goal="refine" placeholder="Revise … so that …, while keeping …" ></textarea></div><details class="lesson-details"><summary>Suggested responses</summary><div class="details-body"><ol><li>Use the approved brief, and avoid claims we cannot support. Make sure it says ten percent off until Sunday and ends with “Shop the launch.”</li><li>Revise the opening so that it fits a busy morning, while keeping the approved facts, the offer, and the exact call to action.</li></ol></div></details></div><div class="block step" data-step="Handle a new constraint and swap roles · 8 min"><p class="tag"><b>Round 2</b> · same campaign, a tighter brief</p><div class="prompt"><p class="q">The team now needs each caption under 30 words, including the CTA. Keep all three variants, the correct offer, and the friendly voice.</p></div><p>Give a focused revision request. Your partner should challenge one detail, then repeat the updated brief. Swap roles and do a second two-minute round; use the remaining time to give feedback.</p><p>Across the two rounds, use <b>all five chunks at least once</b>. Tick a chunk only after you say it.</p><ul class="ck"><li><input type="checkbox" class="track save" data-k="use1" id="use1"><label for="use1">Write ___ for ___.</label></li><li><input type="checkbox" class="track save" data-k="use2" id="use2"><label for="use2">Make sure it ___.</label></li><li><input type="checkbox" class="track save" data-k="use3" id="use3"><label for="use3">Keep it under ___.</label></li><li><input type="checkbox" class="track save" data-k="use4" id="use4"><label for="use4">Use ___, and avoid ___.</label></li><li><input type="checkbox" class="track save" data-k="use5" id="use5"><label for="use5">Revise ___ so that ___, while keeping ___.</label></li></ul><details class="lesson-details"><summary>One possible revision request</summary><div class="details-body"><div class="model">Revise the opening so that it speaks to a busy morning, while keeping the approved facts, the ten percent offer, the Sunday end date, and the exact call to action. Keep each complete caption under thirty words. Return the same numbered list of three captions.</div></div></details></div><div class="block step" data-step="Check the final prompt and one sample caption · 4 min"><label class="field-label" for="finalPrompt">Your final prompt after the new constraint</label><textarea class="track save" data-k="finalPrompt" id="finalPrompt" placeholder="Preserve the brief; update the limit to under 30 words per caption." ></textarea><label class="field-label" for="sampleCaption">One sample caption that follows the final prompt</label><textarea class="track save" data-k="sampleCaption" id="sampleCaption" placeholder="Write one caption yourself, or paste one you have reviewed." data-max-words="29"></textarea><p class="word-meter" data-count-for="sampleCaption">0 words · under 30 required</p><ul class="ck"><li><input type="checkbox" class="track save" data-k="acceptCaption" id="acceptCaption"><label for="acceptCaption">I checked the facts, 10% offer, Sunday end date, exact CTA, and the under-30-word limit.</label></li></ul><details class="lesson-details"><summary>One acceptable sample caption</summary><div class="details-body"><div class="model">Busy morning? Try LumaAir’s lightweight, fragrance-free gel moisturiser. Get 10% off until Sunday. Shop the launch.</div><p class="note">Other wording can work. Judge it against the brief, not against this exact sentence.</p></div></details></div><div class="strip" data-strip></div></section>
-<section class="stage" id="s5" style="--c:var(--ef3-write);--ct:#f6f4ed"><div class="sh"><span class="spine"></span><span class="num">5</span><div class="txt"><span class="skill">Writing</span><span class="clr">complete</span><h2>Output &amp; recap</h2></div><span class="time">10 min</span></div><p class="lead">Explain your decisions, record one correction, and compare your first prompt with the version you can now defend.</p><div class="block step" data-step="Deliver a sixty-second handover · 3 min"><div class="prompt"><p class="q">Tell a colleague what the AI must produce, what it must preserve, and exactly what the next revision should change.</p></div><label class="field-label" for="recap">Your handover notes</label><textarea class="track save" data-k="recap" id="recap" placeholder="Task / audience / constraints / revision / checks" ></textarea><ul class="ck"><li><input type="checkbox" class="track save" data-k="recapSpoken" id="recapSpoken"><label for="recapSpoken">I gave a sixty-second handover with at least three target chunks.</label></li></ul></div><div class="block step" data-step="Check the five outcomes · 3 min"><ul class="ck"><li><input type="checkbox" class="track save" data-k="sc1" id="sc1" data-goal="brief"><label for="sc1">I can state the task and target audience clearly.</label></li><li><input type="checkbox" class="track save" data-k="sc2" id="sc2" data-goal="limits"><label for="sc2">I can give measurable limits and an explicit output format.</label></li><li><input type="checkbox" class="track save" data-k="sc3" id="sc3" data-goal="refine"><label for="sc3">I can request a specific change while preserving what already works.</label></li><li><input type="checkbox" class="track save" data-k="sc4" id="sc4"><label for="sc4">I used all five communication chunks in the simulation.</label></li><li><input type="checkbox" class="track save" data-k="sc5" id="sc5"><label for="sc5">I checked the resulting copy against the brief instead of accepting it automatically.</label></li></ul></div><div class="block step" data-step="Make one correction you will reuse · 2 min"><label class="field-label" for="correction">My original sentence → my improved sentence</label><textarea class="track save" data-k="correction" id="correction" placeholder="Fix one instruction, verb form, or unclear request." ></textarea><p class="note">For example: “Make sure it mention the offer” → “Make sure it mentions the offer.”</p></div><div class="block step" data-step="Set your next practice task · 2 min"><p>Re-watch the assigned clip without subtitles. Then rewrite one real work prompt using today’s five chunks. Compare the old and revised drafts against three acceptance criteria.</p><label class="field-label" for="hw">My task and three checks</label><textarea class="track save" data-k="hw" id="hw" placeholder="Task / check 1 / check 2 / check 3" ></textarea><p class="note">If you do not use an AI tool, write two possible outputs yourself and compare them. Bring your prompt and one specific revision request to Session 03: AI agents in the store.</p></div><div class="block" style="max-width:none"><p class="tag"><b>Your session result</b></p><div class="results" id="results"><p class="big" id="rTotal">0/0</p><p class="sub" id="rSub">Nothing checked yet</p><div class="stats" id="rStats"></div><p class="note">Quiz scores cover fixed-answer practice. Speaking quality and open responses use your self-checks or your teacher’s feedback.</p><div class="tvn"><div class="col"><h4>Your first prompt</h4><div id="tvnThen"></div></div><div class="col now"><h4>Your revised prompt</h4><div id="tvnNow"></div></div></div><p class="arrowline" id="tvnLine"></p><table style="margin-top:18px"><tbody id="rRows"></tbody></table><div class="fin-banner" id="finBanner"><h3>Session complete</h3><p id="finText"></p></div><button type="button" class="reset" data-reset>Reset progress</button></div></div><div class="strip" data-strip></div></section>
-<details class="lesson-details source-note"><summary>Lesson references</summary><div class="details-body"><p>Session topic, language focus, timings, and assigned clip follow <i>E-com Fluency 3: The AI Edge</i>, Session 02. Dialogue, product brief, quizzes, and model answers are original English2impact practice material.</p><p>The practice guide uses clear instructions, relevant context, a reference example, and an explicit output format, consistent with <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/design-a-prompt.html" target="_blank" rel="noopener">AWS: Design a prompt</a>. Video observation notes are checked against the clip by the learner or teacher.</p></div></details>
-<p class="end">Session 02 · Your answers save in this browser, on this device.</p><p class="brandline"><b>English2impact</b> · Bạn giỏi nghề. Giờ giỏi cả tiếng Anh.</p>
+acceptance criteria	Correct facts, the required CTA, and the right length are our [các tiêu chí đạt yêu cầu].</pre></div></details><details class="lesson-details"><summary>Quizlet Match · practise the vocabulary</summary><div class="details-body"><p class="note">Match the terms with their examples. You can repeat this practice as often as you like.</p><iframe class="quizlet-embed" id="quizletMatch" data-media-src="https://quizlet.com/1210560226/match/embed?i=4y577v&amp;x=1jj1" title="Quizlet Match — prompting vocabulary" height="500" width="100%" style="border:0" loading="lazy" allowfullscreen></iframe><p class="note"><a href="https://quizlet.com/1210560226/match/embed?i=4y577v&amp;x=1jj1" target="_blank" rel="noopener noreferrer">Open Quizlet Match in a new tab</a></p></div></details></div><div class="block step" data-step="Match the six combinations you’ll say · 4 min"><p class="tag"><b>Remember</b> · words that work together</p><div class="match track" data-k="m1"></div></div><div class="block step" data-step="Match the six terms you’ll recognise · 4 min"><p class="tag"><b>Recognise</b> · six precise meanings</p><div class="match track" data-k="m2"></div></div><div class="block step" data-step="Six instruction lines, one word each · 4 min" data-group="advancedChunksV1"><p class="bank">Word bank: <b>briefly · each · outline · response · structure · take</b></p><ul class="gap numbered"><li><span class="s"><input type="text" class="gapin track" data-k="advV1" data-a="outline" aria-label="Instruction 1: missing word" autocomplete="off" autocapitalize="off" spellcheck="false" size="9"> the key steps you would take to evaluate a launch caption.</span></li><li><span class="s">Outline the key steps you would <input type="text" class="gapin track" data-k="advV2" data-a="take" aria-label="Instruction 2: missing word" autocomplete="off" autocapitalize="off" spellcheck="false" size="9"> to compare two campaign ideas.</span></li><li><span class="s">For <input type="text" class="gapin track" data-k="advV3" data-a="each" aria-label="Instruction 3: missing word" autocomplete="off" autocapitalize="off" spellcheck="false" size="9"> step, briefly explain your approach and mention one measure of success.</span></li><li><span class="s">For each option, <input type="text" class="gapin track" data-k="advV4" data-a="briefly" aria-label="Instruction 4: missing word" autocomplete="off" autocapitalize="off" spellcheck="false" size="9"> explain the trade-off and mention one relevant metric.</span></li><li><span class="s">Limit your <input type="text" class="gapin track" data-k="advV5" data-a="response" aria-label="Instruction 5: missing word" autocomplete="off" autocapitalize="off" spellcheck="false" size="9"> to ninety words and structure it as three bullet points.</span></li><li><span class="s">Limit your response to one hundred words and <input type="text" class="gapin track" data-k="advV6" data-a="structure" aria-label="Instruction 6: missing word" autocomplete="off" autocapitalize="off" spellcheck="false" size="9"> it as a numbered list.</span></li></ul><div class="checkbar"><button type="button" class="checkbtn">Check the six lines</button><span class="res" role="status"></span></div></div><div class="strip" data-strip></div></section>
+<section class="stage" id="s3" style="--c:var(--ef3-speak);--ct:#eaf7ea"><div class="sh"><span class="spine"></span><span class="num">3</span><div class="txt"><span class="skill">Speaking</span><span class="clr">complete</span><h2>Three moves</h2></div><span class="time">16 min</span></div><p class="lead">Elicit a process, require a rationale and a measure, and constrain the deliverable. Three patterns from the video’s worked example.</p><div class="block"><p class="tag"><b>Advanced speaking toolkit</b> · three moves, three chunks</p><div class="frames"><div class="frame"><p class="n">Move 1 — elicit a process</p><p class="f">Outline the key steps you would take to ___.</p><p class="chunk-example">Move beyond a vague task: ask for a sequence that addresses a specific business objective.</p><p class="note"><a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=74s" target="_blank" rel="noopener noreferrer">Video example · 1:14–1:38</a></p></div><div class="frame"><p class="n">Move 2 — require a rationale and a measure</p><p class="f">For each ___, briefly explain ___ and mention ___.</p><p class="chunk-example">Make the reasoning reviewable: ask why each step is useful and how its success could be measured.</p><p class="note"><a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=99s" target="_blank" rel="noopener noreferrer">Video example · 1:39–1:43</a></p></div><div class="frame"><p class="n">Move 3 — constrain the deliverable</p><p class="f">Limit your response to ___ and structure it as ___.</p><p class="chunk-example">Combine a word budget with a reviewable format, so the response is usable by the team.</p><p class="note"><a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=106s" target="_blank" rel="noopener noreferrer">Video example · 1:46–1:48</a></p></div></div><p class="note">Adapted from the business-summary prompt in <b>AWS Developers: Learn Better Prompt Engineering in 7 Minutes</b> (1:14–1:48). The workplace dialogues below are original practice. At advanced level, make the process specific, the rationale defensible, and the success measure observable.</p></div><div class="block step" data-step="Spot the three moves in the short dialogue · 6 min"><p class="tag"><b>Read</b> · turn a generic answer into a reviewable plan</p><p class="note">Claire and Nathan work on the launch of LumaAir, a fictional moisturiser. Nathan proposes three instructions for the AI. They want a plan for developing the caption before asking for the finished copy.</p><details class="lesson-details"><summary>Read the six-line dialogue · close it before step 2</summary><div class="details-body"><div class="script" id="dialogueTranscript"><p><span class="sp">Claire</span><span>The AI gave us another generic caption. How do we get a useful plan?</span></p><p><span class="sp">Nathan</span><span>Outline the key steps you would take to develop a LumaAir caption for first-time buyers.</span></p><p><span class="sp">Claire</span><span>How can we judge whether the plan is any good?</span></p><p><span class="sp">Nathan</span><span>For each step, briefly explain your approach and mention one measure of success.</span></p><p><span class="sp">Claire</span><span>We need something the team can review quickly.</span></p><p><span class="sp">Nathan</span><span>Limit your response to ninety words and structure it as three bullet points.</span></p></div></div></details><div class="transcript-actions"><button type="button" class="copy-btn" id="copyDialogue">Copy reading dialogue</button><button type="button" class="copy-btn" id="downloadDialogue">Download reading dialogue</button></div><p>Read both roles aloud. Identify the process, the rationale and measure, and the output specification in Nathan’s replies. Then close the transcript and move to step 2.</p><ul class="ck"><li><input type="checkbox" class="track save" data-k="advDialogueRead" id="advDialogueRead"><label for="advDialogueRead">I read the dialogue aloud and identified the three moves.</label></li></ul></div><div class="block step" data-step="Rebuild the message from memory · 5 min" data-group="checkoutDialogueRecallV1"><p class="tag"><b>Listen</b> · diagnose checkout abandonment</p><p class="note">Maya and Leo work at Northline, a fictional online store. Customers begin checkout but leave before paying. The colleagues are briefing an AI assistant to propose an investigation using the store’s checkout data.</p><div class="audio" id="dialogueAudio" data-src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2403194706&amp;color=%23ff5500&amp;inverse=false&amp;auto_play=false&amp;show_user=true" data-track="Dialogue_Prompt like a marketer" data-track-url="https://soundcloud.com/english2impact/dialogue_prompt-like-a" data-artist="English2impact" data-artist-url="https://soundcloud.com/english2impact"></div><p>Listen once for the business problem, then again for the three instructions. Complete Leo’s replies from memory with <b>2–4 words per gap</b>. Keep the listening transcript closed; there is no word bank.</p><p class="note">The requested plan has a maximum of 100 words. After checking your answers, open the listening transcript to review any phrases you missed.</p><ul class="gap numbered recall-gaps"><li><span class="s"><span class="recall-label">Elicit a process · 4 words / 3 words</span><input type="text" class="gapin track" data-k="checkoutRecall1" data-a="outline the key steps" aria-label="Move 1, gap 1: four words" autocomplete="off" autocapitalize="off" spellcheck="false" size="21"> you <input type="text" class="gapin track" data-k="checkoutRecall2" data-a="would take to" aria-label="Move 1, gap 2: three words" autocomplete="off" autocapitalize="off" spellcheck="false" size="14"> identify where customers drop out of Northline’s checkout.</span></li><li><span class="s"><span class="recall-label">Require a rationale and a measure · 3 words / 2 words</span><input type="text" class="gapin track" data-k="checkoutRecall3" data-a="for each step" aria-label="Move 2, gap 1: three words" autocomplete="off" autocapitalize="off" spellcheck="false" size="14">, <input type="text" class="gapin track" data-k="checkoutRecall4" data-a="briefly explain" aria-label="Move 2, gap 2: two words" autocomplete="off" autocapitalize="off" spellcheck="false" size="15"> what the data would reveal and mention one metric to track.</span></li><li><span class="s"><span class="recall-label">Constrain the deliverable · 4 words / 3 words</span><input type="text" class="gapin track" data-k="checkoutRecall5" data-a="limit your response to" aria-label="Move 3, gap 1: four words" autocomplete="off" autocapitalize="off" spellcheck="false" size="22"> one hundred words and <input type="text" class="gapin track" data-k="checkoutRecall6" data-a="structure it as" aria-label="Move 3, gap 2: three words" autocomplete="off" autocapitalize="off" spellcheck="false" size="15"> a numbered action plan.</span></li></ul><div class="checkbar"><button type="button" class="checkbtn">Check the six gaps</button><span class="res" role="status"></span></div><div class="gap-feedback" data-gap-feedback hidden><p class="tag"><b>Compare, correct, then say it</b></p><ol><li>Outline the key steps you would take to identify where customers drop out of Northline’s checkout.</li><li>For each step, briefly explain what the data would reveal and mention one metric to track.</li><li>Limit your response to one hundred words and structure it as a numbered action plan.</li></ol><p class="note">Each gap has one target phrase from this dialogue. Capitalisation, extra spaces and final punctuation do not affect your score. Correct any missed phrase, then deliver the three instructions without reading.</p></div><details class="lesson-details"><summary>Northline listening transcript · review after listening</summary><div class="details-body"><div class="script" id="listeningTranscript"><p><span class="sp">Maya</span><span>Customers are abandoning checkout. How should we brief the AI?</span></p><p><span class="sp">Leo</span><span>Outline the key steps you would take to identify where customers drop out of Northline’s checkout.</span></p><p><span class="sp">Maya</span><span>How can we decide which issue to tackle first?</span></p><p><span class="sp">Leo</span><span>For each step, briefly explain what the data would reveal and mention one metric to track.</span></p><p><span class="sp">Maya</span><span>The operations team needs a concise plan for tomorrow’s meeting.</span></p><p><span class="sp">Leo</span><span>Limit your response to one hundred words and structure it as a numbered action plan.</span></p></div><div class="transcript-actions"><button type="button" class="copy-btn" id="copyListeningDialogue">Copy listening dialogue</button><button type="button" class="copy-btn" id="downloadListeningDialogue">Download audio transcript</button></div></div></details></div><div class="block step" data-step="Write your three lines, then say them · 5 min"><p>Build a new three-sentence prompt from these hints. Give enough detail for a colleague to judge the plan. Say each instruction before you type it.</p><label class="field-label" for="advMoveProcess">1. Process: evaluate two caption openings for first-time LumaAir buyers</label><textarea class="track save" data-k="advMoveProcess" id="advMoveProcess" placeholder="Outline the key steps you would take to …" data-goal="process"></textarea><label class="field-label" for="advMoveRationale">2. Rationale: explain each step’s purpose and name one measure of success</label><textarea class="track save" data-k="advMoveRationale" id="advMoveRationale" placeholder="For each …, briefly explain … and mention …" data-goal="rationale"></textarea><label class="field-label" for="advMoveFormat">3. Deliverable: no more than 90 words; three numbered steps</label><textarea class="track save" data-k="advMoveFormat" id="advMoveFormat" placeholder="Limit your response to … and structure it as …" data-goal="format"></textarea><details class="lesson-details"><summary>Compare with one possible three-move prompt</summary><div class="details-body"><ol><li>Outline the key steps you would take to evaluate two caption openings for first-time LumaAir buyers.</li><li>For each step, briefly explain how it supports the launch objective and mention one measure of success.</li><li>Limit your response to ninety words and structure it as three numbered steps.</li></ol></div></details><p class="note">Say your chain three times: carefully, at a natural pace, then without reading. Use <b>would + base verb</b> to elicit a proposed process.</p><ul class="ck"><li><input type="checkbox" class="track save" data-k="advMovesSpoken" id="advMovesSpoken"><label for="advMovesSpoken">I delivered the three instructions clearly without reading on my final attempt.</label></li></ul></div><div class="strip" data-strip></div></section>
+<section class="stage" id="s4" style="--c:var(--ef3-listen);--ct:#e8f1ec"><div class="sh"><span class="spine"></span><span class="num">4</span><div class="txt"><span class="skill">Listening</span><span class="clr">complete</span><h2>Media decode</h2></div><span class="time">20 min</span></div><p class="lead">Three sections, three question types. Follow the argument from effective prompts to practical design choices and response controls.</p><div class="block"><p class="media-credit"><a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ" target="_blank" rel="noopener noreferrer">Learn Better Prompt Engineering in 7 Minutes</a> · AWS Developers</p><p>Work through the video in three consecutive sections. Read each set of questions, watch its section, then answer. Questions follow the video’s order and cover its main ideas. Replay as needed before checking.</p><p class="note">Answer according to the speaker. Each player starts and stops at its section boundaries; YouTube links open the full video at the indicated start time. Check each set when every item is answered.</p></div><div class="block step" data-step="Video section 1 · True / False · 6 min" data-group="mediaSectionATFv1"><p class="tag"><b>Video section 1</b> · 0:00–2:27 · Why prompt design matters</p><div class="video media-section-player"><iframe id="mediaSection1" data-media-src="https://www.youtube-nocookie.com/embed/-Hjw0_PMyfQ?start=0&amp;end=147&amp;playsinline=1&amp;rel=0" title="AWS prompt engineering — section 1, 0:00–2:27" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p class="media-credit"><a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=0s" target="_blank" rel="noopener noreferrer">Open on YouTube at 0:00</a> · watch until 2:27</p><p>Decide whether each statement agrees with the speaker. Select <b>T = True</b> or <b>F = False</b>. For a false statement, think of a correction before checking.</p><ul class="tf numbered track media-tf" data-k="mediaAStatementsV1" data-a="T,F,F,T,T"><li><span class="s" id="mediaTfQuestion1"><span class="media-cue">0:08–0:19</span>The quality of an AI response depends partly on how the instructions are formulated.</span></li><li><span class="s" id="mediaTfQuestion2"><span class="media-cue">0:40–0:50</span>Once a prompt works well, the same approach is suitable regardless of the task, data or model.</span></li><li><span class="s" id="mediaTfQuestion3"><span class="media-cue">1:14–1:38</span>The revised business-summary prompt leaves the areas of analysis for the model to decide.</span></li><li><span class="s" id="mediaTfQuestion4"><span class="media-cue">1:39–1:52</span>The revised prompt asks for a rationale and a metric, and also specifies a length limit and a format.</span></li><li><span class="s" id="mediaTfQuestion5"><span class="media-cue">2:07–2:16</span>The speaker presents the organised prompt as a way to improve relevance and usefulness, rather than simply to produce more text.</span></li></ul><div class="checkbar"><button type="button" class="checkbtn">Check five statements</button><span class="res" role="status"></span></div><div class="gap-feedback" data-gap-feedback hidden><p class="tag"><b>Answers and evidence</b></p><ol><li><b>True</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=8s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 0:08–0:19">0:08–0:19</a><br>The opening connects better instructions with more useful AI output.</li><li><b>False</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=40s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 0:40–0:50">0:40–0:50</a><br>The appropriate approach depends on the task, the data and the language model.</li><li><b>False</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=74s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 1:14–1:38">1:14–1:38</a><br>It identifies particular areas to examine: market share, product performance and regional differences.</li><li><b>True</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=99s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 1:39–1:52">1:39–1:52</a><br>The instructions combine explanations and metrics with a word budget and a bullet-point structure.</li><li><b>True</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=127s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 2:07–2:16">2:07–2:16</a><br>At the end of the example, the speaker links the structured prompt to a more focused and useful answer.</li></ol><p class="note">Replay the evidence for any answer you missed, then explain the main idea in your own words.</p></div></div><div class="block step" data-step="Video section 2 · Multiple choice · 7 min" data-group="mediaSectionBMCQv1"><p class="tag"><b>Video section 2</b> · 2:27–4:58 · How to make instructions unambiguous</p><div class="video media-section-player"><iframe id="mediaSection2" data-media-src="https://www.youtube-nocookie.com/embed/-Hjw0_PMyfQ?start=147&amp;end=298&amp;playsinline=1&amp;rel=0" title="AWS prompt engineering — section 2, 2:27–4:58" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p class="media-credit"><a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=147s" target="_blank" rel="noopener noreferrer">Open on YouTube at 2:27</a> · watch until 4:58</p><p>Choose the best answer for each main idea. There is one correct option per question.</p><div class="mcq track" data-k="mediaB1"><p class="media-cue">2:29–2:47</p><p class="q" id="mediaMcqQuestion1"><span class="qn">1.</span>What is the central purpose of making instructions clear and complete?</p><div class="opts" data-a="2" role="group" aria-labelledby="mediaMcqQuestion1"><button type="button">A. To make the prompt detailed enough to cover unrelated tasks.</button><button type="button">B. To let the model choose the user’s expectations independently.</button><button type="button">C. To state expectations explicitly and reduce possible ambiguity.</button><button type="button">D. To ensure that every model produces exactly the same wording.</button></div><p class="why">Explicit expectations reduce confusion about the intended task; completeness does not mean adding unrelated detail or guaranteeing identical outputs. <span class="media-evidence">Evidence: <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=149s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 2:29–2:47">2:29–2:47</a></span></p></div><div class="mcq track" data-k="mediaB2"><p class="media-cue">2:58–3:33</p><p class="q" id="mediaMcqQuestion2"><span class="qn">2.</span>What can happen when a classification prompt omits the available categories?</p><div class="opts" data-a="0" role="group" aria-labelledby="mediaMcqQuestion2"><button type="button">A. The model may summarise the text instead of assigning a category.</button><button type="button">B. The model must refuse the request until a category list is supplied.</button><button type="button">C. The model automatically recovers the user’s intended category list.</button><button type="button">D. The model reduces the answer length but keeps the classification task.</button></div><p class="why">Without explicit choices, the model may interpret the task as general summarisation rather than classification. <span class="media-evidence">Evidence: <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=178s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 2:58–3:33">2:58–3:33</a></span></p></div><div class="mcq track" data-k="mediaB3"><p class="media-cue">3:37–4:05</p><p class="q" id="mediaMcqQuestion3"><span class="qn">3.</span>Where does the speaker recommend placing the main instruction and any classification choices?</p><div class="opts" data-a="3" role="group" aria-labelledby="mediaMcqQuestion3"><button type="button">A. Before all context, with the choices omitted from the final instruction.</button><button type="button">B. Inside the background information, separated from the main task.</button><button type="button">C. Across several positions, so each part repeats the same instruction.</button><button type="button">D. At the end of the prompt, so the requested task remains prominent.</button></div><p class="why">The video recommends placing the main task at the end, including answer choices there for classification tasks. <span class="media-evidence">Evidence: <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=217s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 3:37–4:05">3:37–4:05</a></span></p></div><div class="mcq track" data-k="mediaB4"><p class="media-cue">4:08–4:34</p><p class="q" id="mediaMcqQuestion4"><span class="qn">4.</span>Why does the speaker discuss separator characters such as line breaks?</p><div class="opts" data-a="1" role="group" aria-labelledby="mediaMcqQuestion4"><button type="button">A. They set how creative or predictable the generated response will be.</button><button type="button">B. They affect prompt formatting and how particular models respond.</button><button type="button">C. They define which customer segment the generated message addresses.</button><button type="button">D. They set the maximum number of words allowed in the final response.</button></div><p class="why">This section concerns the formatting of API prompts for particular models. Creativity and length controls are discussed separately. <span class="media-evidence">Evidence: <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=248s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 4:08–4:34">4:08–4:34</a></span></p></div><div class="mcq track" data-k="mediaB5"><p class="media-cue">4:37–4:55</p><p class="q" id="mediaMcqQuestion5"><span class="qn">5.</span>Which instruction most directly applies the advice about output indicators?</p><div class="opts" data-a="2" role="group" aria-labelledby="mediaMcqQuestion5"><button type="button">A. Use last quarter’s campaign as the background for your analysis.</button><button type="button">B. Adopt the perspective of a strategist working in online retail.</button><button type="button">C. Present your recommendations as a numbered list under 150 words.</button><button type="button">D. Consider the needs of first-time buyers when choosing examples.</button></div><p class="why">Output indicators specify the form of the response, such as a list, and can include a length requirement. <span class="media-evidence">Evidence: <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=277s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 4:37–4:55">4:37–4:55</a></span></p></div><div class="checkbar"><button type="button" class="checkbtn">Check five answers</button><span class="res" role="status"></span></div></div><div class="block step" data-step="Video section 3 · Gap-filling · 7 min" data-group="mediaSectionCGapsv1"><p class="tag"><b>Video section 3</b> · 4:58–7:20 · Controlling the response</p><div class="video media-section-player"><iframe id="mediaSection3" data-media-src="https://www.youtube-nocookie.com/embed/-Hjw0_PMyfQ?start=298&amp;end=440&amp;playsinline=1&amp;rel=0" title="AWS prompt engineering — section 3, 4:58–7:20" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p class="media-credit"><a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=298s" target="_blank" rel="noopener noreferrer">Open on YouTube at 4:58</a> · watch until 7:20</p><p>Complete these paraphrased summary sentences with <b>one or two words you hear</b>. Focus on what each control does and the speaker’s final advice. There is no word bank.</p><ul class="gap numbered media-gaps"><li><span class="s"><span class="media-cue">4:58–5:11</span>The settings used to regulate a model’s generated response are called <input type="text" class="gapin track" data-k="mediaC1" data-a="inference parameters" aria-label="Video section 3, question 1: one or two words" autocomplete="off" autocapitalize="off" spellcheck="false" size="20">.</span></li><li><span class="s"><span class="media-cue">5:25–5:36</span>For more predictable output, the video recommends a lower temperature to make responses more <input type="text" class="gapin track" data-k="mediaC2" data-a="deterministic" aria-label="Video section 3, question 2: one or two words" autocomplete="off" autocapitalize="off" spellcheck="false" size="13">.</span></li><li><span class="s"><span class="media-cue">5:40–5:53</span>Maximum generation length caps the number of <input type="text" class="gapin track" data-k="mediaC3" data-a="tokens" aria-label="Video section 3, question 3: one or two words" autocomplete="off" autocapitalize="off" spellcheck="false" size="10"> the model produces.</span></li><li><span class="s"><span class="media-cue">6:04–6:13</span>With top P below 1, the model favours the most <input type="text" class="gapin track" data-k="mediaC4" data-a="probable" aria-label="Video section 3, question 4: one or two words" autocomplete="off" autocapitalize="off" spellcheck="false" size="10"> token choices.</span></li><li><span class="s"><span class="media-cue">6:17–6:32</span>The model stops generating when it encounters the <input type="text" class="gapin track" data-k="mediaC5" data-a="end token|end sequence" aria-label="Video section 3, question 5: one or two words" autocomplete="off" autocapitalize="off" spellcheck="false" size="10">.</span></li><li><span class="s"><span class="media-cue">6:44–6:59</span>The closing advice emphasises <input type="text" class="gapin track" data-k="mediaC6" data-a="specificity" aria-label="Video section 3, question 6: one or two words" autocomplete="off" autocapitalize="off" spellcheck="false" size="11"> when experimenting with different prompt styles.</span></li></ul><div class="checkbar"><button type="button" class="checkbtn">Check six gaps</button><span class="res" role="status"></span></div><div class="gap-feedback" data-gap-feedback hidden><p class="tag"><b>Answers and evidence</b></p><ol><li><b>inference parameters</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=298s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 4:58–5:11">4:58–5:11</a><br>This section introduces inference parameters as adjustable controls on the model’s response.</li><li><b>deterministic</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=325s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 5:25–5:36">5:25–5:36</a><br>The speaker associates lower temperature with more deterministic output and higher temperature with more variation.</li><li><b>tokens</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=340s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 5:40–5:53">5:40–5:53</a><br>This limit is measured in tokens, rather than in words or complete sentences.</li><li><b>probable</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=364s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 6:04–6:13">6:04–6:13</a><br>The explanation describes narrowing the candidate tokens by probability and ignoring less likely options.</li><li><b>end token / end sequence</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=377s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 6:17–6:32">6:17–6:32</a><br>An end token or end sequence marks the stopping point for generation. Either term is accepted.</li><li><b>specificity</b> · <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=404s" target="_blank" rel="noopener noreferrer" aria-label="Replay evidence at 6:44–6:59">6:44–6:59</a><br>The closing message encourages experimentation while keeping requests precise and specific.</li></ol><p class="note">Replay the evidence for any answer you missed, then explain the main idea in your own words.</p></div></div><div class="strip" data-strip></div></section>
+<section class="stage" id="s5" style="--c:var(--ef3-speak);--ct:#eaf7ea"><div class="sh"><span class="spine"></span><span class="num">5</span><div class="txt"><span class="skill">Speaking</span><span class="clr">complete</span><h2>Pushback lab</h2></div><span class="time">18 min</span></div><p class="lead">One self-study activity: challenge an unsupported recommendation by requesting a concise, testable evaluation plan.</p><div class="block step" data-step="Challenge one recommendation with a three-move request"><p class="tag"><b>Solo task</b> · one response, three sentences</p>
+<div class="brief-card"><h3>Your brief</h3><dl class="brief-grid">
+<dt>Campaign</dt><dd>A LumaAir Instagram caption for busy office workers who are first-time buyers</dd>
+<dt>Approved facts</dt><dd>A lightweight, fragrance-free gel moisturiser that absorbs quickly</dd>
+<dt>Caption requirements</dt><dd>Friendly and practical · under 30 words · 10% off until Sunday · end with “Shop the launch.”</dd>
+</dl></div>
+<div class="prompt"><p class="tag"><b>The AI’s draft</b></p><p class="q">Attention, valued consumers! Discover LumaAir, a lightweight, fragrance-free gel moisturiser that absorbs quickly. Enjoy 10% off until Sunday. Shop the launch.</p></div>
+<div class="push"><p class="said">The AI suggests: “This sounds professional, so it should perform well. Let’s publish it.”</p></div>
+<p class="note">The facts are accurate, but the opening is formal and performance has not been tested. A polished tone alone does not establish effectiveness.</p>
+<p><b>Your task:</b> push back with one three-sentence prompt asking for an evaluation plan before publication. Use all three moves: request a process, require a brief rationale and a relevant success measure for each step, then set the plan’s length and format.</p>
+<p class="note">Work on your own with the brief above. The AI’s plan should be no more than 90 words in three bullet points; the finished caption still needs to be under 30 words. Your feedback prompt has no word limit.</p><label class="field-label" for="advSoloResponse">Your three-sentence evaluation request</label><textarea class="track save" data-k="advSoloResponse" id="advSoloResponse" placeholder="Outline the key steps you would take to …
+For each …, briefly explain … and mention …
+Limit your response to … and structure it as …"></textarea><p>Write and say your response. Compare it with the model, improve one unclear instruction, then deliver it aloud again. Tick the three checks for your final version.</p><ul class="ck"><li><input type="checkbox" class="track save" data-k="advSoloProcess" id="advSoloProcess"><label for="advSoloProcess">I requested an evaluation process tied to the caption, audience and campaign objective.</label></li><li><input type="checkbox" class="track save" data-k="advSoloRationale" id="advSoloRationale"><label for="advSoloRationale">I asked for a rationale and a relevant success measure for each step.</label></li><li><input type="checkbox" class="track save" data-k="advSoloFormat" id="advSoloFormat"><label for="advSoloFormat">I specified a 90-word maximum and three bullet points for the plan.</label></li></ul><details class="lesson-details"><summary>Compare with one possible response</summary><div class="details-body"><div class="model model-pre">Outline the key steps you would take to test whether this LumaAir caption works for first-time buyers.
+For each step, briefly explain how it checks the brief and mention one measure of success, such as click-through rate for the call to action.
+Limit your response to ninety words and structure it as three bullet points.</div><p class="note">A success measure should match the purpose of the step. For example, check approved claims for factual accuracy and click-through rate for the CTA. Ask for measures to use; do not invent campaign results.</p></div></details></div><div class="strip" data-strip></div></section>
+<section class="stage" id="s6" style="--c:var(--ef3-write);--ct:#f6f4ed"><div class="sh"><span class="spine"></span><span class="num">6</span><div class="txt"><span class="skill">Writing</span><span class="clr">complete</span><h2>Output &amp; recap</h2></div><span class="time">10 min</span></div><p class="lead">Deliver the briefing again, evaluate your three moves, and transfer them to a decision at work.</p><div class="block step" data-step="Answer the opening question again · 3 min"><div class="prompt"><p class="q">How would you ask an AI assistant for a plan to develop and evaluate a launch caption?</p></div><label class="field-label" for="advRecap">Your handover notes</label><textarea class="track save" data-k="advRecap" id="advRecap" placeholder="Proposed process / rationale and success measure / length and format"></textarea><ul class="ck"><li><input type="checkbox" class="track save" data-k="advRecapSpoken" id="advRecapSpoken"><label for="advRecapSpoken">I gave a concise handover using all three moves.</label></li></ul><p class="note">Return to your three notes from part 1. Which missing phrases can you now say precisely?</p></div><div class="block step" data-step="Three self-checks and one correction · 4 min"><ul class="ck"><li><input type="checkbox" class="track save" data-k="advSc1" id="advSc1" data-goal="process"><label for="advSc1">I can elicit a process for a specific business objective.</label></li><li><input type="checkbox" class="track save" data-k="advSc2" id="advSc2" data-goal="rationale"><label for="advSc2">I can require a rationale and a relevant success measure.</label></li><li><input type="checkbox" class="track save" data-k="advSc3" id="advSc3" data-goal="format"><label for="advSc3">I can combine a word budget with a usable output format.</label></li></ul><label class="field-label" for="advCorrection">One sentence I improved</label><textarea class="track save" data-k="advCorrection" id="advCorrection" placeholder="Original sentence → more precise sentence"></textarea></div><div class="block step" data-step="Set up the homework · 3 min"><p>Replay the worked example at 1:14–1:48. Choose a work decision that needs a plan. Use the three chunks to request a process, a rationale and measure for each step, and a compact deliverable.</p><label class="field-label" for="advHomework">My work decision and three-move request</label><textarea class="track save" data-k="advHomework" id="advHomework" placeholder="Outline the key steps … / For each … / Limit your response …"></textarea><p class="note">Say the request aloud, then sharpen one instruction. Bring it to Session 03. No AI account is needed.</p></div><div class="block" style="max-width:none"><p class="tag"><b>Your session result</b></p><div class="results" id="results"><p class="big" id="rTotal">0/0</p><p class="sub" id="rSub">Nothing checked yet</p><div class="stats" id="rStats"></div><p class="note">Quiz scores cover fixed-answer practice. Speaking quality and open responses use your self-checks or your teacher’s feedback.</p><div class="tvn"><div class="col"><h4>Your first prompt</h4><div id="tvnThen"></div></div><div class="col now"><h4>Your evaluation request</h4><div id="tvnNow"></div></div></div><p class="arrowline" id="tvnLine"></p><table style="margin-top:18px"><tbody id="rRows"></tbody></table><div class="fin-banner" id="finBanner"><h3>Session complete</h3><p id="finText"></p></div><button type="button" class="reset" data-reset>Reset progress</button></div></div><details class="lesson-details source-note"><summary>Lesson references</summary><div class="details-body"><p>The Session 02 topic and assigned clip follow <i>E-com Fluency 3: The AI Edge</i>. The six-part sequence follows Session 01, with time allocated for a 90-minute lesson. The dialogue, campaign brief, quizzes, and model answers are original English2impact practice material.</p><p>The practice guide uses clear instructions, relevant context, a reference example, and an explicit output format, consistent with <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/design-a-prompt.html" target="_blank" rel="noopener">AWS: Design a prompt</a>. The three speaking patterns are adapted from the clip’s worked example at <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=74s" target="_blank" rel="noopener noreferrer">1:14</a>, <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=99s" target="_blank" rel="noopener noreferrer">1:39</a> and <a href="https://www.youtube.com/watch?v=-Hjw0_PMyfQ&amp;t=106s" target="_blank" rel="noopener noreferrer">1:46</a>. The dialogue applies these patterns to an original marketing scenario; it is not a transcript of the video.</p></div></details><div class="strip" data-strip></div></section><p class="end lesson-end" id="lessonEnd">Session 02 · Your answers save in this browser, on this device.</p><p class="brandline lesson-end" id="lessonBrandline"><b>English2impact</b> · Bạn giỏi nghề. Giờ giỏi cả tiếng Anh.</p>
 </main>
 <div class="railwrap">
 <nav class="rail" id="rail" aria-label="Lesson progress">
-<h4>Lesson roadmap</h4>
-<p class="rail-caption">5 stages · 90 minutes</p>
+<h4>Lesson parts</h4>
+<p class="rail-caption">6 parts · 90 minutes</p>
 <ol id="railList"></ol>
 <div class="rail-summary">
 <p class="rail-label">Stages complete</p>
-<p class="rail-count"><b id="stagesComplete">0</b><span>/ 5</span></p>
+<p class="rail-count"><b id="stagesComplete">0</b><span>/ 6</span></p>
 <div class="track2 railbar"><i id="railBar"></i></div>
 <p class="railpct" id="railPct">0% complete</p>
 <p class="railsc" id="railSc">0/0 correct</p>
@@ -890,14 +1067,28 @@ Return a numbered list of three captions. End each one with &#x27;Shop the launc
 </div>
 </div>
 </div>
+
+<nav class="page-navigation" aria-label="Lesson pages">
+<button type="button" class="page-prev" id="previousPage"><span aria-hidden="true">←</span><span>Previous</span></button>
+<button type="button" class="page-parts" id="partsToggle" aria-haspopup="dialog" aria-controls="partsDialog" aria-expanded="false"><span>Parts</span><small id="pageCount">1 / 6</small></button>
+<button type="button" class="page-next" id="nextPage"><span id="nextPageLabel">Next</span><span aria-hidden="true">→</span></button>
+</nav>
+<p class="sr-only page-announcement" id="pageAnnouncement" role="status" aria-live="polite" aria-atomic="true"></p>
 </div>
+
+<dialog class="parts-dialog" id="partsDialog" aria-labelledby="partsTitle">
+<div class="parts-dialog-header"><div><p>Session 02 · 90 minutes</p><h2 id="partsTitle">Your lesson, in six parts.</h2></div><button type="button" class="parts-close" id="closeParts" aria-label="Close lesson parts">×</button></div>
+<nav aria-label="Choose a lesson part"><ol class="part-menu-list" id="partMenuList"></ol></nav>
+<p class="parts-summary" id="partsSummary">Choose any part. Your answers stay saved as you move.</p>
+</dialog>
+<noscript><p style="padding:20px">Enable JavaScript for page navigation, exercises and saved progress. All six lesson parts are displayed below the header.</p></noscript>
 <script>
 (function(){
 "use strict";
-/* term, VN, EN definition, example from the video (term blanked), correct, distractors */
+/* VN, EN definition, original marketing example (term blanked), term, distractors */
 var TERMS = [["câu lệnh cho AI", "The instruction you give an AI model.", "The marketer rewrote the ___ to tell the AI exactly what to produce.", "prompt", ["output format", "brand voice"]], ["thông tin bối cảnh", "Background information that helps explain the task.", "The campaign goal and product details give the AI useful ___ before it writes.", "context", ["word limit", "call to action"]], ["nhóm khách hàng mục tiêu", "The people a message is intended to reach.", "Our ___ is busy office workers buying this moisturiser for the first time.", "target audience", ["reference example", "acceptance criteria"]], ["giọng điệu thương hiệu", "The consistent personality of a brand’s communication.", "The caption should match our ___: friendly, practical, and calm.", "brand voice", ["output format", "word limit"]], ["điều kiện giới hạn", "A rule that narrows what an acceptable answer can contain.", "No emojis is a ___ that every generated caption must follow.", "constraint", ["reference example", "iteration"]], ["giới hạn số từ", "The maximum length allowed, measured in words.", "A caption with 52 words exceeds our ___ of 44 words.", "word limit", ["brand voice", "target audience"]], ["định dạng đầu ra", "The structure in which the answer should be presented.", "Specify the ___ as a numbered list, so the three drafts are easy to compare.", "output format", ["context", "unsupported claim"]], ["ví dụ tham khảo", "A sample that shows the kind of result or style you want.", "Attach a ___ to demonstrate the tone, without asking the AI to copy its wording.", "reference example", ["word limit", "constraint"]], ["lời kêu gọi hành động", "The words that tell the reader what to do next.", "End the caption with a clear ___: Shop the launch.", "call to action", ["context", "iteration"]], ["tuyên bố chưa có cơ sở", "A statement that is not backed by the supplied evidence.", "The brief contains no clinical results, so erases wrinkles overnight is an ___.", "unsupported claim", ["output format", "acceptance criteria"]], ["lần chỉnh sửa và thử lại", "A new attempt made after reviewing an earlier version.", "In the next ___, change the opening and check whether the caption improves.", "iteration", ["target audience", "brand voice"]], ["các tiêu chí đạt yêu cầu", "The checks a result must pass before you accept it.", "Correct facts, the required CTA, and the right length are our ___.", "acceptance criteria", ["context", "reference example"]]];
-var PAIRS = {"m1": [["give", "context"], ["define", "the target audience"], ["set", "a word limit"], ["match", "the brand voice"], ["specify", "the output format"], ["remove", "unsupported claims"]]};
-var GOALS = {brief:"Give a usable brief",limits:"Set clear constraints",refine:"Request a precise revision"};
+var PAIRS = {"m1": [["give", "context"], ["define", "the target audience"], ["set", "a word limit"], ["match", "the brand voice"], ["specify", "the output format"], ["remove", "unsupported claims"]], "m2": [["output format", "The structure in which the answer should be presented."], ["reference example", "A sample that shows the kind of result or style you want."], ["call to action", "The words that tell the reader what to do next."], ["unsupported claim", "A statement that is not backed by the supplied evidence."], ["iteration", "A new attempt made after reviewing an earlier version."], ["acceptance criteria", "The checks a result must pass before you accept it."]]};
+var GOALS = {process:"Elicit a process",rationale:"Require a rationale and measure",format:"Constrain the deliverable"};
 var KEY = "e2i-ef3-s02-prompting-v1", store = {}, t = null, RESETTERS = [], PAINTERS = [];
 try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ store = {}; }
 function flush(){
@@ -927,10 +1118,16 @@ return el.getBoundingClientRect().top - lessonViewport.getBoundingClientRect().t
 }
 function goTo(el){
 if (!el) return;
-lessonViewport.scrollBy({
-top:vTop(el) - 16,
-behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
-});
+var sec = el.closest ? el.closest(".stage") : null;
+if (sec && sections && currentPage !== sections.indexOf(sec)){
+showPage(sec.id, {history:"push", focus:true, target:el});
+return;
+}
+if (el.classList && el.classList.contains("head")){
+document.getElementById("lessonGoals").open = true;
+}
+lessonViewport.scrollBy({top:vTop(el) - 16,
+behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
 }
 /* ---------- toast + streak (the quiet reward layer) ---------- */
 var toastEl = document.getElementById("toast"), toastT = null;
@@ -974,7 +1171,7 @@ timerButton.addEventListener("click", function(){
 if (sessionStarted !== null){ pauseSession(); return; }
 var first = sessionSeconds === 0;
 sessionStarted = Date.now(); paintTimer();
-if (first) goTo(document.getElementById("s1"));
+if (first) goTo(sections[currentPage] || document.getElementById("s1"));
 });
 setInterval(function(){ if (sessionStarted !== null) paintTimer(); }, 1000);
 setInterval(function(){ if (sessionStarted !== null) flush(); }, 10000);
@@ -986,7 +1183,8 @@ paintTimer();
 
 
 /* Audio is intentionally empty until the teacher supplies the recording. */
-var DIALOGUE_TRANSCRIPT = "Claire: The AI captions sound polished, but none of them are usable. What did you ask for?\n\nNathan: Just, 'Write an exciting caption for our new moisturiser.' I thought it would infer the rest.\n\nClaire: That's the problem. Start with the task and the target audience.\n\nNathan: Write three Instagram captions for busy office workers trying LumaAir for the first time. Is that specific enough?\n\nClaire: Better. Add the context: we want people to visit the product page, not necessarily buy immediately.\n\nNathan: I'll include the approved facts: it's a fifty-millilitre, lightweight, fragrance-free gel moisturiser that absorbs quickly.\n\nClaire: Good. Make sure it mentions the ten percent launch discount and says the offer ends on Sunday.\n\nNathan: What about the brand voice? The current drafts sound like they're shouting.\n\nClaire: Make sure it sounds friendly and practical, not overexcited.\n\nNathan: Keep it under forty-five words per caption. Does that include the call to action?\n\nClaire: Yes, everything. Use the product brief, and avoid unsupported claims.\n\nNathan: So the line about erasing wrinkles overnight has to go. That isn't in the brief.\n\nClaire: Exactly. Add one reference example, but tell it to imitate the tone, not copy the wording.\n\nNathan: Here's one: 'Lightweight care for a busy day. Explore a simple addition to your routine.'\n\nClaire: That works. What output format will make the drafts easy to compare?\n\nNathan: A numbered list of three captions. Each one should end with 'Shop the launch.'\n\nClaire: Now the second version is closer, but the opening still reads like a product catalogue.\n\nNathan: Revise the opening so that it speaks to a busy morning, while keeping the offer and call to action.\n\nClaire: Good. Change that part only, so we don't lose the other constraints.\n\nNathan: And for the next iteration, I'll compare the new opening with the old one and check the word limit again.\n\nClaire: What are our acceptance criteria?\n\nNathan: Three captions, under forty-five words each, approved facts only, the correct offer, a friendly voice, and the exact call to action.\n\nClaire: Great. Save the prompt and the chosen draft together, so the team can reuse the brief.\n\nNathan: Got it. I'll review every claim and count the words before anything goes live.\n";
+var READING_DIALOGUE_TRANSCRIPT = "Claire: The AI gave us another generic caption. How do we get a useful plan?\n\nNathan: Outline the key steps you would take to develop a LumaAir caption for first-time buyers.\n\nClaire: How can we judge whether the plan is any good?\n\nNathan: For each step, briefly explain your approach and mention one measure of success.\n\nClaire: We need something the team can review quickly.\n\nNathan: Limit your response to ninety words and structure it as three bullet points.\n";
+var LISTENING_DIALOGUE_TRANSCRIPT = "Maya: Customers are abandoning checkout. How should we brief the AI?\n\nLeo: Outline the key steps you would take to identify where customers drop out of Northline’s checkout.\n\nMaya: How can we decide which issue to tackle first?\n\nLeo: For each step, briefly explain what the data would reveal and mention one metric to track.\n\nMaya: The operations team needs a concise plan for tomorrow’s meeting.\n\nLeo: Limit your response to one hundred words and structure it as a numbered action plan.\n";
 function wordCount(text){return String(text||"").trim().split(/\s+/).filter(Boolean).length;}
 function paintWordCounts(){
 each("[data-count-for]",function(label){
@@ -1005,11 +1203,14 @@ function copyText(text){
 if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function(){toast("Copied");},function(){fallbackCopy(text);});
 else fallbackCopy(text);
 }
-document.getElementById("copyDialogue").addEventListener("click",function(){copyText(DIALOGUE_TRANSCRIPT);});
-document.getElementById("downloadDialogue").addEventListener("click",function(){
-var url=URL.createObjectURL(new Blob([DIALOGUE_TRANSCRIPT],{type:"text/plain;charset=utf-8"}));
-var a=document.createElement("a");a.href=url;a.download="s02-dialogue-transcript.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},1000);
-});
+function downloadTranscript(text, filename){
+var url=URL.createObjectURL(new Blob([text],{type:"text/plain;charset=utf-8"}));
+var a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},1000);
+}
+document.getElementById("copyDialogue").addEventListener("click",function(){copyText(READING_DIALOGUE_TRANSCRIPT);});
+document.getElementById("downloadDialogue").addEventListener("click",function(){downloadTranscript(READING_DIALOGUE_TRANSCRIPT,"s02-reading-dialogue-transcript.txt");});
+document.getElementById("copyListeningDialogue").addEventListener("click",function(){copyText(LISTENING_DIALOGUE_TRANSCRIPT);});
+document.getElementById("downloadListeningDialogue").addEventListener("click",function(){downloadTranscript(LISTENING_DIALOGUE_TRANSCRIPT,"s02-dialogue-transcript.txt");});
 each("[data-copy]",function(btn){btn.addEventListener("click",function(){var target=document.getElementById(btn.getAttribute("data-copy"));if(target)copyText(target.textContent);});});
 
 /* ---------- audio slot: soundcloud url, direct mp3, or pending ---------- */
@@ -1030,7 +1231,7 @@ var placeholder = (!src || src.indexOf("SOUNDCLOUD_URL") === 0 || src.indexOf("A
 if (placeholder){
 var d = document.createElement("div");
 d.className = "pending";
-d.textContent = "Dialogue recording coming soon. Open the transcript below and practise the two roles for now.";
+d.textContent = "Northline dialogue recording coming soon. For now, read and close the listening transcript in this activity before completing the gaps.";
 box.appendChild(d);
 return;
 }
@@ -1038,8 +1239,10 @@ if (src.indexOf("w.soundcloud.com/player") > -1){
 var fw = document.createElement("iframe");
 fw.setAttribute("allow", "autoplay; encrypted-media");
 fw.setAttribute("scrolling", "no");
-fw.setAttribute("title", "Scenario audio");
-fw.src = src;
+fw.setAttribute("title", box.getAttribute("data-track") || "Scenario audio");
+fw.setAttribute("height", "20");
+fw.setAttribute("width", "100%");
+fw.setAttribute("data-media-src", src);
 box.appendChild(fw);
 credit(box);
 return;
@@ -1049,9 +1252,9 @@ var f = document.createElement("iframe");
 f.setAttribute("allow", "autoplay; encrypted-media");
 f.setAttribute("scrolling", "no");
 f.setAttribute("title", "Scenario audio");
-f.src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(src) +
+f.setAttribute("data-media-src", "https://w.soundcloud.com/player/?url=" + encodeURIComponent(src) +
 "&color=%23d97757&auto_play=false&hide_related=true&show_comments=false" +
-"&show_user=false&show_reposts=false&show_teaser=false&visual=false";
+"&show_user=false&show_reposts=false&show_teaser=false&visual=false");
 box.appendChild(f);
 credit(box);
 } else {
@@ -1092,14 +1295,17 @@ var inp = li.querySelector("input");
 if (!inp) return;
 PAINTERS.push(function(){ li.classList[inp.checked ? "add" : "remove"]("on"); });
 });
-each("[data-group] .mcq, [data-group] .tf, [data-group] .gapin", function(el){ el.deferred = true; el.graded = get("chk:" + el.closest("[data-group]").getAttribute("data-group")) === true; });
+each("[data-group] .mcq, [data-group] .tf, [data-group] .gapin", function(el){
+el.deferred = true;
+el.graded = get("chk:" + el.closest("[data-group]").getAttribute("data-group")) === true;
+});
 /* ---------- gap fill ---------- */
 each(".gapin", function(inp){
 var k = inp.getAttribute("data-k"), v0 = get(k);
 if (typeof v0 === "string") inp.value = v0;
 function ok(){
 var ans = (inp.getAttribute("data-a")||"").toLowerCase().split("|");
-var val = inp.value.trim().toLowerCase().replace(/[.,]$/,"");
+var val = inp.value.trim().toLowerCase().replace(/\s+/g," ").replace(/[.,;:!?]+$/,"").trim();
 return ans.indexOf(val) > -1;
 }
 inp.correct = ok;
@@ -1149,6 +1355,7 @@ var btns = opts.querySelectorAll("button");
 box.correctIndex = correct;
 function pick(i, quiet){
 if (box.deferred && !box.graded){
+if (why) why.className = "why";
 Array.prototype.forEach.call(btns, function(b,j){ b.className = (j === i) ? "sel" : ""; b.disabled = false; });
 if (!quiet){ set(k, i); refresh(); }
 return;
@@ -1213,6 +1420,8 @@ bts.className = "bts";
 ["T","F"].forEach(function(v){
 var b = document.createElement("button");
 b.type = "button"; b.textContent = v; b.setAttribute("data-v", v);
+var question = li.querySelector(".s");
+if (question && question.id) b.setAttribute("aria-label", "Statement " + (i+1) + ": " + (v === "T" ? "True" : "False"));
 b.addEventListener("click", function(){
 if (saved[i] && !(box.deferred && !box.graded)) return;
 saved[i] = v; set(k, saved); paint(li, i); refresh();
@@ -1411,7 +1620,7 @@ var known = c[0] + c[1], html = "";
 if (!miss.length && known >= items.length){
 html += '<p class="sc mastered">' + items.length + ' of ' + items.length + ' mastered</p>' +
 '<p class="note" style="margin:0">Knew ' + c[0] + ' cold, recovered ' + c[1] +
-' in the drill. All twelve are correct. Now try saying the terms in your own sentences.</p>';
+' in the drill. Every term is now one you can produce, not just recognise.</p>';
 } else {
 html += '<p class="sc">' + known + ' of ' + items.length + ' known</p>' +
 '<p class="note" style="margin:0">' +
@@ -1625,7 +1834,7 @@ if (cleared){
 strip.innerHTML = '<span class="win">✓ Stage cleared</span>' +
 '<span class="bar"><i style="width:100%"></i></span>' +
 '<span>' + (s[3] ? '<b>' + s[2] + '/' + s[3] + '</b> correct' : 'all steps done') + '</span>' +
-(i < sections.length - 1 ? '<button type="button" class="jump" data-jump="' + (i+1) + '">Next stage ↓</button>' : '');
+(i < sections.length - 1 ? '<button type="button" class="jump" data-jump="' + (i+1) + '">Next part →</button>' : '');
 } else {
 strip.innerHTML = '<span><b>' + sdone + '</b> of ' + steps.length + ' steps done</span>' +
 '<span class="bar"><i style="width:' + (steps.length ? Math.round(sdone/steps.length*100) : 0) + '%"></i></span>' +
@@ -1657,6 +1866,7 @@ document.getElementById("rSub").textContent = A ?
 ("Checked answers so far · " + Math.round(C/A*100) + "% right") : "Nothing checked yet";
 document.getElementById("rRows").innerHTML = rows;
 paintNext(open);
+updatePageNav();
 report(C, A);
 resize();
 }
@@ -1685,33 +1895,178 @@ return out;
 }
 function report(C, A){
 var gbox=document.querySelector(".guess"), ts=(gbox && gbox.termStats)?gbox.termStats():[0,0,0];
-var used=[1,2,3,4,5].filter(function(n){return get("use"+n)===true;}).length;
-document.getElementById("rStats").innerHTML='<div class="stat"><b>'+ (A?Math.round(C/A*100):0) +'%</b><span>correct in checked practice</span></div><div class="stat"><b>'+A+'</b><span>answers checked</span></div><div class="stat"><b>'+(ts[0]+ts[1])+'/12</b><span>terms answered correctly</span></div><div class="stat"><b>'+used+'/5</b><span>chunks used in roleplay</span></div>';
-var before=String(get("coldPrompt")||""), after=String(get("finalPrompt")||"");
-document.getElementById("tvnThen").innerHTML=before?'<p class="model-pre">'+esc(before)+'</p>':'<p class="empty">Your first prompt from stage 1 appears here.</p>';
-document.getElementById("tvnNow").innerHTML=after?'<p class="model-pre">'+esc(after)+'</p>':'<p class="empty">Your final prompt from stage 4 appears here.</p>';
-document.getElementById("tvnLine").textContent='Compare the task, audience, facts, constraints, and revision request. Name one concrete improvement.';
+var used=["advSoloProcess","advSoloRationale","advSoloFormat"].filter(function(key){return get(key)===true;}).length;
+document.getElementById("rStats").innerHTML='<div class="stat"><b>'+ (A?Math.round(C/A*100):0) +'%</b><span>correct in checked practice</span></div><div class="stat"><b>'+A+'</b><span>answers checked</span></div><div class="stat"><b>'+(ts[0]+ts[1])+'/12</b><span>terms answered correctly</span></div><div class="stat"><b>'+used+'/3</b><span>moves self-checked in your solo response</span></div>';
+var before=String(get("coldPrompt")||""), after=String(get("advSoloResponse")||"");
+document.getElementById("tvnThen").innerHTML=before?'<p class="model-pre">'+esc(before)+'</p>':'<p class="empty">Your first prompt from part 1 appears here.</p>';
+document.getElementById("tvnNow").innerHTML=after?'<p class="model-pre">'+esc(after)+'</p>':'<p class="empty">Your three-sentence request from Pushback lab appears here.</p>';
+document.getElementById("tvnLine").textContent='Compare the process, the rationale and measure, and the deliverable. Name one instruction that is now more precise.';
 var doneAll=sections.every(function(sec){return sec.classList.contains("cleared");});
 var banner=document.getElementById("finBanner");
 if(doneAll){
-if(!banner.classList.contains("on") && booted) toast("Session complete — all five stages");
+if(!banner.classList.contains("on") && booted) toast("Session complete — all six parts");
 banner.classList.add("on");
-document.getElementById("finText").textContent='All five stages complete. '+C+' of '+A+' checked answers correct, '+(ts[0]+ts[1])+' of 12 terms correct, and '+used+' of five chunks used. Bring one real prompt and a precise revision request to Session 03.';
+document.getElementById("finText").textContent='All six parts complete. '+C+' of '+A+' checked answers correct, '+(ts[0]+ts[1])+' of 12 terms correct, and '+used+' of three moves self-checked. Bring one precise three-move request to Session 03.';
 }else{banner.classList.remove("on");}
 }
-var activeSection = -1;
-function active(){
-var cur = 0;
-sections.forEach(function(sec,i){ if (vTop(sec) - 60 <= 0) cur = i; });
-if (cur === activeSection) return;
-activeSection = cur;
-links.forEach(function(a,i){ a.classList.toggle("on", i === cur); if (i === cur) a.setAttribute("aria-current", "step"); else a.removeAttribute("aria-current"); });
-if (lessonJump && sections[cur]) lessonJump.value = sections[cur].id;
-var hs = document.getElementById("hudSec");
-if (hs && sections[cur]){
-var nEl = sections[cur].querySelector(".num");
-hs.textContent = (nEl ? nEl.textContent + ". " : "") + sections[cur].querySelector("h2").textContent;
+/* ---------- page navigation: one visible part, shared answers ---------- */
+var currentPage = -1, pageReady = false, pageFrame = 0;
+var pagePrev = document.getElementById("previousPage"), pageNext = document.getElementById("nextPage");
+var partsToggle = document.getElementById("partsToggle"), partsDialog = document.getElementById("partsDialog");
+var menuList = document.getElementById("partMenuList"), menuLinks = [], restoreMenuFocus = true;
+sections.forEach(function(sec, i){
+var heading = sec.querySelector("h2");
+heading.id = sec.id + "Title"; heading.tabIndex = -1;
+sec.setAttribute("aria-labelledby", heading.id);
+var li = document.createElement("li"), link = document.createElement("a");
+link.href = "#" + sec.id;
+link.innerHTML = '<span class="part-number">' + (i+1) + '</span><span class="part-name">' +
+esc(heading.textContent) + '</span><span class="part-meta">' + esc(sec.querySelector(".time").textContent) +
+'<span class="part-state"></span></span>';
+link.addEventListener("click", function(e){
+e.preventDefault(); closeParts(false); showPage(sec.id, {history:"push",focus:true});
+});
+li.appendChild(link); menuList.appendChild(li); menuLinks.push(link);
+});
+function pageIndex(id){
+return sections.findIndex(function(sec){ return sec.id === id; });
 }
+function routeFromHash(){
+var id = window.location.hash.slice(1);
+if (pageIndex(id) !== -1) return {id:id};
+var target = id ? document.getElementById(id) : null;
+var sec = target && target.closest ? target.closest(".stage") : null;
+return sec ? {id:sec.id,target:target} : null;
+}
+function syncPageMedia(){
+sections.forEach(function(sec, i){
+each("iframe[data-media-src]", function(frame){
+if (i === currentPage){
+if (!frame.hasAttribute("src")) frame.setAttribute("src",frame.getAttribute("data-media-src"));
+} else if (frame.hasAttribute("src")){ frame.removeAttribute("src"); }
+},sec);
+if (i !== currentPage) each("audio, video", function(media){ media.pause(); },sec);
+});
+}
+function updatePageNav(){
+if (!pageReady || currentPage < 0) return;
+var sec = sections[currentPage], last = currentPage === sections.length - 1;
+document.getElementById("pagePosition").textContent = "PART " + String(currentPage+1).padStart(2,"0") + " / 06";
+document.getElementById("pageCount").textContent = (currentPage+1) + " / " + sections.length;
+partsToggle.setAttribute("aria-label", "Choose a lesson part. Current part " + (currentPage+1) + " of " + sections.length + ": " + sec.querySelector("h2").textContent);
+pagePrev.disabled = currentPage === 0;
+pagePrev.setAttribute("aria-label", currentPage > 0 ? "Previous part: " + sections[currentPage-1].querySelector("h2").textContent : "Previous part, you are at the beginning");
+pageNext.setAttribute("aria-label", last ? "View your session results" : "Next part: " + sections[currentPage+1].querySelector("h2").textContent);
+document.getElementById("nextPageLabel").textContent = last ? "Results" : "Next";
+document.getElementById("lessonEnd").hidden = !last;
+document.getElementById("lessonBrandline").hidden = !last;
+links.forEach(function(a,i){
+a.classList.toggle("on",i === currentPage);
+if (i === currentPage) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+});
+menuLinks.forEach(function(a,i){
+var done = sections[i].classList.contains("cleared");
+a.classList.toggle("done",done);
+a.querySelector(".part-number").textContent = done ? "✓" : String(i+1);
+a.querySelector(".part-state").textContent = done ? "Complete" : (i === currentPage ? "Current" : "");
+if (i === currentPage) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+});
+lessonJump.value = sec.id;
+var count = sections.filter(function(s){return s.classList.contains("cleared");}).length;
+document.getElementById("partsSummary").textContent = count + " of 6 parts complete. You can move between parts at any time.";
+}
+function showPage(id, options){
+options = options || {};
+var index = pageIndex(id);
+if (index < 0) index = 0;
+var changed = index !== currentPage;
+currentPage = index;
+var sec = sections[index];
+sections.forEach(function(s,i){ s.hidden = i !== index; });
+document.getElementById("lessonGoals").open = false;
+store["navigation:page"] = sec.id;
+save();
+if (options.history){
+var hash = "#" + sec.id;
+try {
+if (options.history === "replace") window.history.replaceState(null,"",hash);
+else if (window.location.hash !== hash) window.history.pushState(null,"",hash);
+} catch(e){ if (window.location.hash !== hash) window.location.hash = hash; }
+}
+document.title = "Part " + (index+1) + " · " + sec.querySelector("h2").textContent + " — Session 02 · E-com Fluency 3";
+updatePageNav();
+syncPageMedia();
+if (changed || options.focus){
+document.getElementById("pageAnnouncement").textContent = "Part " + (index+1) + " of 6. " + sec.querySelector("h2").textContent;
+if (pageFrame) window.cancelAnimationFrame(pageFrame);
+pageFrame = window.requestAnimationFrame(function(){
+pageFrame = 0;
+if (options.focus){
+var target = options.target || sec;
+var focusTarget = options.target && options.target.id === "results" ? options.target : sec.querySelector("h2");
+focusTarget.setAttribute("tabindex","-1");
+focusTarget.focus({preventScroll:true});
+lessonViewport.scrollTo({top:Math.max(0,lessonViewport.scrollTop + vTop(target) - 16),behavior:"auto"});
+} else { lessonViewport.scrollTo({top:0,behavior:"auto"}); }
+resize();
+});
+}
+}
+function openParts(){
+restoreMenuFocus = true;
+updatePageNav();
+partsToggle.setAttribute("aria-expanded","true");
+partsDialog.showModal();
+menuLinks[currentPage].focus();
+}
+function closeParts(restore){
+restoreMenuFocus = restore !== false;
+if (partsDialog.open) partsDialog.close();
+}
+partsToggle.addEventListener("click",openParts);
+document.getElementById("closeParts").addEventListener("click",function(){closeParts(true);});
+partsDialog.addEventListener("close",function(){
+partsToggle.setAttribute("aria-expanded","false");
+if (restoreMenuFocus) partsToggle.focus({preventScroll:true});
+});
+partsDialog.addEventListener("click",function(e){
+if (e.target !== partsDialog) return;
+var r = partsDialog.getBoundingClientRect();
+if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeParts(true);
+});
+pagePrev.addEventListener("click",function(){
+if (currentPage > 0) showPage(sections[currentPage-1].id,{history:"push",focus:true});
+});
+pageNext.addEventListener("click",function(){
+if (currentPage < sections.length-1) showPage(sections[currentPage+1].id,{history:"push",focus:true});
+else {
+var result = document.getElementById("results");
+result.setAttribute("tabindex","-1"); result.focus({preventScroll:true}); goTo(result);
+}
+});
+function followHistory(){
+var route = routeFromHash();
+closeParts(false);
+showPage(route ? route.id : sections[0].id,{focus:true,target:route && route.target});
+}
+window.addEventListener("popstate",followHistory);
+window.addEventListener("hashchange",followHistory);
+document.querySelector(".skip-link").addEventListener("click",function(e){
+e.preventDefault(); showPage(sections[currentPage].id,{focus:true});
+});
+function editingState(){
+var el = document.activeElement;
+document.documentElement.classList.toggle("editing-answer",!!(el && (el.matches("input[type=text], textarea") || el.isContentEditable)));
+}
+document.addEventListener("focusin",editingState);
+document.addEventListener("focusout",function(){window.requestAnimationFrame(editingState);});
+function active(){ /* Page selection is explicit; scrolling cannot change it. */ }
+function initPages(){
+pageReady = true;
+var route = routeFromHash();
+var saved = get("navigation:page");
+var id = route ? route.id : (pageIndex(saved) >= 0 ? saved : sections[0].id);
+showPage(id,{history:route && route.target ? null : "replace",focus:!!route,target:route && route.target});
 }
 /* ---------- native sticky layout: measure only when dimensions change ---------- */
 var rail = document.getElementById("rail");
@@ -1771,6 +2126,8 @@ return [c, ans, tot];
 group.groupScore = score;
 function paintBar(){
 var s = score();
+var feedback = group.querySelector("[data-gap-feedback]");
+if (feedback) feedback.hidden = !graded();
 if (graded()){
 btn.disabled = true;
 btn.className = "checkbtn";
@@ -1828,7 +2185,7 @@ sections.forEach(function(s){ s.classList.remove("cleared"); });
 streak = 0; best = 0; paintStreak();
 armed = false;
 refresh();
-goTo(document.querySelector(".head"));
+showPage("s1",{history:"replace",focus:true});
 });
 });
 function onScroll(){ scheduleLayout(false); }
@@ -1845,7 +2202,7 @@ var layoutObserver = new ResizeObserver(function(){ scheduleLayout(true); });
 layoutObserver.observe(lessonViewport);
 }
 fitHostFrame();
-refresh(); resize(); active(); paintStreak();
+refresh(); initPages(); resize(); paintStreak();
 booted = true;
 paintNext(firstOpen());
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ scheduleLayout(true); });
