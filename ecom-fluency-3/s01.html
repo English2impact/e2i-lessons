@@ -55,11 +55,13 @@ html.lesson-booting .lesson-viewport{visibility:hidden}
   --no-bg:#fbeeeb;
   --no-line:#e0b0a5;
 
-  /* four-leaf skill colours */
-  --listen:#2c5a4a;
-  --speak:#3f6a4d;
-  --read:#5d6d30;
-  --write:#6a5b42;
+  /* Four-leaf skill colours, each with the tint its stage badge sits on.
+     A stage picks a pair with a class — .skill-listen, .skill-speak,
+     .skill-read, .skill-write — never by writing a hex in the markup. */
+  --listen:#2c5a4a;  --listen-tint:#e6efeb;
+  --speak:#3f6a4d;   --speak-tint:#e9f1ea;
+  --read:#5d6d30;    --read-tint:#f0f3e5;
+  --write:#6a5b42;   --write-tint:#f2eee7;
 
   /* --- type scale ------------------------------------------- */
   --fs-micro:0.75rem;      /* 12px  uppercase labels only        */
@@ -75,12 +77,16 @@ html.lesson-booting .lesson-viewport{visibility:hidden}
   --radius-sm:8px;
   --shadow:0 2px 10px rgba(6,28,55,.05);
   --tap:48px;              /* minimum touch target               */
-  --ef3-viewport-height:100dvh;
+  --viewport-height:100dvh;
 
-  /* stage accent defaults; each .stage overrides inline */
+  /* stage accent default; every .stage sets its own via a skill class */
   --c:var(--speak);
-  --ct:#eaf1ea;
+  --ct:var(--speak-tint);
 }
+.skill-listen{--c:var(--listen);--ct:var(--listen-tint)}
+.skill-speak {--c:var(--speak); --ct:var(--speak-tint)}
+.skill-read  {--c:var(--read);  --ct:var(--read-tint)}
+.skill-write {--c:var(--write); --ct:var(--write-tint)}
 
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -639,23 +645,78 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 .audio-sentinel{height:1px;margin-bottom:-1px}
 .audio audio{display:block;width:100%;height:44px}
 .audio iframe{display:block;width:100%;height:120px;border:0;border-radius:var(--radius-sm)}
-.audio .credit{margin:6px 0 14px;font-size:var(--fs-meta);color:var(--faint);line-height:1.5;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.audio .credit{margin:6px 0 0;font-size:var(--fs-meta);color:var(--faint);line-height:1.5;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .audio .credit a{color:var(--faint)}
 .audio .pending{margin-bottom:12px;padding:11px 14px;border:1px dashed var(--line);border-radius:var(--radius-sm);font-size:var(--fs-small);color:var(--mute)}
-.audio-dock{margin-bottom:12px}
 
 /* Docked: a compact bar. The reserved box is taller than the bar, so the
    rest of it must not swallow taps meant for the exercise beneath. */
 .audio.stuck{pointer-events:none}
 .audio.stuck .audio-dock{
-  pointer-events:auto;
+  position:relative;pointer-events:auto;
   padding:7px;background:var(--card);
   border:1px solid var(--line);border-radius:11px;
   box-shadow:0 8px 20px rgba(6,28,55,.13);
 }
-.audio.stuck iframe{height:var(--audio-dock-h,56px);border-radius:6px}
+/* Without the widget API we fall back to SoundCloud's own player, left tall
+   enough that its scrubber is still there. */
+.audio.stuck iframe{height:var(--audio-dock-h,110px);border-radius:6px}
 .audio.stuck audio{height:40px}
 .audio.stuck .credit{display:none}
+
+/* --- our own transport, used once the widget API answers -------------- */
+.audio-controls{display:none;align-items:center;gap:6px}
+.audio.stuck.has-transport .audio-controls{display:flex}
+.audio.stuck.has-transport .credit{
+  display:block;margin:6px 2px 0;font-size:var(--fs-micro);line-height:1.4;
+}
+.audio-dock{margin-bottom:12px}
+/* Kept rendered, never display:none — a hidden iframe can have its media
+   suspended, and this one is the thing that is playing. */
+.audio.stuck.has-transport iframe{
+  position:absolute;width:1px;height:1px;top:0;left:0;
+  opacity:0;pointer-events:none;
+}
+.audio-controls .ac{
+  flex:0 0 auto;display:grid;place-items:center;
+  min-width:36px;height:36px;padding:0 7px;
+  font-size:var(--fs-meta);font-weight:700;font-variant-numeric:tabular-nums;
+  color:var(--navy);background:#fff;
+  border:1px solid var(--line);border-radius:8px;cursor:pointer;
+}
+.audio-controls .ac:hover{border-color:var(--navy);background:#f3f6f0}
+.audio-controls .ac-toggle{min-width:40px;background:var(--navy);border-color:var(--navy)}
+.audio-controls .ac-toggle:hover{background:var(--navy-2);border-color:var(--navy-2)}
+.audio-controls .ac-toggle svg{width:13px;height:15px;fill:#fff}
+.audio-controls .ac-toggle svg:nth-child(2){display:none}
+.audio.playing .ac-toggle svg:nth-child(1){display:none}
+.audio.playing .ac-toggle svg:nth-child(2){display:block}
+.audio-controls .ac-time{
+  flex:0 0 auto;min-width:3.2em;text-align:right;
+  font-size:var(--fs-meta);color:var(--mute);font-variant-numeric:tabular-nums;
+}
+.ac-seek{
+  flex:1 1 auto;min-width:40px;height:36px;margin:0;padding:0;
+  background:transparent;cursor:pointer;-webkit-appearance:none;appearance:none;
+}
+.ac-seek::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--line-2)}
+.ac-seek::-moz-range-track{height:6px;border-radius:3px;background:var(--line-2)}
+.ac-seek::-moz-range-progress{height:6px;border-radius:3px;background:var(--salmon)}
+.ac-seek::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:18px;height:18px;margin-top:-6px;border-radius:50%;
+  background:var(--salmon);border:2px solid #fff;box-shadow:0 1px 4px rgba(6,28,55,.3);
+}
+.ac-seek::-moz-range-thumb{
+  width:16px;height:16px;border-radius:50%;
+  background:var(--salmon);border:2px solid #fff;box-shadow:0 1px 4px rgba(6,28,55,.3);
+}
+.ac-seek:focus-visible{outline:3px solid var(--salmon);outline-offset:3px;border-radius:6px}
+@media (max-width:360px){
+  .audio-controls{gap:4px}
+  .audio-controls .ac{min-width:32px;padding:0 5px}
+  .audio-controls .ac-time{min-width:2.8em}
+}
 @media print{.audio{position:static}.audio.stuck .credit{display:block}}
 
 .video{position:relative;width:100%;aspect-ratio:16/9;margin-top:6px;background:#eceee8;border-radius:var(--radius-sm);overflow:hidden}
@@ -1042,7 +1103,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <div class="cols">
 <main class="main" id="lessonMain">
 <div class="page-context" id="pageContext"><strong id="pagePosition">PART 01 / 06</strong><span>E-com Fluency 3 · Session 01</span></div>
-<section class="stage" id="s1" style="--c:var(--ef3-speak);--ct:#eaf7ea">
+<section class="stage skill-speak" id="s1">
 <div class="sh"><span class="spine"></span><span class="num">1</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Say it cold</h2></div><span class="time">8 min</span></div>
 <p class="lead">No preparation. Talk for about a minute. Whatever you cannot say today is the list you check again at the end.</p>
 <div class="block step" data-step="Talk for a minute, with nothing prepared">
@@ -1063,7 +1124,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 </div>
 <div class="strip" data-strip></div>
 </section>
-<section class="stage" id="s2" style="--c:var(--ef3-read);--ct:#f1f9e8">
+<section class="stage skill-read" id="s2">
 <div class="sh"><span class="spine"></span><span class="num">2</span><div class="txt"><span class="skill">Reading</span><span class="clr">cleared</span><h2>Term lab</h2></div><span class="time">18 min</span></div>
 <p class="lead">Twelve terms, all from the video. Guess each one, then drill only the ones you miss until all twelve are yours.</p>
 <div class="block step" data-step="Guess twelve terms, then drill the misses">
@@ -1127,7 +1188,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 </div>
 <div class="strip" data-strip></div>
 </section>
-<section class="stage" id="s3" style="--c:var(--ef3-speak);--ct:#eaf7ea">
+<section class="stage skill-speak" id="s3">
 <div class="sh"><span class="spine"></span><span class="num">3</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Three moves</h2></div><span class="time">14 min</span></div>
 <p class="lead">The video does three jobs: it classifies, it explains a technique, it flags a risk. Those three are your moves. Read one exchange, listen to another, then build your own.</p>
 <div class="block">
@@ -1224,7 +1285,7 @@ data-artist-url="https://soundcloud.com/english2impact"></div>
 </div>
 <div class="strip" data-strip></div>
 </section>
-<section class="stage" id="s4" style="--c:var(--ef3-listen);--ct:#e8f1ec">
+<section class="stage skill-listen" id="s4">
 <div class="sh"><span class="spine"></span><span class="num">4</span><div class="txt"><span class="skill">Listening</span><span class="clr">cleared</span><h2>Media decode</h2></div><span class="time">20 min</span></div>
 <p class="lead">Now the video, in three parts. Watch one part, answer everything in its task, then press Check. Nothing is marked until you do, so you can change your mind and you never find out mid-task whether you are on the right track. The timestamp beside each item tells you where the answer sits.</p>
 <p class="hold">There is a sponsor break inside part 1, roughly 1:45 to 2:45. Don't skip it — the last true/false statement comes from it. He signals the return with "back to my takeaways."</p>
@@ -1318,7 +1379,7 @@ It stopped at the result — a company cut its response times using AI — and n
 </div>
 <div class="strip" data-strip></div>
 </section>
-<section class="stage" id="s5" style="--c:var(--ef3-speak);--ct:#eaf7ea">
+<section class="stage skill-speak" id="s5">
 <div class="sh"><span class="spine"></span><span class="num">5</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Pushback lab</h2></div><span class="time">18 min</span></div>
 <p class="lead">Three statements that are wrong, lazy, or too confident. Disagree with each one using <b>one term from section 2</b> and <b>one move from section 3</b>. Expect to be interrupted and asked "why?"</p>
 <div class="block step" data-step="Round 1 — the categories are just marketing">
@@ -1350,7 +1411,7 @@ It stopped at the result — a company cut its response times using AI — and n
 </div>
 <div class="strip" data-strip></div>
 </section>
-<section class="stage" id="s6" style="--c:var(--ef3-write);--ct:#f6fbe9">
+<section class="stage skill-write" id="s6">
 <div class="sh"><span class="spine"></span><span class="num">6</span><div class="txt"><span class="skill">Writing</span><span class="clr">cleared</span><h2>Output &amp; recap</h2></div><span class="time">10 min</span></div>
 <p class="lead">Same question as the start. Then go back and read what you wrote in section 1.</p>
 <div class="block step" data-step="Answer the opening question again">
@@ -1492,7 +1553,7 @@ m2:[["few-shot prompting","Two or more examples"],
 };
 var GOALS = {classify:"Classify any AI tool", technique:"Explain a prompting technique", risk:"Name the risk"};
 // Keep the original storage key so correcting the displayed session number preserves progress.
-var KEY = "e2i-ef3-s02", store = {}, t = null, RESETTERS = [], PAINTERS = [];
+var KEY = "e2i-ef3-s01", store = {}, t = null, RESETTERS = [], PAINTERS = [];
 try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ store = {}; }
 function flush(){
 if (typeof sessionElapsed === "function" && typeof sessionSeconds === "number") store.sessionSeconds = sessionElapsed();
@@ -1633,6 +1694,114 @@ box.appendChild(a);
 credit(box);
 }
 });
+/* ---------- a transport for the docked player ----------
+   SoundCloud's own layout drops its scrubber at the docked height, which
+   leaves no way to replay a phrase — the thing a listening exercise needs
+   most. So we drive the widget ourselves: play/pause, a seek bar and two
+   5-second jumps. If the widget API never answers, the fallback is simply
+   SoundCloud's own player left tall enough to show its scrubber. */
+var SC_READY = null;
+function soundcloudApi(){
+if (SC_READY) return SC_READY;
+SC_READY = new Promise(function(resolve, reject){
+if (window.SC && window.SC.Widget) return resolve(window.SC);
+var tag = document.createElement("script");
+tag.src = "https://w.soundcloud.com/player/api.js";
+tag.async = true;
+tag.onload = function(){ (window.SC && window.SC.Widget) ? resolve(window.SC) : reject(); };
+tag.onerror = reject;
+document.head.appendChild(tag);
+setTimeout(reject, 8000);
+});
+SC_READY.catch(function(){});
+return SC_READY;
+}
+function clock(ms){
+var t = Math.max(0, Math.round(ms / 1000));
+return Math.floor(t / 60) + ":" + (t % 60 < 10 ? "0" : "") + (t % 60);
+}
+var PLAY_SVG = '<svg viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1l9.5 6-9.5 6z"/></svg>';
+var PAUSE_SVG = '<svg viewBox="0 0 12 14" aria-hidden="true"><rect x="1.5" y="1" width="3.4" height="12" rx="1"/><rect x="7.1" y="1" width="3.4" height="12" rx="1"/></svg>';
+function transport(box, dock, media){
+if (!media || media.tagName !== "IFRAME") return;
+var src = media.getAttribute("data-media-src") || media.getAttribute("src") || "";
+if (src.indexOf("w.soundcloud.com/player") < 0) return;
+
+var bar = document.createElement("div");
+bar.className = "audio-controls";
+bar.innerHTML =
+'<button type="button" class="ac ac-toggle" aria-label="Play">' + PLAY_SVG + PAUSE_SVG + '</button>' +
+'<button type="button" class="ac ac-step" data-step="-5000" aria-label="Back 5 seconds">&minus;5</button>' +
+'<input type="range" class="ac-seek" min="0" max="1000" value="0" aria-label="Position in the dialogue" aria-valuetext="0:00">' +
+'<button type="button" class="ac ac-step" data-step="5000" aria-label="Forward 5 seconds">+5</button>' +
+'<span class="ac-time">0:00</span>';
+var creditLine = dock.querySelector(".credit");
+if (creditLine) dock.insertBefore(bar, creditLine); else dock.appendChild(bar);
+
+var toggle = bar.querySelector(".ac-toggle"),
+seek = bar.querySelector(".ac-seek"),
+time = bar.querySelector(".ac-time");
+var widget = null, duration = 0, scrubbing = false;
+
+function paint(ms){
+if (!scrubbing && duration) seek.value = String(Math.round(ms / duration * 1000));
+time.textContent = clock(ms);
+seek.setAttribute("aria-valuetext", clock(ms) + " of " + clock(duration));
+}
+function playing(on){
+box.classList.toggle("playing", on);
+toggle.setAttribute("aria-label", on ? "Pause" : "Play");
+}
+
+function wire(SC){
+widget = SC.Widget(media);
+widget.bind(SC.Widget.Events.READY, function(){
+widget.getDuration(function(ms){ duration = ms || 0; paint(0); });
+box.classList.add("has-transport");
+reserveLater();
+});
+widget.bind(SC.Widget.Events.PLAY, function(){ playing(true); });
+widget.bind(SC.Widget.Events.PAUSE, function(){ playing(false); });
+widget.bind(SC.Widget.Events.FINISH, function(){ playing(false); paint(duration); });
+widget.bind(SC.Widget.Events.PLAY_PROGRESS, function(e){ paint(e.currentPosition); });
+}
+function reserveLater(){ window.requestAnimationFrame(function(){ resize(); }); }
+
+toggle.addEventListener("click", function(){ if (widget) widget.toggle(); });
+each(".ac-step", function(b){
+b.addEventListener("click", function(){
+if (!widget) return;
+var by = parseInt(b.getAttribute("data-step"), 10);
+widget.getPosition(function(ms){
+widget.seekTo(Math.max(0, Math.min(duration || ms + by, ms + by)));
+});
+});
+}, bar);
+seek.addEventListener("input", function(){
+scrubbing = true;
+if (duration) time.textContent = clock(seek.value / 1000 * duration);
+});
+function commit(){
+if (!scrubbing) return;
+scrubbing = false;
+if (widget && duration) widget.seekTo(seek.value / 1000 * duration);
+}
+seek.addEventListener("change", commit);
+seek.addEventListener("blur", commit);
+
+/* The src is attached lazily when this part becomes the visible one. */
+function whenSourced(){
+if (media.getAttribute("src")) {
+soundcloudApi().then(wire, function(){});
+return true;
+}
+return false;
+}
+if (!whenSourced() && window.MutationObserver){
+var mo = new MutationObserver(function(){ if (whenSourced()) mo.disconnect(); });
+mo.observe(media, {attributes:true, attributeFilter:["src"]});
+}
+}
 /* ---------- dock the player while its scenario is on screen ----------
    The player is sticky inside its own .scn, so it follows the learner
    down through the gap-fill and lets go at the end of the scenario.
@@ -1646,6 +1815,10 @@ var dock = document.createElement("div");
 dock.className = "audio-dock";
 box.insertBefore(dock, media);
 dock.appendChild(media);
+/* the attribution rides inside the card, or it would float over the
+   exercise once the player docks */
+var credit = box.querySelector(".credit");
+if (credit) dock.appendChild(credit);
 function reserve(){
 if (box.classList.contains("stuck")) return;
 var h = box.offsetHeight;                   /* 0 while its part is hidden — keep the last good value */
@@ -1662,6 +1835,7 @@ box.classList.toggle("stuck", !e.isIntersecting && e.boundingClientRect.top < to
 }
 if (window.ResizeObserver) new ResizeObserver(reserve).observe(dock);
 window.requestAnimationFrame(reserve);
+transport(box, dock, media);
 });
 /* ---------- saved fields ---------- */
 each(".save", function(el){
@@ -2559,7 +2733,7 @@ function resize(){
 var viewH = lessonViewport.clientHeight;
 if (viewH !== lastViewportH){
 lastViewportH = viewH;
-document.documentElement.style.setProperty("--ef3-viewport-height", viewH + "px");
+document.documentElement.style.setProperty("--viewport-height", viewH + "px");
 }
 }
 function scheduleLayout(needsMeasure){
