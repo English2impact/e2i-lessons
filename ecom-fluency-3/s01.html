@@ -426,6 +426,24 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 .guess .opts button.miss,.match button.miss,.mcq button.miss{background:var(--no-bg);border-color:var(--no-line);color:var(--no)}
 .match button.sel,.mcq button.sel{border-color:var(--salmon);box-shadow:inset 0 0 0 1px var(--salmon);background:#fdf5f1}
 
+/* A pair you have made but not yet checked: linked, numbered, and colourless
+   on purpose — the verdict belongs to the Check button, not to the click. */
+.match button .tx{flex:1 1 auto;min-width:0}
+.match button .pn{
+  flex:0 0 auto;display:none;width:22px;height:22px;
+  align-items:center;justify-content:center;
+  font-size:var(--fs-micro);font-weight:700;font-variant-numeric:tabular-nums;
+  color:var(--navy);background:#e7ecf3;border-radius:50%;
+}
+.match button.pair{border-color:var(--navy);background:#f4f7fb;font-weight:600}
+.match button.pair .pn,.match button.miss .pn{display:flex}
+.match button.miss .pn{background:#f7ddd6;color:var(--no)}
+.matchfix:empty{display:none}
+.matchfix{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.matchfix .fixlbl{margin:0 0 6px;font-size:var(--fs-micro);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.matchfix ul{margin:0;padding-left:18px;font-size:var(--fs-small);line-height:1.6;color:var(--mute)}
+.matchfix b{color:var(--ink)}
+
 .checkbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:18px}
 .checkbtn{
   padding:11px 20px;font-size:var(--fs-small);font-weight:600;
@@ -763,6 +781,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 }
 .video-stage.stuck .video-close{display:grid}
 .video-close:hover{background:var(--salmon)}
+.video-grab{display:none}
 
 @media (max-width:899.98px){
   /* A bar, not a floating thumbnail: it spans the column and is opaque, so
@@ -791,22 +810,41 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
      reading area, so here it lifts into a corner instead. The space it left
      says where it went — an unexplained hole reads as a bug. */
   .video-stage{position:relative}
-  /* One variable for the corner player's size: the dismiss button is fixed
-     too — it has to be, or it stays behind in the page — and it works out
-     its own place from this rather than repeating the number. */
-  .video-stage.stuck{--pip-w:min(330px,27vw);--pip-gap:22px}
+  /* One variable for the corner player's size, and two for where it sits.
+     The dismiss button and the drag handle are fixed too — anchored to the
+     block they would stay behind in the page — and they work their place out
+     from those three rather than repeating the numbers. */
+  .video-stage.stuck{
+    --pip-w:min(330px,27vw);--pip-gap:22px;
+    --pip-x:calc(100vw - var(--pip-w) - var(--pip-gap) - 10px);
+    --pip-y:calc(100vh - (var(--pip-w) * 9 / 16) - var(--pip-gap));
+  }
   .video-stage.stuck .video{
-    position:fixed;right:var(--pip-right,var(--pip-gap));bottom:var(--pip-gap);
+    position:fixed;left:var(--pip-x);top:var(--pip-y);right:auto;bottom:auto;
     z-index:90;width:var(--pip-w);margin:0;overflow:visible;
     box-shadow:0 16px 38px rgba(6,28,55,.32);
   }
-  /* Fixed as well — anchored to the block, it would stay behind in the page
-     while the player it belongs to sat in the corner. */
   .video-stage.stuck .video-close{
-    position:fixed;z-index:91;top:auto;
-    right:calc(var(--pip-right,var(--pip-gap)) - 13px);
-    bottom:calc(var(--pip-gap) + var(--pip-w) * 9 / 16 - 13px);
+    position:fixed;z-index:92;right:auto;bottom:auto;
+    top:calc(var(--pip-y) - 13px);
+    left:calc(var(--pip-x) + var(--pip-w) - 13px);
   }
+  /* The grip. An iframe swallows every pointer event inside it, so the player
+     cannot be dragged by its own picture — it gets a bar of its own, just
+     above, which is also where a person reaches for a window anyway. */
+  .video-stage.stuck .video-grab{
+    display:flex;position:fixed;z-index:91;
+    left:var(--pip-x);top:calc(var(--pip-y) - 19px);
+    width:calc(var(--pip-w) - 16px);height:19px;
+    align-items:center;justify-content:center;gap:3px;
+    padding:0;border:0;border-radius:9px 9px 0 0;
+    background:var(--navy);cursor:grab;touch-action:none;
+  }
+  .video-stage.stuck .video-grab i{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.72)}
+  .video-stage.stuck .video-grab:hover{background:var(--navy-2)}
+  .video-stage.dragging .video-grab{cursor:grabbing}
+  /* While a drag is running the iframe must not eat the pointer. */
+  .video-stage.dragging .video iframe{pointer-events:none}
   .video-stage.stuck .video iframe{border-radius:var(--radius-sm)}
   .video-stage.stuck .note{display:none}
   .video-stage.stuck::after{
@@ -842,6 +880,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 .tvn ol{margin:0;padding-left:20px;font-size:var(--fs-body);line-height:1.6}
 .tvn li{margin-bottom:8px}
 .tvn .empty{margin:0;font-size:var(--fs-small);color:var(--faint)}
+.tvn .said{margin:0;font-size:var(--fs-body);line-height:1.6;white-space:pre-wrap}
 .arrowline{margin:14px 0 0;font-size:var(--fs-meta);color:var(--mute);line-height:1.6}
 .results table{width:100%;border-collapse:collapse;margin-top:20px;font-size:var(--fs-small)}
 .results td{padding:10px 0;border-bottom:1px solid var(--line-2)}
@@ -1201,22 +1240,19 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <div class="page-context" id="pageContext"><strong id="pagePosition">PART 01 / 06</strong><span>E-com Fluency 3 · Session 01</span></div>
 <section class="stage skill-speak" id="s1">
 <div class="sh"><span class="spine"></span><span class="num">1</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Say it cold</h2></div><span class="time">8 min</span></div>
-<p class="lead">No preparation. Talk for about a minute. Whatever you cannot say today is the list you check again at the end.</p>
+<p class="lead">No preparation. Talk for about a minute, then write the same answer down. That draft is the thing you measure yourself against at the end.</p>
 <div class="block step" data-step="Talk for a minute, with nothing prepared">
 <div class="prompt"><p class="q">Which AI tool do you actually use at work, and what do you use it for?</p></div>
 <ul class="ck" style="margin-top:12px">
 <li><input type="checkbox" class="track save" data-k="s1said" id="s1said"><label for="s1said">Said it out loud — about a minute, no notes</label></li>
 </ul>
 </div>
-<div class="block step" data-step="Log three things you couldn't say">
+<div class="block step" data-step="Draft the answer you just tried to say">
 <p class="tag"><b>Understand</b> · where you are now</p>
-<h3>Three things I wanted to say but couldn't</h3>
-<div class="lines">
-<input type="text" class="track save" data-k="cold1" placeholder="1." aria-label="1.">
-<input type="text" class="track save" data-k="cold2" placeholder="2." aria-label="2.">
-<input type="text" class="track save" data-k="cold3" placeholder="3." aria-label="3.">
-</div>
-<p class="note">Write them in Vietnamese if that's faster. These three come back at the end, next to what you can say by then.</p>
+<h3>Now write that answer down</h3>
+<p class="note" style="margin:0 0 12px">Same question, in writing, with the time you didn't have while talking. Write in Vietnamese wherever the English doesn't come — those gaps are what the next 80 minutes are for.</p>
+<textarea class="track save" data-k="draft1" placeholder="Which AI tool do you actually use at work, and what do you use it for?" aria-label="Draft your answer to the question above"></textarea>
+<p class="note">This draft comes back at the end, next to what you can say by then.</p>
 </div>
 <div class="strip" data-strip></div>
 </section>
@@ -1259,17 +1295,21 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <p class="legend"><i></i>Marked terms are the six you will say out loud in section 3.</p>
 </div></div>
 </div>
-<div class="block step" data-step="Match the six you'll say">
+<div class="block step" data-group="m1" data-step="Match the six you'll say">
 <p class="tag"><b>Remember</b> · match, round 1</p>
 <h3>The six you'll produce</h3>
+<p class="note" style="margin:0 0 12px">Pair all six, changing your mind as often as you like. Nothing is marked until you press Check.</p>
 <div class="match track" data-k="m1"></div>
+<div class="checkbar"><button type="button" class="checkbtn">Check round 1</button><span class="res"></span></div>
 </div>
-<div class="block step" data-step="Match the six you'll recognise">
+<div class="block step" data-group="m2" data-step="Match the six you'll recognise">
 <p class="tag"><b>Remember</b> · match, round 2</p>
 <h3>The six you'll recognise</h3>
+<p class="note" style="margin:0 0 12px">Same rule: pair all six first, then check.</p>
 <div class="match track" data-k="m2"></div>
+<div class="checkbar"><button type="button" class="checkbtn">Check round 2</button><span class="res"></span></div>
 </div>
-<div class="block step" data-step="Six collocations, one word each">
+<div class="block step" data-group="coll" data-step="Six collocations, one word each">
 <p class="tag"><b>Remember</b> · collocations from the video</p>
 <h3>One word per gap</h3>
 <p class="bank">Word bank: <b>surface · double · tailor · cutoff · curated · ingest</b></p>
@@ -1281,6 +1321,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <li><span class="s">The course ends with a <input type="text" class="gapin track" data-k="g5" data-a="curated"> list of tools for beginners.</span></li>
 <li><span class="s">The system can <input type="text" class="gapin track" data-k="g6" data-a="ingest"> all the information about 200 clients.</span></li>
 </ul>
+<div class="checkbar"><button type="button" class="checkbtn">Check the six gaps</button><span class="res"></span></div>
 </div>
 <div class="strip" data-strip></div>
 </section>
@@ -1295,7 +1336,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <div class="frame"><p class="n">Move 3 — flag the risk</p><p class="f">For <u></u> that's fine, but for <u></u> I'd double-check <u></u>.</p></div>
 </div>
 </div>
-<div class="block step" data-step="Spot the moves in a read exchange">
+<div class="block step" data-group="scnA" data-step="Spot the moves in a read exchange">
 <p class="tag"><b>Understand</b> · read it</p>
 <div class="scn">
 <div class="hd"><h3>A — Three subscriptions</h3><span class="who">Claire · Nathan</span></div>
@@ -1309,7 +1350,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <p><span class="sp">Nathan</span><span>For quick subject lines the HubSpot one is fine, but for a full campaign brief I'd double-check whether it can even see last quarter's numbers.</span></p>
 </div>
 <div class="mcq track" data-k="sa1" style="margin-top:16px">
-<p class="q"><span>Why does Nathan say the two tools aren't the same thing?</span></p>
+<p class="q"><span class="qn">1.</span><span>Why does Nathan say the two tools aren't the same thing?</span></p>
 <div class="opts" data-a="2">
 <button type="button">One is more expensive than the other.</button>
 <button type="button">One is newer than the other.</button>
@@ -1319,7 +1360,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <p class="why">Move 1 in action. He classifies before he compares, and that's what lets him answer at all.</p>
 </div>
 <div class="mcq track" data-k="sa2">
-<p class="q"><span>What does he say to check before comparing prices?</span></p>
+<p class="q"><span class="qn">2.</span><span>What does he say to check before comparing prices?</span></p>
 <div class="opts" data-a="1">
 <button type="button">How many people on the team use it.</button>
 <button type="button">Where the work actually happens.</button>
@@ -1328,9 +1369,10 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 </div>
 <p class="why">That's move 2 — he names the technique, not the tool.</p>
 </div>
+<div class="checkbar"><button type="button" class="checkbtn">Check both answers</button><span class="res"></span></div>
 </div>
 </div>
-<div class="block step" data-step="Rebuild the moves from the audio">
+<div class="block step" data-group="scnB" data-step="Rebuild the moves from the audio">
 <p class="tag"><b>Understand</b> · listen for the moves</p>
 <div class="scn">
 <div class="hd"><h3>B — Where did 40% come from?</h3><span class="who">Nathan · Claire</span></div>
@@ -1357,6 +1399,7 @@ data-artist-url="https://soundcloud.com/english2impact"></div>
 <li><span class="mv">Move 3</span><span class="s">For <input type="text" class="gapin track" data-k="sb3" data-a="brainstorming"> that's fine, but for anything the client reads I'd <input type="text" class="gapin track" data-k="sb4" data-a="double-check|double check"> every number against the dashboard.</span></li>
 <li><span class="mv">Move 2</span><span class="s">The move is to <input type="text" class="gapin track" data-k="sb5" data-a="surface"> the implied <input type="text" class="gapin track" data-k="sb6" data-a="context"> before you write it.</span></li>
 </ul>
+<div class="checkbar"><button type="button" class="checkbtn">Check the six gaps</button><span class="res"></span></div>
 <p class="note">Claire runs the moves out of order: she classifies, flags the risk, then explains the fix. That is how the three moves behave in a real conversation — the order is yours to choose.</p>
 </div>
 </div>
@@ -1466,14 +1509,6 @@ data-artist-url="https://soundcloud.com/english2impact"></div>
 </ul>
 <div class="checkbar"><button type="button" class="checkbtn">Check part 3</button><span class="res"></span></div>
 </div>
-<div class="block step" data-step="Two sentences of your own">
-<p class="tag"><b>Apply</b> · the one that needs an opinion</p>
-<p class="q-open">What exactly was wrong with the course's customer-service example?</p>
-<textarea class="track save" data-k="q5" placeholder="Two sentences." aria-label="Two sentences."></textarea>
-<div class="rev"><button type="button" data-hide="Hide the model answer">Compare with a model answer</button><div class="body">
-It stopped at the result — a company cut its response times using AI — and never said how. He wanted to know which of the three tool types they used, how the staff were trained on it, and how they stopped it hallucinating at customers. The complaint is about missing mechanism, not missing proof.
-</div></div>
-</div>
 <div class="strip" data-strip></div>
 </section>
 <section class="stage skill-speak" id="s5">
@@ -1519,22 +1554,14 @@ It stopped at the result — a company cut its response times using AI — and n
 <li><input type="checkbox" class="track save" data-k="s6said" id="s6said"><label for="s6said">Said it again — all three moves, no notes</label></li>
 </ul>
 </div>
-<div class="block step" data-step="Five self-checks">
+<div class="block step" data-step="Four self-checks">
 <p class="tag"><b>Remember</b> · self-check</p>
 <ul class="ck">
 <li><input type="checkbox" class="track save" data-k="sc1" data-goal="classify" id="sc1"><label for="sc1">I can name the three tool types and place my own tools in them</label></li>
 <li><input type="checkbox" class="track save" data-k="sc2" data-goal="technique" id="sc2"><label for="sc2">I can explain implied context with my own example</label></li>
 <li><input type="checkbox" class="track save" data-k="sc3" data-goal="risk" id="sc3"><label for="sc3">I can say when a hallucination helps and when it costs</label></li>
 <li><input type="checkbox" class="track save" data-k="sc4" id="sc4"><label for="sc4">I used all three moves without reading them</label></li>
-<li><input type="checkbox" class="track save" data-k="sc5" id="sc5"><label for="sc5">I said at least one of the three things I couldn't say at the start</label></li>
 </ul>
-</div>
-<div class="block step" data-step="Set up the homework">
-<p class="tag"><b>Apply</b> · homework</p>
-<h3>One real prompt, rewritten</h3>
-<p style="margin:0 0 10px">Take a prompt you actually sent this week. Rewrite it with the implied context surfaced. Bring both versions next session and say what changed in the output.</p>
-<textarea class="track save" data-k="hw" placeholder="Original prompt / rewritten prompt / what changed" aria-label="Original prompt / rewritten prompt / what changed"></textarea>
-<p class="note">Plus the Quizlet set — twelve terms, until you get 12/12 twice.</p>
 </div>
 <div class="block">
 <p class="tag"><b>Result</b> · what today actually moved</p>
@@ -1543,7 +1570,7 @@ It stopped at the result — a company cut its response times using AI — and n
 <p class="sub" id="rSub">Nothing checked yet</p>
 <div class="stats" id="rStats"></div>
 <div class="tvn">
-<div class="col"><h4>At the start you couldn't say</h4><div id="tvnThen"><p class="empty">Section 1 is still empty — write the three lines and they appear here.</p></div></div>
+<div class="col"><h4>At the start you wrote</h4><div id="tvnThen"><p class="empty">Section 1 is still empty — write your draft answer there and it appears here.</p></div></div>
 <div class="col now"><h4>By the end you said</h4><div id="tvnNow"><p class="empty">Your move chain from section 3 lands here.</p></div></div>
 </div>
 <p class="arrowline" id="tvnLine"></p>
@@ -1991,6 +2018,15 @@ stage.classList.remove("stuck");
 });
 dock.appendChild(close);
 
+/* The grip that makes the corner player movable. */
+var grab = document.createElement("button");
+grab.type = "button";
+grab.className = "video-grab";
+grab.title = "Drag the player anywhere · double-click to send it back to the corner";
+grab.setAttribute("aria-label", "Move the video player");
+grab.innerHTML = "<i></i><i></i><i></i><i></i>";
+dock.appendChild(grab);
+
 /* The block holds the height it had before the player shrank or lifted,
    so the questions never jump while you are reading them. */
 function reserve(){
@@ -2011,25 +2047,75 @@ window.requestAnimationFrame(placePip);
 /* Where the corner player goes. The window's bottom-right is the right
    answer when it is free; on a short window the parts rail reaches down
    into it, and covering the navigation is better than covering the
-   question, so it tucks against the reading column instead. */
-function placePip(){
-if (!stage.classList.contains("stuck")) return;
-if (!(window.matchMedia && window.matchMedia("(min-width:900px)").matches)) return;
-var gap = 22, right = gap;
+   question, so it tucks against the reading column instead.
+
+   Once the learner has dragged it, that choice wins over both — it is only
+   clamped back inside the window when the window changes size. */
+var wide = function(){ return !!(window.matchMedia && window.matchMedia("(min-width:900px)").matches); };
+var moved = false, px = 0, py = 0;
+function pipSize(){
+var w = video.offsetWidth || 0;
+return [w, video.offsetHeight || Math.round(w * 9 / 16)];
+}
+function clampPip(x, y){
+var s = pipSize(), gap = 8;
+var maxX = Math.max(gap, window.innerWidth - s[0] - gap);
+var maxY = Math.max(28, window.innerHeight - s[1] - gap);
+return [Math.min(Math.max(gap, x), maxX), Math.min(Math.max(28, y), maxY)];
+}
+function defaultPip(){
+var gap = 22, s = pipSize();
+var x = window.innerWidth - gap - s[0], y = window.innerHeight - gap - s[1];
 var rail = document.querySelector(".rail");
 if (rail){
 var rr = rail.getBoundingClientRect();
-var top = window.innerHeight - gap - video.offsetHeight;
-var left = window.innerWidth - gap - video.offsetWidth;
-if (rr.bottom > top && rr.right > left && rr.height)
-right = Math.max(gap, Math.round(window.innerWidth - stage.getBoundingClientRect().right));
+if (rr.height && rr.bottom > y && rr.right > x)
+x = Math.min(x, Math.round(stage.getBoundingClientRect().right - s[0]));
 }
-stage.style.setProperty("--pip-right", right + "px");
+return clampPip(x, y);
 }
+function applyPip(){
+stage.style.setProperty("--pip-x", Math.round(px) + "px");
+stage.style.setProperty("--pip-y", Math.round(py) + "px");
+}
+function placePip(){
+if (!stage.classList.contains("stuck")) return;
+if (!wide()) return;
+var p = moved ? clampPip(px, py) : defaultPip();
+px = p[0]; py = p[1];
+applyPip();
+}
+/* Pointer drag. The handle keeps the pointer for the whole gesture, so the
+   player does not get dropped when the cursor crosses the iframe. */
+var dragFrom = null;
+grab.addEventListener("pointerdown", function(e){
+if (!stage.classList.contains("stuck") || !wide()) return;
+e.preventDefault();
+placePip();
+dragFrom = { x:e.clientX, y:e.clientY, px:px, py:py };
+stage.classList.add("dragging");
+try { grab.setPointerCapture(e.pointerId); } catch(err){}
+});
+grab.addEventListener("pointermove", function(e){
+if (!dragFrom) return;
+e.preventDefault();
+var p = clampPip(dragFrom.px + (e.clientX - dragFrom.x), dragFrom.py + (e.clientY - dragFrom.y));
+px = p[0]; py = p[1]; moved = true;
+applyPip();
+});
+function endDrag(e){
+if (!dragFrom) return;
+dragFrom = null;
+stage.classList.remove("dragging");
+try { grab.releasePointerCapture(e.pointerId); } catch(err){}
+}
+grab.addEventListener("pointerup", endDrag);
+grab.addEventListener("pointercancel", endDrag);
+grab.addEventListener("dblclick", function(){ moved = false; placePip(); });
 
 if (window.ResizeObserver) new ResizeObserver(reserve).observe(stage);
 window.addEventListener("resize", placePip);
-window.requestAnimationFrame(reserve);
+window.requestAnimationFrame(function(){ reserve(); placePip(); });
 });
 /* ---------- saved fields ---------- */
 each(".save", function(el){
@@ -2062,7 +2148,7 @@ var inp = li.querySelector("input");
 if (!inp) return;
 PAINTERS.push(function(){ li.classList[inp.checked ? "add" : "remove"]("on"); });
 });
-each("[data-group] .mcq, [data-group] .tf, [data-group] .gapin", function(el){
+each("[data-group] .mcq, [data-group] .tf, [data-group] .gapin, [data-group] .match", function(el){
 el.deferred = true;
 el.graded = get("chk:" + el.closest("[data-group]").getAttribute("data-group")) === true;
 });
@@ -2203,31 +2289,123 @@ return [c, a, key.length];
 };
 RESETTERS.push(function(){ saved = []; box.graded = false; box.counted = false; repaint(); });
 });
-/* ---------- matching ---------- */
+/* ---------- matching ----------
+   Two modes. Free-standing: a pair snaps green the moment it is right, which
+   is the arcade version. Inside a [data-group]: you link all six first and
+   nothing is coloured until Check, so the round is a decision, not a
+   guess-until-it-sticks. */
 each(".match", function(box){
 var k = box.getAttribute("data-k"), pairs = PAIRS[k];
 if (!pairs) return;
+var deferred = !!box.deferred;
 var done = get(k);
 if (!(done instanceof Array)) done = [];
-var misses = 0, colL, colR, sel = null, bar, grid;
+var link = get(k + ":lk");
+if (!(link instanceof Array)) link = [];
+var misses = 0, colL, colR, sel = null, bar, grid, fix = null, btns = [];
+function linkCount(){
+var n = 0;
+for (var i = 0; i < pairs.length; i++) if (typeof link[i] === "number") n++;
+return n;
+}
+function linkRight(){
+var n = 0;
+for (var i = 0; i < pairs.length; i++) if (link[i] === i) n++;
+return n;
+}
+function partnerOf(side, i){
+if (side === "L") return (typeof link[i] === "number") ? link[i] : null;
+for (var l = 0; l < pairs.length; l++) if (link[l] === i) return l;
+return null;
+}
+function slotOf(side, i){                       /* the badge number on a linked button */
+var l = (side === "L") ? i : partnerOf("R", i);
+if (l === null || typeof link[l] !== "number") return null;
+var n = 0;
+for (var j = 0; j <= l; j++) if (typeof link[j] === "number") n++;
+return n;
+}
+box.score = function(){
+if (!deferred) return [done.length, done.length, pairs.length];
+if (!box.graded) return [0, linkCount(), pairs.length];
+return [linkRight(), linkCount(), pairs.length];
+};
 function paintBar(){
-var pips = "";
-for (var i = 0; i < pairs.length; i++) pips += '<i class="' + (i < done.length ? "on" : "") + '"></i>';
-var right = done.length >= pairs.length;
-bar.innerHTML = '<span class="pips">' + pips + '</span>' +
-'<span>' + done.length + ' of ' + pairs.length + ' matched</span>' +
-(right ? '<span class="perfect">' + (misses ? "✓ done" : "✓ perfect round") + '</span>' : '') +
+var pips = "", filled = deferred ? linkCount() : done.length;
+for (var i = 0; i < pairs.length; i++) pips += '<i class="' + (i < filled ? "on" : "") + '"></i>';
+var all = filled >= pairs.length;
+var label;
+if (deferred){
+if (box.graded){
+var r = linkRight();
+label = r + ' of ' + pairs.length + ' right';
+} else label = filled + ' of ' + pairs.length + ' paired';
+} else label = done.length + ' of ' + pairs.length + ' matched';
+var flag = "";
+if (deferred && box.graded) flag = (linkRight() >= pairs.length)
+? '<span class="perfect">✓ all six</span>' : '';
+else if (!deferred && all) flag = '<span class="perfect">' + (misses ? "✓ done" : "✓ perfect round") + '</span>';
+bar.innerHTML = '<span class="pips">' + pips + '</span><span>' + label + '</span>' + flag +
 '<button type="button" class="redeal">Shuffle</button>';
 bar.querySelector(".redeal").addEventListener("click", function(){
-done = []; misses = 0; set(k, done); deal(); refresh();
+done = []; link = []; misses = 0; set(k, done); set(k + ":lk", link); deal(); refresh();
 });
+}
+box.paintMatch = function(){ paintBar(); btns.forEach(paintBtn); paintFix(); };
+function paintBtn(b){
+var i = parseInt(b.getAttribute("data-i"), 10), side = b.getAttribute("data-s");
+if (!deferred){ b.className = (done.indexOf(i) > -1) ? "hit" : (b === sel ? "sel" : ""); return; }
+var p = partnerOf(side, i);
+var badge = b.querySelector(".pn");
+if (p === null){
+b.className = (b === sel) ? "sel" : "";
+if (badge) badge.textContent = "";
+return;
+}
+var right = (side === "L") ? (link[i] === i) : (p === i);
+b.className = box.graded ? (right ? "hit" : "miss") : "pair";
+/* The badge stays on a wrong pair: two red boxes with nothing joining
+   them do not tell you what you actually put together. */
+if (badge) badge.textContent = (box.graded && right) ? "" : String(slotOf(side, i) || "");
+}
+function paintFix(){
+if (!fix) return;
+if (!deferred || !box.graded){ fix.innerHTML = ""; return; }
+var rows = "";
+for (var i = 0; i < pairs.length; i++){
+if (typeof link[i] === "number" && link[i] !== i)
+rows += '<li><b>' + esc(pairs[i][0]) + '</b> → ' + esc(pairs[i][1]) + '</li>';
+}
+fix.innerHTML = rows ? '<p class="fixlbl">What the missed ones pair with</p><ul>' + rows + '</ul>' : "";
+}
+function unlink(side, i){
+var l = (side === "L") ? i : partnerOf("R", i);
+if (l === null) return;
+link[l] = undefined;
+set(k + ":lk", link);
 }
 function make(item, col, side){
 var b = document.createElement("button");
-b.type = "button"; b.textContent = item.t;
+b.type = "button";
+b.innerHTML = '<span class="pn"></span><span class="tx">' + esc(item.t) + '</span>';
 b.setAttribute("data-i", item.i); b.setAttribute("data-s", side);
-if (done.indexOf(item.i) > -1) b.className = "hit";
+btns.push(b);
 b.addEventListener("click", function(){
+if (deferred){
+if (box.graded) return;
+var p = partnerOf(side, item.i);
+if (p !== null){ unlink(side, item.i); sel = null; box.paintMatch(); refresh(); return; }
+if (!sel){ sel = b; box.paintMatch(); return; }
+if (sel === b){ sel = null; box.paintMatch(); return; }
+if (sel.getAttribute("data-s") === side){ sel = b; box.paintMatch(); return; }
+var li = (side === "L") ? item.i : parseInt(sel.getAttribute("data-i"), 10);
+var ri = (side === "L") ? parseInt(sel.getAttribute("data-i"), 10) : item.i;
+link[li] = ri;
+set(k + ":lk", link);
+sel = null; box.paintMatch(); refresh();
+if (linkCount() >= pairs.length) toast("All six paired — press Check");
+return;
+}
 if (b.className.indexOf("hit") > -1) return;
 if (!sel){ sel = b; b.className = "sel"; return; }
 if (sel === b){ sel = null; b.className = ""; return; }
@@ -2247,7 +2425,7 @@ setTimeout(function(){ if(a.className==="miss") a.className=""; if(b.className==
 col.appendChild(b);
 }
 function deal(){
-box.innerHTML = "";
+box.innerHTML = ""; btns = [];
 bar = document.createElement("div"); bar.className = "matchbar";
 grid = document.createElement("div"); grid.className = "mgrid";
 box.appendChild(bar); box.appendChild(grid);
@@ -2255,6 +2433,8 @@ colL = document.createElement("div"); colR = document.createElement("div");
 colL.style.display = colR.style.display = "grid";
 colL.style.gap = colR.style.gap = "8px";
 grid.appendChild(colL); grid.appendChild(colR);
+fix = document.createElement("div"); fix.className = "matchfix";
+box.appendChild(fix);
 sel = null;
 var right = pairs.map(function(p,i){ return {t:p[1], i:i}; });
 for (var i = right.length - 1; i > 0; i--){
@@ -2263,10 +2443,24 @@ var j = Math.floor(Math.random()*(i+1)), tmp = right[i]; right[i] = right[j]; ri
 pairs.forEach(function(p,i){ make({t:p[0], i:i}, colL, "L"); });
 right.forEach(function(x){ make(x, colR, "R"); });
 box.setAttribute("data-total", pairs.length);
-paintBar();
+box.paintMatch();
 }
+box.grade = function(){
+box.graded = true;
+if (!box.counted){
+box.counted = true;
+for (var i = 0; i < pairs.length; i++) if (typeof link[i] === "number") hit(link[i] === i);
+}
+box.paintMatch();
+};
+box.render = function(){ box.paintMatch(); };
 deal();
-RESETTERS.push(function(){ done = []; misses = 0; deal(); });
+RESETTERS.push(function(){
+done = []; link = []; misses = 0;
+box.graded = false; box.counted = false;
+store[k + ":lk"] = undefined;
+deal();
+});
 });
 /* ---------- term lab: guess, then drill the misses to mastery ---------- */
 each(".guess", function(box){
@@ -2515,6 +2709,7 @@ each(".track", function(el){
 var cl = " " + el.className + " ";
 var hidden = (el.deferred && !el.graded);   /* answered, but not checked yet */
 if (hidden){
+if (cl.indexOf(" match ") > -1){ var shm = el.score(); tt += shm[2]; d += shm[1]; return; }
 if (cl.indexOf(" tf ") > -1){ var sh = el.score(); tt += sh[2]; d += sh[1]; return; }
 if (cl.indexOf(" mcq ") > -1){ tt += 1; if (typeof get(el.getAttribute("data-k")) === "number") d += 1; return; }
 tt += 1; if ((el.value||"").trim()) d += 1; return;
@@ -2522,9 +2717,8 @@ tt += 1; if ((el.value||"").trim()) d += 1; return;
 if (cl.indexOf(" guess ") > -1){
 var s = el.score(); tt += s[2]; d += s[1]; c += s[0]; at += s[1];
 } else if (cl.indexOf(" match ") > -1){
-var n = parseInt(el.getAttribute("data-total"),10) || 0;
-var hits = el.querySelectorAll("button.hit").length / 2;
-tt += n; d += hits; c += hits; at += hits;
+var sm2 = el.score ? el.score() : [0,0,0];
+tt += sm2[2]; d += sm2[1]; c += sm2[0]; at += sm2[1];
 } else if (cl.indexOf(" tf ") > -1){
 var s2 = el.score(); tt += s2[2]; d += s2[1]; c += s2[0]; at += s2[1];
 } else if (cl.indexOf(" mcq ") > -1){
@@ -2680,12 +2874,12 @@ statsEl.innerHTML =
 '<div class="stat"><b>' + best + '</b><span>longest correct run</span></div>' +
 '<div class="stat"><b>' + (ts[0] + ts[1]) + '/12</b><span>terms known · ' + ts[1] + ' recovered by drilling</span></div>';
 }
-var then = lines(["cold1","cold2","cold3"]), now = lines(["mv1","mv2","mv3"]);
+var then = lines(["draft1"]), now = lines(["mv1","mv2","mv3"]);
 var thenEl = document.getElementById("tvnThen"), nowEl = document.getElementById("tvnNow");
 if (thenEl){
 thenEl.innerHTML = then.length
-? '<ol><li>' + then.map(esc).join('</li><li>') + '</li></ol>'
-: '<p class="empty">Section 1 is still empty — write the three lines and they appear here.</p>';
+? '<p class="said">' + esc(then[0]) + '</p>'
+: '<p class="empty">Section 1 is still empty — write your draft answer there and it appears here.</p>';
 }
 if (nowEl){
 nowEl.innerHTML = now.length
@@ -2695,7 +2889,7 @@ nowEl.innerHTML = now.length
 var lineEl = document.getElementById("tvnLine");
 if (lineEl){
 lineEl.textContent = (then.length && now.length)
-? "Read the left column, then the right one out loud. Ninety minutes is the whole distance between them."
+? "Read your draft, then the three moves out loud. Ninety minutes is the whole distance between them."
 : "Fill both sides and this turns into the shortest proof of progress you own.";
 }
 var doneAll = sections.every(function(sec){ return sec.classList.contains("cleared"); });
@@ -2708,7 +2902,7 @@ if (booted) toast("Session complete — all six stages");
 }
 ft.textContent = "All six stages cleared. " + C + " of " + A + " marked answers right, " +
 (ts[0] + ts[1]) + " of 12 terms yours, longest correct run " + best +
-". Next session you bring one rewritten prompt — and the three lines above stop being a list of what you couldn't say.";
+". Read the draft you wrote at the start against the three moves you can run now — that gap is the session.";
 } else { banner.classList.remove("on"); }
 }
 }
@@ -2944,7 +3138,7 @@ each("[data-group]", function(group){
 var gk = "chk:" + group.getAttribute("data-group");
 var btn = group.querySelector(".checkbtn"), res = group.querySelector(".res");
 var members = [];
-each(".mcq, .tf, .gapin", function(el){ el.deferred = true; members.push(el); }, group);
+each(".mcq, .tf, .gapin, .match", function(el){ el.deferred = true; members.push(el); }, group);
 group.members = members;
 function graded(){ return get(gk) === true; }
 group.isGraded = graded;
