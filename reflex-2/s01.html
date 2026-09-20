@@ -71,9 +71,16 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 
 .masthead{background:var(--navy); color:#eef2f7; padding:22px 0 24px; border-bottom:3px solid var(--terra)}
 .shell{max-width:1200px; margin:0 auto; padding:0 16px}
+.topline{display:flex; gap:13px; align-items:center; margin:0 0 12px}
+.brand{
+  flex:none; display:block; line-height:0; padding:5px 7px; border-radius:11px;
+  background:#fff; border:1px solid rgba(255,255,255,.55); text-decoration:none;
+}
+.brand:hover{background:#fffdfb; border-color:var(--terra)}
+.brand img{display:block; width:auto; height:46px}
 .eyebrow{
   font-size:var(--fs-micro); letter-spacing:.13em; text-transform:uppercase;
-  color:#9fb2c8; margin:0 0 10px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+  color:#9fb2c8; margin:0; display:flex; flex-wrap:wrap; gap:8px; align-items:center;
 }
 .eyebrow b{color:var(--terra); font-weight:600}
 .eyebrow i{color:#7d93ab; font-style:normal}
@@ -135,10 +142,26 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 /* rule + teacher note cards */
 .rule{
   background:var(--card); border:1px solid var(--line); border-left:4px solid var(--terra);
-  border-radius:0 var(--radius) var(--radius) 0; padding:13px 15px; margin:0 0 16px;
+  border-radius:0 var(--radius) var(--radius) 0; padding:14px 16px; margin:0 0 16px;
+  max-width:var(--measure);
 }
-.rule b{display:block; color:var(--terra-ink); margin-bottom:6px}
-.rule .ex{display:block; font-size:var(--fs-small); color:var(--ink)}
+/* only the direct child is the heading — an inline <b> inside an example
+   must stay inline, or every emphasised word starts its own row */
+.rule > b{display:block; color:var(--terra-ink); margin-bottom:9px; font-size:var(--fs-body); line-height:1.35}
+.rule .ex{display:grid; gap:7px; font-size:var(--fs-small); color:var(--ink)}
+.ln{display:grid; grid-template-columns:19px minmax(0,1fr); gap:9px; align-items:start; margin:0; line-height:1.55}
+.ln>.yes,.ln>.no{text-align:center; line-height:1.55}
+.ln.note{display:block}
+.ln.note .k{
+  display:inline-block; margin-right:8px; font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--faint);
+}
+.ln.tag{grid-template-columns:66px minmax(0,1fr)}
+.ln.tag .k{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:var(--fs-meta);
+  font-weight:600; color:var(--terra-ink); white-space:nowrap;
+}
+.ln + .ln.note{margin-top:2px}
 .yes{color:var(--ok); font-weight:600}
 .no{color:var(--no); font-weight:600}
 
@@ -358,7 +381,13 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
   margin:0 0 9px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;
 }
 .audio.stuck .audio-title{display:none}
-.audio.stuck .audio-dock{padding:9px 12px}
+.audio.stuck .audio-dock{padding:8px 11px}
+.audio.stuck .transport{gap:8px}
+.audio.stuck .tbtn.play{width:40px; height:40px}
+.audio.stuck .tbtn.play svg{width:16px; height:16px}
+.audio.stuck .tbtn.jump{width:38px; height:38px}
+.audio.stuck .seek{height:18px}
+.audio.stuck .times{margin-top:0}
 .qchip{
   flex:none; font-size:var(--fs-micro); background:rgba(255,255,255,.12); border-radius:999px;
   padding:4px 9px; color:#fff; letter-spacing:.04em; font-variant-numeric:tabular-nums;
@@ -391,7 +420,7 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 }
 .credit{font-size:var(--fs-micro); color:#9fb2c8; margin:9px 0 0}
 .credit a{color:#cfdcea}
-.audio.stuck .credit{margin-top:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.audio.stuck .credit{display:none}   /* the bar is a control strip; the attribution shows undocked */
 .sc-frame{width:100%; height:120px; border:0; border-radius:10px; display:block}
 .has-transport .sc-frame{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none}
 .has-transport .sc-fallback-note{display:none}
@@ -556,6 +585,8 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 /* below 600px: a compact masthead, and the vocabulary table stacks into entries */
 @media (max-width:599px){
   .masthead{padding:16px 0 18px}
+  .brand img{height:38px}
+  .topline{gap:11px}
   .masthead h1{font-size:clamp(23px,6.6vw,31px)}
   .subline{font-size:var(--fs-meta); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
   .chips{gap:6px; margin-top:12px}
@@ -573,6 +604,7 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 }
 
 @media (min-width:900px){
+  .brand img{height:52px}
   .wrap{
     display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:34px; align-items:start;
     padding-bottom:40px;
@@ -604,9 +636,16 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 
 <header class="masthead">
   <div class="shell">
+    <div class="topline">
+      <!-- COURSE_URL — the one link to change per course -->
+      <a class="brand" href="https://english2impact.odoo.com/slides/english-reflex-2-39" target="_blank" rel="noopener"
+         aria-label="Open the English Reflex 2 course on English2impact">
+        <img src="data:image/png;base64,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" alt="English2impact" width="67" height="64">
+      </a>
     <p class="eyebrow"><span>English2impact</span><i>·</i><b>English Reflex 2</b><i>·</i><span>Session 01 / 24</span></p>
+    </div>
     <h1>“We rolled out the new system <em>last quarter</em>.”</h1>
-    <p class="subline">Ten terms, four forms, seven measured parts. Guess the terms, drill each form until it arrives without translating, then decode the dialogue at full speed — finish every part and you have finished the session.</p>
+    <p class="subline">Ten terms, four forms, seven measured parts and a report. Guess the terms, drill each form until it arrives without translating, then decode the dialogue at full speed — finish every part and you have finished the session.</p>
     <ul class="chips">
       <li class="chip now">Stage 1 · Time Control</li>
       <li class="chip">Finished Past</li>
@@ -881,7 +920,7 @@ var PARTS = [
   {n:6, id:"decode", short:"Dialogue decode",     skill:"Listening", color:"var(--listen)", time:"≈ 18 min",
    title:"Dialogue decode", goal:"Listen at full speed with the player following you down the page, then answer eight questions.",
    keys:COMPREHENSION.map(function(_,i){return "q-"+i;})},
-  {n:7, id:"exit",   short:"Exit ticket",         skill:"Speaking",  color:"var(--speak)",  time:"≈ 10 min",
+  {n:7, id:"exit",   short:"Exit ticket",         skill:"Speaking",  color:"var(--speak)",  time:"≈ 8 min",
    title:"Exit ticket", goal:"Five things to produce out loud before you leave.",
    keys:EXIT.map(function(_,i){return "x-"+i;})},
   {n:8, id:"report", short:"Session report",      skill:"Review",    color:"var(--terra)",  time:"≈ 2 min",
@@ -916,6 +955,15 @@ function footStrip(p){
   var next = p.n<PARTS.length ? '<a class="nextlink" href="#p'+(p.n+1)+'" data-go="'+(p.n+1)+'">Next part <small>'+PARTS[p.n].short+'</small> →</a>' : '';
   return '<div class="stage-foot">'+prev+'<span class="spacer"></span>'+next+'</div>';
 }
+/* A guide box. Every line gets its own row with the mark in its own column,
+   so a wrapped example hangs under its own text — and an inline <b> stays inline.
+   ok:true/false → ✓/✗ · k:"label" → a labelled note · tag:true → a mono form tag */
+function rule(title, lines){
+  return '<div class="rule"><b>'+title+'</b><div class="ex">'+lines.map(function(l){
+    if(l.k) return '<p class="ln note'+(l.tag?' tag':'')+'"><span class="k">'+l.k+'</span><span>'+l.t+'</span></p>';
+    return '<p class="ln"><span class="'+(l.ok?'yes':'no')+'">'+(l.ok?'✓':'✗')+'</span><span>'+l.t+'</span></p>';
+  }).join('')+'</div></div>';
+}
 function teach(label, body){
   return '<details class="teach"><summary>'+label+'</summary><div class="inner">'+body+'</div></details>';
 }
@@ -935,7 +983,12 @@ function buildWarm(){
   }).join("");
   return stage(PARTS[0],
     '<p class="lede">Vietnamese does not close a syllable with a consonant cluster, so <i>rolled</i>, <i>signed</i>, <i>kicked</i> and <i>wrapped</i> lose their endings — and the tense goes with them. Fix the sound first; the grammar is already yours.</p>'+
-    '<div class="rule"><b>/ɪd/ only after t and d.</b><span class="ex"><span class="yes">✓</span> sorted /ˈsɔːtɪd/ &nbsp;·&nbsp; <span class="no">✗</span> rolled is not /ˈrəʊlɪd/ &nbsp;·&nbsp; <span class="no">✗</span> signed is not /ˈsaɪnɪd/</span></div>'+
+    rule("/ɪd/ only after t and d.",[
+      {ok:true,  t:"<b>sorted</b> /ˈsɔːtɪd/ — an extra syllable, because <i>sort</i> already ends in <b>t</b>."},
+      {ok:false, t:"<b>rolled</b> is not /ˈrəʊlɪd/. It is /rəʊld/ — one syllable, the <b>d</b> on the end."},
+      {ok:false, t:"<b>signed</b> is not /ˈsaɪnɪd/. It is /saɪnd/."},
+      {k:"Remember", t:"only <b>t</b> and <b>d</b> earn the extra syllable. Everything else just takes the sound."}
+    ])+
     '<p class="hint">Tap a verb, then tap the column it belongs in. Tap a placed verb to send it back. <b>Nothing is marked until you press Check.</b></p>'+
     '<div class="pool" id="sort-pool">'+pool+'</div>'+
     '<div class="sort-grid" id="sort-grid">'+buckets+'</div>'+
@@ -974,10 +1027,14 @@ function buildLab(){
       '<span class="hint">Paste-ready for Quizlet, Google Docs or a handout.</span></div>'+
       '<textarea id="vocab-out" class="export" hidden aria-label="Plain-text vocabulary"></textarea>'+
     '</div>'+
-    '<div class="rule"><b>A pronoun object goes INSIDE a separable term. It has no choice.</b>'+
-    '<span class="ex"><span class="yes">✓</span> We rolled <b>it</b> out. &nbsp; <span class="no">✗</span> We rolled out it.<br>'+
-    '<span class="yes">✓</span> I ran into <b>him</b>. &nbsp; <span class="no">✗</span> I ran him into.<br>'+
-    'Splits: roll out · sort out · wrap up · kick off &nbsp;|&nbsp; Never splits: run into · get around to · come in under · sign off on</span></div>'+
+    rule("A pronoun object goes INSIDE a separable term. It has no choice.",[
+      {ok:true,  t:"We rolled <b>it</b> out."},
+      {ok:false, t:"We rolled out <b>it</b>."},
+      {ok:true,  t:"I ran into <b>him</b>."},
+      {ok:false, t:"I ran <b>him</b> into."},
+      {k:"Splits", t:"roll out · sort out · wrap up · kick off"},
+      {k:"Never splits", t:"run into · get around to · come in under · sign off on"}
+    ])+
     teach("Teacher — the error that survives the whole course",
       "<p>✗ <i>We rolled out it.</i> Correct it out loud every single time it appears today, or you will still be correcting it in Session 12.</p>"+
       "<p>Two columns on the board — <b>SPLITS</b> / <b>NEVER SPLITS</b> — left up for the full ninety minutes. Run the two hardest pairs back to back until nobody hesitates: <i>rolled it out / ran into him</i> and <i>signed it off / signed off on it</i>.</p>"+
@@ -1118,7 +1175,12 @@ function buildExit(){
   return stage(PARTS[6],
     '<p class="lede">One term of your own, one pronoun object so the placement is audible, a finished time reference in every sentence. The last line is the one that proves you got the real lesson.</p>'+
     '<div class="drill">'+items+'</div>'+
-    '<div class="rule"><b>The chain.</b><span class="ex">[+] We rolled it out last quarter. → [−] We didn’t roll it out last quarter. → [Y/N ?] Did you roll it out last quarter? → [Wh- ?] When did you roll it out?</span></div>'+
+    rule("The chain — one sentence, four forms.",[
+      {k:"[+]",     tag:true, t:"We rolled it out last quarter."},
+      {k:"[−]",     tag:true, t:"We didn’t roll it out last quarter."},
+      {k:"[Y/N ?]", tag:true, t:"Did you roll it out last quarter?"},
+      {k:"[Wh- ?]", tag:true, t:"When did you roll it out?"}
+    ])+
     teach("Teacher — how to run the exit ticket",
       "<p>Round the room, one line each, no notes. A learner who reaches for the page has not finished the session.</p>"+
       "<p>Listen for the ending and for the pronoun position — those two are the whole of Stage 1. Everything else can wait.</p>"));
@@ -1150,7 +1212,11 @@ main.innerHTML =
   buildLab()+
   buildDrill(PARTS[2],"a",DRILL_A,false,
     '<p class="lede">The past moves <b>off</b> the verb and <b>onto</b> <i>did</i>, and the verb goes back to its base form. Write the full form — the contraction is for speaking.</p>'+
-    '<div class="rule"><b>One tense marker at a time.</b><span class="ex"><span class="yes">✓</span> We did not roll out the system. &nbsp; <span class="no">✗</span> We did not rolled out the system.</span></div>',
+    rule("One tense marker at a time.",[
+      {ok:true,  t:"We <b>did not roll</b> out the system."},
+      {ok:false, t:"We <b>did not rolled</b> out the system."},
+      {k:"Why", t:"<i>did</i> carries the past, so the verb goes back to its base form."}
+    ]),
     buildExchangeBlock(),
     teach("Teacher — items 4, 5, 8, 9, 10",
       "<p><b>4 and 9:</b> the pronoun stays in the middle even in the negative — ✓ <i>did not wrap <b>it</b> up</i>. Expect ✗ <i>did not wrap up it</i>.</p>"+
@@ -1158,14 +1224,24 @@ main.innerHTML =
       "<p><b>10:</b> <i>end up</i> takes -ing, always. Do not open verb patterns today — Session 19 does that properly.</p>"))+
   buildDrill(PARTS[3],"b",DRILL_B,true,
     '<p class="lede">Build the question from the prompt. Items 5 and 8 are <b>negative questions</b> — you are surprised, because you thought the opposite.</p>'+
-    '<div class="rule"><b>Two rules, one line.</b><span class="ex"><span class="yes">✓</span> Did they sign <b>it</b> off? &nbsp; <span class="no">✗</span> Did they sign off it?<br><span class="yes">✓</span> Didn’t you wrap it up? &nbsp; <span class="no">✗</span> Did not you wrap it up?</span></div>',
+    rule("Two rules, one line.",[
+      {ok:true,  t:"Did they sign <b>it</b> off?"},
+      {ok:false, t:"Did they sign off <b>it</b>?"},
+      {ok:true,  t:"<b>Didn’t</b> you wrap it up?"},
+      {ok:false, t:"<b>Did not</b> you wrap it up?"},
+      {k:"Negative question", t:"only the contraction moves to the front — never the two words apart."}
+    ]),
     buildConvoBlock(),
     teach("Teacher — the answer is where the terms live",
       "<p>Vietnamese answers the <i>shape</i> of a negative question; English answers the <i>fact</i>. Let it happen once, then point at the board.</p>"+
       "<p>The spoken block drills the bare reflex — <i>Yes, we did</i> / <i>No, they didn’t</i> — at speed. Once it is automatic, push the room one step further: short form <b>plus one clause</b>, <i>“Yes, we did — we finished two days early.”</i> Students allowed to answer in two words all term will still be answering in two words in Session 12.</p>"))+
   buildDrill(PARTS[4],"c",DRILL_C,false,
     '<p class="lede">Take a Yes/No question, remove <b>one</b> piece, and put the Wh- word in front. When the Wh- word <b>is</b> the subject, there is no <i>did</i> — and the verb keeps its past form.</p>'+
-    '<div class="rule"><b>Two shapes.</b><span class="ex">Inverted: <b>When did</b> you finish? · <b>What did</b> they sign off on?<br>Subject: <b>Who signed</b> off on the budget? &nbsp; <span class="no">✗</span> Who did sign off…?</span></div>',
+    rule("Two shapes.",[
+      {k:"Inverted", tag:true, t:"<b>When did</b> you finish? · <b>What did</b> they sign off on?"},
+      {k:"Subject",  tag:true, t:"<b>Who signed</b> off on the budget? — no <i>did</i>, and the verb keeps its past form."},
+      {ok:false, t:"<b>Who did sign</b> off on the budget?"}
+    ]),
     "",
     teach("Teacher — write 3, 6 and 10 on the board together",
       "<p>Subject questions: no <i>did</i>, past form kept. Expect ✗ <i>Who did sign off…?</i> and ✗ <i>Who run into…?</i> from half the room.</p>"+
