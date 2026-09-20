@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#061c37">
-<title>Session 01 — The Three Kinds of AI Tool — E-com Fluency 3</title>
+<title>Session 01 — The three kinds of AI tool — E-com Fluency 3</title>
 <script id="lessonStartup">
 (function(){
 var root = document.documentElement;
@@ -122,8 +122,20 @@ a{color:var(--salmon-ink)}
 [hidden]{display:none!important}
 
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.skip-link{position:absolute;left:16px;top:0;transform:translateY(-200%);background:var(--card);color:var(--navy);padding:12px 18px;border-radius:0 0 var(--radius-sm) var(--radius-sm);z-index:200;font-size:var(--fs-small)}
-.skip-link:focus{transform:none}
+/* Clipped rather than moved off-screen: shifting it upwards only worked
+   while a scroll container clipped it, which is not true when the lesson is
+   embedded in a host page. */
+.skip-link{
+  position:absolute;left:16px;top:0;z-index:200;
+  width:1px;height:1px;padding:0;overflow:hidden;white-space:nowrap;
+  clip:rect(0,0,0,0);clip-path:inset(50%);
+  background:var(--card);color:var(--navy);font-size:var(--fs-small);
+  border-radius:0 0 var(--radius-sm) var(--radius-sm);
+}
+.skip-link:focus{
+  width:auto;height:auto;padding:12px 18px;
+  overflow:visible;clip:auto;clip-path:none;
+}
 
 button,input,select,textarea{font:inherit}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,textarea:focus-visible{
@@ -1090,7 +1102,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <div class="lesson-overview">
 <p class="kicker">Your learning goals</p>
 <h2 id="overviewTitle">Three moves. One confident conversation.</h2>
-<div class="meta"><span><b>Workplace</b></span><span>Advanced</span><span>E-commerce</span></div>
+<div class="meta"><span>Workplace</span><span><b>Advanced</b></span><span>E-commerce</span></div>
 <p class="aim">Six stages, small practical steps. By the end, you can classify an AI tool, explain a technique, and flag a risk — at speed.</p>
 </div>
 <ul class="targets" id="targets">
@@ -1134,7 +1146,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <summary>Quizlet Match · practise the vocabulary</summary>
 <div class="quizlet-body">
 <p class="note">Match the terms with their examples. Repeat this practice as often as you like.</p>
-<iframe id="quizletMatch" data-media-src="https://quizlet.com/1210644883/match/embed?i=4y577v&amp;x=1jj1" height="500" width="100%" style="border:0" title="Quizlet Match — the three kinds of AI tool" loading="lazy" allowfullscreen></iframe>
+<iframe id="quizletMatch" data-media-src="https://quizlet.com/1210644883/match/embed?i=4y577v&amp;x=1jj1" height="500" width="100%" style="border:0" title="Quizlet Match — The three kinds of AI tool" loading="lazy" allowfullscreen></iframe>
 <p class="note"><a href="https://quizlet.com/1210644883/match/embed?i=4y577v&amp;x=1jj1" target="_blank" rel="noopener noreferrer">Open Quizlet Match in a new tab</a></p>
 </div>
 </details>
@@ -1291,6 +1303,7 @@ data-artist-url="https://soundcloud.com/english2impact"></div>
 <p class="hold">There is a sponsor break inside part 1, roughly 1:45 to 2:45. Don't skip it — the last true/false statement comes from it. He signals the return with "back to my takeaways."</p>
 <div class="block">
 <div class="video"><iframe data-media-src="https://www.youtube-nocookie.com/embed/nVyD6THcvDQ" title="99% of Beginners Don't Know the Basics of AI" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+<p class="note">Video: Jeff Su · 9 min</p>
 </div>
 <div class="block step" data-group="p1" data-step="Part 1 · six true-or-false calls">
 <p class="part">Part 1 · 0:00 – 2:55 · the three types of tool</p>
@@ -1551,8 +1564,11 @@ m2:[["few-shot prompting","Two or more examples"],
 ["generic output","True for anyone, useful to no one"],
 ["high-stakes task","Being wrong is expensive"]]
 };
-var GOALS = {classify:"Classify any AI tool", technique:"Explain a prompting technique", risk:"Name the risk"};
-// Keep the original storage key so correcting the displayed session number preserves progress.
+var GOALS = {};
+GOALS["classify"] = "Classify any AI tool";
+GOALS["technique"] = "Explain a prompting technique";
+GOALS["risk"] = "Name the risk";
+/* Unique per session — two sessions sharing a key share their progress. */
 var KEY = "e2i-ef3-s01", store = {}, t = null, RESETTERS = [], PAINTERS = [];
 try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ store = {}; }
 function flush(){
