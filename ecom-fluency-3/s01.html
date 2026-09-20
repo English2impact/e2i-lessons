@@ -734,6 +734,90 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 .video{position:relative;width:100%;aspect-ratio:16/9;margin-top:6px;background:#eceee8;border-radius:var(--radius-sm);overflow:hidden}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
+/* ---- the video keeps up with the questions about it -----------------
+   Part 4 asks three sets of questions about one video and the answers sit
+   below the fold. So the player follows: sticky inside #s4, which means it
+   lets go on its own at the end of the part.
+
+   The iframe is moved into .video-dock once, at load, and never again.
+   Reparenting an iframe reloads it, so docking has to be a change of box,
+   not a change of place. */
+.video-stage{position:sticky;top:6px;z-index:20;min-height:var(--video-h,0px)}
+.video-sentinel{height:1px;margin-bottom:-1px}
+
+/* Following: the block is only holding the space it used to fill. The card
+   is .video-dock, and the empty remainder must not swallow taps meant for
+   the question underneath it. */
+.video-stage.stuck{
+  padding:0;background:none;border-color:transparent;box-shadow:none;
+  pointer-events:none;
+}
+.video-stage.stuck .video-dock{pointer-events:auto}
+
+.video-close{
+  display:none;position:absolute;top:-10px;right:-10px;
+  width:26px;height:26px;padding:0;place-items:center;
+  font-size:17px;line-height:1;color:#fff;
+  background:var(--navy);border:1.5px solid #fff;border-radius:50%;
+  box-shadow:0 2px 8px rgba(6,28,55,.3);cursor:pointer;
+}
+.video-stage.stuck .video-close{display:grid}
+.video-close:hover{background:var(--salmon)}
+
+@media (max-width:899.98px){
+  /* A bar, not a floating thumbnail: it spans the column and is opaque, so
+     the question does not scroll through the gap beside it. The credit line
+     earns its keep here by filling the space next to the picture. */
+  .video-stage.stuck .video-dock{
+    position:relative;display:flex;align-items:center;gap:11px;
+    padding:8px;background:var(--card);
+    border:1px solid var(--line);border-radius:11px;
+    box-shadow:0 8px 20px rgba(6,28,55,.14);
+  }
+  /* Capped, or a tablet gets a 190px-tall bar for a thumbnail it does not
+     need any bigger than a phone's. */
+  .video-stage.stuck .video{flex:0 0 52%;max-width:190px;margin:0;overflow:hidden}
+  .video-stage.stuck .note{
+    flex:1 1 auto;min-width:0;margin:0;
+    font-size:var(--fs-meta);line-height:1.45;color:var(--faint);
+  }
+  /* "Video:" is the word the bar cannot afford — the name and the running
+     time are the two the learner actually uses. */
+  .video-stage.stuck .note-lbl{display:none}
+}
+
+@media (min-width:900px){
+  /* A 16:9 player pinned to the top of a wide column would take half the
+     reading area, so here it lifts into a corner instead. The space it left
+     says where it went — an unexplained hole reads as a bug. */
+  .video-stage{position:relative}
+  /* One variable for the corner player's size: the dismiss button is fixed
+     too — it has to be, or it stays behind in the page — and it works out
+     its own place from this rather than repeating the number. */
+  .video-stage.stuck{--pip-w:min(330px,27vw);--pip-gap:22px}
+  .video-stage.stuck .video{
+    position:fixed;right:var(--pip-right,var(--pip-gap));bottom:var(--pip-gap);
+    z-index:90;width:var(--pip-w);margin:0;overflow:visible;
+    box-shadow:0 16px 38px rgba(6,28,55,.32);
+  }
+  /* Fixed as well — anchored to the block, it would stay behind in the page
+     while the player it belongs to sat in the corner. */
+  .video-stage.stuck .video-close{
+    position:fixed;z-index:91;top:auto;
+    right:calc(var(--pip-right,var(--pip-gap)) - 13px);
+    bottom:calc(var(--pip-gap) + var(--pip-w) * 9 / 16 - 13px);
+  }
+  .video-stage.stuck .video iframe{border-radius:var(--radius-sm)}
+  .video-stage.stuck .note{display:none}
+  .video-stage.stuck::after{
+    content:"Video playing in the corner";
+    position:absolute;inset:0;display:flex;
+    align-items:center;justify-content:center;
+    border:1px dashed var(--line);border-radius:var(--radius-sm);
+    font-size:var(--fs-small);color:var(--faint);
+  }
+}
+
 /* an open question that wants a written answer */
 .q-open{margin:0 0 12px;font-size:var(--fs-body);font-weight:600;line-height:1.5;max-width:var(--measure)}
 
@@ -1301,9 +1385,9 @@ data-artist-url="https://soundcloud.com/english2impact"></div>
 <div class="sh"><span class="spine"></span><span class="num">4</span><div class="txt"><span class="skill">Listening</span><span class="clr">cleared</span><h2>Media decode</h2></div><span class="time">20 min</span></div>
 <p class="lead">Now the video, in three parts. Watch one part, answer everything in its task, then press Check. Nothing is marked until you do, so you can change your mind and you never find out mid-task whether you are on the right track. The timestamp beside each item tells you where the answer sits.</p>
 <p class="hold">There is a sponsor break inside part 1, roughly 1:45 to 2:45. Don't skip it — the last true/false statement comes from it. He signals the return with "back to my takeaways."</p>
-<div class="block">
+<div class="block video-stage">
 <div class="video"><iframe data-media-src="https://www.youtube-nocookie.com/embed/nVyD6THcvDQ" title="99% of Beginners Don't Know the Basics of AI" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-<p class="note">Video: Jeff Su · 9 min</p>
+<p class="note"><span class="note-lbl">Video: </span>Jeff Su · 9 min</p>
 </div>
 <div class="block step" data-group="p1" data-step="Part 1 · six true-or-false calls">
 <p class="part">Part 1 · 0:00 – 2:55 · the three types of tool</p>
@@ -1818,6 +1902,33 @@ var mo = new MutationObserver(function(){ if (whenSourced()) mo.disconnect(); })
 mo.observe(media, {attributes:true, attributeFilter:["src"]});
 }
 }
+/* ---------- when does a sticky thing count as docked? ----------
+   An IntersectionObserver was the obvious answer and it was wrong: move the
+   scroller past the sentinel in one step — a part change, a "next step"
+   jump, a restored scroll position — and no notification arrives, so the
+   bar never docks and never recovers, because the state it missed never
+   changes again. Measuring on scroll always agrees with what is on screen.
+   The work is one getBoundingClientRect per frame, and only while the
+   learner is actually scrolling. */
+function follows(sentinel, apply){
+var queued = false, last = null;
+function measure(){
+queued = false;
+var top = lessonViewport ? lessonViewport.getBoundingClientRect().top : 0;
+var past = sentinel.getBoundingClientRect().bottom < top + 7;
+if (past !== last){ last = past; apply(past); }
+}
+function schedule(){
+if (queued) return;
+queued = true;
+window.requestAnimationFrame(measure);
+}
+if (lessonViewport) lessonViewport.addEventListener("scroll", schedule, {passive:true});
+window.addEventListener("scroll", schedule, {passive:true});
+window.addEventListener("resize", schedule);
+schedule();
+return schedule;
+}
 /* ---------- dock the player while its scenario is on screen ----------
    The player is sticky inside its own .scn, so it follows the learner
    down through the gap-fill and lets go at the end of the scenario.
@@ -1843,15 +1954,82 @@ if (h > 20) box.style.setProperty("--audio-h", h + "px");
 var sentinel = document.createElement("div");
 sentinel.className = "audio-sentinel";
 box.parentNode.insertBefore(sentinel, box);
-if (window.IntersectionObserver){
-new IntersectionObserver(function(entries){
-var e = entries[0], top = e.rootBounds ? e.rootBounds.top : 0;
-box.classList.toggle("stuck", !e.isIntersecting && e.boundingClientRect.top < top);
-}, {root: lessonViewport, rootMargin: "-7px 0px 0px 0px", threshold: 0}).observe(sentinel);
-}
+follows(sentinel, function(past){ box.classList.toggle("stuck", past); });
 if (window.ResizeObserver) new ResizeObserver(reserve).observe(dock);
 window.requestAnimationFrame(reserve);
 transport(box, dock, media);
+});
+/* ---------- keep the video with the questions about it ----------
+   Same idea as the audio dock, one level up: the player stays with the
+   learner for the whole of part 4. On a phone it shrinks and sticks to the
+   top; on a wide screen it lifts into a corner, because a 16:9 player
+   pinned to the top of a 900px column would leave nothing to read.
+
+   Nothing is reparented. Moving an iframe in the DOM reloads it, and this
+   one may be playing. */
+each(".video-stage", function(stage){
+var video = stage.querySelector(".video");
+if (!video) return;
+var dismissed = false;
+
+/* One move, at load, before anything can be playing. */
+var dock = document.createElement("div");
+dock.className = "video-dock";
+stage.insertBefore(dock, video);
+dock.appendChild(video);
+var note = stage.querySelector(".note");
+if (note) dock.appendChild(note);
+
+var close = document.createElement("button");
+close.type = "button";
+close.className = "video-close";
+close.setAttribute("aria-label", "Stop the video following me");
+close.innerHTML = "&times;";
+close.addEventListener("click", function(){
+dismissed = true;
+stage.classList.remove("stuck");
+});
+dock.appendChild(close);
+
+/* The block holds the height it had before the player shrank or lifted,
+   so the questions never jump while you are reading them. */
+function reserve(){
+if (stage.classList.contains("stuck")) return;
+var h = stage.offsetHeight;             /* 0 while part 4 is hidden — keep the last good value */
+if (h > 40) stage.style.setProperty("--video-h", h + "px");
+}
+
+var sentinel = document.createElement("div");
+sentinel.className = "video-sentinel";
+stage.parentNode.insertBefore(sentinel, stage);
+
+follows(sentinel, function(past){
+if (!past) dismissed = false;           /* scrolled back to it — offer it again */
+stage.classList.toggle("stuck", past && !dismissed);
+window.requestAnimationFrame(placePip);
+});
+/* Where the corner player goes. The window's bottom-right is the right
+   answer when it is free; on a short window the parts rail reaches down
+   into it, and covering the navigation is better than covering the
+   question, so it tucks against the reading column instead. */
+function placePip(){
+if (!stage.classList.contains("stuck")) return;
+if (!(window.matchMedia && window.matchMedia("(min-width:900px)").matches)) return;
+var gap = 22, right = gap;
+var rail = document.querySelector(".rail");
+if (rail){
+var rr = rail.getBoundingClientRect();
+var top = window.innerHeight - gap - video.offsetHeight;
+var left = window.innerWidth - gap - video.offsetWidth;
+if (rr.bottom > top && rr.right > left && rr.height)
+right = Math.max(gap, Math.round(window.innerWidth - stage.getBoundingClientRect().right));
+}
+stage.style.setProperty("--pip-right", right + "px");
+}
+
+if (window.ResizeObserver) new ResizeObserver(reserve).observe(stage);
+window.addEventListener("resize", placePip);
+window.requestAnimationFrame(reserve);
 });
 /* ---------- saved fields ---------- */
 each(".save", function(el){
