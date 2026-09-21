@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#061c37">
+<meta name="description" content="English Reflex 2 · Session 01 — Finished Past. Seven parts, 90 minutes.">
+<title>English Reflex 2 · Session 01 — Finished Past</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
+<style>
+/* ============================================================
+   English Reflex 2 — session page
+   ONE stylesheet, mobile-first, no override layers.
+   Change a token, never append a patch block at the bottom.
+   ============================================================ */
+
+:root{
+  /* page frame — content never runs edge to edge: the gutter grows with the
+     window (16px on a phone, up to 56px on a laptop) and the content caps at
+     --page-max, so a wide screen gets margin rather than longer lines */
+  --page-max:1120px;
+  --gutter:clamp(16px, 5vw, 56px);
+
+  /* type scale — nothing below 12px, never for running text */
+  --fs-micro:12px; --fs-meta:13px; --fs-small:15px;
+  --fs-body:17px;  --fs-lead:18px; --fs-h3:20px;
+
+  /* brand */
+  --paper:#f4f3ef; --card:#ffffff; --card-2:#faf9f6;
+  --navy:#061c37;  --navy-2:#0d2c4e;
+  --terra:#dd7958; --terra-ink:#c3512b;
+  --ink:#10233b;   --mute:#59635e;  --faint:#636c66;
+  --line:#e3ddd2;  --line-2:#efeae0;
+  --ok:#1a7a4c;    --ok-bg:#eaf6ef;
+  --no:#b3261e;    --no-bg:#fdeeec;
+
+  /* skill accents — from the four-leaf logo */
+  --listen:#006838; --speak:#1d8a1d; --read:#4f9a12; --write:#7a9e21;
+
+  --measure:40rem;      /* ~72 characters */
+  --nav-h:59px;         /* the fixed bar, below 900px */
+  --host-offset:0px;    /* raised by the Odoo embed build */
+  --radius:14px;
+  --shadow:0 1px 2px rgba(6,28,55,.05), 0 8px 24px -16px rgba(6,28,55,.35);
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:var(--fs-body); line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition:none !important; animation:none !important} }
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif; font-weight:600; line-height:1.18; margin:0}
+p{margin:0 0 .85em}
+a{color:var(--terra-ink)}
+b,strong{font-weight:600}
+u{text-decoration-color:var(--terra); text-underline-offset:3px}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace}
+.measure{max-width:var(--measure)}
+
+.skip{position:absolute;left:-9999px;top:0;background:var(--navy);color:#fff;padding:10px 14px;z-index:99;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+
+:focus-visible{outline:3px solid var(--terra); outline-offset:2px; border-radius:6px}
+
+/* boot guard — the failsafe in script removes this after 2.5s no matter what */
+.lesson-booting .lesson-viewport{visibility:hidden}
+
+/* ============================ masthead ============================ */
+
+.masthead{background:var(--navy); color:#eef2f7; padding:22px 0 24px; border-bottom:3px solid var(--terra)}
+.shell{max-width:calc(var(--page-max) + 2 * var(--gutter)); margin:0 auto; padding:0 var(--gutter)}
+.topline{display:flex; gap:13px; align-items:center; margin:0 0 12px}
+.brand{flex:none; display:block; line-height:0; text-decoration:none; border-radius:8px}
+.brand:hover{opacity:.82}
+.brand img{display:block; width:auto; height:46px}
+.eyebrow{
+  font-size:var(--fs-micro); letter-spacing:.13em; text-transform:uppercase;
+  color:#9fb2c8; margin:0; display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+}
+.eyebrow b{color:var(--terra); font-weight:600}
+.eyebrow i{color:#7d93ab; font-style:normal}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+.masthead h1{font-size:clamp(25px,6.4vw,40px); color:#fff; max-width:22ch}
+.masthead h1 em{color:var(--terra); font-style:italic}
+.subline{margin:12px 0 0; color:#c9d5e3; font-size:var(--fs-small); max-width:var(--measure)}
+.chips{display:flex; flex-wrap:wrap; gap:7px; margin:14px 0 0; padding:0; list-style:none}
+.chip{
+  font-size:var(--fs-micro); letter-spacing:.02em; color:#d7e1ed;
+  border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:5px 11px; white-space:nowrap;
+}
+.chip.now{border-color:var(--terra); color:#fff; background:rgba(221,121,88,.18); font-weight:600}
+.structure{
+  margin:14px 0 0; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16);
+  border-radius:10px; padding:11px 13px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:var(--fs-meta); color:#e7eef6; overflow-wrap:anywhere;
+}
+.structure span{
+  display:block; font-size:var(--fs-micro); letter-spacing:.13em; text-transform:uppercase;
+  color:var(--terra); margin-bottom:3px; font-family:inherit;
+}
+
+/* ============================ layout ============================ */
+
+.wrap{max-width:calc(var(--page-max) + 2 * var(--gutter)); margin:0 auto; padding:0 var(--gutter) calc(var(--nav-h) + 30px)}
+.lesson-viewport{scroll-padding-bottom:var(--nav-h)}
+
+/* ============================ stage (one part per page) ============================ */
+
+.stage{padding:22px 0 0}
+.stage[hidden]{display:none}
+
+.stage-head{border-bottom:2px solid var(--navy); padding-bottom:14px; margin-bottom:18px}
+.kicker{
+  display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:0 0 9px;
+  font-size:var(--fs-micro); letter-spacing:.13em; text-transform:uppercase; color:var(--faint);
+}
+.kicker .dot{width:10px; height:10px; border-radius:50%; background:var(--c,var(--terra)); flex:none}
+.kicker .skill{color:var(--c,var(--terra-ink)); font-weight:600}
+.kicker .skill::before, .kicker span:last-child::before{content:"·"; margin-right:8px; color:#b9b2a5}
+.stage-head h2{font-size:clamp(22px,5.4vw,31px)}
+.goal{margin:8px 0 0; color:var(--mute); font-size:var(--fs-small); max-width:var(--measure)}
+
+.stage-meter{display:flex; align-items:center; gap:10px; margin-top:13px}
+.stage-meter .track{flex:1; height:7px; border-radius:999px; background:var(--line-2); overflow:hidden; max-width:320px}
+.stage-meter .fill{display:block; height:100%; width:0; background:var(--c,var(--terra)); border-radius:999px; transition:width .3s ease}
+.stage-meter b{font-size:var(--fs-meta); color:var(--mute); font-weight:500; font-variant-numeric:tabular-nums}
+.stage-meter.done b{color:var(--ok); font-weight:600}
+
+.lede{font-size:var(--fs-lead); max-width:var(--measure); margin:0 0 16px}
+.hint{font-size:var(--fs-small); color:var(--mute); max-width:var(--measure)}
+.block{margin:0 0 26px}
+.block-head{margin:30px 0 12px; padding-top:22px; border-top:1px solid var(--line)}
+.block-head h3{font-size:var(--fs-h3)}
+.block-head .sub{display:block; font-size:var(--fs-small); color:var(--mute); margin-top:5px; max-width:var(--measure)}
+
+/* guide boxes */
+.rule{
+  background:var(--card); border:1px solid var(--line); border-left:4px solid var(--terra);
+  border-radius:0 var(--radius) var(--radius) 0; padding:14px 16px; margin:0 0 16px;
+  max-width:var(--measure);
+}
+/* only the direct child is the heading — an inline <b> inside an example
+   must stay inline, or every emphasised word starts its own row */
+.rule > b{display:block; color:var(--terra-ink); margin-bottom:9px; font-size:var(--fs-body); line-height:1.35}
+.rule .ex{display:grid; gap:7px; font-size:var(--fs-small); color:var(--ink)}
+.ln{display:grid; grid-template-columns:19px minmax(0,1fr); gap:9px; align-items:start; margin:0; line-height:1.55}
+.ln>.yes,.ln>.no{text-align:center; line-height:1.55}
+.ln.note{display:block}
+.ln.note .k{
+  display:inline-block; margin-right:8px; font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--faint);
+}
+.ln.tag{grid-template-columns:66px minmax(0,1fr)}
+.ln.tag .k{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:var(--fs-meta);
+  font-weight:600; color:var(--terra-ink); white-space:nowrap;
+}
+.ln + .ln.note{margin-top:2px}
+.yes{color:var(--ok); font-weight:600}
+.no{color:var(--no); font-weight:600}
+
+.tag{
+  display:inline-block; font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-micro);
+  background:#fff; border:1px solid #d8e2ee; border-radius:5px; padding:1px 6px; color:var(--navy-2);
+}
+
+/* ============================ buttons ============================ */
+
+.btn{
+  font:inherit; font-size:var(--fs-meta); font-weight:600; letter-spacing:.01em;
+  min-height:48px; padding:0 17px; border-radius:10px; cursor:pointer;
+  background:var(--card); color:var(--navy); border:1.5px solid var(--navy);
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+}
+.btn:hover{background:#eef2f7}
+.btn.accent{background:var(--terra); border-color:var(--terra); color:#fff}
+.btn.accent:hover{background:#cf6a49}
+.btn.quiet{border-color:var(--line); color:var(--mute); font-weight:500}
+.btn.quiet:hover{background:var(--card-2); color:var(--ink)}
+.btn[disabled]{opacity:.5; cursor:not-allowed}
+.btn.sm{min-height:40px; padding:0 13px; font-size:var(--fs-meta)}
+
+.toolbar{display:flex; flex-wrap:wrap; gap:9px; align-items:center; margin:14px 0 0}
+.toolbar .spacer{flex:1 1 auto}
+.tally{font-size:var(--fs-meta); color:var(--mute); font-variant-numeric:tabular-nums}
+.tally.good{color:var(--ok); font-weight:600}
+
+/* the deferred-check bar — every exercise waits for it */
+.checkbar{
+  display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+  margin:16px 0 0; padding:13px; background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+}
+.checkbar .btn{flex:0 0 auto}
+.checkbar .res{font-size:var(--fs-meta); color:var(--mute); font-variant-numeric:tabular-nums}
+.checkbar .res.good{color:var(--ok); font-weight:600}
+.checkbar .res.part{color:var(--terra-ink); font-weight:600}
+
+/* ============================ 1 · sort ============================ */
+
+.pool{
+  display:flex; flex-wrap:wrap; gap:8px; padding:12px; min-height:60px;
+  background:var(--card); border:1px dashed var(--line); border-radius:var(--radius); margin:0 0 14px;
+}
+.pool:empty::after{content:"All thirteen placed."; font-size:var(--fs-small); color:var(--faint)}
+.word{
+  font:inherit; font-size:var(--fs-body); font-weight:500; cursor:pointer;
+  min-height:48px; padding:0 14px; border-radius:10px;
+  background:var(--card-2); border:1.5px solid var(--line); color:var(--ink);
+}
+.word[aria-pressed="true"]{border-color:var(--terra); background:#fdf1ec; box-shadow:0 0 0 3px rgba(221,121,88,.18)}
+.word.ok{border-color:var(--ok); background:var(--ok-bg); color:#0f5a36}
+.word.no{border-color:var(--no); background:var(--no-bg); color:#8d1e18}
+.sort-grid{display:grid; gap:11px; grid-template-columns:1fr}
+.bucket{background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius); padding:12px}
+.bucket.armed{border-color:var(--terra); background:#fffaf8}
+.bucket h4{margin:0; font-family:inherit; font-size:var(--fs-h3); font-weight:600; color:var(--navy)}
+.bucket .sub{display:block; font-size:var(--fs-micro); color:var(--faint); margin:2px 0 9px}
+.bucket .slot{display:flex; flex-wrap:wrap; gap:8px; min-height:52px; align-content:flex-start}
+.bucket .slot:empty::after{content:"Tap here to drop the selected verb"; font-size:var(--fs-meta); color:var(--faint)}
+
+/* ============================ 2 · term lab ============================ */
+
+.lab{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:15px; box-shadow:var(--shadow)}
+.lab-top{
+  display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  font-size:var(--fs-micro); letter-spacing:.1em; text-transform:uppercase; color:var(--faint);
+}
+.lab-top .known b{color:var(--ok)} .lab-top .todrill b{color:var(--terra-ink)}
+.ticks{display:flex; gap:5px; margin:11px 0 15px}
+.ticks i{flex:1; height:5px; border-radius:999px; background:var(--line-2)}
+.ticks i.on{background:var(--ok)} .ticks i.cur{background:var(--terra)}
+.lab h3{font-size:clamp(19px,4.6vw,23px); color:var(--navy)}
+.lab .gloss{font-size:var(--fs-small); color:var(--mute); margin-top:4px}
+.lab .src{
+  margin:13px 0; padding:12px 13px; background:var(--card-2); border:1px solid var(--line-2);
+  border-radius:10px; font-size:var(--fs-body);
+}
+.lab .src .k{
+  display:block; font-size:var(--fs-micro); letter-spacing:.11em; text-transform:uppercase;
+  color:var(--faint); margin-bottom:5px;
+}
+.lab .src u{display:inline-block; min-width:92px; border-bottom:2px solid var(--terra); text-decoration:none}
+.opts{display:grid; gap:9px}
+.opt{
+  font:inherit; font-size:var(--fs-body); text-align:left; cursor:pointer;
+  min-height:52px; padding:9px 13px; border-radius:11px;
+  background:var(--card); border:1.5px solid var(--line); color:var(--ink);
+  display:flex; align-items:center; gap:11px;
+}
+.opt:hover:not([disabled]){border-color:var(--navy); background:#f7f9fc}
+.opt .num{
+  flex:none; width:26px; height:26px; border-radius:7px; background:var(--card-2); border:1px solid var(--line);
+  display:grid; place-items:center; font-size:var(--fs-meta); font-weight:600; color:var(--mute);
+}
+.opt.ok{border-color:var(--ok); background:var(--ok-bg)} .opt.ok .num{background:var(--ok); color:#fff; border-color:var(--ok)}
+.opt.no{border-color:var(--no); background:var(--no-bg)} .opt.no .num{background:var(--no); color:#fff; border-color:var(--no)}
+.lab-foot{display:flex; gap:9px; align-items:center; margin-top:14px; flex-wrap:wrap}
+.lab-foot .keys{font-size:var(--fs-micro); color:var(--faint); margin-left:auto}
+.lab-banner{
+  font-size:var(--fs-meta); font-weight:600; color:var(--terra-ink); background:#fdf1ec;
+  border:1px solid #f3d6c9; border-radius:9px; padding:9px 12px; margin:0 0 13px;
+}
+.lab-done{text-align:center; padding:14px 0}
+.lab-done .big{font-family:"Playfair Display",serif; font-size:24px; color:var(--ok); margin-bottom:7px}
+
+/* vocabulary — stacked entries below 600px, real table above */
+.vocab{width:100%; border-collapse:collapse; table-layout:fixed; font-size:var(--fs-body)}
+.vocab th{
+  text-align:left; font-size:var(--fs-micro); letter-spacing:.1em; text-transform:uppercase;
+  color:var(--faint); font-weight:600; padding:8px 10px; border-bottom:2px solid var(--navy);
+}
+.vocab td{padding:11px 10px; border-bottom:1px solid var(--line-2); vertical-align:top}
+.vocab tr.band td{
+  background:var(--navy); color:#fff; font-size:var(--fs-micro); letter-spacing:.12em;
+  text-transform:uppercase; padding:7px 10px;
+}
+.vocab .term{font-weight:600}
+.vocab .vi{font-size:var(--fs-small); color:var(--mute)}
+.vocab .ipa{font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-small); color:var(--mute)}
+.vocab .ex{font-size:var(--fs-small)}
+.embed{
+  border:1px solid var(--line); border-radius:var(--radius); background:var(--card);
+  overflow:hidden; margin:0 0 10px;
+}
+.embed iframe{display:block; width:100%; height:500px; border:0}
+@media (max-width:599px){ .embed iframe{height:440px} }
+.export{
+  width:100%; min-height:150px; margin-top:11px; padding:11px; border-radius:10px;
+  border:1px solid var(--line); background:var(--card-2); font-family:ui-monospace,Menlo,monospace;
+  font-size:16px; line-height:1.5; color:var(--ink);
+}
+
+/* ============================ 3–5 · drills ============================ */
+
+.drill{display:grid; gap:11px}
+.item{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:13px}
+.item.ok{border-color:var(--ok); background:var(--ok-bg)}
+.item.no{border-color:var(--no); background:var(--no-bg)}
+.item.said{border-color:var(--ok); background:var(--ok-bg)}
+.prompt{display:flex; gap:11px; align-items:flex-start; font-size:var(--fs-body)}
+.idx{
+  flex:none; width:27px; height:27px; border-radius:8px; background:var(--navy); color:#fff;
+  display:grid; place-items:center; font-size:var(--fs-meta); font-weight:600;
+}
+.item.ok .idx{background:var(--ok)} .item.no .idx{background:var(--no)}
+.cue{font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-small)}
+.answer-row{margin-top:10px}
+.answer-row input{
+  width:100%; font:inherit; font-size:var(--fs-body); min-height:50px; padding:10px 13px;
+  border-radius:10px; border:1.5px solid var(--line); background:var(--card-2); color:var(--ink);
+}
+.answer-row input:focus{background:#fff; border-color:var(--navy)}
+.item.ok .answer-row input{border-color:var(--ok); background:#fff; color:#0f5a36; font-weight:500}
+.item.no .answer-row input{border-color:var(--no); background:#fff}
+.verdict{display:none; margin-top:9px; font-size:var(--fs-small)}
+.verdict.show{display:block}
+.verdict .mark{font-weight:600; display:block}
+.verdict.is-ok .mark{color:var(--ok)} .verdict.is-no .mark{color:var(--no)}
+.verdict .model{display:block; color:var(--ink)}
+.verdict .model:not(:empty)::before{content:"Model: "; color:var(--faint); font-size:var(--fs-meta)}
+.trap{
+  margin-top:8px; font-size:var(--fs-meta); color:#7a4a12; background:#fdf5e6;
+  border:1px solid #f0e0bd; border-radius:8px; padding:7px 10px;
+}
+
+/* spoken exchange rows */
+.worked{background:var(--card-2); border:1px solid var(--line); border-radius:var(--radius); padding:13px; margin:0 0 13px}
+.worked .w{
+  display:block; font-size:var(--fs-micro); letter-spacing:.11em; text-transform:uppercase;
+  color:var(--faint); margin-bottom:9px;
+}
+.turn{display:flex; gap:9px; align-items:flex-start; margin:0 0 8px; font-size:var(--fs-body)}
+.turn:last-child{margin-bottom:0}
+/* speaker marks: A outlined navy, B filled terracotta — neither looks like
+   the item number, which is plain text in its own gutter */
+.who-badge{
+  flex:none; width:25px; height:25px; border-radius:7px; display:grid; place-items:center;
+  font-size:var(--fs-micro); font-weight:600; color:var(--navy); background:transparent;
+  border:1.5px solid var(--navy); margin-top:1px;
+}
+.who-badge.b{background:var(--terra); border-color:var(--terra); color:#fff}
+.pol{
+  font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-meta); color:var(--terra-ink);
+  margin-right:6px; white-space:nowrap;
+}
+.say-item{display:grid; grid-template-columns:24px minmax(0,1fr); column-gap:10px}
+.say-item > .idx{
+  grid-row:1 / span 2; width:auto; height:auto; background:none; border-radius:0;
+  color:var(--faint); font-size:var(--fs-small); font-weight:600; font-variant-numeric:tabular-nums;
+  display:block; text-align:right; padding-top:2px;
+}
+.item.say-item.said > .idx{background:none; color:var(--ok)}
+.say-a, .say-row{grid-column:2}
+.say-row{
+  display:flex; flex-wrap:wrap; gap:9px; align-items:center;
+  margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);
+}
+.ans{
+  flex:1 1 200px; min-width:0; font:inherit; font-size:var(--fs-body); text-align:left; cursor:pointer;
+  background:transparent; border:0; padding:2px 0; color:var(--ink); line-height:1.5;
+}
+.ans .ph{color:var(--faint); font-size:var(--fs-small); font-style:italic}
+.ans .ph b{font-style:normal; color:var(--terra-ink); font-weight:600}
+.ans .tx{display:none}
+.ans.show .ph{display:none}
+.ans.show .tx{display:inline}
+.say-btns{display:flex; gap:8px; margin-left:auto}
+.say-row .btn{min-height:44px}
+
+/* ============================ 6 · decode ============================ */
+
+.scn{position:relative}
+.audio-sentinel{height:1px; margin-bottom:-1px}
+.audio{position:sticky; top:calc(8px + var(--host-offset)); z-index:30; min-height:var(--audio-h,auto); margin:0 0 16px}
+.audio.stuck{pointer-events:none}
+.audio-dock{
+  position:relative; background:var(--navy); color:#eef2f7; border-radius:var(--radius); padding:10px 12px;
+  box-shadow:var(--shadow); pointer-events:auto;
+}
+.audio.stuck .audio-dock{box-shadow:0 10px 26px rgba(6,28,55,.28)}
+.audio.stuck .audio-dock{padding:7px 11px}
+.audio.stuck .transport{gap:11px}
+.audio.stuck .tbtn.play{width:40px; height:40px}
+.audio.stuck .tbtn.play svg{width:16px; height:16px}
+.audio.stuck .seek{height:20px}
+.qchip{
+  flex:none; font-size:var(--fs-micro); background:rgba(255,255,255,.12); border-radius:999px;
+  padding:4px 9px; color:#fff; letter-spacing:.04em; font-variant-numeric:tabular-nums;
+}
+@media (max-width:419px){ .qchip{display:none} }
+.transport{display:flex; align-items:center; gap:13px}
+.tbtn{
+  flex:none; font:inherit; cursor:pointer; border-radius:50%; border:1.5px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.08); color:#fff; display:grid; place-items:center;
+}
+.tbtn:hover{background:rgba(255,255,255,.18)}
+.tbtn.play{background:var(--terra); border-color:var(--terra); width:46px; height:46px}
+.tbtn.play:hover{background:#cf6a49}
+.tbtn svg{width:18px; height:18px; fill:currentColor}
+.time{
+  flex:none; font-size:var(--fs-micro); color:#9fb2c8; font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;
+}
+.seek{
+  flex:1 1 auto; min-width:60px; position:relative; height:26px; display:flex; align-items:center;
+  cursor:pointer; touch-action:none;
+}
+.seek .rail-bg{position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); height:7px; border-radius:999px; background:rgba(255,255,255,.2)}
+.seek .rail-fill{position:absolute; left:0; top:50%; transform:translateY(-50%); height:7px; border-radius:999px; background:var(--terra); width:0}
+.seek .knob{
+  position:absolute; width:16px; height:16px; border-radius:50%; background:#fff; left:0; top:50%;
+  transform:translate(-8px,-50%); box-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+.seek:focus-visible{outline-offset:6px}
+.credit{font-size:var(--fs-micro); color:#9fb2c8; margin:7px 0 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.credit a{color:#cfdcea}
+.audio.stuck .credit{display:none}   /* the bar is a control strip; the attribution shows undocked */
+.sc-frame{width:100%; height:120px; border:0; border-radius:10px; display:block}
+.has-transport .sc-frame{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none}
+.has-transport .sc-fallback-note{display:none}
+
+.qa{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:13px; margin:0 0 11px}
+.qa.ok{border-color:var(--ok); background:var(--ok-bg)}
+.qa .q{font-size:var(--fs-body); margin-bottom:9px}
+.qa textarea{
+  width:100%; min-height:76px; font:inherit; font-size:var(--fs-body); padding:10px 13px;
+  border-radius:10px; border:1.5px solid var(--line); background:var(--card-2); color:var(--ink); resize:vertical;
+}
+.qa textarea:focus{background:#fff; border-color:var(--navy)}
+.model-ans{
+  display:none; margin-top:10px; padding:10px 12px; background:#f3f6fa; border-left:3px solid var(--navy);
+  border-radius:0 9px 9px 0; font-size:var(--fs-small);
+}
+.model-ans.show{display:block}
+.model-ans::before{
+  content:"Model answer"; display:block; font-size:var(--fs-micro); letter-spacing:.1em;
+  text-transform:uppercase; color:var(--faint); margin-bottom:4px;
+}
+.rev-panel{display:none; margin-top:13px}
+.rev-panel.show{display:block}
+.dlg{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:13px}
+.line{display:grid; grid-template-columns:72px 1fr; gap:10px; padding:7px 0; border-bottom:1px solid var(--line-2); font-size:var(--fs-body)}
+.line:last-child{border-bottom:0}
+.line .who{font-size:var(--fs-meta); font-weight:600; color:var(--terra-ink)}
+
+/* ============================ 7 · exit ============================ */
+
+.checkline{
+  display:flex; gap:12px; align-items:flex-start; background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); padding:13px; cursor:pointer; font-size:var(--fs-body);
+}
+.checkline input{width:24px; height:24px; flex:none; margin:2px 0 0; accent-color:var(--ok)}
+.checkline.done{border-color:var(--ok); background:var(--ok-bg)}
+
+/* ============================ report ============================ */
+
+.report{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:17px; box-shadow:var(--shadow)}
+.report-grid{display:grid; gap:9px; grid-template-columns:1fr 1fr; margin:14px 0}
+.rep-tile{background:var(--card-2); border:1px solid var(--line-2); border-radius:11px; padding:11px}
+.rep-tile .k{font-size:var(--fs-micro); letter-spacing:.08em; text-transform:uppercase; color:var(--faint)}
+.rep-tile .v{font-size:var(--fs-h3); font-weight:600; font-variant-numeric:tabular-nums}
+.rep-tile.done{border-color:var(--ok); background:var(--ok-bg)} .rep-tile.done .v{color:var(--ok)}
+.foot{
+  margin:28px 0 0; padding:16px 0 0; border-top:1px solid var(--line); display:flex; flex-wrap:wrap;
+  gap:8px; justify-content:space-between; font-size:var(--fs-meta); color:var(--faint);
+}
+
+/* ============================ stage footer strip ============================ */
+
+.stage-foot{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:26px 0 0; padding-top:16px; border-top:1px solid var(--line)}
+.stage-foot .spacer{flex:1 1 auto}
+.nextlink{
+  display:inline-flex; align-items:center; gap:9px; min-height:48px; padding:0 17px; border-radius:10px;
+  background:var(--navy); color:#fff; text-decoration:none; font-size:var(--fs-meta); font-weight:600;
+}
+.nextlink:hover{background:var(--navy-2)}
+.nextlink small{font-weight:400; color:#a9bdd4; font-size:var(--fs-micro)}
+
+/* ============================ roadmap rail ============================ */
+
+.rail{margin:30px 0 0}
+.rail-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:15px; box-shadow:var(--shadow)}
+.ring-row{display:flex; gap:13px; align-items:center; margin-bottom:14px}
+.ring{width:56px; height:56px; flex:none}
+.ring .track{fill:none; stroke:var(--line-2); stroke-width:4}
+.ring .bar{fill:none; stroke:var(--terra); stroke-width:4; stroke-linecap:round; transition:stroke-dasharray .4s ease}
+.ring-num{font-size:12px; font-weight:600; fill:var(--navy); font-family:"Be Vietnam Pro",sans-serif}
+.ring-lab b{display:block; font-size:var(--fs-small); font-weight:600}
+.ring-lab span{font-size:var(--fs-meta); color:var(--mute)}
+.rail h3{
+  font-family:inherit; font-size:var(--fs-micro); letter-spacing:.12em; text-transform:uppercase;
+  color:var(--faint); font-weight:600; margin:0 0 9px;
+}
+.toc{list-style:none; margin:0; padding:0; display:grid; gap:7px; grid-template-columns:1fr 1fr}
+.toc a{
+  display:grid; grid-template-columns:24px 1fr; gap:9px; align-items:start; min-height:58px;
+  padding:9px 10px; border-radius:11px; border:1px solid var(--line-2); background:var(--card-2);
+  text-decoration:none; color:var(--ink); font-size:var(--fs-meta); line-height:1.35;
+}
+.toc a:hover{border-color:var(--navy)}
+.toc .n{
+  width:24px; height:24px; border-radius:7px; display:grid; place-items:center; font-weight:600;
+  background:var(--card); border:1px solid var(--line); color:var(--mute); font-size:var(--fs-micro);
+}
+.toc .t{font-weight:500}
+.toc .cnt{grid-column:2; font-size:var(--fs-micro); color:var(--faint); font-variant-numeric:tabular-nums}
+.toc a.active{border-color:var(--terra); background:#fdf1ec}
+.toc a.active .n{background:var(--terra); border-color:var(--terra); color:#fff}
+.toc a.done .n{background:var(--ok); border-color:var(--ok); color:#fff}
+.toc a.done .cnt{color:var(--ok)}
+.rail-reset{
+  width:100%; margin-top:12px; min-height:44px; font:inherit; font-size:var(--fs-meta); cursor:pointer;
+  border-radius:9px; border:1px solid var(--line); background:var(--card-2); color:var(--mute);
+}
+.rail-reset:hover{color:var(--no); border-color:var(--no)}
+.rail-note{margin-top:11px; font-size:var(--fs-meta); color:var(--mute); padding:12px 13px}
+
+/* ============================ fixed bar + parts sheet (below 900px) ============================ */
+
+.pagenav{
+  position:fixed; left:0; right:0; bottom:0; z-index:60; height:var(--nav-h);
+  display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:7px; align-items:center;
+  padding:7px 10px calc(7px + env(safe-area-inset-bottom,0px));
+  background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-top:1px solid var(--line);
+}
+.pagenav button{
+  font:inherit; font-size:var(--fs-meta); font-weight:600; min-height:44px; cursor:pointer;
+  border-radius:9px; border:1.5px solid var(--navy); background:var(--card); color:var(--navy);
+  display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:0 12px;
+}
+.pagenav button[disabled]{opacity:.4; cursor:not-allowed}
+.pagenav .page-parts{
+  min-width:0; border-color:var(--line); background:var(--card-2); font-weight:500; color:var(--ink);
+  justify-content:space-between; gap:8px;
+}
+.page-parts .lbl{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.page-parts .num{
+  display:none; flex:none; font-size:var(--fs-micro); font-weight:600; color:var(--mute);
+  background:var(--card); border:1px solid var(--line); border-radius:6px; padding:1px 6px;
+}
+.page-parts .caret{flex:none; color:var(--mute); transition:transform .2s}
+.page-parts[aria-expanded="true"] .caret{transform:rotate(180deg)}
+
+.partsheet{
+  position:fixed; inset:auto; margin:0; padding:0; border:1px solid var(--line); border-radius:var(--radius);
+  background:var(--card); box-shadow:0 18px 44px rgba(6,28,55,.3); max-width:min(92vw,440px);
+  max-height:70vh; overflow-y:auto; color:var(--ink);
+}
+.partsheet::backdrop{background:rgba(6,28,55,.4)}
+.sheet-in{padding:13px}
+.sheet-in h3{margin:0 0 10px}
+.partsheet .toc{grid-template-columns:1fr}
+@media (max-height:520px) and (min-width:560px){ .partsheet .toc{grid-template-columns:1fr 1fr} }
+
+.toast{
+  position:fixed; left:50%; transform:translateX(-50%); bottom:calc(var(--nav-h) + 14px); z-index:70;
+  background:var(--navy); color:#fff; font-size:var(--fs-meta); padding:10px 16px; border-radius:999px;
+  box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity .25s;
+}
+.toast.show{opacity:1}
+
+/* ============================ responsive ============================ */
+
+@media (max-width:359px){
+  .pagenav .page-prev,.pagenav .page-next{width:48px; padding:0}
+  .pagenav .page-prev .lbl,.pagenav .page-next .lbl{display:none}
+  .toc{grid-template-columns:1fr}
+  .report-grid{grid-template-columns:1fr}
+}
+
+@media (min-width:600px){
+  .sort-grid{grid-template-columns:1fr 1fr}
+  .page-parts .num{display:inline-block}
+  .vocab td:first-child{width:34%} .vocab td:nth-child(2){width:22%}
+  .vocab th:first-child{width:34%} .vocab th:nth-child(2){width:22%}
+  .report-grid{grid-template-columns:repeat(4,1fr)}
+}
+
+/* below 600px: a compact masthead, and the vocabulary table stacks into entries */
+@media (max-width:599px){
+  .masthead{padding:16px 0 18px}
+  .brand img{height:38px}
+  .topline{gap:11px}
+  .masthead h1{font-size:clamp(23px,6.6vw,31px)}
+  .subline{font-size:var(--fs-meta); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
+  .chips{gap:6px; margin-top:12px}
+  .chip{padding:4px 10px}
+  .structure{padding:9px 11px; margin-top:12px}
+  .credit{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .lede{font-size:var(--fs-body)}
+  .vocab, .vocab tbody, .vocab tr, .vocab td{display:block; width:100%}
+  .vocab thead{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+  .vocab tr{border:1px solid var(--line); border-radius:11px; margin:0 0 9px; padding:10px; background:var(--card)}
+  .vocab tr.band{background:var(--navy); border-color:var(--navy); padding:0}
+  .vocab tr.band td{border:0; border-radius:8px}
+  .vocab td{border:0; padding:3px 0}
+}
+
+@media (min-width:900px){
+  .brand img{height:52px}
+  .wrap{
+    display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:34px; align-items:start;
+    padding-bottom:40px;
+  }
+  .lesson-viewport{scroll-padding-bottom:24px}
+  .rail{margin:22px 0 0; position:sticky; top:calc(16px + var(--host-offset))}
+  .rail .toc{grid-template-columns:1fr}
+  .rail .toc a{grid-template-columns:24px minmax(0,1fr) auto; align-items:center; min-height:46px}
+  .rail .toc .cnt{grid-column:3; grid-row:1}
+  .pagenav{display:none}
+  .stage{padding-top:26px}
+  .sort-grid{grid-template-columns:1fr 1fr}
+  .toast{bottom:22px}
+}
+
+@media (min-width:1100px){
+  .wrap{grid-template-columns:minmax(0,1fr) 320px}
+  :root{--fs-body:17.5px}
+}
+
+@media print{
+  .pagenav,.rail,.toast{display:none}
+  .stage[hidden]{display:block !important}
+}
+</style>
+</head>
+<body class="lesson-booting">
+<a class="skip" href="#lesson">Skip to the lesson</a>
+
+<header class="masthead">
+  <div class="shell">
+    <div class="topline">
+      <!-- COURSE_URL — the one link to change per course -->
+      <a class="brand" href="https://english2impact.odoo.com/slides/english-reflex-2-39" target="_blank" rel="noopener"
+         aria-label="Open the English Reflex 2 course on English2impact">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIYAAACACAMAAAD5/uG+AAAAwFBMVEUAAADad1clpCWq3UwAZjZsyxzy+O3NcFCtXU0OcR/xdG3HbE6xbT0fox7Q66Se2TwinSRSrVyo155gqhUhmCMB/gH//wDsgVy5ZUj/AAEBZDah0k0AX18cdkx4c3N1dQr9qFUCYzVpMChvqI1iuB1owxxxw3Kcr1OIt6Cd4FtlpVs1hV+czlFx/AD///98/3z4ez35/HRkvByvuzK00cLB5nyt/woAAG4AqlVmNVYAAP9huyViwhumOzsA//90sk71nQmQAAAAQHRSTlMA+Pz9/f3/oRsOCGQMEf/+nP7/D18BAf5TAaCgAv8DAwNbC/9epv8T/xgJ/2MCAQIEBo0I//8DAgMLA8RGBgFyURPNuwAADOJJREFUeNrFWol24sgOLUKwyxsYGxs7hB1CQvbuTvf0LG/+/6+eVJvLdgFmSUbnDF32AHUtXV1JFQg5024JceY3YHMHVgn5Twy3vrkWdjNnN77ebjUQDIiD3vl6XzjXFZM4EkBIbpP/CAXgSCAut9Int1/gnFsDiusbvrXjzOdzBxAlzqcT48YA4xp4SuY3GmtvP5ue10ZznK9k7S25bmbzz8Sx0xlfi+MPMzPMYfpEnjZ2Bsuer9QMsMdl9CNajmui5nwWNeYGEH1L2mPFHV8J496y+vjveGlZy4o7vg7GEvce95f9MSJamkrNF+Tr2Lq/HkcsJPeI47GUsxfxx2v88+H9/f37Zg9FI+v6GoIxHo/vrR+4vDA5Jt+1iziVqxIr4PnBB0vODaDqEtbji6bsA/73NEJ7evjFr6uF7d4ajwECeoHZD+v6UUC6DIwXQrZP7cKetiR9ZVFRHB0DGwEAvt73HwVbr8c6jHO5ATuO2mV7gsiUOPooQzAW9ETvlGGcmSmv5KFds9GGvJfUPBIhGIN+ckqMH4EfWqqcSU5C2iZ7Iu+pVtuWyIylFNJHRZcLxSTZbNtmG5E0KMjRL2AsrUjcVHQ9W0QfarzQcbw61aCgmkcqdx4v1HBMyKa900bTVxmVR6YYjKLRo4rT/aWy9ftuZzAcgqRjy6poJgDTUJxd5iftfTb6k7tjfD9W8lmutBfpAV/3xYTzw1EcjTQU5Sp/rnI9kKf2IRw3AgVkhaJFVKqtZxe1eD+MHtMPToV7ZMhS8qJ/0Tb0gDe6+PJ+U3Qby6Lea8PS/87uMUxCrlwB1QMXhaILuRrrxLjhI6wTBE4C030SBMHxGkq2u11hddsMx+im1ALy7NVRwNbl44Xt5UTUsro9fIWXJz1Nox+WVkmAF06MXxQMBmF4BRaGA+foE6GNOSoqIG0GpmiNH6ERvdfrWcAgMACFAZAjI/NudEcXQDAAvW45LPUDBqeKgVlwJI7X9MEUEPQF4uh9MKeYJ3sHHXFltsGRODbVnO0xYgIpwBE95CnajWlqJUZHnIZjU2kBexiQHuZJD1gqUBjC4pDB1V47CseGbEe1PEWHdK2PNgPE7d+qKw6AOA5HJVNYQHpACBYP6QpmpUFyHoRXhy1ITlPRIiDiVe9NbzT51kH07+76u9zRTD7SdGsOSK+nB4TbRrlCi0c/EqcMdyYcJDleQ3HnD7l/V6hXqeTXQFwBiOiu379DMH2TejiNGtGHZgHh9j6vxgNAyOWdCUezqJQaURWQtiEg3Mi85IqrcigMOMJGuZJOTAERbjE2pqX8iCqEsKw6jAa1dlo0oh+KEDsCwtqwuCQW/SIiO24088ZGwSgH5MPkivbm704ndkrOqD58zR2DZjCI3lvsD8hq3QH7PtgXgxpNB8d4A+uXdSAgDESnsyYajGoIrvCssnTDaSIcihtQTS0lXCZXfOtIWw2KPdu1BLWiEo6wWTeYEhUTbC4+duVpR7O4gFEXTuvuTg9L0OwcnesGiwlmiTkgmitYWAb7gnKnM2ZA4iMKG4OBZgrIaNWp2GofRfta/oQNUSBJRyJfu922KSDkW6dmA5WwfUPCqqiEzbuN6SursD00U37E6zqKzjrcJ199AWNAkstMbU9/rjpGW+0oIixKHEZ45ITwsAvH09YUEG6hCEpUQdEX/LjClv3Ymd5wwtFZwfyx3oWCuaNf6TCkgjKKDo6fYx+IU+6JR39BYEnc2WMDDgMtqrQ9PH9O+FnDKwiIBDIaPU3Dgyg6KwyL2L3cBIr0OXZoUwf32ziOt79ggSgSgYLrSdSr4Yh1QvT7fa2qHJuteuJ+53+6eCYB8uuVocARMuLzbFfsrvCsg8q+1atTj6HS6esUOlj0p/BFG6bptljBos1dA4rPKn5Y7BwZ+sAzDsMEipjwHImsjiWfnjcCaJHFsH0jenWPxKRStIWnw3AwIsgtoReg7wpGxxKOYUt0SBzouSqTRrnjZBhJ4vCiKLUTiKHBiLQlXnwr96X9SGbNUYNS3bYsR4JnlapWO+oWeytnADZ2ERiGaUBzd0amsJAM8MMBWRc7d/fBWCUk3DPM/3EiPZEYSVDoltxOXkiLoGPkbekeHKf+OCwJ2Kj3s6hnu2Ao5sYAOrysM5AY0C05mogjjF7hAo2hAsaKPDtmHOGJBBW56gRkVX9qftGpMXdNnpPEeOjjnBiThDljq5Srnq86jK5I3hg+Z8qX4EQlZ9+F3fyzDmN/vrKoxMyR5cCEJ/+hySFitHkmf+lPjfJ9CAYKhHYuGQbkVOVSztBhQFa2VSnr6WRVF2vykz1Ewo6rwQbB8d2fwRk6N9roiqjbFQfGcIP18CXmqucont9xTi+sgWyXYl02dpjG3GJSdgIn2AbOOX/rQs0QsqclbDuSdGjLToNNl91eoSHxqTSYUN/3Z25e1QxxEDHd1YMiP1ivAfQsNOQ0GBNfLV0/LxNUJJmesUbjSGpBaW75DF6oh0YpLGdKupCgjpxaVp0D1i5gnOAKFzDYLWm255M0rcYEW9K409hEwh6HYlKAYOYxaOWYNHJHMa1ADI/9YQJtDcswWjZFHKxpKA2TjXEUP4hqOocQt2Uwn0wS7MZLLVtcH6FXO5wRHxuSX7YJRou6LCblo+2fFX+sY2P6fDsahU8yI4qhzbWrUpljoh2vrP+GNDbwdj19PjZbZ8TsDHAHWRiGCnjMmB3HrlewfE5MquakSVO18idyvQNFy8Z0DWsNwrTwdxozVascP60d4FtToRAv5GUnjBaHUS/O0/hnStLn+FlyvESYFWmKAhjhgUYxzX4rgmJ7XilAdYbuaBNT4vBjc4jUtLFgpFObx56WKMqriqfBCBkM353O6KHTKdTc2FHrRiHJxTYu//uNZKQLFfZdw8ETJZC/h9vrkGemV2kcJ0cnB1NKcInLCfnGIFJaUJR10sSzbTvDX0oenLeTk3LUIywOlDnAS9lFTn6rwhKwfLWZ0GeEkgubhGFzGOATrzXM+EVKlDdyhEE8UW4OheV8GICDeuJxfcWNjA07JBPJsyDQnL1xl2CbxtN9Kle577pcinK4JT039WcvrnyvaG1cfzbzqQ4DWj7+/6gGUWk5hyHlbSFlhkxelPa4hsZFJGP5a2lt4SrFsjWMovF7U87w2Z8SQ7IRmFFrkKo5bgUrSlLCV3BvmlPgMdybuPg2j2J0IYywbtnsUj3vAhkPnyFuSpRe0Wqdo6qgxJivOKLYHLInGxHWqA2B4MKr4DiXEXkIgRQqZPuIyNP6KLfIBpWmWhnV7Y34/Da+yeEwHiQM+XHVI/m/7KFq1gSDJuIxhi2f6krYQqhEBwZbFGUk0wM7k76wJ/AJASNmbx56C/l9sOZPTL2hTcUeqc/uDTOJDB+QrznAIfiDFlnI3qC+MtP46yoh95hoChgJf7P3y7aLRlUAsuVHkAnyO30qUwtgDO2FfM8CQyfew/6VMDJGJDWjiOYc29CcKBjiCTIFEtwru0aa0kxs8Z4WlUlqtG8z14sbvvwq+x9+RyL33lTB9ykvrkPWlLt8VNJhQGJ4cm/JrUwF29eyzxVvxIwkfpZRf5Hxa/FmLF72EKK0kN6dce2y9cmAp8yETwehpD4lSvOo/DwolnpymX00l9BcIIPeNygYC6bUnkKekX8QRVaMBzYzlsYuG+YBRxVGLvMJRFgKIRBgITcrPDS19bnDTVOpQLn4jR2/zpATKS01wsWcAj0Uiwp/72+ivC4TCmqyDA/A8As5kNB4OXJdXg9cRRoX7P1dNVy8wu7oiIHikyAMp0pEF4UAUPHxN4mN+VSWHiJ9pSSBfYW3oF5JvGdSEbOWT+iORnTYEgorYUwKPXTVStwEQJkk8EyC5HegkfKVi8VX0IXvFtnOsGat3Tg2gSOpp7yBfUmmYFDlDVvVKUkNIetkofxd7r6zwgXezimF6dxMFdicaN2BV4PxIr9naHtCNOt+HmbesDyv2wrRbhiiaRYbyUi26Iscen1X5pynCKwKjusSlShS4vXdoOq4WiHdB0Mj4YQqjchzXt1sCvFhz2e7siZ6U1uWxjSVsuHxI4OhPdVqG9Rgcckk0x7uwaE1BSgIGWjKguQTFDxej1JsmFHzqKoPvBmZMHUQvcUbwXbEw9Il+g0UhJy3fXiqM4V/qUvd31qlpZTKuel3MU3B9i/iZy5Cfnjzx1qyjYwTiqiaJ1LVaKXleZFPKcWlu6djpTYXo2yo6Io9KP+0KwoPtgc+UshXpyLQa/pTdZpHXTZq0Zk7m6lelFLVrbpvPnv3ZEbdSa6dQub5lM58/MwCVH2aYlyH6jF3zcQyZUh+4f7d5eU/Z3GlJD10bqUaj0tbTlX0D3x9LsUtfyGfZanv+u7BkwqeceTzYDQxmmdcki7OjSNdhhTyMv/Ej/8fdUQXX82b/UIAAAAASUVORK5CYII=" alt="English2impact" width="67" height="64">
+      </a>
+    <p class="eyebrow"><span>English2impact</span><i>·</i><b>English Reflex 2</b><i>·</i><span>Session 01 / 24</span></p>
+    </div>
+    <h1>“We rolled out the new system <em>last quarter</em>.”</h1>
+    <p class="subline">Ten terms, four forms, seven measured parts and a report. Guess the terms, drill each form until it arrives without translating, then decode the dialogue at full speed — finish every part and you have finished the session.</p>
+    <ul class="chips">
+      <li class="chip">Everyday</li>
+      <li class="chip">Intermediate</li>
+      <li class="chip">English Reflex</li>
+      <li class="chip now">90 minutes</li>
+    </ul>
+    <p class="structure"><span>Structure</span>S + V (Past Simple) + O + [Finished Time Reference]</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <main class="lesson-viewport" id="lesson"></main>
+  <nav class="rail" id="rail" aria-label="Lesson parts">
+    <div class="rail-card">
+      <div class="ring-row">
+        <svg class="ring" viewBox="0 0 44 44" aria-hidden="true">
+          <circle class="track" cx="22" cy="22" r="18"></circle>
+          <circle class="bar" id="ring-bar" cx="22" cy="22" r="18" stroke-dasharray="0 113" transform="rotate(-90 22 22)"></circle>
+          <text class="ring-num" id="ring-num" x="22" y="26" text-anchor="middle">0%</text>
+        </svg>
+        <div class="ring-lab"><b>Session progress</b><span id="prog-sub">0 of 7 parts complete</span></div>
+      </div>
+      <h3>The parts</h3>
+      <ul class="toc" id="toc"></ul>
+      <button type="button" class="rail-reset" id="reset-all">Reset this session</button>
+    </div>
+    <div class="rail-card rail-note">
+      <b>How progress counts.</b> Every exercise waits for its <b>Check</b> button — nothing is marked while you are still typing. Your answers stay in this browser, so you can close the tab and come back.
+    </div>
+  </nav>
+</div>
+
+<div class="pagenav" id="pagenav">
+  <button type="button" class="page-prev" id="btn-prev"><span aria-hidden="true">←</span><span class="lbl">Previous</span></button>
+  <button type="button" class="page-parts" id="btn-parts" aria-haspopup="dialog" aria-expanded="false">
+    <span class="num" id="parts-num">1/8</span><span class="lbl" id="parts-label">Warm-up</span><span class="caret" aria-hidden="true">▾</span>
+  </button>
+  <button type="button" class="page-next" id="btn-next"><span class="lbl">Next</span><span aria-hidden="true">→</span></button>
+</div>
+
+<dialog class="partsheet" id="partsheet" aria-label="Jump to a part">
+  <div class="sheet-in"><h3>Jump to a part</h3><ul class="toc" id="sheet-toc"></ul></div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ================================================================
+   1 · CONTENT — everything a learner reads lives here
+   ================================================================ */
+
+/* Paste the url= value straight out of SoundCloud's own embed code. It is
+   already query-encoded (soundcloud%253Atracks%253A…), so it must NOT be
+   encoded again — encodeURIComponent here would double-encode it and the
+   player would load nothing. SC_PAGE is the human permalink, used only for
+   the attribution links. */
+var SC_EMBED = "https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2401494390";
+/* Quizlet Match. The src is attached only when part 2 opens, so the page makes
+   no third-party request until a learner actually reaches the speed round. */
+var QUIZLET      = "https://quizlet.com/1211295576/match/embed?i=4y577v&x=1jj1";
+var QUIZLET_PAGE = "https://quizlet.com/1211295576";
+var SC_PAGE  = "https://soundcloud.com/english2impact/dialogue_finished-past_we";
+var SC_TITLE = "Dialogue · Finished Past · We rolled out the new system last quarter";
+var SC_USER  = "https://soundcloud.com/english2impact";
+
+var VOCAB = [
+  ["daily","get around to","sắp xếp được thời gian để làm","/ˌɡet əˈraʊnd tə/","[−] I did not <b>get around to</b> the supplier list until Friday."],
+  ["daily","end up (doing)","rốt cuộc lại (làm gì)","/ˌend ˈʌp/","[+] We <b>ended up</b> writing the script ourselves."],
+  ["daily","run into","tình cờ gặp; gặp phải (vấn đề)","/ˌrʌn ˈɪntə/","[Y/N ?] Did you <b>run into</b> any problems during the migration?"],
+  ["daily","sort out","giải quyết, xử lý ổn thỏa","/ˌsɔːt ˈaʊt/","[+] The team <b>sorted</b> the old data <b>out</b> manually."],
+  ["daily","the other day","hôm nọ, mấy hôm trước","/ði ˌʌðə ˈdeɪ/","[Wh- ?] Who did you meet <b>the other day</b>?"],
+  ["work","roll out","triển khai (hệ thống, sản phẩm)","/ˌrəʊl ˈaʊt/","[+] We <b>rolled out</b> the new system last quarter."],
+  ["work","sign off on","duyệt, phê duyệt chính thức","/ˌsaɪn ˈɒf ɒn/","[Y/N ?] Did the board <b>sign off on</b> the extra budget?"],
+  ["work","kick off","khởi động, bắt đầu (dự án)","/ˌkɪk ˈɒf/","[+] We <b>kicked off</b> in early January."],
+  ["work","wrap up","hoàn tất, kết thúc","/ˌræp ˈʌp/","[−] We did not <b>wrap up</b> the project before March."],
+  ["work","come in under budget","hoàn thành dưới mức ngân sách","/ˌkʌm ɪn ˌʌndə ˈbʌdʒɪt/","[+] The team <b>came in under budget</b> for the first time."]
+];
+
+var TERMS = [
+  {vi:"triển khai (hệ thống, sản phẩm)", en:"put a new system into use across the company",
+   line:"So — we <u></u> the new system last quarter. How did it actually go?",
+   opts:["signed off on","rolled out","wrapped up"], a:1},
+  {vi:"khởi động, bắt đầu (dự án)", en:"start a project",
+   line:"We <u></u> in early January and finished three weeks later.",
+   opts:["kicked off","came in under budget","got around to it"], a:0},
+  {vi:"duyệt, phê duyệt chính thức", en:"formally approve something",
+   line:"Did the board <u></u> the extra budget in the end?",
+   opts:["get around to","come in under","sign off on"], a:2},
+  {vi:"hoàn thành dưới mức ngân sách", en:"spend less than the money set aside",
+   line:"They did, and we still <u></u> — which nobody saw coming.",
+   opts:["came in under budget","sorted it out","ran into it"], a:0},
+  {vi:"gặp phải (vấn đề); tình cờ gặp (ai đó)", en:"meet a problem — or a person — by accident",
+   line:"Did you <u></u> any problems during the migration?",
+   opts:["wrap up","run into","sort out"], a:1},
+  {vi:"giải quyết, xử lý ổn thỏa", en:"fix a problem and finish with it",
+   line:"The old data did not transfer cleanly, so we <u></u> by hand.",
+   opts:["kicked it off","ran into it","sorted it out"], a:2},
+  {vi:"rốt cuộc lại (làm gì)", en:"finish by doing something you did not plan",
+   line:"Not all of it. We <u></u> writing a script, and that saved us ten days.",
+   opts:["ended up","got around to","signed off on"], a:0},
+  {vi:"sắp xếp được thời gian để làm", en:"finally find the time to do it",
+   line:"I know. I just never <u></u> it — the whole thing moved too fast.",
+   opts:["ran into","got around to","wrapped up"], a:1},
+  {vi:"hôm nọ, mấy hôm trước", en:"a few days ago — finished time",
+   line:"I ran into Peter <u></u>, and he told me the rollout failed.",
+   opts:["by then","last quarter","the other day"], a:2},
+  {vi:"hoàn tất, kết thúc", en:"finish a piece of work",
+   line:"We <u></u> on the last Friday of March, two days before the deadline.",
+   opts:["ran into","wrapped up","ended up"], a:1}
+];
+
+var SORT_WORDS = [
+  {w:"kick",past:"kicked",b:"t"},      {w:"wrap",past:"wrapped",b:"t"},
+  {w:"finish",past:"finished",b:"t"},  {w:"ask",past:"asked",b:"t"},
+  {w:"roll",past:"rolled",b:"d"},      {w:"sign",past:"signed",b:"d"},
+  {w:"transfer",past:"transferred",b:"d"},
+  {w:"sort",past:"sorted",b:"id"},     {w:"end",past:"ended",b:"id"},
+  {w:"need",past:"needed",b:"id"},
+  {w:"run",past:"ran",b:"irr"},        {w:"come",past:"came",b:"irr"},
+  {w:"get",past:"got",b:"irr"}
+];
+var SORT_BUCKETS = [
+  {id:"t",  name:"/t/",  sub:"after a voiceless sound — k, p, s, f, ʃ, tʃ"},
+  {id:"d",  name:"/d/",  sub:"after a voiced sound — l, n, g, v, z, r, vowels"},
+  {id:"id", name:"/ɪd/", sub:"after t or d only — and only there"},
+  {id:"irr",name:"irregular", sub:"no ending at all — nothing to drop"}
+];
+
+var DIALOGUE = [
+  ["Clara","So — we rolled out the new system last quarter. How did it actually go?"],
+  ["Adam","Better than I expected. We kicked off in early January and wrapped it up three weeks later."],
+  ["Clara","Did the board sign off on the extra budget in the end?"],
+  ["Adam","They did, and we still came in under budget — which nobody saw coming."],
+  ["Clara","Did you run into any problems during the migration?"],
+  ["Adam","We ran into one big one. The old data did not transfer cleanly, so we sorted it out by hand."],
+  ["Clara","You sorted all of it out manually? That sounds like weeks of work."],
+  ["Adam","Not all of it. We ended up writing a script, and that saved us about ten days."],
+  ["Clara","Why did you not tell me? I had two spare people on my team in February."],
+  ["Adam","I know. I just never got around to it — the whole thing moved too fast."],
+  ["Clara","I ran into Peter the other day, and he told me the rollout failed."],
+  ["Adam","Peter is behind. He left the project in February, so he did not see the second phase."],
+  ["Clara","When exactly did you finish?"],
+  ["Adam","We wrapped up on the last Friday of March, two days before the deadline."],
+  ["Clara","And the client? Did they sign it off?"],
+  ["Adam","They signed off on it the same week. We did not hear a single complaint after that."]
+];
+
+var COMPREHENSION = [
+  ["When did the team kick off the project?","In early January."],
+  ["How long did the rollout take?","About three weeks."],
+  ["Did the board sign off on the extra budget?","Yes, they did — and the team still came in under budget."],
+  ["What problem did the team run into?","The old data did not transfer cleanly."],
+  ["How did they solve it in the end?","They sorted some of it out by hand, then ended up writing a script, which saved about ten days."],
+  ["Why did Adam not tell Clara about the problem?","He never got around to it — the project moved too fast."],
+  ["What did Peter tell Clara, and why was he wrong?","That the rollout failed. He left the project in February and did not see the second phase."],
+  ["When exactly did the team finish, and when did the client sign off?","On the last Friday of March, two days before the deadline; the client signed off on it the same week."]
+];
+
+var DRILL_A = [
+  {cue:"We rolled out the new system last quarter.", acc:["We did not roll out the new system last quarter."], trap:""},
+  {cue:"They signed off on the extra budget in February.", acc:["They did not sign off on the extra budget in February."], trap:""},
+  {cue:"We kicked off the project in early January.", acc:["We did not kick off the project in early January."], trap:""},
+  {cue:"The team wrapped it up three weeks later.", acc:["The team did not wrap it up three weeks later."], trap:"Trap: the pronoun stays in the middle — ✗ did not wrap up it."},
+  {cue:"I ran into Peter the other day.", acc:["I did not run into Peter the other day."], trap:"Trap: irregular — base form after did. ✗ did not ran into."},
+  {cue:"The old data transferred cleanly.", acc:["The old data did not transfer cleanly."], trap:""},
+  {cue:"She got around to the supplier list on Friday.", acc:["She did not get around to the supplier list on Friday."], trap:"Trap: got → get."},
+  {cue:"We came in under budget last quarter.", acc:["We did not come in under budget last quarter."], trap:"Trap: came → come."},
+  {cue:"They sorted it out by hand.", acc:["They did not sort it out by hand."], trap:"Trap: ✗ did not sort out it."},
+  {cue:"He ended up writing the script himself.", acc:["He did not end up writing the script himself."], trap:"Trap: end up is always followed by -ing."}
+];
+
+var DRILL_B = [
+  {cue:"you / roll out / the new system / last quarter", acc:["Did you roll out the new system last quarter?"], trap:""},
+  {cue:"the board / sign off on / the extra budget / in February", acc:["Did the board sign off on the extra budget in February?"], trap:""},
+  {cue:"they / run into / any problems / during the migration", acc:["Did they run into any problems during the migration?"], trap:"Trap: ✗ Did they ran into…"},
+  {cue:"the team / come in under budget / last quarter", acc:["Did the team come in under budget last quarter?"], trap:"Trap: ✗ Did the team came…"},
+  {cue:"you / wrap it up / before the deadline — surprised, you thought they did", acc:["Didn't you wrap it up before the deadline?"], trap:"Negative question: only the contraction goes to the front."},
+  {cue:"she / get around to / the supplier list / on Friday", acc:["Did she get around to the supplier list on Friday?"], trap:""},
+  {cue:"you / kick off / the project / in early January", acc:["Did you kick off the project in early January?"], trap:""},
+  {cue:"he / tell / Clara / about the delay — surprised, you thought he did", acc:["Didn't he tell Clara about the delay?"], trap:"Negative question."},
+  {cue:"they / sort it out / by hand", acc:["Did they sort it out by hand?"], trap:"Trap: the pronoun does not move. ✗ Did they sort out it?"},
+  {cue:"you / run into / Peter / the other day", acc:["Did you run into Peter the other day?"], trap:""}
+];
+
+var DRILL_C = [
+  {cue:"They rolled out the new system <b>last quarter</b>.", start:"When", acc:["When did they roll out the new system?"], trap:""},
+  {cue:"We kicked off <b>in early January</b>.", start:"When", acc:["When did you kick off?","When did we kick off?"], trap:"No object after the term — that is natural English."},
+  {cue:"<b>The board</b> signed off on the extra budget.", start:"Who", acc:["Who signed off on the extra budget?"], trap:"Subject question: no did, and the verb keeps its past form."},
+  {cue:"They sorted out <b>the old data</b> by hand.", start:"What", acc:["What did they sort out by hand?"], trap:""},
+  {cue:"He left the project <b>in February</b>.", start:"When", acc:["When did he leave the project?"], trap:""},
+  {cue:"<b>Peter</b> told Clara that the rollout failed.", start:"Who", acc:["Who told Clara that the rollout failed?"], trap:"Subject question — ✗ Who did tell…"},
+  {cue:"They wrapped it up <b>two days before the deadline</b>.", start:"When", acc:["When did they wrap it up?"], trap:"Trap: ✗ When did they wrap up it?"},
+  {cue:"She never got around to <b>the supplier list</b>.", start:"What", acc:["What did she never get around to?"], trap:""},
+  {cue:"The team came in under budget <b>because they wrote a script</b>.", start:"Why", acc:["Why did the team come in under budget?"], trap:"The answer needs a full clause, not a phrase."},
+  {cue:"<b>Adam and his team</b> ran into the migration problem.", start:"Who", acc:["Who ran into the migration problem?"], trap:"Subject question — ✗ Who run into…"}
+];
+
+var EXCHANGES = [
+  {a:"I ran into Peter the other day.",                       b:"Really? I didn't run into him."},
+  {a:"We came in under budget.",                              b:"Really? We didn't come in under budget."},
+  {a:"She got around to the report on Friday.",               b:"Really? She didn't get around to it on Friday."},
+  {a:"The team wrapped it up before the deadline.",           b:"Really? They didn't wrap it up before the deadline."},
+  {a:"We sorted the problem out by hand.",                    b:"Really? We didn't sort it out by hand."},
+  {a:"He ended up writing a script.",                         b:"Really? He didn't end up writing a script."},
+  {a:"They kicked the project off in January.",               b:"Really? They didn't kick it off in January."},
+  {a:"The client signed it off the same week.",               b:"Really? They didn't sign it off the same week."},
+  {a:"The board signed off on the extra budget in February.", b:"Really? They didn't sign off on it in February."},
+  {a:"We rolled the new system out last quarter.",            b:"Really? We didn't roll it out last quarter."}
+];
+
+var CONVOS = [
+  {a:"[?+] they / run into / any problems / during the migration", want:"+", b:"Yes, they did."},
+  {a:"[?+] the team / come in under budget / last quarter",        want:"−", b:"No, they didn't."},
+  {a:"[?−] you / wrap it up / before the deadline",                want:"+", b:"Yes, we did."},
+  {a:"[?+] she / get around to / the report / on Friday",          want:"−", b:"No, she didn't."},
+  {a:"[?+] you / sort it out / by hand",                           want:"+", b:"Yes, we did."},
+  {a:"[?−] he / tell / Clara / about the delay",                   want:"−", b:"No, he didn't."},
+  {a:"[?+] you / run into / Peter / the other day",                want:"+", b:"Yes, I did."},
+  {a:"[?+] they / kick off / the project / in January",            want:"−", b:"No, they didn't."},
+  {a:"[?+] your manager / sign off on / your last request",        want:"+", b:"Yes, she did."},
+  {a:"[?−] you / finish / the report / on Friday",                 want:"−", b:"No, I didn't."}
+];
+
+var EXIT = [
+  "I said a <b>[+]</b> sentence of my own, with one of today's terms and a finished time reference.",
+  "I turned the same sentence into <b>[−]</b> — did not + base form, ending audible.",
+  "I asked it as <b>[Y/N ?]</b> and my partner answered with a short form plus one clause.",
+  "I asked it as <b>[Wh- ?]</b>, starting with <b>When</b>.",
+  "I said one negative with an irregular term: <i>I didn't run into anyone / we didn't come in under budget</i>."
+];
+
+/* ================================================================
+   2 · STATE
+   ================================================================ */
+
+var KEY = "e2i-er2-s01";
+var S = {part:1, done:{}, text:{}, chk:{}};
+try{ var raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw)); }catch(e){}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+function isDone(k){ return !!S.done[k]; }
+function mark(k,v){ if(v){ S.done[k]=1; } else { delete S.done[k]; } save(); refresh(); }
+function graded(k){ return !!S.chk[k]; }
+
+function norm(s){
+  return (s||"").toLowerCase()
+    .replace(/[‘’ʼ]/g,"'").replace(/[–—]/g,"-")
+    .replace(/n't\b/g," not")
+    .replace(/[.,!?;:"“”]/g,"")
+    .replace(/\s+/g," ").trim();
+}
+function matches(v,acc){ var n=norm(v); for(var i=0;i<acc.length;i++){ if(norm(acc[i])===n) return true; } return false; }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function $(s,r){ return (r||document).querySelector(s); }
+function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function pad(n){ return n<10 ? "0"+n : ""+n; }
+
+/* ================================================================
+   3 · THE EIGHT PARTS
+   ================================================================ */
+
+var PARTS = [
+  {n:1, id:"warm",   short:"Warm-up",       skill:"Pronunciation", color:"var(--listen)", time:"≈ 8 min",
+   title:"Warm-up — the ending you cannot hear", goal:"Sort 13 verbs by their past-tense sound, then check the whole column at once.",
+   keys:SORT_WORDS.map(function(w){return "sort-"+w.w;})},
+  {n:2, id:"lab",    short:"Term lab",      skill:"Vocabulary",    color:"var(--read)",   time:"≈ 14 min",
+   title:"Term lab — ten terms in their own lines", goal:"Guess each term from the line it appears in. Miss one and it comes back in the drill round.",
+   keys:TERMS.map(function(_,i){return "t-"+i;})},
+  {n:3, id:"drillA", short:"Drill A · [+] → [−]", skill:"Grammar", color:"var(--write)",  time:"≈ 14 min",
+   title:"Drill A — [+] positive to [−] negative", goal:"Ten written transformations, then ten spoken exchanges.",
+   keys:DRILL_A.map(function(_,i){return "a-"+i;}).concat(EXCHANGES.map(function(_,i){return "ax-"+i;}))},
+  {n:4, id:"drillB", short:"Drill B · [Y/N ?]",   skill:"Grammar", color:"var(--write)",  time:"≈ 14 min",
+   title:"Drill B — [Y/N ?] Yes/No question", goal:"Ten written questions, then ten spoken short answers.",
+   keys:DRILL_B.map(function(_,i){return "b-"+i;}).concat(CONVOS.map(function(_,i){return "bx-"+i;}))},
+  {n:5, id:"drillC", short:"Drill C · [Wh- ?]",   skill:"Grammar", color:"var(--write)",  time:"≈ 12 min",
+   title:"Drill C — [Wh- ?] Wh- question", goal:"Ten questions. When is the signature question of Stage 1.",
+   keys:DRILL_C.map(function(_,i){return "c-"+i;})},
+  {n:6, id:"decode", short:"Dialogue decode",     skill:"Listening", color:"var(--listen)", time:"≈ 18 min",
+   title:"Dialogue decode", goal:"Listen at full speed with the player following you down the page, then answer eight questions.",
+   keys:COMPREHENSION.map(function(_,i){return "q-"+i;})},
+  {n:7, id:"exit",   short:"Exit ticket",         skill:"Speaking",  color:"var(--speak)",  time:"≈ 8 min",
+   title:"Exit ticket", goal:"Five things to produce out loud before you leave.",
+   keys:EXIT.map(function(_,i){return "x-"+i;})},
+  {n:8, id:"report", short:"Session report",      skill:"Review",    color:"var(--terra)",  time:"≈ 2 min",
+   title:"Session report", goal:"What you finished, part by part.",
+   keys:[]}
+];
+var TOTAL_ITEMS = PARTS.reduce(function(n,p){ return n+p.keys.length; },0);
+function partDone(p){ return p.keys.filter(isDone).length; }
+function byId(id){ for(var i=0;i<PARTS.length;i++){ if(PARTS[i].id===id) return PARTS[i]; } return null; }
+
+/* ================================================================
+   4 · SHARED BUILDERS
+   ================================================================ */
+
+function stage(p, inner){
+  return '<section class="stage" id="p'+p.n+'" data-part="'+p.n+'" style="--c:'+p.color+'" hidden'+
+    ' aria-labelledby="h'+p.n+'">'+
+    '<div class="stage-head">'+
+      '<p class="kicker"><span class="dot"></span><span>Part '+pad(p.n)+' / 08</span>'+
+      '<span class="skill">'+p.skill+'</span><span>'+p.time+'</span></p>'+
+      '<h2 id="h'+p.n+'">'+p.title+'</h2>'+
+      '<p class="goal">'+p.goal+'</p>'+
+      (p.keys.length ? '<div class="stage-meter" data-meter="'+p.id+'">'+
+        '<span class="track"><span class="fill"></span></span><b>0 / '+p.keys.length+'</b></div>' : '')+
+    '</div>'+
+    '<div class="stage-body">'+inner+'</div>'+
+    footStrip(p)+
+  '</section>';
+}
+function footStrip(p){
+  var prev = p.n>1 ? '<button type="button" class="btn quiet" data-go="'+(p.n-1)+'">← '+PARTS[p.n-2].short+'</button>' : '';
+  var next = p.n<PARTS.length ? '<a class="nextlink" href="#p'+(p.n+1)+'" data-go="'+(p.n+1)+'">Next part <small>'+PARTS[p.n].short+'</small> →</a>' : '';
+  return '<div class="stage-foot">'+prev+'<span class="spacer"></span>'+next+'</div>';
+}
+/* A guide box. Every line gets its own row with the mark in its own column,
+   so a wrapped example hangs under its own text — and an inline <b> stays inline.
+   ok:true/false → ✓/✗ · k:"label" → a labelled note · tag:true → a mono form tag */
+function rule(title, lines){
+  return '<div class="rule"><b>'+title+'</b><div class="ex">'+lines.map(function(l){
+    if(l.k) return '<p class="ln note'+(l.tag?' tag':'')+'"><span class="k">'+l.k+'</span><span>'+l.t+'</span></p>';
+    return '<p class="ln"><span class="'+(l.ok?'yes':'no')+'">'+(l.ok?'✓':'✗')+'</span><span>'+l.t+'</span></p>';
+  }).join('')+'</div></div>';
+}
+function checkbar(group, label){
+  return '<div class="checkbar" data-bar="'+group+'">'+
+    '<button type="button" class="btn accent" data-check="'+group+'" disabled>'+label+'</button>'+
+    '<span class="res" data-res="'+group+'"></span></div>';
+}
+
+/* ---------------- part 1 · sort ---------------- */
+function buildWarm(){
+  var pool = SORT_WORDS.map(function(w){
+    return '<button type="button" class="word" data-word="'+w.w+'" aria-pressed="false">'+w.w+'</button>';
+  }).join("");
+  var buckets = SORT_BUCKETS.map(function(b){
+    return '<div class="bucket" data-bucket="'+b.id+'"><h4>'+b.name+'</h4><span class="sub">'+b.sub+'</span><div class="slot"></div></div>';
+  }).join("");
+  return stage(PARTS[0],
+    '<p class="lede">Vietnamese does not close a syllable with a consonant cluster, so <i>rolled</i>, <i>signed</i>, <i>kicked</i> and <i>wrapped</i> lose their endings — and the tense goes with them. Fix the sound first; the grammar is already yours.</p>'+
+    rule("/ɪd/ only after t and d.",[
+      {ok:true,  t:"<b>sorted</b> /ˈsɔːtɪd/ — an extra syllable, because <i>sort</i> already ends in <b>t</b>."},
+      {ok:false, t:"<b>rolled</b> is not /ˈrəʊlɪd/. It is /rəʊld/ — one syllable, the <b>d</b> on the end."},
+      {ok:false, t:"<b>signed</b> is not /ˈsaɪnɪd/. It is /saɪnd/."},
+      {k:"Remember", t:"only <b>t</b> and <b>d</b> earn the extra syllable. Everything else just takes the sound."}
+    ])+
+    '<p class="hint">Tap a verb, then tap the column it belongs in. Tap a placed verb to send it back. <b>Nothing is marked until you press Check.</b></p>'+
+    '<div class="pool" id="sort-pool">'+pool+'</div>'+
+    '<div class="sort-grid" id="sort-grid">'+buckets+'</div>'+
+    checkbar("sort","Check the sort")+
+    '<div class="toolbar"><button type="button" class="btn quiet sm" id="sort-show">Show the answers</button></div>');
+}
+
+/* ---------------- part 2 · term lab (immediate by design) ---------------- */
+function vocabRows(){
+  var rows='<tr class="band"><td colspan="3">Daily — 5 terms</td></tr>';
+  VOCAB.filter(function(v){return v[0]==="daily";}).forEach(function(v){
+    rows+='<tr><td><div class="term">'+v[1]+'</div><div class="vi">'+v[2]+'</div></td><td class="ipa">'+v[3]+'</td><td class="ex">'+v[4]+'</td></tr>';
+  });
+  rows+='<tr class="band"><td colspan="3">Workplace — 5 terms</td></tr>';
+  VOCAB.filter(function(v){return v[0]==="work";}).forEach(function(v){
+    rows+='<tr><td><div class="term">'+v[1]+'</div><div class="vi">'+v[2]+'</div></td><td class="ipa">'+v[3]+'</td><td class="ex">'+v[4]+'</td></tr>';
+  });
+  return rows;
+}
+function buildLab(){
+  return stage(PARTS[1],
+    '<p class="lede">Ten terms, each shown in the line where it actually appears. Guess it and it is yours; miss it and it comes back in the drill round — this is the one card that answers you straight away, because the guess is the whole mechanic.</p>'+
+    '<div class="lab" id="lab">'+
+      '<div class="lab-top"><span id="lab-count">1 of 10</span>'+
+      '<span><span class="known">Known <b id="lab-known">0</b></span> · <span class="todrill">To drill <b id="lab-drill">0</b></span></span></div>'+
+      '<div class="ticks" id="lab-ticks"></div><div id="lab-card"></div>'+
+    '</div>'+
+    '<div class="toolbar"><button type="button" class="btn quiet sm" id="lab-list">Show all ten as a list</button>'+
+    '<button type="button" class="btn quiet sm" id="lab-restart">Start the lab again</button></div>'+
+    '<div id="lab-table" hidden>'+
+      '<table class="vocab"><thead><tr><th>Term — nghĩa</th><th>IPA</th><th>In the four forms</th></tr></thead><tbody>'+vocabRows()+'</tbody></table>'+
+      '<div class="toolbar"><button type="button" class="btn quiet sm" id="copy-vocab">Copy the table as plain text</button>'+
+      '<span class="hint">Paste-ready for Quizlet, Google Docs or a handout.</span></div>'+
+      '<textarea id="vocab-out" class="export" hidden aria-label="Plain-text vocabulary"></textarea>'+
+    '</div>'+
+    rule("A pronoun object goes INSIDE a separable term. It has no choice.",[
+      {ok:true,  t:"We rolled <b>it</b> out."},
+      {ok:false, t:"We rolled out <b>it</b>."},
+      {ok:true,  t:"I ran into <b>him</b>."},
+      {ok:false, t:"I ran <b>him</b> into."},
+      {k:"Splits", t:"roll out · sort out · wrap up · kick off"},
+      {k:"Never splits", t:"run into · get around to · come in under · sign off on"}
+    ])+
+    '<div class="block-head"><h3>Match the ten against the clock</h3>'+
+    '<span class="sub">Quizlet Match — drag each term onto its meaning, as fast as you can. '+
+    'This one is not scored on the page: it is the speed round, and the clock is the score.</span></div>'+
+    '<div class="embed"><iframe id="quizlet" title="Quizlet Match — the ten terms of this session" '+
+    'loading="lazy" allowfullscreen></iframe></div>'+
+    '<p class="hint"><a href="'+QUIZLET_PAGE+'" target="_blank" rel="noopener">Open the set on Quizlet</a>'+
+    ' if the board does not load, or to run Learn and Test on the same ten terms.</p>');
+}
+
+/* ---------------- parts 3–5 · written drills ---------------- */
+function drillList(key, items, mono){
+  return items.map(function(it,i){
+    var start = it.start ? ' <span class="tag">start with '+it.start+'</span>' : "";
+    var cue = mono ? '<span class="cue">'+it.cue+'</span>' : it.cue;
+    return '<div class="item" data-item="'+key+'-'+i+'">'+
+      '<div class="prompt"><span class="idx">'+(i+1)+'</span><span>'+cue+start+'</span></div>'+
+      '<div class="answer-row"><label class="sr-only" for="'+key+'-'+i+'">Item '+(i+1)+'</label>'+
+      '<input type="text" id="'+key+'-'+i+'" data-text="'+key+'-'+i+'" data-answer="'+key+'-'+i+
+      '" data-bank="'+key+'" placeholder="Your answer…" autocomplete="off" autocapitalize="sentences" spellcheck="false"></div>'+
+      '<div class="verdict" data-verdict="'+key+'-'+i+'"><span class="mark"></span><span class="model"></span></div>'+
+      (it.trap ? '<div class="trap" hidden>'+it.trap+'</div>' : '')+
+    '</div>';
+  }).join("");
+}
+function turn(who,pol,text){
+  return '<div class="turn"><span class="who-badge '+who+'">'+who.toUpperCase()+'</span><span>'+
+    (pol ? '<span class="pol">'+pol+'</span>' : '')+text+'</span></div>';
+}
+/* A spoken item reads like a two-line script: the number sits quietly in a
+   gutter, A and B are the only two speaker marks, and B's line starts as an
+   instruction — never as a blurred answer, which leaks its length and can be
+   read by anyone who leans in. `cue(it)` says what B has to produce. */
+function sayList(key, items, render, cue){
+  return items.map(function(it,i){
+    var id = key+"-"+i;
+    return '<div class="item say-item" data-item="'+id+'">'+
+      '<span class="idx">'+(i+1)+'</span>'+
+      '<div class="say-a">'+render(it)+'</div>'+
+      '<div class="say-row"><span class="who-badge b">B</span>'+
+        '<button type="button" class="ans" data-say="'+id+'" aria-label="Reveal the model answer">'+
+          '<span class="ph">'+cue(it)+'</span><span class="tx">'+it.b+'</span></button>'+
+        '<span class="say-btns">'+
+          '<button type="button" class="btn sm" data-sayreveal="'+id+'">Reveal</button>'+
+          '<button type="button" class="btn quiet sm" data-said="'+id+'" hidden>I said it</button>'+
+          '<button type="button" class="btn quiet sm" data-again="'+id+'" hidden>Again</button>'+
+        '</span></div></div>';
+  }).join("");
+}
+function sayFoot(key,total){
+  return '<div class="toolbar"><button type="button" class="btn quiet sm" data-revealall="'+key+'">Reveal all ten</button>'+
+    '<button type="button" class="btn quiet sm" data-hideall="'+key+'">Hide them again</button>'+
+    '<span class="spacer"></span><span class="tally" data-tally="'+key+'">0 / '+total+' said</span></div>';
+}
+function buildDrill(p, key, items, mono, intro, extra, note){
+  return stage(p,
+    intro+
+    '<p class="hint">Work through all ten first — the Check button stays locked until every line has something in it. Enter moves you to the next line.</p>'+
+    '<div class="drill">'+drillList(key,items,mono)+'</div>'+
+    checkbar(key,"Check my 10 answers")+
+    '<div class="toolbar"><button type="button" class="btn quiet sm" data-showall="'+key+'">Show the answers</button>'+
+    '<span class="spacer"></span><span class="tally" data-tally="'+key+'">0 / 10 correct</span></div>'+
+    (extra||"")+(note||""));
+}
+function buildExchangeBlock(){
+  return '<div class="block-head"><h3>Let’s reflex with these exchanges!</h3>'+
+    '<span class="sub"><b>Speaking task — nothing to type.</b> A states it. You are B: say the same sentence back in the negative, out loud, at speed. Then reveal and check yourself.</span></div>'+
+    '<div class="worked"><span class="w">Two worked examples</span>'+
+    turn("a","[+]","We rolled out the new system last quarter.")+
+    turn("b","[−]","Really? We <b>didn’t roll out</b> the new system last quarter.")+
+    turn("a","[+]","They signed off on the budget in February.")+
+    turn("b","[−]","Really? They <b>didn’t sign off on</b> it in February.")+
+    '</div>'+
+    '<div class="drill">'+sayList("ax",EXCHANGES,
+      function(it){ return turn("a","[+]",it.a); },
+      function(){ return 'Your turn — say it back in <b>[−]</b>'; })+'</div>'+
+    sayFoot("ax",EXCHANGES.length)+
+    '<p class="hint">Say it before you reveal. The ending has to be audible — <i>didn’t roll out</i>, <i>didn’t sign off on</i> — and a pronoun stays in the middle: <i>didn’t wrap <b>it</b> up</i>.</p>';
+}
+function buildConvoBlock(){
+  return '<div class="block-head"><h3>Let’s tackle these exchanges!</h3>'+
+    '<span class="sub"><b>Speaking task — nothing to type.</b> A asks from the cue words. You are B: answer out loud with the short form only — <i>Yes, S + did</i> / <i>No, S + didn’t</i>. Then reveal and check yourself.</span></div>'+
+    '<div class="worked"><span class="w">Two worked examples</span>'+
+    turn("a","[?+]","you / roll out / the system / last quarter")+
+    turn("b","[+]","<b>Yes, we did.</b>")+
+    turn("a","[?−]","the board / sign off on / the budget")+
+    turn("b","[−]","<b>No, they didn’t.</b>")+
+    '</div>'+
+    '<div class="drill">'+sayList("bx",CONVOS,
+      function(it){ return turn("a", it.a.slice(0,it.a.indexOf("]")+1), it.a.slice(it.a.indexOf("]")+2)); },
+      function(it){ return 'Your turn — answer <b>'+(it.want==="+"?"Yes":"No")+'</b>, short form'; })+'</div>'+
+    sayFoot("bx",CONVOS.length)+
+    '<p class="hint">Items 3, 6 and 10 are negative questions. Answer the <b>fact</b>, not the shape of the question — that is the one Vietnamese instinct reverses.</p>';
+}
+
+/* ---------------- part 6 · decode ---------------- */
+function buildDecode(){
+  var qs = COMPREHENSION.map(function(q,i){
+    return '<div class="qa" data-qa="'+i+'"><div class="q"><b>'+(i+1)+'.</b> '+q[0]+'</div>'+
+      '<textarea id="q-'+i+'" data-text="q-'+i+'" data-open="q-'+i+'" placeholder="Your answer…" aria-label="Answer to question '+(i+1)+'"></textarea>'+
+      '<div class="model-ans" data-model="'+i+'">'+q[1]+'</div>'+
+      '<div class="toolbar" data-selfrow="'+i+'" hidden>'+
+      '<button type="button" class="btn sm" data-selfmark="'+i+'">I had this</button>'+
+      '<button type="button" class="btn quiet sm" data-review="'+i+'">Review again</button></div>'+
+    '</div>';
+  }).join("");
+  var script = DIALOGUE.map(function(L){
+    return '<div class="line"><div class="who">'+L[0]+'</div><div class="txt">'+L[1]+'</div></div>';
+  }).join("");
+  return stage(PARTS[5],
+    '<div class="scn">'+
+      '<div class="audio-sentinel" aria-hidden="true"></div>'+
+      '<div class="audio" id="audio">'+
+        '<div class="audio-dock" id="audio-dock">'+
+          '<div class="transport" id="transport" hidden>'+
+            '<button type="button" class="tbtn play" id="t-play" aria-label="Play the dialogue">'+
+              '<svg viewBox="0 0 24 24" aria-hidden="true"><path id="t-icon" d="M8 5v14l11-7z"></path></svg></button>'+
+            '<span class="time" id="t-now">0:00</span>'+
+            '<div class="seek" id="seek" role="slider" tabindex="0" aria-label="Playback position — drag to scrub, arrow keys jump five seconds" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">'+
+              '<span class="rail-bg"></span><span class="rail-fill" id="seek-fill"></span><span class="knob" id="seek-knob"></span>'+
+            '</div>'+
+            '<span class="time" id="t-dur">—:—</span>'+
+            '<span class="qchip" id="qchip" title="Questions answered">0/8</span>'+
+          '</div>'+
+          '<iframe class="sc-frame" id="sc-frame" title="Dialogue audio" allow="autoplay" scrolling="no" frameborder="no"></iframe>'+
+          '<p class="credit"><a href="'+SC_USER+'" target="_blank" rel="noopener">English2impact</a> · '+
+          '<a href="'+SC_PAGE+'" target="_blank" rel="noopener">'+SC_TITLE+'</a></p>'+
+        '</div>'+
+      '</div>'+
+      '<p class="lede"><b>Before you listen:</b> Clara missed last quarter and has heard the rollout went badly. Every answer Adam gives is a finished event with a finished time attached. Listen once, books closed, then answer. The player stays with you as you scroll — drag the bar back to replay the line you missed.</p>'+
+      '<div class="drill">'+qs+'</div>'+
+      checkbar("decode","Show the eight model answers")+
+    '</div>'+
+    '<div class="toolbar"><button type="button" class="btn quiet sm" id="show-script" aria-expanded="false" aria-controls="transcript">Show the transcript</button>'+
+    '<span class="hint">Read it only after you have answered all eight.</span></div>'+
+    '<div class="rev-panel" id="transcript"><div class="dlg">'+script+'</div></div>');
+}
+
+/* ---------------- part 7 · exit ---------------- */
+function buildExit(){
+  var items = EXIT.map(function(t,i){
+    return '<label class="checkline" data-check-line="x-'+i+'"><input type="checkbox" data-flag="x-'+i+'"><span>'+t+'</span></label>';
+  }).join("");
+  return stage(PARTS[6],
+    '<p class="lede">One term of your own, one pronoun object so the placement is audible, a finished time reference in every sentence. The last line is the one that proves you got the real lesson.</p>'+
+    '<div class="drill">'+items+'</div>'+
+    rule("The chain — one sentence, four forms.",[
+      {k:"[+]",     tag:true, t:"We rolled it out last quarter."},
+      {k:"[−]",     tag:true, t:"We didn’t roll it out last quarter."},
+      {k:"[Y/N ?]", tag:true, t:"Did you roll it out last quarter?"},
+      {k:"[Wh- ?]", tag:true, t:"When did you roll it out?"}
+    ]));
+}
+
+/* ---------------- part 8 · report ---------------- */
+function buildReport(){
+  var tiles = PARTS.filter(function(p){return p.keys.length;}).map(function(p){
+    return '<div class="rep-tile" data-tile="'+p.id+'"><div class="k">'+p.n+' · '+p.short+'</div>'+
+      '<div class="v" data-tilev="'+p.id+'">0/'+p.keys.length+'</div></div>';
+  }).join("");
+  return stage(PARTS[7],
+    '<div class="report"><p class="hint">Seven parts, '+TOTAL_ITEMS+' measured items. A tile turns green when every item in that part is done.</p>'+
+    '<div class="report-grid">'+tiles+'</div></div>'+
+    '<footer class="foot"><span>English2impact · English Reflex 2 · Session 01 — Finished Past</span>'+
+    '<span>Bạn giỏi nghề. Giờ giỏi cả tiếng Anh.</span></footer>');
+}
+
+/* ================================================================
+   5 · RENDER
+   ================================================================ */
+
+var main = document.getElementById("lesson");
+main.innerHTML =
+  buildWarm()+
+  buildLab()+
+  buildDrill(PARTS[2],"a",DRILL_A,false,
+    '<p class="lede">The past moves <b>off</b> the verb and <b>onto</b> <i>did</i>, and the verb goes back to its base form. Write the full form — the contraction is for speaking.</p>'+
+    rule("One tense marker at a time.",[
+      {ok:true,  t:"We <b>did not roll</b> out the system."},
+      {ok:false, t:"We <b>did not rolled</b> out the system."},
+      {k:"Why", t:"<i>did</i> carries the past, so the verb goes back to its base form."}
+    ]),
+    buildExchangeBlock())+
+  buildDrill(PARTS[3],"b",DRILL_B,true,
+    '<p class="lede">Build the question from the prompt. Items 5 and 8 are <b>negative questions</b> — you are surprised, because you thought the opposite.</p>'+
+    rule("Two rules, one line.",[
+      {ok:true,  t:"Did they sign <b>it</b> off?"},
+      {ok:false, t:"Did they sign off <b>it</b>?"},
+      {ok:true,  t:"<b>Didn’t</b> you wrap it up?"},
+      {ok:false, t:"<b>Did not</b> you wrap it up?"},
+      {k:"Negative question", t:"only the contraction moves to the front — never the two words apart."}
+    ]),
+    buildConvoBlock())+
+  buildDrill(PARTS[4],"c",DRILL_C,false,
+    '<p class="lede">Take a Yes/No question, remove <b>one</b> piece, and put the Wh- word in front. When the Wh- word <b>is</b> the subject, there is no <i>did</i> — and the verb keeps its past form.</p>'+
+    rule("Two shapes.",[
+      {k:"Inverted", tag:true, t:"<b>When did</b> you finish? · <b>What did</b> they sign off on?"},
+      {k:"Subject",  tag:true, t:"<b>Who signed</b> off on the budget? — no <i>did</i>, and the verb keeps its past form."},
+      {ok:false, t:"<b>Who did sign</b> off on the budget?"}
+    ]),
+    "")+
+  buildDecode()+buildExit()+buildReport();
+
+/* ================================================================
+   6 · PROGRESS
+   ================================================================ */
+
+var toc = document.getElementById("toc");
+var sheetToc = document.getElementById("sheet-toc");
+function tocHTML(){
+  return PARTS.map(function(p){
+    return '<li><a href="#p'+p.n+'" data-toc="'+p.id+'" data-go="'+p.n+'">'+
+      '<span class="n">'+(p.n===8?"★":p.n)+'</span><span class="t">'+p.short+'</span>'+
+      '<span class="cnt" data-cnt="'+p.id+'">'+(p.keys.length? "0/"+p.keys.length : p.time)+'</span></a></li>';
+  }).join("");
+}
+toc.innerHTML = tocHTML();
+sheetToc.innerHTML = tocHTML();
+
+function refresh(){
+  var sum=0, full=0;
+  PARTS.forEach(function(p){
+    if(!p.keys.length) return;
+    var d=partDone(p), t=p.keys.length;
+    sum += d/t; if(d===t) full++;
+    $$('[data-cnt="'+p.id+'"]').forEach(function(el){ el.textContent=d+"/"+t; });
+    $$('[data-toc="'+p.id+'"]').forEach(function(el){ el.classList.toggle("done", d===t); });
+    var m=$('[data-meter="'+p.id+'"]');
+    if(m){ m.querySelector(".fill").style.width=(d/t*100)+"%"; m.querySelector("b").textContent=d+" / "+t; m.classList.toggle("done",d===t); }
+    var tv=$('[data-tilev="'+p.id+'"]');
+    if(tv){ tv.textContent=d+"/"+t; tv.parentElement.classList.toggle("done", d===t); }
+  });
+  var scored = PARTS.filter(function(p){return p.keys.length;}).length;
+  var pct=Math.round(sum/scored*100), C=2*Math.PI*18;
+  document.getElementById("ring-bar").setAttribute("stroke-dasharray",(C*pct/100).toFixed(1)+" "+C.toFixed(1));
+  document.getElementById("ring-num").textContent=pct+"%";
+  document.getElementById("prog-sub").textContent=full+" of "+scored+" parts complete";
+  var qc=document.getElementById("qchip");
+  if(qc){
+    var qn=COMPREHENSION.filter(function(_,i){return isDone("q-"+i);}).length;
+    qc.textContent=qn+"/8"; qc.title=qn+" of 8 questions answered";
+  }
+}
+
+/* ================================================================
+   7 · NAVIGATION — one roadmap, two shapes
+   ================================================================ */
+
+var stages = $$(".stage");
+var btnPrev=document.getElementById("btn-prev"), btnNext=document.getElementById("btn-next");
+var btnParts=document.getElementById("btn-parts"), sheet=document.getElementById("partsheet");
+var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function updateNav(){
+  var n=S.part, p=PARTS[n-1];
+  btnPrev.disabled = n<=1;
+  btnNext.disabled = n>=PARTS.length;
+  btnPrev.setAttribute("aria-label", n>1 ? "Previous part: "+PARTS[n-2].short : "No previous part");
+  btnNext.setAttribute("aria-label", n<PARTS.length ? "Next part: "+PARTS[n].short : "You are on the last part");
+  document.getElementById("parts-num").textContent = n+"/"+PARTS.length;
+  document.getElementById("parts-label").textContent = p.short;
+  $$("[data-toc]").forEach(function(a){ a.classList.toggle("active", a.getAttribute("data-toc")===p.id); });
+}
+function goTo(n, opts){
+  opts = opts || {};
+  n = Math.min(Math.max(1,n|0), PARTS.length);
+  stages.forEach(function(s){ s.hidden = (+s.getAttribute("data-part")!==n); });
+  S.part=n; save(); updateNav();
+  if(opts.push!==false){ try{ history.pushState({p:n},"","#p"+n); }catch(e){} }
+  if(opts.scroll!==false){
+    var y = n===1 ? 0 : Math.max(0, main.getBoundingClientRect().top + window.pageYOffset - 12);
+    window.scrollTo({top:y, behavior: reduced ? "auto" : "smooth"});
+  }
+  if(n===2) initQuizlet();
+  if(n===6) initAudio();
+  if(measureDock) measureDock();
+  var h=$('.stage:not([hidden]) h2'); if(h && opts.focus!==false){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
+}
+btnPrev.onclick=function(){ goTo(S.part-1); };
+btnNext.onclick=function(){ goTo(S.part+1); };
+
+/* the Parts dropdown — a <dialog>, placed against its button */
+function placeSheet(){
+  var r=btnParts.getBoundingClientRect();
+  if(!r.width){ sheet.style.left="50%"; sheet.style.top="50%"; sheet.style.transform="translate(-50%,-50%)"; return; }
+  sheet.style.transform="none";
+  var w=sheet.offsetWidth, h=sheet.offsetHeight, gap=8;
+  var left=Math.min(Math.max(8, r.left+r.width/2-w/2), window.innerWidth-w-8);
+  var top = r.top-h-gap;
+  if(top < 8) top = Math.min(r.bottom+gap, window.innerHeight-h-8);
+  sheet.style.left=left+"px"; sheet.style.top=Math.max(8,top)+"px";
+}
+btnParts.onclick=function(){
+  if(sheet.open){ sheet.close(); return; }
+  sheet.showModal(); btnParts.setAttribute("aria-expanded","true"); placeSheet();
+};
+sheet.addEventListener("close",function(){ btnParts.setAttribute("aria-expanded","false"); });
+sheet.addEventListener("click",function(e){ if(e.target===sheet) sheet.close(); });
+window.addEventListener("resize",function(){ if(sheet.open) placeSheet(); });
+window.addEventListener("scroll",function(){ if(sheet.open) placeSheet(); },{passive:true});
+
+document.addEventListener("click",function(e){
+  var g=e.target.closest("[data-go]"); if(!g) return;
+  e.preventDefault();
+  if(sheet.open) sheet.close();
+  goTo(+g.getAttribute("data-go"));
+});
+window.addEventListener("popstate",function(){
+  var m=/^#p(\d+)$/.exec(location.hash||"");
+  if(m) goTo(+m[1],{push:false});
+});
+document.addEventListener("keydown",function(e){
+  if(!e.altKey) return;
+  if(e.key==="ArrowRight"){ goTo(S.part+1); }
+  else if(e.key==="ArrowLeft"){ goTo(S.part-1); }
+});
+
+var toastEl=document.getElementById("toast"), toastT=null;
+function toast(msg){
+  toastEl.textContent=msg; toastEl.classList.add("show");
+  clearTimeout(toastT); toastT=setTimeout(function(){ toastEl.classList.remove("show"); },2200);
+}
+
+/* ================================================================
+   8 · DEFERRED CHECKING — nothing is marked until Check is pressed
+   ================================================================ */
+
+var BANKS={a:DRILL_A,b:DRILL_B,c:DRILL_C};
+
+function paintItem(k,i){
+  var it=BANKS[k][i], key=k+"-"+i;
+  var inp=$('[data-answer="'+key+'"]'), box=$('[data-item="'+key+'"]'), v=$('[data-verdict="'+key+'"]');
+  if(!inp||!box||!v) return;
+  var shown=!!S.chk["show-"+k], isG=graded(key), good=isDone(key);
+  box.classList.toggle("ok", isG&&good);
+  box.classList.toggle("no", isG&&!good);
+  inp.readOnly = isG&&good;
+  if(isG||shown){
+    v.classList.add("show");
+    v.querySelector(".mark").textContent = isG ? (good ? "✓ correct" : "✗ not yet — compare it with the model") : "";
+    v.classList.toggle("is-ok", isG&&good);
+    v.classList.toggle("is-no", isG&&!good);
+    v.querySelector(".model").innerHTML = (shown || (isG&&!good)) ? it.acc[0] : "";
+  } else {
+    v.classList.remove("show","is-ok","is-no");
+    v.querySelector(".mark").textContent=""; v.querySelector(".model").innerHTML="";
+  }
+  var trap=box.querySelector(".trap"); if(trap) trap.hidden = !(isG&&!good) && !shown;
+}
+function bankState(k){
+  var bank=BANKS[k], pending=[], filled=0, correct=0, typed=0;
+  bank.forEach(function(_,i){
+    var key=k+"-"+i, inp=$('[data-answer="'+key+'"]');
+    var has = inp && inp.value.trim()!=="";
+    if(has) typed++;
+    if(graded(key)){ if(isDone(key)) correct++; }
+    else { pending.push(i); if(has) filled++; }
+  });
+  return {pending:pending, filled:filled, typed:typed, correct:correct, total:bank.length};
+}
+function updateBank(k){
+  var st=bankState(k);
+  var btn=$('[data-check="'+k+'"]'), res=$('[data-res="'+k+'"]'), tal=$('[data-tally="'+k+'"]');
+  if(btn){
+    var everGraded = st.pending.length < st.total;
+    btn.disabled = st.pending.length===0 || st.filled < st.pending.length;
+    btn.textContent = st.pending.length===0 ? "All ten checked"
+      : (st.filled < st.pending.length ? st.typed+" of "+st.total+" answered"
+      : (everGraded ? "Check the "+st.pending.length+" you fixed" : "Check my "+st.total+" answers"));
+  }
+  if(res){
+    var done = st.total - st.pending.length;
+    res.textContent = done ? st.correct+" / "+st.total+" correct" : "";
+    res.className = "res"+(done ? (st.correct===st.total ? " good" : " part") : "");
+  }
+  if(tal){ tal.textContent = st.correct+" / "+st.total+" correct"; tal.classList.toggle("good", st.correct===st.total); }
+}
+function paintBank(k){ BANKS[k].forEach(function(_,i){ paintItem(k,i); }); updateBank(k); }
+function checkBank(k){
+  var st=bankState(k), first=null;
+  st.pending.forEach(function(i){
+    var key=k+"-"+i, inp=$('[data-answer="'+key+'"]');
+    if(!inp || inp.value.trim()==="") return;
+    var good=matches(inp.value, BANKS[k][i].acc);
+    S.chk[key]=1; if(!good && first===null) first=i;
+    mark(key, good);
+  });
+  save(); paintBank(k);
+  var now=bankState(k);
+  toast(now.correct===now.total ? "All ten correct — move on." : now.correct+" of "+now.total+" correct. Fix the red ones and check again.");
+  var target = first!==null ? $('[data-item="'+k+"-"+first+'"]') : $('[data-bar="'+k+'"]');
+  if(target) target.scrollIntoView({behavior: reduced?"auto":"smooth", block:"center"});
+}
+
+/* sort — same deferred rule */
+function sortState(){
+  var placed=0, pending=[], correct=0;
+  SORT_WORDS.forEach(function(x,i){
+    var key="sort-"+x.w;
+    if(S.text[key]) placed++;
+    if(graded(key)){ if(isDone(key)) correct++; } else pending.push(i);
+  });
+  return {placed:placed, pending:pending, correct:correct, total:SORT_WORDS.length};
+}
+function updateSort(){
+  var st=sortState(), btn=$('[data-check="sort"]'), res=$('[data-res="sort"]');
+  var pendingPlaced = st.pending.filter(function(i){ return !!S.text["sort-"+SORT_WORDS[i].w]; }).length;
+  if(btn){
+    btn.disabled = st.pending.length===0 || pendingPlaced < st.pending.length;
+    btn.textContent = st.pending.length===0 ? "All thirteen checked"
+      : (pendingPlaced < st.pending.length ? st.placed+" of 13 placed" : "Check the sort");
+  }
+  if(res){
+    var done = st.total - st.pending.length;
+    res.textContent = done ? st.correct+" / 13 placed correctly" : "";
+    res.className = "res"+(done ? (st.correct===st.total?" good":" part") : "");
+  }
+}
+function paintSort(){
+  SORT_WORDS.forEach(function(x){
+    var key="sort-"+x.w, btn=$('.word[data-word="'+x.w+'"]'); if(!btn) return;
+    var isG=graded(key), good=isDone(key);
+    btn.classList.toggle("ok", isG&&good);
+    btn.classList.toggle("no", isG&&!good);
+    btn.textContent = isG ? x.w+" → "+x.past : x.w;
+  });
+  updateSort();
+}
+function checkSort(reveal){
+  SORT_WORDS.forEach(function(x){
+    var key="sort-"+x.w;
+    if(reveal && S.text[key]!==x.b) place(x.w, x.b);
+    if(!S.text[key]) return;
+    if(!reveal && graded(key)) return;
+    S.chk[key]=1; mark(key, S.text[key]===x.b);
+  });
+  save(); paintSort();
+  var st=sortState();
+  toast(st.correct===13 ? "All thirteen right — the endings are yours." : st.correct+" of 13 correct. Move the red ones and check again.");
+}
+function place(w,bucket){
+  var btn=$('.word[data-word="'+w+'"]'), slot=$('.bucket[data-bucket="'+bucket+'"] .slot');
+  if(!btn||!slot) return;
+  slot.appendChild(btn); btn.setAttribute("aria-pressed","false");
+  S.text["sort-"+w]=bucket; save();
+}
+var picked=null;
+function armBuckets(on){ $$(".bucket").forEach(function(b){ b.classList.toggle("armed",on); }); }
+document.addEventListener("click",function(e){
+  var w=e.target.closest(".word");
+  if(w){
+    var name=w.getAttribute("data-word");
+    if(w.closest(".bucket")){                       /* send it back to the pool */
+      document.getElementById("sort-pool").appendChild(w);
+      delete S.text["sort-"+name]; delete S.chk["sort-"+name];
+      w.classList.remove("ok","no"); w.textContent=name;
+      mark("sort-"+name,false); paintSort(); picked=null; armBuckets(false);
+      return;
+    }
+    $$(".word").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+    picked=name; w.setAttribute("aria-pressed","true"); armBuckets(true);
+    return;
+  }
+  var b=e.target.closest(".bucket");
+  if(b && picked){
+    var key="sort-"+picked;
+    delete S.chk[key]; mark(key,false);
+    place(picked, b.getAttribute("data-bucket"));
+    picked=null; armBuckets(false); paintSort();
+  }
+});
+
+/* generic check / show-answer buttons */
+document.addEventListener("click",function(e){
+  var c=e.target.closest("[data-check]");
+  if(c){
+    var g=c.getAttribute("data-check");
+    if(g==="sort") checkSort(false);
+    else if(g==="decode") checkDecode();
+    else checkBank(g);
+    return;
+  }
+  var sa=e.target.closest("[data-showall]");
+  if(sa){
+    var k=sa.getAttribute("data-showall");
+    if(S.chk["show-"+k]) delete S.chk["show-"+k]; else S.chk["show-"+k]=1;
+    save(); paintBank(k);
+    sa.textContent = S.chk["show-"+k] ? "Hide the answers" : "Show the answers";
+    return;
+  }
+  if(e.target.id==="sort-show"){ checkSort(true); }
+});
+
+/* typing */
+document.addEventListener("input",function(e){
+  var el=e.target;
+  if(!el.hasAttribute || !el.hasAttribute("data-text")) return;
+  var k=el.getAttribute("data-text");
+  S.text[k]=el.value; save();
+  var bank=el.getAttribute("data-bank");
+  if(bank){
+    if(graded(k) && !isDone(k)){ delete S.chk[k]; mark(k,false); paintItem(bank, +k.split("-")[1]); }
+    updateBank(bank);
+  }
+  if(el.hasAttribute("data-open")) updateDecode();
+});
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Enter") return;
+  var el=e.target;
+  if(!el.hasAttribute || !el.hasAttribute("data-answer")) return;
+  e.preventDefault();
+  var k=el.getAttribute("data-bank");
+  var fields=$$('[data-bank="'+k+'"]').filter(function(f){ return !f.readOnly; });
+  var next=fields[fields.indexOf(el)+1];
+  if(next){ next.focus(); }
+  else { var btn=$('[data-check="'+k+'"]'); if(btn && !btn.disabled) btn.click(); }
+});
+
+/* ================================================================
+   9 · TERM LAB — the one deliberate exception: it answers at once
+   ================================================================ */
+
+var queue=[], qi=0, round=1, answered=false;
+function labInit(){
+  queue = TERMS.map(function(_,i){return i;}).filter(function(i){ return !isDone("t-"+i); });
+  qi=0; round=1; renderLab();
+}
+function renderTicks(){
+  document.getElementById("lab-ticks").innerHTML = TERMS.map(function(_,i){
+    return '<i class="'+(isDone("t-"+i)?"on":"")+(queue[qi]===i?" cur":"")+'"></i>';
+  }).join("");
+  document.getElementById("lab-known").textContent = TERMS.filter(function(_,i){return isDone("t-"+i);}).length;
+  document.getElementById("lab-drill").textContent = Math.max(0, queue.length-qi);
+  document.getElementById("lab-count").textContent = queue.length
+    ? (Math.min(qi+1,queue.length)+" of "+queue.length+(round>1?" · drill round":"")) : "10 of 10";
+}
+function renderLab(){
+  var card=document.getElementById("lab-card");
+  if(qi>=queue.length){
+    var missed=TERMS.map(function(_,i){return i;}).filter(function(i){ return !isDone("t-"+i); });
+    if(missed.length){
+      queue=missed; qi=0; round++;
+      card.innerHTML='<div class="lab-banner">Drill round — '+missed.length+' term'+(missed.length>1?"s":"")+' to fix.</div>';
+      setTimeout(renderLab,0); return;
+    }
+    card.innerHTML='<div class="lab-done"><div class="big">All ten known.</div>'+
+      '<p class="hint">Say each one out loud in the past before you move on: roll out → rolled out · run into → <b>ran</b> into · come in under budget → <b>came</b> in under budget.</p></div>';
+    renderTicks(); return;
+  }
+  var t=TERMS[queue[qi]];
+  card.innerHTML =
+    (round>1?'<div class="lab-banner">Drill round — the ones you missed.</div>':'')+
+    '<h3>'+t.vi+'</h3><div class="gloss">'+t.en+'</div>'+
+    '<div class="src"><span class="k">From the dialogue</span>'+t.line+'</div>'+
+    '<div class="opts">'+t.opts.map(function(o,n){
+      return '<button type="button" class="opt" data-opt="'+n+'"><span class="num">'+(n+1)+'</span><span>'+o+'</span></button>';
+    }).join("")+'</div>'+
+    '<div class="lab-foot"><button type="button" class="btn quiet sm" id="lab-back"'+(qi===0?" disabled":"")+'>Back</button>'+
+    '<button type="button" class="btn sm" id="lab-next" disabled>Next</button>'+
+    '<span class="keys">1 2 3 to answer · Enter for next</span></div>';
+  answered=false; renderTicks();
+}
+function answerLab(n){
+  if(answered || qi>=queue.length) return;
+  var i=queue[qi], t=TERMS[i]; answered=true;
+  $$("#lab-card .opt").forEach(function(b){
+    var k=+b.getAttribute("data-opt"); b.disabled=true;
+    if(k===t.a) b.classList.add("ok"); else if(k===n) b.classList.add("no");
+  });
+  var slot=$("#lab-card .src u"); if(slot) slot.innerHTML="<b>"+t.opts[t.a]+"</b>";
+  mark("t-"+i, n===t.a);
+  document.getElementById("lab-next").disabled=false;
+  renderTicks();
+}
+document.getElementById("lab-card").addEventListener("click",function(e){
+  var o=e.target.closest(".opt"); if(o){ answerLab(+o.getAttribute("data-opt")); return; }
+  if(e.target.closest("#lab-next")){ qi++; renderLab(); return; }
+  if(e.target.closest("#lab-back")){ qi=Math.max(0,qi-1); renderLab(); }
+});
+document.addEventListener("keydown",function(e){
+  if(S.part!==2) return;
+  if(document.activeElement && /input|textarea/i.test(document.activeElement.tagName)) return;
+  if(e.key==="1"||e.key==="2"||e.key==="3"){ answerLab(+e.key-1); }
+  else if(e.key==="Enter"){ var nx=document.getElementById("lab-next"); if(nx&&!nx.disabled){ qi++; renderLab(); } }
+});
+document.getElementById("lab-list").onclick=function(){
+  var box=document.getElementById("lab-table");
+  box.hidden=!box.hidden;
+  this.textContent = box.hidden ? "Show all ten as a list" : "Hide the list";
+};
+document.getElementById("lab-restart").onclick=function(){
+  TERMS.forEach(function(_,i){ delete S.done["t-"+i]; });
+  save(); labInit(); refresh();
+};
+document.getElementById("copy-vocab").onclick=function(){
+  var txt="Term\tNghĩa\tIPA\tExample\n"+VOCAB.map(function(v){
+    return v[1]+"\t"+v[2]+"\t"+v[3]+"\t"+v[4].replace(/<[^>]+>/g,"");
+  }).join("\n");
+  var box=document.getElementById("vocab-out");
+  box.hidden=false; box.value=txt; box.select();
+  try{ var w=navigator.clipboard.writeText(txt); if(w&&w.catch) w.catch(function(){}); }catch(e){}
+  this.textContent="Copied — paste anywhere";
+};
+
+/* ================================================================
+   10 · SPOKEN BLOCKS + EXIT
+   ================================================================ */
+
+var SAY={ax:EXCHANGES,bx:CONVOS};
+function reveal(id,on){
+  var b=$('[data-say="'+id+'"]'); if(!b) return;
+  b.classList.toggle("show",on);
+  var said=$('[data-item="'+id+'"]').classList.contains("said");
+  $('[data-sayreveal="'+id+'"]').hidden=on;
+  $('[data-said="'+id+'"]').hidden=!on || said;   /* once said, only "Again" is left */
+  $('[data-again="'+id+'"]').hidden=!on;
+}
+function sayTally(k){
+  var n=SAY[k].filter(function(_,i){ return isDone(k+"-"+i); }).length;
+  var el=$('[data-tally="'+k+'"]');
+  if(el){ el.textContent=n+" / "+SAY[k].length+" said"; el.classList.toggle("good", n===SAY[k].length); }
+}
+document.addEventListener("click",function(e){
+  var s=e.target.closest("[data-say]");        if(s){ reveal(s.getAttribute("data-say"),true); return; }
+  var rv=e.target.closest("[data-sayreveal]"); if(rv){ reveal(rv.getAttribute("data-sayreveal"),true); return; }
+  var sd=e.target.closest("[data-said]");
+  if(sd){ var id=sd.getAttribute("data-said"); $('[data-item="'+id+'"]').classList.add("said"); mark(id,true); reveal(id,true); sayTally(id.split("-")[0]); return; }
+  var ag=e.target.closest("[data-again]");
+  if(ag){ var id2=ag.getAttribute("data-again"); $('[data-item="'+id2+'"]').classList.remove("said"); mark(id2,false); reveal(id2,false); sayTally(id2.split("-")[0]); return; }
+  var ra=e.target.closest("[data-revealall]");
+  if(ra){ var ka=ra.getAttribute("data-revealall"); SAY[ka].forEach(function(_,i){ reveal(ka+"-"+i,true); }); return; }
+  var ha=e.target.closest("[data-hideall]");
+  if(ha){ var kh=ha.getAttribute("data-hideall"); SAY[kh].forEach(function(_,i){ reveal(kh+"-"+i,false); }); }
+});
+document.addEventListener("change",function(e){
+  var cb=e.target.closest("[data-flag]"); if(!cb) return;
+  mark(cb.getAttribute("data-flag"), cb.checked);
+  var line=cb.closest(".checkline"); if(line) line.classList.toggle("done",cb.checked);
+});
+
+/* ================================================================
+   11 · DECODE — models stay hidden until all eight are answered
+   ================================================================ */
+
+function decodeFilled(){
+  return COMPREHENSION.filter(function(_,i){
+    var t=$('[data-open="q-'+i+'"]'); return t && t.value.trim()!=="";
+  }).length;
+}
+function updateDecode(){
+  var f=decodeFilled(), btn=$('[data-check="decode"]'), res=$('[data-res="decode"]');
+  if(btn){
+    btn.disabled = f<8 || !!S.chk.decode;
+    btn.textContent = S.chk.decode ? "Model answers are showing" : (f<8 ? f+" of 8 answered" : "Show the eight model answers");
+  }
+  if(res){
+    var n=COMPREHENSION.filter(function(_,i){return isDone("q-"+i);}).length;
+    res.textContent = S.chk.decode ? n+" / 8 self-marked" : "";
+    res.className="res"+(n===8?" good":" part");
+  }
+  refresh();
+}
+function paintDecode(){
+  COMPREHENSION.forEach(function(_,i){
+    var card=$('[data-qa="'+i+'"]'); if(!card) return;
+    if(S.chk.decode){ card.querySelector('[data-model="'+i+'"]').classList.add("show"); card.querySelector('[data-selfrow="'+i+'"]').hidden=false; }
+    card.classList.toggle("ok", isDone("q-"+i));
+  });
+  updateDecode();
+}
+function checkDecode(){
+  S.chk.decode=1; save(); paintDecode();
+  toast("Compare each answer with the model, then mark the ones you had.");
+  var f=$('[data-qa="0"]'); if(f) f.scrollIntoView({behavior:reduced?"auto":"smooth", block:"center"});
+}
+document.addEventListener("click",function(e){
+  var sm=e.target.closest("[data-selfmark]");
+  if(sm){ var i=+sm.getAttribute("data-selfmark"); $('[data-qa="'+i+'"]').classList.add("ok"); mark("q-"+i,true); updateDecode(); return; }
+  var rv=e.target.closest("[data-review]");
+  if(rv){ var j=+rv.getAttribute("data-review"); $('[data-qa="'+j+'"]').classList.remove("ok"); mark("q-"+j,false); updateDecode(); }
+});
+var scriptBtn=document.getElementById("show-script");
+scriptBtn.onclick=function(){
+  var t=document.getElementById("transcript"), open=!t.classList.contains("show");
+  t.classList.toggle("show",open);
+  this.setAttribute("aria-expanded", open?"true":"false");
+  this.textContent = open ? "Hide the transcript" : "Show the transcript";
+};
+
+/* ================================================================
+   12 · THE STICKY AUDIO DOCK
+   ================================================================ */
+
+var quizletStarted=false;
+function initQuizlet(){
+  if(quizletStarted) return; quizletStarted=true;
+  var f=document.getElementById("quizlet");
+  if(f && !f.src) f.src=QUIZLET;
+}
+
+var audioEl=document.getElementById("audio"), dockEl=document.getElementById("audio-dock");
+var widget=null, transportLive=false, duration=0, playing=false, audioStarted=false, measureDock=null;
+
+function fmt(ms){
+  if(!ms||ms<0) ms=0;
+  var s=Math.floor(ms/1000), m=Math.floor(s/60);
+  s=s%60; return m+":"+(s<10?"0":"")+s;
+}
+function reserve(){
+  if(!audioEl||!dockEl||audioEl.classList.contains("stuck")) return;
+  var h=dockEl.offsetHeight;
+  if(h>20) audioEl.style.setProperty("--audio-h", h+"px");
+}
+function follows(sentinel, cb){
+  var last=null, ticking=false;
+  function measure(){
+    ticking=false;
+    if(!sentinel.offsetParent && sentinel.offsetHeight===0 && !sentinel.getClientRects().length){ return; }
+    var r=sentinel.getBoundingClientRect();
+    var now = r.top < 9;
+    if(now!==last){ last=now; cb(now); }
+  }
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(measure); } }
+  window.addEventListener("scroll",onScroll,{passive:true});
+  window.addEventListener("resize",onScroll,{passive:true});
+  return measure;
+}
+(function(){
+  var sentinel=$(".audio-sentinel");
+  if(!sentinel) return;
+  measureDock = follows(sentinel, function(on){
+    if(on) reserve();
+    audioEl.classList.toggle("stuck", on);
+  });
+  if(window.ResizeObserver){ new ResizeObserver(reserve).observe(dockEl); }
+})();
+
+function paintSeek(ms){
+  var pct = duration ? Math.min(100, ms/duration*100) : 0;
+  document.getElementById("seek-fill").style.width=pct+"%";
+  document.getElementById("seek-knob").style.left=pct+"%";
+  document.getElementById("t-now").textContent=fmt(ms);
+  var s=document.getElementById("seek");
+  s.setAttribute("aria-valuenow", Math.round(pct));
+  s.setAttribute("aria-valuetext", fmt(ms)+" of "+fmt(duration));
+}
+function setIcon(on){
+  document.getElementById("t-icon").setAttribute("d", on ? "M7 5h4v14H7zM13 5h4v14h-4z" : "M8 5v14l11-7z");
+  document.getElementById("t-play").setAttribute("aria-label", on ? "Pause the dialogue" : "Play the dialogue");
+}
+function initAudio(){
+  if(audioStarted) return; audioStarted=true;
+  var f=document.getElementById("sc-frame");
+  f.src="https://w.soundcloud.com/player/?url="+SC_EMBED+
+    "&color=%23dd7958&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false";
+  var s=document.createElement("script");
+  s.src="https://w.soundcloud.com/player/api.js"; s.async=true;
+  s.onload=function(){
+    try{
+      widget=window.SC.Widget(f);
+      widget.bind(window.SC.Widget.Events.READY,function(){
+        widget.getDuration(function(d){
+          duration=d||0;
+          document.getElementById("t-dur").textContent=fmt(duration);
+          transportLive=true;
+          audioEl.classList.add("has-transport");
+          document.getElementById("transport").hidden=false;
+          setTimeout(reserve,60);
+        });
+      });
+      widget.bind(window.SC.Widget.Events.PLAY_PROGRESS,function(e){ paintSeek(e.currentPosition); });
+      widget.bind(window.SC.Widget.Events.PLAY,function(){ playing=true; setIcon(true); });
+      widget.bind(window.SC.Widget.Events.PAUSE,function(){ playing=false; setIcon(false); });
+      widget.bind(window.SC.Widget.Events.FINISH,function(){ playing=false; setIcon(false); });
+    }catch(err){}
+  };
+  document.head.appendChild(s);
+  setTimeout(function(){ if(!transportLive) setTimeout(reserve,0); }, 8000);
+}
+document.getElementById("t-play").onclick=function(){ if(widget) widget.toggle(); };
+/* no ±5s buttons — the bar is the scrubber, and the arrow keys jump 5s */
+function jump(delta){
+  if(!widget) return;
+  widget.getPosition(function(p){ widget.seekTo(Math.max(0,Math.min(duration||p, p+delta))); });
+}
+(function(){
+  var seek=document.getElementById("seek"), dragging=false;
+  function ratio(e){
+    var r=seek.getBoundingClientRect();
+    return Math.max(0, Math.min(1, (e.clientX-r.left)/r.width));
+  }
+  function apply(e){
+    if(!duration) return;
+    var ms=ratio(e)*duration;
+    paintSeek(ms); if(widget) widget.seekTo(Math.round(ms));
+  }
+  seek.addEventListener("pointerdown",function(e){
+    if(!duration) return;
+    dragging=true; seek.setPointerCapture(e.pointerId); apply(e); e.preventDefault();
+  });
+  seek.addEventListener("pointermove",function(e){ if(dragging) apply(e); });
+  seek.addEventListener("pointerup",function(e){ dragging=false; try{ seek.releasePointerCapture(e.pointerId); }catch(err){} });
+  seek.addEventListener("keydown",function(e){
+    if(e.key==="ArrowRight"){ jump(5000); e.preventDefault(); }
+    else if(e.key==="ArrowLeft"){ jump(-5000); e.preventDefault(); }
+    else if(e.key==="Home" && widget){ widget.seekTo(0); e.preventDefault(); }
+  });
+})();
+
+/* ================================================================
+   13 · REPORT + RESET + BOOT
+   ================================================================ */
+
+document.getElementById("reset-all").onclick=function(){
+  if(!confirm("Clear every answer and start this session again?")) return;
+  S={part:1,done:{},text:{},chk:{}}; save(); location.hash=""; location.reload();
+};
+
+$$("[data-text]").forEach(function(el){
+  var k=el.getAttribute("data-text"); if(S.text[k]!==undefined) el.value=S.text[k];
+});
+$$("[data-flag]").forEach(function(el){
+  var k=el.getAttribute("data-flag"); el.checked=isDone(k);
+  var line=el.closest(".checkline"); if(line) line.classList.toggle("done",el.checked);
+});
+SORT_WORDS.forEach(function(x){ var b=S.text["sort-"+x.w]; if(b) place(x.w,b); });
+paintSort();
+["a","b","c"].forEach(paintBank);
+["ax","bx"].forEach(function(k){
+  SAY[k].forEach(function(_,i){
+    var id=k+"-"+i;
+    if(isDone(id)){ $('[data-item="'+id+'"]').classList.add("said"); reveal(id,true); }
+  });
+  sayTally(k);
+});
+paintDecode();
+labInit();
+refresh();
+
+var m=/^#p(\d+)$/.exec(location.hash||"");
+goTo(m ? +m[1] : (S.part||1), {push:false, scroll:false, focus:false});
+document.body.classList.remove("lesson-booting");
+setTimeout(function(){ document.body.classList.remove("lesson-booting"); },2500);
+})();
+</script>
+</body>
+</html>
