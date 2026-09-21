@@ -566,6 +566,47 @@ to{opacity:1;transform:none}}
 }
 
 
+/* ---- the listening player (the same player as English Reflex 2 / E-com Fluency 3) ----
+   One row: play · elapsed · seek bar · total · answered chip. ~92px open, 54px
+   docked. .e2i-s01-audio is sticky inside its own step, so it follows the learner
+   down through the ten gaps and lets go at the end of L2. The box keeps the
+   height it had before docking (--e2i-s01-audio-h), so the form never jumps. */
+#e2i-s01 .e2i-s01-audio-sentinel{height:1px;margin-bottom:-1px}
+#e2i-s01 .e2i-s01-audio{position:sticky;top:6px;z-index:20;min-height:var(--e2i-s01-audio-h,0px);margin:12px 0 14px}
+#e2i-s01 .e2i-s01-audio.e2i-s01-stuck{pointer-events:none}
+#e2i-s01 .e2i-s01-audio-dock{position:relative;pointer-events:auto;background:var(--e2i-s01-navy);color:#eef2f7;border-radius:12px;padding:10px 12px;box-shadow:0 2px 10px rgba(6,28,55,.08)}
+#e2i-s01 .e2i-s01-audio.e2i-s01-stuck .e2i-s01-audio-dock{padding:7px 11px;box-shadow:0 10px 26px rgba(6,28,55,.28)}
+#e2i-s01 .e2i-s01-audio iframe{display:block;width:100%;height:166px;border:0;border-radius:8px;background:#fff}
+/* kept rendered, never display:none — a hidden iframe can have its media suspended */
+#e2i-s01 .e2i-s01-audio.e2i-s01-has-transport iframe{position:absolute;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none}
+#e2i-s01 .e2i-s01-audio.e2i-s01-stuck:not(.e2i-s01-has-transport) iframe{height:120px}
+#e2i-s01 .e2i-s01-transport{display:none;align-items:center;gap:13px}
+#e2i-s01 .e2i-s01-audio.e2i-s01-has-transport .e2i-s01-transport{display:flex}
+#e2i-s01 .e2i-s01-tbtn{flex:none;display:grid;place-items:center;width:46px;height:46px;padding:0;border-radius:50%;cursor:pointer;color:#fff;background:var(--e2i-s01-accent);border:1.5px solid var(--e2i-s01-accent)}
+#e2i-s01 .e2i-s01-tbtn:hover{background:#cf6a49;border-color:#cf6a49}
+#e2i-s01 .e2i-s01-tbtn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+#e2i-s01 .e2i-s01-tbtn svg{width:18px;height:18px;fill:currentColor}
+#e2i-s01 .e2i-s01-audio.e2i-s01-stuck .e2i-s01-tbtn{width:40px;height:40px}
+#e2i-s01 .e2i-s01-audio.e2i-s01-stuck .e2i-s01-tbtn svg{width:16px;height:16px}
+#e2i-s01 .e2i-s01-audio.e2i-s01-stuck .e2i-s01-transport{gap:11px}
+#e2i-s01 .e2i-s01-ttime{flex:none;font-size:12px;color:#9fb2c8;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+/* the gap is not arbitrary: the knob overhangs the rail by 8px at 0:00 */
+#e2i-s01 .e2i-s01-seek{flex:1 1 auto;min-width:60px;position:relative;height:26px;display:flex;align-items:center;cursor:pointer;touch-action:none;border-radius:6px}
+#e2i-s01 .e2i-s01-audio.e2i-s01-stuck .e2i-s01-seek{height:20px}
+#e2i-s01 .e2i-s01-seek .e2i-s01-rbg,#e2i-s01 .e2i-s01-seek .e2i-s01-rfill{position:absolute;left:0;top:50%;transform:translateY(-50%);height:7px;border-radius:999px}
+#e2i-s01 .e2i-s01-seek .e2i-s01-rbg{right:0;background:rgba(255,255,255,.2)}
+#e2i-s01 .e2i-s01-seek .e2i-s01-rfill{width:0;background:var(--e2i-s01-accent)}
+#e2i-s01 .e2i-s01-seek .e2i-s01-knob{position:absolute;left:0;top:50%;width:16px;height:16px;border-radius:50%;background:#fff;transform:translate(-8px,-50%);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+#e2i-s01 .e2i-s01-seek:focus-visible{outline:3px solid var(--e2i-s01-accent);outline-offset:6px}
+#e2i-s01 .e2i-s01-qchip{flex:none;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font-size:12px;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+@container e2i-s01-main (max-width:419px){ #e2i-s01 .e2i-s01-qchip{display:none} }
+#e2i-s01 .e2i-s01-main .e2i-s01-audio-credit{max-width:none}
+#e2i-s01 .e2i-s01-audio-credit{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;margin:7px 0 0;font-size:12px;line-height:1.5;color:#9fb2c8}
+#e2i-s01 .e2i-s01-audio-credit a{color:#cfdcea;text-decoration:underline;text-underline-offset:2px}
+#e2i-s01 .e2i-s01-audio-credit>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#e2i-s01 .e2i-s01-audio.e2i-s01-stuck .e2i-s01-audio-credit{display:none}   /* docked it is a control strip */
+@media print{#e2i-s01 .e2i-s01-audio{position:static}}
+
 /* SoundCloud: contained, responsive player and readable attribution. */
 #e2i-s01 .e2i-s01-soundcloud-player{width:100%;min-width:0;margin:10px 0;padding:10px;background:#f1f5ef;border:1px solid #dbe5d8;border-radius:12px}
 #e2i-s01 .e2i-s01-soundcloud-player iframe{display:block;width:100%;max-width:100%;height:166px;border:0;border-radius:6px;background:#fff}
@@ -746,14 +787,23 @@ to{opacity:1;transform:none}}
       <div class="e2i-s01-step">
         <div class="e2i-s01-step-h"><span class="e2i-s01-chip e2i-s01-tealc">L2</span><h3>One pass — type as you listen</h3><span class="e2i-s01-t">8 min</span></div>
         <div class="e2i-s01-note">
-          <p><b>First attempt:</b> listen once and type as you hear. Use the SoundCloud controls to pause or replay when practising; your answers stay in place.</p>
+          <p><b>First attempt:</b> listen once and type as you hear. The player stays with you as you scroll down the form; when practising, drag the bar back to replay a line. Your answers stay in place.</p>
         </div>
 
-        <div class="e2i-s01-soundcloud-player" aria-label="Listening recording">
-          <iframe id="e2i-s01-soundcloud" title="SoundCloud · 01 Listening — AI's energy appetite" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2398626555&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true"></iframe>
-          <div class="e2i-s01-soundcloud-footer">
-            <div class="e2i-s01-soundcloud-credit"><a href="https://soundcloud.com/english2impact" title="English2impact" target="_blank" rel="noopener noreferrer">English2impact</a> · <a href="https://soundcloud.com/english2impact/01-listening-ais-energy" title="01-listening-AI's energy appetite" target="_blank" rel="noopener noreferrer">01-listening-AI's energy appetite</a></div>
-            <span id="e2i-s01-lStat" role="status" aria-live="polite">Press play above to begin.</span>
+        <div class="e2i-s01-audio-sentinel" aria-hidden="true"></div>
+        <div class="e2i-s01-audio" id="e2i-s01-audio" aria-label="Listening recording">
+          <div class="e2i-s01-audio-dock">
+            <div class="e2i-s01-transport">
+              <button type="button" class="e2i-s01-tbtn" id="e2i-s01-tPlay" aria-label="Play the recording"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="e2i-s01-tIcon" d="M8 5v14l11-7z"></path></svg></button>
+              <span class="e2i-s01-ttime" id="e2i-s01-tNow">0:00</span>
+              <div class="e2i-s01-seek" id="e2i-s01-tSeek" role="slider" tabindex="0" aria-label="Playback position — drag to scrub, arrow keys jump five seconds" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <span class="e2i-s01-rbg"></span><span class="e2i-s01-rfill" id="e2i-s01-tFill"></span><span class="e2i-s01-knob" id="e2i-s01-tKnob"></span>
+              </div>
+              <span class="e2i-s01-ttime" id="e2i-s01-tDur">—:—</span>
+              <span class="e2i-s01-qchip" id="e2i-s01-tChip" title="Gaps filled">0/10</span>
+            </div>
+            <iframe id="e2i-s01-soundcloud" title="SoundCloud · 01 Listening — AI's energy appetite" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2398626555&amp;color=%23dd7958&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false"></iframe>
+            <p class="e2i-s01-audio-credit"><span><a href="https://soundcloud.com/english2impact" target="_blank" rel="noopener noreferrer">English2impact</a> · <a href="https://soundcloud.com/english2impact/01-listening-ais-energy" target="_blank" rel="noopener noreferrer">01-listening-AI's energy appetite</a></span><span id="e2i-s01-lStat" role="status" aria-live="polite">Press play to begin.</span></p>
           </div>
         </div>
 
@@ -2062,7 +2112,70 @@ function resetListeningReview() {
   $("#lRevClock").textContent = "";
   $("#lReview").disabled = false;
 }
+/* ---- the one-row transport and the docking ----
+   SoundCloud's own widget drops its scrubber at small heights, so the widget is
+   kept 1px and invisible once its API answers and this bar drives it. If the
+   API never answers, SoundCloud's own player simply stays visible. */
+function clock(ms){ const t=Math.max(0,Math.round((ms||0)/1000)); return Math.floor(t/60)+":"+String(t%60).padStart(2,"0"); }
+const tp = {
+  box: findId("audio"), dock: root.querySelector(".e2i-s01-audio-dock"),
+  btn: findId("tPlay"), icon: findId("tIcon"), seek: findId("tSeek"), fill: findId("tFill"), knob: findId("tKnob"),
+  now: findId("tNow"), dur: findId("tDur"), chip: findId("tChip"), duration: 0, dragging: false,
+  paint(ms){
+    const pct = this.duration ? Math.min(100, ms / this.duration * 100) : 0;
+    this.fill.style.width = pct + "%"; this.knob.style.left = pct + "%";
+    this.now.textContent = clock(ms);
+    this.seek.setAttribute("aria-valuenow", String(Math.round(pct)));
+    this.seek.setAttribute("aria-valuetext", clock(ms) + " of " + clock(this.duration));
+  },
+  playing(on){
+    this.icon.setAttribute("d", on ? "M7 5h4v14H7zM13 5h4v14h-4z" : "M8 5v14l11-7z");
+    this.btn.setAttribute("aria-label", on ? "Pause the recording" : "Play the recording");
+  },
+  reserve(){
+    if (!tp.box || tp.box.classList.contains("e2i-s01-stuck")) return;
+    const h = tp.dock.offsetHeight;             /* the dock, not the box: the box carries the old min-height */
+    if (h > 20) tp.box.style.setProperty("--e2i-s01-audio-h", h + "px");
+  },
+  chipPaint(){
+    const inputs = root.querySelectorAll("#e2i-s01-lTable input[data-l]");
+    const n = [...inputs].filter(i => (i.value || "").trim()).length;
+    tp.chip.textContent = n + "/" + (inputs.length || 10);
+  }
+};
+if (tp.box) {
+  tp.btn.addEventListener("click", () => { if (soundCloudWidget) soundCloudWidget.toggle(); });
+  const jump = d => { if (!soundCloudWidget) return; soundCloudWidget.getPosition(p => soundCloudWidget.seekTo(Math.max(0, Math.min(tp.duration || p, p + d)))); };
+  const ratio = e => { const r = tp.seek.getBoundingClientRect(); return Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); };
+  const apply = e => { if (!tp.duration) return; const ms = ratio(e) * tp.duration; tp.paint(ms); if (soundCloudWidget) soundCloudWidget.seekTo(Math.round(ms)); };
+  tp.seek.addEventListener("pointerdown", e => { if (!tp.duration) return; tp.dragging = true; try { tp.seek.setPointerCapture(e.pointerId); } catch(_){} apply(e); e.preventDefault(); });
+  tp.seek.addEventListener("pointermove", e => { if (tp.dragging) apply(e); });
+  const end = e => { tp.dragging = false; try { tp.seek.releasePointerCapture(e.pointerId); } catch(_){} };
+  tp.seek.addEventListener("pointerup", end); tp.seek.addEventListener("pointercancel", end);
+  tp.seek.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight"){ jump(5000); e.preventDefault(); }
+    else if (e.key === "ArrowLeft"){ jump(-5000); e.preventDefault(); }
+    else if (e.key === "Home" && soundCloudWidget){ soundCloudWidget.seekTo(0); e.preventDefault(); }
+  });
+  root.addEventListener("input", e => { if (e.target.matches && e.target.matches("input[data-l]")) tp.chipPaint(); });
+  /* Docked is measured, not observed: an IntersectionObserver misses a jump
+     straight past the sentinel (a part change, a restored scroll position). */
+  const sentinel = root.querySelector(".e2i-s01-audio-sentinel");
+  let last = null, queued = false;
+  const measure = () => {
+    queued = false;
+    if (!sentinel.getClientRects().length) return;           /* its part is hidden */
+    const past = sentinel.getBoundingClientRect().bottom < 7;
+    if (past !== last){ last = past; if (past) tp.reserve(); tp.box.classList.toggle("e2i-s01-stuck", past); }
+  };
+  const schedule = () => { if (!queued){ queued = true; window.requestAnimationFrame(measure); } };
+  document.addEventListener("scroll", schedule, {capture:true, passive:true});
+  window.addEventListener("resize", schedule, {passive:true});
+  if (window.ResizeObserver) new ResizeObserver(tp.reserve).observe(tp.dock);
+  window.requestAnimationFrame(() => { tp.reserve(); tp.chipPaint(); schedule(); });
+}
 function initSoundCloud() {
+  if (tp.box) { tp.chipPaint(); window.requestAnimationFrame(tp.reserve); }
   if (soundCloudWidget || soundCloudLoading || !root.isConnected) return;
   // The optional Widget API keeps playback and lesson navigation in sync.
   // Answers and review remain usable if this script is blocked or offline.
@@ -2078,7 +2191,17 @@ function initSoundCloud() {
       widget.bind(name, () => { if (root.isConnected) handler(); });
       bound.push(name);
     };
+    bind(events.READY, () => {
+      widget.getDuration(ms => {
+        tp.duration = ms || 0; tp.dur.textContent = clock(tp.duration); tp.paint(0);
+        tp.box.classList.add("e2i-s01-has-transport");
+        window.requestAnimationFrame(tp.reserve);
+      });
+    });
+    widget.bind(events.PLAY_PROGRESS, e => { if (root.isConnected && !tp.dragging) tp.paint(e.currentPosition); });
+    bound.push(events.PLAY_PROGRESS);
     bind(events.PLAY, () => {
+      tp.playing(true);
       soundCloudPlaying = true;
       if (ST.active !== 1) { pauseSoundCloud(); return; }
       SpeechPlayback.stop();
@@ -2088,11 +2211,13 @@ function initSoundCloud() {
       queueProgressSave();
     });
     bind(events.PAUSE, () => {
+      tp.playing(false);
       soundCloudPlaying = false;
       if (!ST.lFinished) $("#lStat").textContent = "Paused. Your answers stay in place.";
       queueProgressSave();
     });
     bind(events.FINISH, () => {
+      tp.playing(false); tp.paint(tp.duration);
       soundCloudPlaying = false; ST.lFinished = true;
       $("#lStat").textContent = "Finished. Review your answers.";
       $("#lReview").disabled = false;
