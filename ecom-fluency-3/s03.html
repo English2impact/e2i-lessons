@@ -1,0 +1,3232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#061c37">
+<title>Session 03 — AI agents in the store — E-com Fluency 3</title>
+<script id="lessonStartup">
+(function(){
+var root = document.documentElement;
+root.classList.add("lesson-booting");
+root.setAttribute("data-lesson-entry-hash", window.location.hash);
+try {
+window.history.scrollRestoration = "manual";
+if (window.location.hash) window.history.replaceState(window.history.state, "", window.location.href.split("#")[0]);
+} catch(e){}
+/* Failsafe: if the lesson script never runs, show the page anyway. */
+setTimeout(function(){ root.classList.remove("lesson-booting"); }, 2500);
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   English2impact · lesson page
+   One stylesheet, mobile-first. Type scale is the spine of it:
+   nothing that a learner has to read is below 15px, and the
+   working text of an exercise is 17px on every screen.
+   ============================================================ */
+
+/* Reveal the prepared view once. A failsafe in the boot script
+   removes this class even if the main script never runs. */
+html.lesson-booting .lesson-viewport{visibility:hidden}
+
+:root{
+  /* --- brand ------------------------------------------------ */
+  --navy:#061c37;
+  --navy-2:#153352;
+  --ink:#1d2a36;
+  --mute:#59635e;          /* 6.2:1 on paper — safe for real text */
+  --faint:#636c66;         /* 4.7:1 on the warm tints too        */
+  --line:#d9dcd3;
+  --line-2:#e9ebe4;
+  --paper:#f4f3ef;
+  --card:#fff;
+  --warm:#f6f6ef;
+  --salmon:#dd7958;
+  --salmon-ink:#9d3f22;    /* 5.9:1 on paper */
+  --ok:#1c6b38;
+  --ok-bg:#e9f3ea;
+  --ok-line:#a8ccae;
+  --no:#a2372a;
+  --no-bg:#fbeeeb;
+  --no-line:#e0b0a5;
+
+  /* Four-leaf skill colours, each with the tint its stage badge sits on.
+     A stage picks a pair with a class — .skill-listen, .skill-speak,
+     .skill-read, .skill-write — never by writing a hex in the markup. */
+  --listen:#2c5a4a;  --listen-tint:#e6efeb;
+  --speak:#3f6a4d;   --speak-tint:#e9f1ea;
+  --read:#5d6d30;    --read-tint:#f0f3e5;
+  --write:#6a5b42;   --write-tint:#f2eee7;
+
+  /* --- type scale ------------------------------------------- */
+  --fs-micro:0.75rem;      /* 12px  uppercase labels only        */
+  --fs-meta:0.8125rem;     /* 13px  metadata, counters           */
+  --fs-small:0.9375rem;    /* 15px  notes, captions, helper text */
+  --fs-body:1.0625rem;     /* 17px  everything a learner reads   */
+  --fs-lead:1.125rem;      /* 18px  stage intros                 */
+  --fs-h3:1.25rem;         /* 20px                               */
+
+  --measure:40rem;         /* ~72 characters — set in rem so it does
+                              not drift with the loaded font metrics */
+  --radius:12px;
+  --radius-sm:8px;
+  --shadow:0 2px 10px rgba(6,28,55,.05);
+  --tap:48px;              /* minimum touch target               */
+  --viewport-height:100dvh;
+
+  /* --- page frame (same as English Reflex 2) ----------------- */
+  --page-max:1120px;                  /* content width cap */
+  --gutter:clamp(16px, 5vw, 56px);    /* side margin, grows with the window */
+
+  /* stage accent default; every .stage sets its own via a skill class */
+  --c:var(--speak);
+  --ct:var(--speak-tint);
+}
+.skill-listen{--c:var(--listen);--ct:var(--listen-tint)}
+.skill-speak {--c:var(--speak); --ct:var(--speak-tint)}
+.skill-read  {--c:var(--read);  --ct:var(--read-tint)}
+.skill-write {--c:var(--write); --ct:var(--write-tint)}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+
+html,body{height:100%;overflow:hidden}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:var(--fs-body);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* One native scroll surface, so the page behaves the same
+   standalone and inside the Odoo iframe. */
+.lesson-viewport{
+  position:relative;
+  height:100dvh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior-y:auto;
+  scroll-padding-bottom:86px;
+  scrollbar-gutter:stable;
+  outline:none;
+}
+.wrap{width:100%;max-width:calc(var(--page-max) + 2 * var(--gutter));margin:0 auto;padding:12px var(--gutter) 88px}
+
+h1,h2,h3,h4{font-family:"Playfair Display",Georgia,"Times New Roman",serif;font-weight:600;margin:0;letter-spacing:-.015em}
+p{margin:0 0 .8em}
+a{color:var(--salmon-ink)}
+[hidden]{display:none!important}
+
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Clipped rather than moved off-screen: shifting it upwards only worked
+   while a scroll container clipped it, which is not true when the lesson is
+   embedded in a host page. */
+.skip-link{
+  position:absolute;left:16px;top:0;z-index:200;
+  width:1px;height:1px;padding:0;overflow:hidden;white-space:nowrap;
+  clip:rect(0,0,0,0);clip-path:inset(50%);
+  background:var(--card);color:var(--navy);font-size:var(--fs-small);
+  border-radius:0 0 var(--radius-sm) var(--radius-sm);
+}
+.skip-link:focus{
+  width:auto;height:auto;padding:12px 18px;
+  overflow:visible;clip:auto;clip-path:none;
+}
+
+button,input,select,textarea{font:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--salmon);outline-offset:2px;border-radius:4px
+}
+
+/* ============================================================
+   1 · Masthead
+   ============================================================ */
+.lesson-masthead{position:relative;z-index:80;margin-bottom:14px;isolation:isolate}
+
+.lesson-banner{
+  position:relative;
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+  background:var(--navy);color:#fff;
+  padding:16px 16px 20px;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+.lesson-brand{flex:0 0 auto;width:52px;height:52px}
+.lesson-brand img{display:block;width:100%;height:100%;object-fit:contain}
+.lesson-heading{flex:1 1 60%;min-width:0}
+.lesson-eyebrow{
+  margin:0 0 6px;
+  font-size:var(--fs-micro);font-weight:600;line-height:1.45;
+  letter-spacing:.1em;text-transform:uppercase;color:#f0a687;
+}
+.lesson-banner h1{color:#fff;font-size:clamp(1.375rem,5.2vw,2rem);line-height:1.22}
+
+.lesson-actions{flex:1 0 100%;display:flex;align-items:center;gap:10px}
+.session-clock{
+  display:flex;align-items:center;gap:10px;
+  flex:0 0 auto;min-height:var(--tap);padding:8px 14px;
+  border:1px solid #33506f;border-radius:10px;background:#112b46;
+  font-size:var(--fs-meta);color:#dbe4ee;white-space:nowrap;
+}
+.session-clock b{font-size:1.125rem;font-weight:600;color:#ffb694;font-variant-numeric:tabular-nums;min-width:3.2em;text-align:right}
+.session-toggle{
+  flex:1 1 auto;min-height:var(--tap);padding:10px 18px;
+  font-size:var(--fs-small);font-weight:600;
+  background:#fff;color:var(--navy);border:1px solid #fff;border-radius:10px;
+  cursor:pointer;transition:background .18s;
+}
+.session-toggle:hover{background:#ffe6d8;border-color:#ffe6d8}
+.session-toggle[aria-pressed="true"]{background:#23405e;border-color:#4d688a;color:#fff}
+
+.header-progress{position:absolute;left:0;right:0;bottom:0;height:5px;background:#2c4160;overflow:hidden}
+.header-progress i{display:block;height:100%;width:0;background:#ff9565;transition:width .3s ease}
+
+/* save + progress strip under the banner */
+.savebar{
+  display:flex;align-items:center;gap:12px;
+  min-height:46px;padding:7px 14px;
+  background:#e9efe4;border-radius:0 0 var(--radius) var(--radius);
+  font-size:var(--fs-meta);color:#3f5a46;
+}
+.save-message{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.save-message::before{content:"";flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#5c8462}
+.savebar.save-error{background:#fdeee8;color:#8e3823}
+.savebar.save-error .save-message::before{background:#8e3823}
+.header-utilities{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.header-completion{font-size:var(--fs-meta);color:#3f5a46;white-space:nowrap;font-variant-numeric:tabular-nums}
+.header-completion b{font-weight:600}
+.save-now{
+  min-height:38px;padding:6px 12px;
+  font-size:var(--fs-meta);font-weight:500;
+  background:#fff;border:1px solid #bfd0b8;color:#35583e;border-radius:8px;cursor:pointer;white-space:nowrap;
+}
+.save-now:hover{background:#dde8d7}
+/* the jump select and next-step button live in the page nav instead */
+.header-utilities .lesson-jump,.header-utilities .nextbtn{display:none!important}
+
+/* toast */
+.toastwrap{position:fixed;left:0;right:0;top:12px;display:flex;justify-content:center;pointer-events:none;z-index:150}
+.toast{
+  max-width:calc(100vw - 32px);
+  background:var(--navy);color:#fff;
+  font-size:var(--fs-small);line-height:1.4;text-align:center;
+  padding:11px 18px;border-radius:10px;
+  opacity:0;transform:translateY(-8px);
+  transition:opacity .25s ease,transform .25s ease;
+  box-shadow:0 12px 30px rgba(6,28,55,.3);
+}
+.toast.on{opacity:1;transform:none}
+
+/* ============================================================
+   2 · Session goals (collapsible)
+   ============================================================ */
+.lesson-goals{background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
+.lesson-goals>summary{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  min-height:var(--tap);padding:12px 16px;
+  font-size:var(--fs-small);font-weight:600;color:var(--navy);
+  cursor:pointer;list-style:none;
+}
+.lesson-goals>summary::-webkit-details-marker{display:none}
+.lesson-goals>summary::after{content:"+";font-size:1.5rem;line-height:1;font-weight:400;color:var(--salmon-ink)}
+.lesson-goals[open]>summary::after{content:"−"}
+.lesson-goals>summary span:last-child{margin-left:auto;font-size:var(--fs-meta);font-weight:400;color:var(--mute)}
+
+.head{padding:20px 18px 22px;border-top:1px solid var(--line-2)}
+.kicker{margin:0 0 8px;font-size:var(--fs-micro);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--salmon-ink)}
+.head h2{font-size:clamp(1.5rem,5.6vw,1.9rem);line-height:1.2;color:var(--navy);max-width:22ch}
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;font-size:var(--fs-meta);color:var(--mute)}
+.meta span{padding:4px 10px;border:1px solid var(--line-2);border-radius:6px;background:#fafbf8}
+.meta b{font-weight:600;color:var(--ink)}
+.aim{margin:14px 0 0;font-size:var(--fs-small);line-height:1.7;color:var(--mute);max-width:var(--measure)}
+
+.targets{list-style:none;margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--line-2);counter-reset:goal}
+.targets li{
+  display:flex;align-items:center;gap:13px;
+  padding:11px 0;font-size:var(--fs-small);line-height:1.6;counter-increment:goal;
+}
+.targets li+li{border-top:1px solid var(--line-2)}
+.targets .tk{
+  position:relative;flex:0 0 auto;display:grid;place-items:center;
+  width:31px;height:31px;border-radius:9px;
+  border:1px solid #cfdcc9;background:#eef3ea;
+  font-size:var(--fs-micro);font-weight:600;color:#42624a;transition:.22s;
+}
+.targets .tk::before{content:"0" counter(goal)}
+.targets li.hit .tk{background:var(--speak);border-color:var(--speak)}
+.targets li.hit .tk::before{content:""}
+.targets .tk::after{
+  content:"";position:absolute;left:11px;top:8px;width:6px;height:11px;
+  border:solid #fff;border-width:0 2px 2px 0;
+  transform:rotate(45deg) scale(0);transition:.22s;
+}
+.targets li.hit .tk::after{transform:rotate(45deg) scale(1)}
+.targets li.hit{color:var(--mute)}
+
+/* ============================================================
+   3 · Layout
+   ============================================================ */
+.cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding-top:16px;align-items:start}
+.main{min-width:0}
+.railwrap{display:block;margin-top:20px;min-width:0}
+
+.page-context{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin:0 0 12px;font-size:var(--fs-meta);color:var(--mute);
+}
+.page-context strong{font-weight:600;color:var(--salmon-ink);letter-spacing:.06em}
+
+/* ============================================================
+   4 · Stage card
+   ============================================================ */
+.stage{
+  padding:22px 18px 20px;margin:0;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);scroll-margin-top:16px;
+}
+.stage h2:focus{outline:none}
+.stage h2:focus-visible{outline:3px solid var(--salmon);outline-offset:5px;border-radius:4px}
+
+.stage>.sh{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.spine{display:none}
+.sh .num{
+  flex:0 0 auto;display:grid;place-items:center;
+  width:46px;height:50px;border-radius:11px;
+  background:var(--ct);border:1px solid color-mix(in srgb,var(--c) 26%,#fff);
+  font-family:inherit;font-size:1.0625rem;font-weight:600;line-height:1;color:var(--c);
+}
+.sh .txt{flex:1 1 55%;min-width:0}
+.sh .skill{display:inline-block;margin-bottom:4px;font-size:var(--fs-micro);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.sh .clr{
+  display:none;margin-left:8px;padding:3px 8px;border-radius:5px;
+  font-size:var(--fs-micro);font-weight:600;color:#fff;background:var(--c);vertical-align:2px;
+}
+.stage.cleared .sh .clr{display:inline-block;animation:pop .34s ease}
+.sh h2{font-size:clamp(1.5rem,5.6vw,1.95rem);line-height:1.2;color:var(--navy)}
+.sh .time{
+  flex:0 0 auto;padding:6px 10px;border-radius:7px;
+  background:#f4f4ee;border:1px solid var(--line-2);
+  font-size:var(--fs-meta);line-height:1.4;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums;
+}
+
+.lead{margin:16px 0;font-size:var(--fs-lead);line-height:1.6;color:var(--mute);max-width:var(--measure)}
+.hold{
+  margin:0 0 18px;padding:10px 0 10px 14px;
+  border-left:3px solid var(--salmon);
+  font-size:var(--fs-small);line-height:1.6;color:var(--mute);max-width:var(--measure);
+}
+
+/* step meter under the intro */
+.meter{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  margin:0 0 22px;padding-bottom:18px;border-bottom:1px solid var(--line-2);
+  font-size:var(--fs-meta);color:var(--mute);
+}
+.meter .pips{display:flex;gap:4px}
+.meter .pips i{width:22px;height:5px;border-radius:3px;background:var(--line-2);transition:background .3s}
+.meter .pips i.on{background:var(--c)}
+.meter b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.stage.cleared .meter b{color:var(--c)}
+
+/* ============================================================
+   5 · Step block
+   ============================================================ */
+.block{margin:0 0 30px;max-width:none}
+.block:last-of-type{margin-bottom:0}
+.step{scroll-margin-top:16px}
+
+.sthead{display:flex;align-items:flex-start;gap:10px;margin:0 0 14px;font-size:var(--fs-small);line-height:1.5}
+.sthead .pin{
+  flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:8px;
+  border:1px solid var(--line);background:#fff;
+  font-size:var(--fs-micro);color:var(--faint);font-variant-numeric:tabular-nums;transition:.22s;
+}
+.step.doing .sthead .pin{border-color:#e0a888;background:#fdf1e9;color:#a04f2f}
+.step.done .sthead .pin{border-color:var(--c);background:var(--c);color:#fff;font-size:0}
+.step.done .sthead .pin::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.sthead .lbl{font-weight:600;padding-top:2px}
+.step.done .sthead .lbl{color:var(--mute);font-weight:500}
+.sthead .st{margin-left:auto;padding-top:3px;font-size:var(--fs-meta);color:var(--faint);white-space:nowrap;font-variant-numeric:tabular-nums}
+.step.done .sthead .st{color:var(--ok);font-weight:600}
+
+.tag{margin:0 0 8px;font-size:var(--fs-micro);letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.tag b{color:var(--c);font-weight:700}
+h3{margin:0 0 10px;font-size:var(--fs-h3);line-height:1.3;color:var(--navy)}
+.note{margin:10px 0 0;font-size:var(--fs-small);line-height:1.65;color:var(--mute);max-width:var(--measure)}
+.part{margin:0 0 6px;font-size:var(--fs-meta);font-weight:600;letter-spacing:.04em;color:var(--salmon-ink);font-variant-numeric:tabular-nums}
+
+/* prompt card */
+.prompt{padding:18px 20px;background:#eff4ec;border-left:4px solid var(--c);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.prompt .q{margin:0;font-family:"Playfair Display",Georgia,serif;font-size:1.3125rem;line-height:1.4;color:#24402f}
+
+/* free-text answers */
+textarea,input[type=text]{
+  width:100%;font-size:var(--fs-body);
+  padding:12px 14px;
+  background:#fdfefb;color:var(--ink);
+  border:1px solid #cdd5c9;border-radius:var(--radius-sm);
+  transition:border-color .18s,box-shadow .18s;
+}
+textarea{min-height:104px;resize:vertical;line-height:1.6}
+textarea::placeholder,input[type=text]::placeholder{color:#79837a;opacity:1}
+textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-offset:2px;border-color:var(--salmon);background:#fff}
+.lines{display:grid;gap:10px}
+.lines .ln{display:flex;align-items:center;gap:10px}
+.lines .ln .dn{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:var(--line);transition:.22s}
+.lines .ln.filled .dn{background:var(--speak)}
+
+/* checklists */
+.ck{list-style:none;margin:0;padding:0}
+.ck li{display:flex;align-items:center;gap:12px;padding:6px 0;font-size:var(--fs-body);line-height:1.6}
+.ck input{flex:0 0 auto;width:24px;height:24px;margin:0;accent-color:var(--salmon);cursor:pointer}
+.ck label{cursor:pointer;min-height:var(--tap);display:flex;align-items:center;flex:1}
+.ck li.on label{color:var(--mute)}
+
+/* stage footer strip */
+.strip{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;
+  margin:22px 0 0;padding-top:16px;border-top:1px solid var(--line-2);
+  font-size:var(--fs-meta);color:var(--mute);font-variant-numeric:tabular-nums;
+}
+.strip b{font-weight:600;color:var(--ink)}
+.strip .bar{flex:1 1 90px;min-width:70px;height:5px;background:var(--line-2);border-radius:3px;overflow:hidden}
+.strip .bar i{display:block;height:100%;width:0;background:var(--c);transition:width .3s ease}
+.strip .win{color:var(--c);font-weight:600}
+.strip .jump{
+  min-height:40px;padding:0 2px;border:0;background:none;cursor:pointer;
+  font-size:var(--fs-meta);font-weight:600;color:var(--salmon-ink);
+  text-decoration:underline;text-underline-offset:4px;
+}
+
+/* ============================================================
+   6 · Shared exercise chrome
+   ============================================================ */
+.guess,.scn,.results{padding:18px;background:#fdfefb;border:1px solid var(--line);border-radius:var(--radius-sm)}
+
+.guess .opts button,.guess .nav button,.match button,.mcq button,
+.tf .bts button,.rev>button,.checkbtn{
+  border-radius:var(--radius-sm);min-height:var(--tap);cursor:pointer;
+}
+.guess .opts button,.match button,.mcq button{
+  display:flex;align-items:center;gap:10px;
+  width:100%;text-align:left;
+  padding:13px 15px;font-size:var(--fs-body);line-height:1.5;
+  background:#fff;color:var(--ink);border:1px solid var(--line);
+  overflow-wrap:anywhere;
+}
+.guess .opts button:hover:not(:disabled),
+.match button:hover:not(.hit),
+.mcq button:hover:not(:disabled){border-color:#8a9a83;background:#f3f7ef}
+.guess .opts button.hit,.match button.hit,.mcq button.hit{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok);font-weight:600}
+.guess .opts button.miss,.match button.miss,.mcq button.miss{background:var(--no-bg);border-color:var(--no-line);color:var(--no)}
+.match button.sel,.mcq button.sel{border-color:var(--salmon);box-shadow:inset 0 0 0 1px var(--salmon);background:#fdf5f1}
+
+/* A pair you have made but not yet checked: linked, numbered, and colourless
+   on purpose — the verdict belongs to the Check button, not to the click. */
+.match button .tx{flex:1 1 auto;min-width:0}
+.match button .pn{
+  flex:0 0 auto;display:none;width:22px;height:22px;
+  align-items:center;justify-content:center;
+  font-size:var(--fs-micro);font-weight:700;font-variant-numeric:tabular-nums;
+  color:var(--navy);background:#e7ecf3;border-radius:50%;
+}
+.match button.pair{border-color:var(--navy);background:#f4f7fb;font-weight:600}
+.match button.pair .pn,.match button.miss .pn{display:flex}
+.match button.miss .pn{background:#f7ddd6;color:var(--no)}
+.matchfix:empty{display:none}
+.matchfix{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.matchfix .fixlbl{margin:0 0 6px;font-size:var(--fs-micro);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.matchfix ul{margin:0;padding-left:18px;font-size:var(--fs-small);line-height:1.6;color:var(--mute)}
+.matchfix b{color:var(--ink)}
+
+.checkbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:18px}
+.checkbtn{
+  padding:11px 20px;font-size:var(--fs-small);font-weight:600;
+  background:var(--navy);color:#fff;border:1px solid var(--navy);
+}
+.checkbtn:hover:not([disabled]){background:var(--navy-2);border-color:var(--navy-2)}
+.checkbtn[disabled]{background:#eef0ea;border-color:var(--line);color:#5d6760;cursor:default}
+.checkbtn.ready{animation:pop .3s ease}
+.checkbar .res{font-size:var(--fs-meta);color:var(--mute);font-variant-numeric:tabular-nums}
+.checkbar .res b{color:var(--ink);font-weight:600}
+
+/* reveal */
+.rev{margin-top:14px}
+.rev>button{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:9px 16px;font-size:var(--fs-small);font-weight:500;
+  background:#fff;color:var(--salmon-ink);border:1px solid var(--line);
+}
+.rev>button:hover{border-color:var(--salmon);background:#fdf5f1}
+.rev>button::after{
+  content:"";width:0;height:0;
+  border-left:4.5px solid transparent;border-right:4.5px solid transparent;
+  border-top:5px solid currentColor;opacity:.75;transition:transform .18s ease;
+}
+.rev.open>button::after{transform:rotate(180deg)}
+.rev .body{display:none;margin-top:12px;padding:15px 17px;background:var(--warm);border-radius:var(--radius-sm);font-size:var(--fs-body);line-height:1.65}
+.rev .body.bare{background:none;padding:0}
+.rev.open .body{display:block}
+/* the trigger stays visible when open — it is the fold control */
+
+/* word bank */
+.bank{margin:0 0 14px;padding:10px 14px;background:var(--warm);border-radius:var(--radius-sm);font-size:var(--fs-small);line-height:1.7;color:var(--mute)}
+.bank b{color:var(--ink);font-weight:600}
+
+/* ============================================================
+   7 · Term lab (guess / drill)
+   ============================================================ */
+.guess .pips{display:flex;gap:3px;margin:0 0 16px}
+.guess .pips i{flex:1 1 0;height:5px;border-radius:3px;background:var(--line-2);transition:background .25s}
+.guess .pips i.k{background:var(--ok)}
+.guess .pips i.r{background:var(--speak)}
+.guess .pips i.m{background:#d99182}
+.guess .pips i.at{background:var(--ink);height:7px;margin-top:-1px}
+.guess .drillbar{display:inline-block;margin:0 0 14px;padding:6px 12px;border-radius:6px;background:#fbeee7;font-size:var(--fs-meta);font-weight:500;color:var(--salmon-ink)}
+.guess .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.guess .ix,.guess .tally{font-size:var(--fs-meta);color:var(--mute);font-variant-numeric:tabular-nums}
+.guess .tally .k{color:var(--ok);font-weight:600}
+.guess .tally .m{color:var(--no);font-weight:600}
+.guess .vn{margin:0 0 6px;font-family:"Playfair Display",Georgia,serif;font-size:1.5rem;line-height:1.25;color:var(--navy)}
+.guess .def{margin:0 0 14px;font-size:var(--fs-small);color:var(--mute);line-height:1.6}
+.guess .eg{
+  margin:0 0 18px;padding:13px 16px;
+  background:var(--warm);border-left:3px solid #ddcabd;border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  font-size:var(--fs-body);line-height:1.6;
+}
+.guess .eg .src{display:block;margin-bottom:4px;font-size:var(--fs-micro);letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.guess .eg u{text-decoration:none;border-bottom:2px solid var(--salmon);padding:0 18px}
+.guess .eg b{font-weight:600;color:var(--ok)}
+.guess .opts{display:grid;gap:9px}
+.guess .opts button .kb{
+  flex:0 0 auto;display:grid;place-items:center;width:22px;height:22px;
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:var(--fs-micro);
+  color:var(--faint);border:1px solid var(--line-2);border-radius:5px;
+}
+.guess .verdict{display:none;align-items:center;gap:10px;flex-wrap:wrap;margin:15px 0 0;font-size:var(--fs-small);color:var(--mute)}
+.guess .verdict.show{display:flex}
+.guess .badge{padding:4px 10px;border-radius:6px;font-size:var(--fs-meta);font-weight:600}
+.guess .badge.k{background:var(--ok-bg);color:var(--ok)}
+.guess .badge.m{background:var(--no-bg);color:var(--no)}
+.guess .nav{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:18px}
+.guess .nav button{padding:10px 18px;font-size:var(--fs-small);font-weight:500;background:#fff;color:var(--ink);border:1px solid var(--line)}
+.guess .nav button:hover:not([disabled]){border-color:var(--navy)}
+.guess .nav button[disabled]{opacity:.45;cursor:default}
+.guess .nav button.go{background:var(--navy);border-color:var(--navy);color:#fff}
+.guess .nav .hint{display:none;margin-left:auto;font-size:var(--fs-meta);color:var(--faint)}
+.guess .fin{display:none}
+.guess.finished>.card,.guess.finished>.nav{display:none}
+.guess.finished .fin{display:block}
+.guess .fin .sc{margin:0 0 8px;font-family:"Playfair Display",Georgia,serif;font-size:1.625rem;color:var(--navy)}
+.guess .fin .mastered{color:var(--ok)}
+.missed{list-style:none;margin:14px 0 0;padding:0;font-size:var(--fs-body)}
+.missed li{padding:8px 0;border-bottom:1px solid var(--line-2)}
+.missed li b{font-weight:600}
+.missed li span{color:var(--mute)}
+
+/* part 1: the two moves inside one step */
+.flow{list-style:none;margin:16px 0 10px;padding:0}
+.flow li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;max-width:var(--measure);font-size:var(--fs-small);line-height:1.6;color:var(--mute)}
+.flow li b{color:var(--ink);font-weight:600}
+.flow .fn{display:grid;place-items:center;width:26px;height:26px;margin-top:-1px;border-radius:50%;background:var(--ct);color:var(--c);font-size:var(--fs-meta);font-weight:700}
+.flow+textarea{margin-bottom:6px}
+
+/* part 2: the Quizlet speed round closes the term lab */
+.quizlet-board{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.qz-head{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--navy);color:#fff}
+.qz-badge{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#4255ff;font-weight:700;font-size:1rem;color:#fff}
+.qz-title{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;font-weight:600;font-size:var(--fs-small);line-height:1.3}
+.qz-title small{font-weight:400;font-size:var(--fs-micro);color:#b9c6d6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qz-out{flex:none;display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:0 12px;border:1px solid rgba(255,255,255,.28);border-radius:999px;color:#fff;font-size:var(--fs-meta);font-weight:600;text-decoration:none;white-space:nowrap}
+.qz-out:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5)}
+.qz-frame{background:#f6f7fb;padding:0}
+.qz-frame iframe{display:block;width:100%;height:500px;border:0;background:#f6f7fb}
+@media (max-width:599.98px){
+  .qz-frame iframe{height:440px}
+  .qz-out{padding:0 10px}
+  .qz-out .qz-more{display:none}
+  .qz-title{white-space:nowrap}
+  .qz-title small{display:none}
+}
+
+/* ============================================================
+   8 · Vocabulary table
+   ============================================================ */
+/* On a phone this reads as a stack of entries — no sideways scrolling,
+   no third column hiding off the edge. It becomes a real table at 600px. */
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.vocab{width:100%;border-collapse:collapse;font-size:var(--fs-small);margin-top:8px}
+.vocab,.vocab tbody,.vocab tr,.vocab td{display:block}
+.vocab thead{display:none}
+.vocab tr{padding:13px 0;border-bottom:1px solid var(--line-2)}
+.vocab tr:last-child{border-bottom:0}
+.vocab td{padding:0;border:0;line-height:1.55}
+.vocab td.t{font-size:var(--fs-body);font-weight:600;color:var(--navy)}
+.vocab td.g{margin:2px 0 4px;color:var(--mute)}
+.vocab tr.drill{padding-left:13px;box-shadow:inset 3px 0 0 var(--salmon)}
+.legend{margin-top:12px;font-size:var(--fs-meta);color:var(--mute)}
+.legend i{display:inline-block;width:3px;height:12px;background:var(--salmon);vertical-align:-2px;margin-right:6px}
+
+/* ============================================================
+   9 · Matching
+   ============================================================ */
+.match{display:block}
+.matchbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;font-size:var(--fs-meta);color:var(--mute)}
+.matchbar .pips{display:flex;gap:3px}
+.matchbar .pips i{width:16px;height:5px;border-radius:3px;background:var(--line-2)}
+.matchbar .pips i.on{background:var(--ok)}
+.matchbar .perfect{color:var(--ok);font-weight:600}
+.matchbar .redeal{
+  margin-left:auto;min-height:36px;padding:0 4px;border:0;background:none;cursor:pointer;
+  font-size:var(--fs-meta);font-weight:600;color:var(--salmon-ink);
+  text-decoration:underline;text-underline-offset:4px;
+}
+.mgrid{display:grid;grid-template-columns:1fr;gap:9px}
+.match button.miss{animation:shake .28s}
+.match button.hit{cursor:default;animation:settle .3s ease}
+
+/* ============================================================
+   10 · Gap fill, true/false, multiple choice
+   ============================================================ */
+.gap{list-style:none;margin:0;padding:0}
+.gap li{
+  display:flex;flex-wrap:wrap;gap:8px 10px;align-items:baseline;
+  padding:12px 0;border-bottom:1px solid var(--line-2);
+  font-size:var(--fs-body);line-height:1.75;
+}
+.gap .s{flex:1 1 100%}
+.gap.numbered{counter-reset:g}
+.gap.numbered li::before{
+  counter-increment:g;content:counter(g) ".";
+  flex:0 0 auto;font-size:var(--fs-meta);color:var(--faint);font-variant-numeric:tabular-nums;
+}
+/* A blank is a fixed 11 characters wide — wide enough for the longest
+   answers, the same for every gap so the width gives nothing away, and
+   narrow enough that the sentence still reads as a sentence on a phone.
+   (Left to itself an <input> takes the browser default of 20 characters,
+   about 200px, which breaks the line apart.) */
+.gap input{
+  display:inline-block;width:11ch;min-width:0;max-width:100%;
+  padding:3px 8px;text-align:center;font-size:var(--fs-body);
+  border:0;border-bottom:2px solid var(--salmon);border-radius:0;background:transparent;
+}
+.gap input:focus{outline:0;background:#fdf2ec;border-radius:4px 4px 0 0}
+.gap input.hit{color:var(--ok);border-color:var(--ok);font-weight:600}
+.gap input.miss{color:var(--no);border-color:var(--no)}
+.gap input.pend{border-bottom-style:dashed;background:#f8f8f4}
+.gap .mv{
+  flex:0 0 auto;padding:3px 10px;border-radius:6px;
+  background:var(--ct);color:var(--c);
+  font-size:var(--fs-micro);font-weight:700;letter-spacing:.04em;white-space:nowrap;
+}
+.ts{
+  flex:0 0 auto;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:var(--fs-meta);color:var(--salmon-ink);font-variant-numeric:tabular-nums;
+}
+
+.tf{list-style:none;margin:0;padding:0}
+.tf.numbered{counter-reset:t}
+.tf.numbered li::before{
+  counter-increment:t;content:counter(t) ".";
+  flex:0 0 auto;font-size:var(--fs-meta);color:var(--faint);font-variant-numeric:tabular-nums;
+}
+.tf li{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line-2)}
+.tf .s{flex:1 1 100%;font-size:var(--fs-body);line-height:1.6}
+/* Phone: one full-width pair of buttons under the statement — no dead
+   space, and each target is half the card wide. */
+.tf .bts{flex:1 1 100%;display:flex;gap:8px;margin-top:4px}
+.tf .bts button{
+  flex:1 1 0;min-height:46px;padding:0;
+  font-size:var(--fs-body);font-weight:600;
+  background:#fff;color:var(--ink);border:1px solid var(--line);
+}
+.tf .bts button:hover{border-color:var(--navy)}
+.tf .bts button.sel{border-color:var(--salmon);box-shadow:inset 0 0 0 1px var(--salmon);background:#fdf5f1}
+.tf .bts button.hit{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok)}
+.tf .bts button.miss{background:var(--no-bg);border-color:var(--no-line);color:var(--no)}
+
+.mcq{margin:0 0 26px}
+.mcq:last-child{margin-bottom:0}
+.mcq .q{display:flex;flex-wrap:wrap;gap:6px 10px;margin:0 0 12px;font-size:var(--fs-body);font-weight:600;line-height:1.5}
+.mcq .q>span:last-child{flex:1 1 100%}
+.mcq .qn{flex:0 0 auto;font-size:var(--fs-meta);font-weight:400;color:var(--faint);font-variant-numeric:tabular-nums}
+.mcq .opts{display:grid;gap:9px}
+.why{display:none;margin:12px 0 0;padding:11px 14px;background:var(--warm);border-radius:var(--radius-sm);font-size:var(--fs-small);line-height:1.65;color:var(--mute)}
+.why.show{display:block}
+
+/* ============================================================
+   11 · Frames, model answers, scenarios
+   ============================================================ */
+.frames{display:grid;gap:11px;margin-top:6px}
+.frame{padding:15px 17px;background:#fcfdf9;border:1px solid var(--line);border-left:4px solid var(--c);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.frame .n{margin:0 0 7px;font-size:var(--fs-meta);font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.frame .f{margin:0;font-size:var(--fs-body);line-height:1.8}
+.frame .f u{text-decoration:none;border-bottom:2px solid var(--salmon);padding:0 20px}
+
+.model{margin-top:14px;padding:16px 18px;background:var(--warm);border-radius:var(--radius-sm);font-size:var(--fs-body);line-height:1.7}
+.model .lbl{margin-bottom:8px;font-size:var(--fs-micro);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+
+.scn{margin-bottom:18px}
+.scn .hd{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin-bottom:6px}
+.scn .hd h3{margin:0}
+.scn .who{font-size:var(--fs-meta);color:var(--mute)}
+.scn .setup{margin:0 0 14px;font-size:var(--fs-small);line-height:1.6;color:var(--mute)}
+
+.script{padding:16px;background:var(--warm);border-radius:var(--radius-sm)}
+.script p{margin:0 0 14px;font-size:var(--fs-body);line-height:1.7}
+.script p:last-child{margin-bottom:0}
+.script .sp{display:block;margin-bottom:2px;font-size:var(--fs-meta);font-weight:700;letter-spacing:.04em;color:#4d6046}
+
+/* --- the scenario player (same player as English Reflex 2) ---------
+   One row: play · elapsed · seek bar · total · answered chip. 92px open,
+   54px docked. .audio is sticky inside its .scn, so it follows the
+   learner through the gap-fill and lets go at the end of the card.
+   --audio-h is written by the script: the height the box had before it
+   docked, held so that shrinking the bar shifts nothing underneath. */
+.audio{position:sticky;top:6px;z-index:20;min-height:var(--audio-h,0px);margin:0 0 14px}
+.audio-sentinel{height:1px;margin-bottom:-1px}
+.audio audio{display:block;width:100%;height:44px}
+.audio .pending{margin-bottom:12px;padding:11px 14px;border:1px dashed var(--line);border-radius:var(--radius-sm);font-size:var(--fs-small);color:var(--mute)}
+.audio-dock{
+  position:relative;pointer-events:auto;
+  background:var(--navy);color:#eef2f7;
+  border-radius:var(--radius);padding:10px 12px;box-shadow:var(--shadow);
+}
+.audio iframe{display:block;width:100%;height:120px;border:0;border-radius:var(--radius-sm)}
+.audio .credit{margin:7px 0 0;font-size:var(--fs-micro);line-height:1.5;color:#9fb2c8;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.audio .credit a{color:#cfdcea}
+/* Kept rendered, never display:none — a hidden iframe can have its media
+   suspended, and this one is the thing that is playing. */
+.audio.has-transport iframe{position:absolute;width:1px;height:1px;top:0;left:0;opacity:0;pointer-events:none}
+
+/* Docked: the reserved box is taller than the bar, so the rest of it must
+   not swallow taps meant for the exercise beneath. */
+.audio.stuck{pointer-events:none}
+.audio.stuck .audio-dock{padding:7px 11px;box-shadow:0 10px 26px rgba(6,28,55,.28)}
+.audio.stuck .credit{display:none}   /* a control strip when docked; the attribution shows undocked */
+.audio.stuck:not(.has-transport) iframe{height:110px}   /* fallback keeps SoundCloud's own scrubber */
+
+.transport{display:none;align-items:center;gap:13px}
+.audio.has-transport .transport{display:flex}
+.tbtn{
+  flex:none;display:grid;place-items:center;padding:0;font:inherit;cursor:pointer;
+  width:46px;height:46px;border-radius:50%;
+  color:#fff;background:var(--salmon);border:1.5px solid var(--salmon);
+}
+.tbtn:hover{background:#cf6a49;border-color:#cf6a49}
+.tbtn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.tbtn svg{width:18px;height:18px;fill:currentColor}
+.audio.stuck .tbtn{width:40px;height:40px}
+.audio.stuck .tbtn svg{width:16px;height:16px}
+.audio.stuck .transport{gap:11px}
+.t-time{flex:none;font-size:var(--fs-micro);color:#9fb2c8;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+/* gap:13px is not arbitrary — the knob is translateX(-8px), so at 0 it
+   overhangs the rail and a tighter gap collides with the elapsed time */
+.seek{flex:1 1 auto;min-width:60px;position:relative;height:26px;display:flex;align-items:center;cursor:pointer;touch-action:none;border-radius:6px}
+.audio.stuck .seek{height:20px}
+.seek .rail-bg,.seek .rail-fill{position:absolute;left:0;top:50%;transform:translateY(-50%);height:7px;border-radius:999px}
+.seek .rail-bg{right:0;background:rgba(255,255,255,.2)}
+.seek .rail-fill{width:0;background:var(--salmon)}
+.seek .knob{position:absolute;left:0;top:50%;width:16px;height:16px;border-radius:50%;background:#fff;transform:translate(-8px,-50%);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.seek:focus-visible{outline:3px solid var(--salmon);outline-offset:6px}
+.qchip{flex:none;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font-size:var(--fs-micro);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+@media (max-width:419px){ .qchip{display:none} }
+@media print{.audio{position:static}.audio-dock{background:none;color:inherit;padding:0}.transport{display:none!important}.audio .credit{display:block;color:var(--faint)}}
+
+.video{position:relative;width:100%;aspect-ratio:16/9;margin-top:6px;background:#eceee8;border-radius:var(--radius-sm);overflow:hidden}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* ---- the video keeps up with the questions about it -----------------
+   Part 4 asks three sets of questions about one video and the answers sit
+   below the fold. So the player follows: sticky inside #s4, which means it
+   lets go on its own at the end of the part.
+
+   The iframe is moved into .video-dock once, at load, and never again.
+   Reparenting an iframe reloads it, so docking has to be a change of box,
+   not a change of place. */
+.video-stage{position:sticky;top:6px;z-index:20;min-height:var(--video-h,0px)}
+.video-sentinel{height:1px;margin-bottom:-1px}
+
+/* Following: the block is only holding the space it used to fill. The card
+   is .video-dock, and the empty remainder must not swallow taps meant for
+   the question underneath it. */
+.video-stage.stuck{
+  padding:0;background:none;border-color:transparent;box-shadow:none;
+  pointer-events:none;
+}
+.video-stage.stuck .video-dock{pointer-events:auto}
+
+.video-close{
+  display:none;position:absolute;top:-10px;right:-10px;
+  width:26px;height:26px;padding:0;place-items:center;
+  font-size:17px;line-height:1;color:#fff;
+  background:var(--navy);border:1.5px solid #fff;border-radius:50%;
+  box-shadow:0 2px 8px rgba(6,28,55,.3);cursor:pointer;
+}
+.video-stage.stuck .video-close{display:grid}
+.video-close:hover{background:var(--salmon)}
+.video-grab{display:none}
+
+@media (max-width:899.98px){
+  /* A bar, not a floating thumbnail: it spans the column and is opaque, so
+     the question does not scroll through the gap beside it. The credit line
+     earns its keep here by filling the space next to the picture. */
+  .video-stage.stuck .video-dock{
+    position:relative;display:flex;align-items:center;gap:11px;
+    padding:8px;background:var(--card);
+    border:1px solid var(--line);border-radius:11px;
+    box-shadow:0 8px 20px rgba(6,28,55,.14);
+  }
+  /* Capped, or a tablet gets a 190px-tall bar for a thumbnail it does not
+     need any bigger than a phone's. */
+  .video-stage.stuck .video{flex:0 0 52%;max-width:190px;margin:0;overflow:hidden}
+  /* the close button sits inside the bar, never over its corner */
+  .video-stage.stuck .video-dock{padding-right:46px}
+  .video-stage.stuck .video-close{
+    top:50%;right:8px;transform:translateY(-50%);
+    width:30px;height:30px;color:var(--mute);background:var(--warm);
+    border:1px solid var(--line);box-shadow:none;
+  }
+  .video-stage.stuck .video-close:hover{color:#fff;background:var(--navy);border-color:var(--navy)}
+  .video-stage.stuck .note{
+    flex:1 1 auto;min-width:0;margin:0;
+    font-size:var(--fs-meta);line-height:1.45;color:var(--faint);
+  }
+  /* "Video:" is the word the bar cannot afford — the name and the running
+     time are the two the learner actually uses. */
+  .video-stage.stuck .note-lbl{display:none}
+}
+
+@media (min-width:900px){
+  /* A 16:9 player pinned to the top of a wide column would take half the
+     reading area, so here it lifts into a corner instead. The space it left
+     says where it went — an unexplained hole reads as a bug. */
+  .video-stage{position:relative}
+  /* One variable for the corner player's size, and two for where it sits.
+     The dismiss button and the drag handle are fixed too — anchored to the
+     block they would stay behind in the page — and they work their place out
+     from those three rather than repeating the numbers. */
+  .video-stage.stuck{
+    --pip-w:min(330px,27vw);--pip-gap:22px;
+    --pip-x:calc(100vw - var(--pip-w) - var(--pip-gap) - 10px);
+    --pip-y:calc(100vh - (var(--pip-w) * 9 / 16) - var(--pip-gap));
+  }
+  /* One card: a 32px navy title bar (the grip, with the close button at
+     its right end) sitting flush on the picture. Both are fixed and both
+     read the same --pip-w / --pip-x / --pip-y, so their edges line up
+     exactly — the bar is the full width of the picture, square where it
+     meets it, rounded only on the outside corners. */
+  .video-stage.stuck{--pip-bar:32px}
+  .video-stage.stuck .video{
+    position:fixed;left:var(--pip-x);top:var(--pip-y);right:auto;bottom:auto;
+    z-index:90;width:var(--pip-w);margin:0;overflow:hidden;
+    border-radius:0 0 12px 12px;background:#000;
+    box-shadow:0 18px 40px rgba(6,28,55,.30),0 2px 6px rgba(6,28,55,.12);
+  }
+  .video-stage.stuck .video-close{
+    position:fixed;z-index:92;right:auto;bottom:auto;
+    top:calc(var(--pip-y) - var(--pip-bar) + 4px);
+    left:calc(var(--pip-x) + var(--pip-w) - 28px);
+    width:24px;height:24px;font-size:16px;
+    background:transparent;border:0;box-shadow:none;color:#cfdcea;border-radius:6px;
+  }
+  .video-stage.stuck .video-close:hover{background:rgba(255,255,255,.14);color:#fff}
+  .video-stage.stuck .video-close:focus-visible{outline:2px solid var(--salmon);outline-offset:1px}
+  /* The grip. An iframe swallows every pointer event inside it, so the player
+     cannot be dragged by its own picture — it gets a bar of its own, just
+     above, which is also where a person reaches for a window anyway. */
+  .video-stage.stuck .video-grab{
+    display:flex;position:fixed;z-index:91;
+    left:var(--pip-x);top:calc(var(--pip-y) - var(--pip-bar));
+    width:var(--pip-w);height:var(--pip-bar);
+    align-items:center;gap:9px;padding:0 36px 0 12px;
+    border:0;border-radius:12px 12px 0 0;
+    font:inherit;font-size:var(--fs-micro);font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:#b9c6d6;background:var(--navy);cursor:grab;touch-action:none;
+    box-shadow:0 -6px 18px rgba(6,28,55,.16);
+  }
+  .video-stage.stuck .video-grab .vg-dots{display:grid;grid-template-columns:repeat(3,3px);gap:3px}
+  .video-stage.stuck .video-grab .vg-dots i{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.62)}
+  .video-stage.stuck .video-grab .vg-lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .video-stage.stuck .video-grab:hover{background:var(--navy-2);color:#fff}
+  .video-stage.stuck .video-grab:focus-visible{outline:2px solid var(--salmon);outline-offset:2px}
+  .video-stage.dragging .video-grab{cursor:grabbing}
+  /* While a drag is running the iframe must not eat the pointer. */
+  .video-stage.dragging .video iframe{pointer-events:none}
+  .video-stage.stuck .video iframe{border-radius:0}
+  .video-stage.stuck .note{display:none}
+  .video-stage.stuck::after{
+    content:"Video playing in the corner";
+    position:absolute;inset:0;display:flex;
+    align-items:center;justify-content:center;
+    border:1px dashed var(--line);border-radius:var(--radius-sm);
+    font-size:var(--fs-small);color:var(--faint);
+  }
+}
+
+/* an open question that wants a written answer */
+.q-open{margin:0 0 12px;font-size:var(--fs-body);font-weight:600;line-height:1.5;max-width:var(--measure)}
+
+/* pushback rounds — each round already sits in its own block */
+.push{margin:0;padding:0;border:0}
+.push .rd{margin:0 0 8px;font-size:var(--fs-micro);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salmon-ink)}
+.push .said{margin:0 0 12px;font-family:"Playfair Display",Georgia,serif;font-size:1.1875rem;line-height:1.45;color:var(--navy)}
+
+/* ============================================================
+   12 · Results
+   ============================================================ */
+.results .big{margin:0 0 4px;font-family:"Playfair Display",Georgia,serif;font-size:2rem;color:var(--navy)}
+.results .sub{margin:0 0 18px;font-size:var(--fs-small);color:var(--mute)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 20px}
+.stat{padding:13px 15px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm)}
+.stat b{display:block;font-family:"Playfair Display",Georgia,serif;font-size:1.625rem;line-height:1.15;color:var(--navy)}
+.stat span{display:block;margin-top:4px;font-size:var(--fs-meta);line-height:1.45;color:var(--mute)}
+.tvn{display:grid;grid-template-columns:1fr;gap:12px;margin-top:6px}
+.tvn .col{padding:15px 17px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm)}
+.tvn .col.now{background:var(--warm);border-color:#e2d3c8}
+.tvn h4{margin:0 0 10px;font-family:inherit;font-size:var(--fs-micro);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.tvn ol{margin:0;padding-left:20px;font-size:var(--fs-body);line-height:1.6}
+.tvn li{margin-bottom:8px}
+.tvn .empty{margin:0;font-size:var(--fs-small);color:var(--faint)}
+.tvn .said{margin:0;font-size:var(--fs-body);line-height:1.6;white-space:pre-wrap}
+.arrowline{margin:14px 0 0;font-size:var(--fs-meta);color:var(--mute);line-height:1.6}
+.results table{width:100%;border-collapse:collapse;margin-top:20px;font-size:var(--fs-small)}
+.results td{padding:10px 0;border-bottom:1px solid var(--line-2)}
+.results td.n{color:var(--mute)}
+.results td.b{display:none}
+.results td.v{width:80px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.results .mini{display:block;height:5px;background:var(--line-2);border-radius:3px;overflow:hidden}
+.results .mini i{display:block;height:100%;width:0;background:var(--c);transition:width .3s ease}
+
+.fin-banner{display:none;margin-top:20px;padding:17px 19px;background:var(--warm);border:1px solid #e2d3c8;border-radius:var(--radius-sm)}
+.fin-banner.on{display:block;animation:pop .4s ease}
+.fin-banner h3{margin:0 0 6px;font-size:1.3125rem}
+.fin-banner p{margin:0;font-size:var(--fs-body);line-height:1.65;color:var(--mute)}
+
+.reset{
+  min-height:40px;padding:8px 0 0;border:0;background:none;cursor:pointer;
+  font-size:var(--fs-meta);color:var(--mute);
+  text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--line);
+}
+.reset:hover{color:var(--salmon-ink)}
+.reset.arm{color:var(--no);font-weight:600;text-decoration-color:var(--no)}
+.results .reset{padding-top:16px}
+
+.end{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);font-size:var(--fs-small);color:var(--mute)}
+.brandline{margin-top:12px;font-size:var(--fs-meta);color:var(--mute)}
+.brandline b{color:var(--salmon-ink);font-weight:600}
+
+/* ============================================================
+   13 · Page navigation + parts dialog
+   ============================================================ */
+.page-navigation{
+  position:fixed;left:0;right:0;bottom:0;z-index:100;
+  /* Grid, not flex: <button> has an intrinsic minimum that flex-grow will
+     not shrink past, so flex columns come out uneven. Prev and Next size
+     to their labels; Parts takes everything left over for the title. */
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:stretch;gap:8px;
+  padding:7px max(12px,env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+  background:var(--card);border-top:1px solid var(--line);
+  box-shadow:0 -6px 22px rgba(6,28,55,.07);
+}
+.page-navigation button{
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  min-height:44px;padding:8px 10px;
+  font-size:var(--fs-meta);font-weight:600;
+  background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:9px;
+  cursor:pointer;touch-action:manipulation;
+}
+.page-navigation>button{min-width:0}
+.page-navigation .page-next{background:var(--navy);color:#fff;border-color:var(--navy)}
+.page-navigation button:disabled{background:#f2f3ee;border-color:var(--line-2);color:#5f6960;cursor:default}
+.page-navigation button:hover:not(:disabled){box-shadow:0 0 0 3px #e2eadc}
+.page-prev>span:last-child,.page-next>span:first-child{
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+.editing-answer .page-navigation{display:none}
+
+/* Parts names the part you are on and opens the dropdown. */
+.page-navigation .page-parts{gap:8px;padding:8px 10px;justify-content:flex-start}
+.page-parts small{
+  display:none;
+  flex:0 0 auto;padding:3px 7px;border-radius:5px;
+  background:#eef1ea;color:#41604a;
+  font-size:var(--fs-micro);font-weight:700;font-variant-numeric:tabular-nums;
+}
+.page-parts>span{
+  flex:1 1 auto;min-width:0;text-align:left;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.page-parts::after{
+  content:"";flex:0 0 auto;width:0;height:0;
+  border-left:4.5px solid transparent;border-right:4.5px solid transparent;
+  border-top:5px solid currentColor;opacity:.7;transition:transform .18s ease;
+}
+.page-parts[aria-expanded="true"]::after{transform:rotate(180deg)}
+
+/* A dropdown anchored to the Parts button. It is still a <dialog> opened
+   with showModal(), so Escape, the backdrop and the focus trap come free;
+   the script positions it above the button and flips it below if needed. */
+.parts-dialog{
+  position:fixed;inset:auto;margin:0;
+  width:min(420px,calc(100vw - 20px));
+  max-height:min(70dvh,540px);
+  padding:14px;border:1px solid var(--line);border-radius:14px;
+  background:#fbfcf8;color:var(--ink);box-shadow:0 16px 44px rgba(6,28,55,.24);
+  overflow-y:auto;overscroll-behavior:contain;
+  animation:dropIn .16s ease;
+}
+@keyframes dropIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.parts-dialog::backdrop{background:rgba(6,28,55,.26)}
+.parts-dialog-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.parts-dialog-header p{margin:0 0 3px;font-size:var(--fs-micro);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--salmon-ink)}
+.parts-dialog h2{font-size:1.1875rem;line-height:1.25;color:var(--navy)}
+.parts-close{min-width:44px;min-height:44px;font-size:1.5rem;line-height:1;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.part-menu-list{display:grid;gap:7px;list-style:none;margin:0;padding:0}
+.part-menu-list a{
+  display:flex;align-items:center;gap:12px;
+  min-height:54px;padding:10px 12px;
+  background:#fff;border:1px solid var(--line);border-radius:10px;
+  font-size:var(--fs-small);line-height:1.4;color:var(--navy);text-decoration:none;
+}
+.part-menu-list a[aria-current="page"]{background:#e9f0e4;border-color:#a6c199}
+.part-number{flex:0 0 auto;display:grid;place-items:center;width:32px;height:34px;background:#f1f4ec;border:1px solid var(--line);border-radius:8px;font-size:var(--fs-meta);font-weight:600;color:#4c6a4d}
+.part-menu-list a.done .part-number{background:#3c6a4a;border-color:#3c6a4a;color:#fff}
+.part-name{flex:1;min-width:0;font-weight:600}
+.part-meta{flex:0 0 auto;text-align:right;font-size:var(--fs-meta);color:var(--mute)}
+.part-state{display:block;margin-top:2px;font-size:var(--fs-micro);color:#3f6a45}
+.parts-summary{margin:12px 0 0;padding-top:11px;border-top:1px solid var(--line-2);font-size:var(--fs-meta);color:var(--mute);line-height:1.6}
+.page-announcement{pointer-events:none}
+
+/* Short landscape windows: two columns instead of a tall scroll. */
+@media (max-height:520px) and (min-width:560px){
+  .parts-dialog{width:min(620px,calc(100vw - 20px));max-height:calc(100dvh - 16px)}
+  .part-menu-list{grid-template-columns:1fr 1fr}
+  .parts-dialog h2{font-size:1.0625rem}
+}
+
+/* ============================================================
+   14 · Roadmap
+   On a phone this is a two-column card at the foot of the page; from
+   900px the same markup becomes the sticky sidebar rail.
+   ============================================================ */
+.rail{
+  position:static;
+  padding:14px 12px;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+}
+.rail h4,.rail-caption{display:none}
+.rail ol{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+}
+.rail li{margin:0}
+.rail a{
+  position:relative;display:flex;align-items:center;
+  min-height:58px;padding:11px 12px 15px;
+  border:1px solid var(--line-2);border-radius:9px;
+  font-size:var(--fs-small);line-height:1.35;font-weight:500;color:var(--mute);text-decoration:none;
+}
+.rail a:hover{background:#f2f5ee;color:var(--ink)}
+.rail a.on{background:#e9f0e4;border-color:#cfdfc6;color:#2f5540}
+.rail a.on .rtime{color:var(--mute)}
+.rail .row{display:flex;flex-wrap:wrap;align-items:flex-start;gap:3px 9px;width:100%}
+/* sits on the first line of the title even when the title wraps */
+.rail .dot{flex:0 0 auto;width:10px;height:10px;margin-top:5px;border-radius:50%;background:var(--c)}
+.rail .ttl{flex:1 1 60%;min-width:0;font-weight:600;color:var(--navy);white-space:normal}
+.rail a.on .ttl{color:#2f5540}
+.rail .rtime{flex:0 0 auto;margin-left:19px;font-size:var(--fs-meta);color:var(--faint);white-space:nowrap}
+.rail .ck{flex:0 0 auto;margin-left:auto;width:11px;text-align:center;font-size:var(--fs-meta);color:var(--c);visibility:hidden}
+.rail a.done .ck{visibility:visible}
+.rail .rbar{position:absolute;left:12px;right:12px;bottom:6px;height:3px;background:#f2f3ee;border-radius:3px;overflow:hidden}
+.rail .rbar i{display:block;height:100%;width:0;background:var(--c);opacity:.8;transition:width .35s ease}
+.rail a.on .rbar i{opacity:1}
+.rail-summary{margin:14px 4px 0;padding-top:14px;border-top:1px solid var(--line-2)}
+.rail-label{margin:0 0 4px;font-size:var(--fs-micro);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.rail-count{display:flex;align-items:baseline;gap:6px;margin:0;font-size:var(--fs-meta);color:var(--mute)}
+.rail-count b{font-family:"Playfair Display",Georgia,serif;font-size:1.75rem;font-weight:600;color:var(--navy)}
+.track2{height:5px;background:var(--line-2);border-radius:3px;overflow:hidden}
+.track2 i{display:block;height:100%;width:0;background:var(--salmon);transition:width .35s ease}
+.rail .railbar{margin:10px 0 8px}
+.railpct,.railsc{margin:0;font-size:var(--fs-micro);color:var(--mute);font-variant-numeric:tabular-nums}
+.railsc{margin-top:3px}
+.rail .reset{font-size:var(--fs-micro);padding-top:10px}
+
+/* ============================================================
+   15 · Motion
+   ============================================================ */
+@keyframes pop{0%{transform:scale(.86)}60%{transform:scale(1.05)}100%{transform:scale(1)}}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes settle{0%{transform:scale(1.03)}100%{transform:scale(1)}}
+
+/* ============================================================
+   16 · Very narrow phones (≤360px)
+   ============================================================ */
+@media (max-width:360px){
+  .wrap{padding:10px var(--gutter) 104px}
+  .stage{padding:20px 15px 18px}
+  .rail ol{grid-template-columns:minmax(0,1fr)}
+  .page-navigation{gap:6px;padding-left:8px;padding-right:8px}
+  .page-navigation button{padding:8px 7px;gap:4px}
+  .page-navigation .page-parts{gap:6px;padding:8px 8px}
+  .page-prev>span:last-child,.page-next>span:first-child{display:none}
+  .page-navigation .page-prev,.page-navigation .page-next{min-width:48px}
+  .session-clock{padding:7px 10px;gap:7px}
+  .session-clock span{font-size:var(--fs-micro)}
+  .guess,.scn,.results{padding:15px}
+}
+
+/* ============================================================
+   17 · Wider screens
+   ============================================================ */
+@media (min-width:600px){
+  /* the vocabulary stack becomes a real three-column table */
+  .vocab{min-width:440px;display:table;table-layout:fixed}
+  .vocab tbody{display:table-row-group}
+  .vocab thead{display:table-header-group}
+  .vocab tr{display:table-row;padding:0;box-shadow:none;border:0}
+  .vocab td{display:table-cell;padding:12px 14px 12px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+  .vocab th{
+    padding:0 14px 10px 0;border-bottom:1px solid var(--line);
+    text-align:left;font-size:var(--fs-micro);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);
+  }
+  .vocab td.t,.vocab th:first-child{width:30%}
+  .vocab td.g,.vocab th:nth-child(2){width:26%}
+  .vocab td.t{font-size:var(--fs-small)}
+  .vocab td.g{margin:0}
+  .vocab tr.drill{box-shadow:none;padding:0}
+  .vocab tr.drill td.t{box-shadow:inset 3px 0 0 var(--salmon);padding-left:13px}
+  /* true/false answers move back beside the statement */
+  .tf .bts{flex:0 0 auto;margin:0 0 0 auto}
+  .tf .bts button{flex:0 0 auto;width:58px}
+
+  :root{--fs-body:1.0625rem;--fs-lead:1.1875rem}
+  .wrap{padding:16px var(--gutter) 92px}
+  .lesson-banner{flex-wrap:nowrap;padding:18px 24px 22px;gap:18px}
+  .lesson-brand{width:60px;height:60px}
+  .lesson-actions{flex:0 0 auto;width:auto}
+  .session-toggle{flex:0 0 auto}
+  .savebar{padding:8px 22px}
+  .head{padding:24px}
+  .stage{padding:26px 26px 22px}
+  .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .tvn{grid-template-columns:1fr 1fr}
+  .mgrid{grid-template-columns:1fr 1fr;gap:10px 14px}
+  .guess,.scn,.results{padding:22px}
+  .script .sp{display:inline-block;width:78px;margin:0 8px 0 0;vertical-align:top}
+  .gap li,.tf li{flex-wrap:nowrap;align-items:flex-start}
+  .gap .s,.tf .s{flex:1 1 auto}
+  .gap li{align-items:baseline}
+  .tf li{align-items:center}
+  .mcq .q>span:last-child{flex:1 1 auto}
+  .guess .nav .hint{display:block}
+  .results td.b{display:table-cell;width:34%;padding-left:16px}
+  .part-menu-list a{font-size:var(--fs-small)}
+  .page-navigation{gap:10px;padding-left:16px;padding-right:16px}
+  .page-navigation button{gap:8px;padding:8px 16px;font-size:var(--fs-small)}
+  .page-navigation .page-parts{gap:10px;justify-content:center}
+  .page-parts small{display:block}
+  .page-parts>span{flex:0 1 auto}
+}
+
+@media (min-width:900px){
+  .wrap{padding:18px var(--gutter) 32px}
+  .cols{grid-template-columns:minmax(0,1fr) 224px;gap:22px;padding-top:20px}
+  /* back to a sticky one-column sidebar beside the lesson */
+  .railwrap{align-self:stretch;padding-top:26px;margin-top:0}
+  .rail{position:sticky;top:16px;padding:16px 12px}
+  .rail h4{display:block;margin:0 0 4px;padding:0 6px;font-family:inherit;font-size:var(--fs-micro);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  .rail-caption{display:block;margin:0 0 12px;padding:0 6px;font-size:var(--fs-meta);color:var(--mute)}
+  .rail ol{display:block}
+  .rail li{margin:0 0 3px}
+  .rail a{min-height:42px;padding:8px 8px 11px;border-color:transparent;border-radius:8px;font-size:var(--fs-meta);line-height:1.4}
+  .rail .row{flex-wrap:nowrap;align-items:center;gap:7px;min-height:18px}
+  .rail .dot{margin-top:0}
+  .rail .ttl{flex:1 1 auto}
+  .rail .rtime{margin:0 0 0 auto}
+  .rail .ck{margin-left:0}
+  .rail .dot{width:7px;height:7px}
+  .rail .ttl{font-weight:500;color:inherit}
+  .rail .rtime{font-size:var(--fs-micro)}
+  .rail .ck{width:10px;font-size:var(--fs-micro)}
+  .rail .rbar{left:18px;right:8px;bottom:4px}
+  .rail-summary{margin:14px 6px 0}
+  /* Cards keep the full column so grids and video can use it; the prose
+     inside them is capped, so no line runs past a comfortable measure. */
+  .lead,.note,.aim,.hold,.q-open,.scn .setup,.script p,.model,.bank,
+  .guess .def,.guess .eg,.missed li,.frame .f,.why,.mcq .q,.gap li,.tf .s,
+  .prompt .q,.push .said,.tvn ol,.fin-banner p,.results .sub,.arrowline,
+  .block>p,.rev .body:not(.bare){max-width:var(--measure)}
+  .block>textarea,.block .lines,.block .ck,.block .scn{max-width:46rem}
+  /* The roadmap rail is the navigation on desktop, so the bottom bar goes.
+     Its markup stays in the DOM — the script keeps writing the part counter
+     and aria labels to it, and it returns below 900px. */
+  .page-navigation{display:none}
+  .editing-answer .page-navigation{display:none}
+  /* that padding existed only to clear the fixed bar */
+  .lesson-viewport{scroll-padding-bottom:24px}
+  .lesson-goals>summary{font-size:var(--fs-body)}
+}
+
+@media (min-width:1100px){
+  :root{--fs-body:1.09375rem}
+  .head{display:grid;grid-template-columns:1fr 1fr;gap:34px;padding:28px 30px}
+  .targets{margin:0;padding:0 0 0 32px;border-top:0;border-left:1px solid var(--line-2);align-self:center}
+}
+
+/* ============================================================
+   18 · Accessibility + print
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
+@media print{
+  html,body{height:auto;overflow:visible;background:#fff}
+  .lesson-viewport{height:auto;overflow:visible;scrollbar-gutter:auto}
+  .wrap{max-width:none;padding:0}
+  .stage[hidden]{display:block!important}
+  .lesson-end[hidden]{display:block!important}
+  .lesson-goals:not([open])>*:not(summary){display:block!important}
+  .lesson-actions,.savebar,.railwrap,.skip-link,.page-navigation,
+  .parts-dialog,.page-context,.lesson-goals>summary,.header-progress,
+  .toastwrap,.quizlet-board,.reset{display:none!important}
+  .lesson-banner{background:var(--navy)!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .cols{display:block}
+  .stage{box-shadow:none;margin-bottom:18px;break-inside:auto}
+  .sh,.prompt,.frame,.script,.sthead,.scn{break-inside:avoid}
+  .stage>.sh{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="lesson-viewport" id="lessonViewport" tabindex="-1" aria-label="Session 03 lesson">
+<a class="skip-link" href="#s1">Skip to lesson</a>
+<div class="wrap" id="e2iLesson">
+<div class="lesson-masthead" id="lessonMasthead">
+<header class="lesson-banner" aria-labelledby="lessonTitle">
+<div class="lesson-brand"><img src="data:image/png;base64,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" width="192" height="183" alt="English2impact" decoding="async"></div>
+<div class="lesson-heading">
+<p class="lesson-eyebrow">English2impact · E-com Fluency 3 · 90 min</p>
+<h1 id="lessonTitle">Session 03 · AI agents in the store</h1>
+</div>
+<div class="lesson-actions">
+<div class="session-clock" aria-label="Session time"><span>Session</span><b id="sessionTime" role="timer" aria-label="Elapsed session time">00:00</b></div>
+<button type="button" class="session-toggle" id="sessionToggle" aria-pressed="false">Start session</button>
+</div>
+<div class="header-progress" id="headerProgress" role="progressbar" aria-label="Lesson completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0% complete"><i id="topBar"></i></div>
+</header>
+<div class="savebar" id="savebar">
+<span class="save-message" id="saveMessage" role="status">Saves automatically in this browser</span>
+<div class="header-utilities">
+<span class="header-completion"><b id="topPct">0%</b> complete</span>
+<select class="lesson-jump" id="lessonJump" aria-label="Jump to lesson stage"></select>
+<button type="button" class="nextbtn" id="nextBtn">Next step ↓</button>
+<button type="button" class="save-now" id="saveNow">Save now</button>
+</div>
+</div>
+<div class="toastwrap"><div class="toast" id="toast" role="status"></div></div>
+</div>
+<details class="lesson-goals" id="lessonGoals">
+<summary><span>Session goals</span><span>3 goals · 90 minutes</span></summary>
+<section class="head" aria-labelledby="overviewTitle">
+<div class="lesson-overview">
+<p class="kicker">Your learning goals</p>
+<h2 id="overviewTitle">Workflow or agent? Say which, and why.</h2>
+<div class="meta"><span>Workplace</span><span><b>Advanced</b></span><span>E-commerce</span></div>
+<p class="aim">Six parts, one question: who makes the decisions? Put a store process in order, describe it in the passive, and say whether it is an AI workflow or an AI agent.</p>
+</div>
+<ul class="targets" id="targets">
+<li data-goal="sequence"><span class="tk" aria-hidden="true"></span><span>Walk a colleague through an AI process with first, then and finally.</span></li>
+<li data-goal="passive"><span class="tk" aria-hidden="true"></span><span>Describe each step in the passive, keeping the focus on what happens.</span></li>
+<li data-goal="decider"><span class="tk" aria-hidden="true"></span><span>Say who makes the decisions, and so whether it is a workflow or an agent.</span></li>
+</ul>
+</section>
+</details>
+<div class="cols">
+<main class="main" id="lessonMain">
+<div class="page-context" id="pageContext"><strong id="pagePosition">PART 01 / 06</strong><span>E-com Fluency 3 · Session 03</span></div>
+<section class="stage skill-speak" id="s1">
+<div class="sh"><span class="spine"></span><span class="num">1</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Say it cold</h2></div><span class="time">8 min</span></div>
+<p class="lead">Write first, then say it. Draft how the task runs today, then talk it through out loud from that draft. The draft is the thing you measure yourself against at the end.</p>
+<div class="block step" data-step="Draft your answer, then say it">
+<p class="tag"><b>Understand</b> · where you are now</p>
+<div class="prompt"><p class="q">Pick one repetitive task in your store: product descriptions, review replies or restocking. How does it run now, step by step, and what would change if an AI agent ran it?</p></div>
+<ol class="flow">
+<li><span class="fn">1</span><div><b>Draft it.</b> Write it the way you would explain it now. Don't polish. The order words, the process verbs and the workflow-or-agent distinction you can't express yet are what the next 80 minutes are for.</div></li>
+</ol>
+<textarea class="track save" data-k="draft1" placeholder="Write how the task runs now, and what an agent would change." aria-label="Draft your answer to the question above"></textarea>
+<ol class="flow" start="2">
+<li><span class="fn">2</span><div><b>Say it.</b> Glance at your draft, then look away and walk a colleague through it for about a minute. Keep the ideas, not the exact words.</div></li>
+</ol>
+<ul class="ck">
+<li><input type="checkbox" class="track save" data-k="s1said" id="s1said"><label for="s1said">Said it out loud from my draft, about a minute</label></li>
+</ul>
+<p class="note">This draft comes back at the end, next to what you can say by then.</p>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage skill-read" id="s2">
+<div class="sh"><span class="spine"></span><span class="num">2</span><div class="txt"><span class="skill">Reading</span><span class="clr">cleared</span><h2>Term lab</h2></div><span class="time">18 min</span></div>
+<p class="lead">Twelve terms from the video, from chatbots to agents. Guess each one and drill only the ones you miss, then close the part by racing all twelve against the clock.</p>
+<div class="block step" data-step="Guess twelve terms, then drill the misses">
+<p class="tag"><b>Understand</b> · guess the term</p>
+<div class="guess track" data-k="guess"></div>
+</div>
+<div class="block">
+<div class="rev"><button type="button" data-hide="Hide the list">Show all twelve as a list</button><div class="body bare">
+<div class="tablewrap">
+<table class="vocab">
+<thead><tr><th>Term</th><th>Nghĩa tiếng Việt</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td class="t">large language model (LLM)</td><td class="g">mô hình ngôn ngữ lớn</td><td>The AI model behind chatbots, trained on huge amounts of text to generate and edit it</td></tr>
+<tr><td class="t">proprietary information</td><td class="g">thông tin nội bộ, độc quyền</td><td>Private data, such as personal or internal company information, that a model was not trained on</td></tr>
+<tr><td class="t">AI workflow</td><td class="g">quy trình AI</td><td>A series of AI steps that follows a path a person has set</td></tr>
+<tr><td class="t">predefined path</td><td class="g">lộ trình định sẵn</td><td>A fixed sequence of steps decided in advance</td></tr>
+<tr><td class="t">control logic</td><td class="g">logic điều khiển</td><td>The rules that decide which step happens next in a workflow</td></tr>
+<tr><td class="t">decision maker</td><td class="g">người (bên) ra quyết định</td><td>The one who decides what to do and how; in an agent, this is the LLM</td></tr>
+<tr><td class="t">retrieval-augmented generation (RAG)</td><td class="g">tạo sinh tăng cường truy xuất</td><td>A process that lets an AI model look information up before it answers</td></tr>
+<tr><td class="t">AI agent</td><td class="g">tác nhân AI</td><td>An AI system in which the LLM decides how to reach a goal, acts with tools and improves its own result</td></tr>
+<tr><td class="t">ReAct framework</td><td class="g">khung ReAct (suy luận + hành động)</td><td>The most common agent set-up: reason about the best approach, then act using tools</td></tr>
+<tr><td class="t">iterate</td><td class="g">lặp lại để cải thiện</td><td>To repeat a cycle of trying, checking and improving until the result is good enough</td></tr>
+<tr><td class="t">autonomously</td><td class="g">một cách tự chủ</td><td>Without a person directing or checking each step</td></tr>
+<tr><td class="t">interim result</td><td class="g">kết quả tạm thời</td><td>An in-between output that is checked before the final one is produced</td></tr>
+</tbody>
+</table>
+</div>
+</div></div>
+</div>
+<div class="block step" data-step="Match all twelve against the clock">
+<p class="tag"><b>Remember</b> · speed round</p>
+<h3>Match all twelve against the clock</h3>
+<p class="note" style="margin:0 0 14px">Quizlet Match, same twelve terms. Play until you can clear the board without a wrong pair. The clock on the board is your score, so it isn't marked here. Tick the box when you've done a clean round.</p>
+<div class="quizlet-board">
+<div class="qz-head"><span class="qz-badge" aria-hidden="true">Q</span><span class="qz-title">Quizlet Match<small>12 terms · AI agents in the store</small></span><a class="qz-out" href="https://quizlet.com/1211671804/match/embed?i=4y577v&amp;x=1jj1" target="_blank" rel="noopener noreferrer" aria-label="Open Quizlet Match in a new tab">Open<span class="qz-more"> in a new tab</span> <span aria-hidden="true">↗</span></a></div>
+<div class="qz-frame"><iframe id="quizletMatch" data-media-src="https://quizlet.com/1211671804/match/embed?i=4y577v&amp;x=1jj1" title="Quizlet Match — AI agents in the store" loading="lazy" allowfullscreen></iframe></div>
+</div>
+<ul class="ck" style="margin-top:14px">
+<li><input type="checkbox" class="track save" data-k="qz1" id="qz1"><label for="qz1">Cleared the board with no wrong pairs</label></li>
+</ul>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage skill-speak" id="s3">
+<div class="sh"><span class="spine"></span><span class="num">3</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Three moves</h2></div><span class="time">14 min</span></div>
+<p class="lead">The video explains AI in three moves: it walks through a process in order, it describes who does each step, and it asks one question, who makes the decisions? Those three are your moves. Read one exchange, listen to another, then build your own.</p>
+<div class="block">
+<p class="tag"><b>Understand</b> · the frames</p>
+<div class="frames">
+<div class="frame"><p class="n">Move 1 — sequence the steps</p><p class="f">First, <u></u>. Then <u></u>. Finally, <u></u>.</p></div>
+<div class="frame"><p class="n">Move 2 — describe the process in the passive</p><p class="f">The <u></u> is <u></u> by <u></u>, and the <u></u> is <u></u> until <u></u>.</p></div>
+<div class="frame"><p class="n">Move 3 — name the decision maker</p><p class="f">The decisions are made by <u></u>, so it’s <u></u> rather than <u></u>.</p></div>
+</div>
+<p class="note">Adapted from the video. Jeff Su walks through his make.com set-up in order: first, second, then, finally (4:03). He uses the passive to say who is doing the work: “this trial and error iteration is currently being done by me, a human” (5:20). His test is who decides: “If a human is the decision maker, there is no AI agent involvement” (3:30).</p>
+</div>
+<div class="block step" data-group="scnA" data-step="Spot the moves in a read exchange">
+<p class="tag"><b>Understand</b> · read it</p>
+<div class="scn">
+<div class="hd"><h3>A — Who writes our product descriptions?</h3><span class="who">Emma · Daniel</span></div>
+<p class="setup">Emma runs operations at Brightleaf, a fictional skincare store. Daniel explains how new product descriptions are produced with AI. Find all three moves in Daniel’s lines.</p>
+<div class="script">
+<p><span class="sp">Emma</span><span>How do we produce the product descriptions at the moment?</span></p>
+<p><span class="sp">Daniel</span><span>First, we list the new products in a Google Sheet. Then the AI drafts a description for each one. Finally, the approved drafts go live at seven every morning.</span></p>
+<p><span class="sp">Emma</span><span>And who checks them?</span></p>
+<p><span class="sp">Daniel</span><span>Every draft is reviewed by Mai, and the weak ones are rewritten by hand.</span></p>
+<p><span class="sp">Emma</span><span>So is that an AI agent?</span></p>
+<p><span class="sp">Daniel</span><span>Not yet. The decisions are made by us, so it’s a workflow rather than an agent.</span></p>
+</div>
+<div class="mcq track" data-k="sa1" style="margin-top:16px">
+<p class="q"><span class="qn">1.</span><span>What is the second step in Daniel’s process?</span></p>
+<div class="opts" data-a="1">
+<button type="button">The new products are listed in a Google Sheet.</button>
+<button type="button">The AI drafts a description for each product.</button>
+<button type="button">Mai rewrites every description by hand.</button>
+<button type="button">The drafts go live on the store.</button>
+</div>
+<p class="why">Move 1 in action. First the sheet, then the AI draft, finally the drafts go live. The order words carry the listener through the process.</p>
+</div>
+<div class="mcq track" data-k="sa2">
+<p class="q"><span class="qn">2.</span><span>Why does Daniel say it is a workflow and not an agent?</span></p>
+<div class="opts" data-a="2">
+<button type="button">Because the AI only writes one description a day.</button>
+<button type="button">Because the drafts are published automatically.</button>
+<button type="button">Because people set the steps and make the decisions.</button>
+<button type="button">Because the AI can’t read a Google Sheet.</button>
+</div>
+<p class="why">That’s move 3, and it is the video’s test: while people are the decision makers, however many steps there are, it is still a workflow.</p>
+</div>
+<div class="checkbar"><button type="button" class="checkbtn">Check both answers</button><span class="res"></span></div>
+</div>
+</div>
+<div class="block step" data-group="scnB" data-step="Rebuild the moves from the audio">
+<p class="tag"><b>Understand</b> · listen for the moves</p>
+<div class="scn">
+<div class="hd"><h3>B — Who replies to our reviews now?</h3><span class="who">Sophie · Ryan</span></div>
+<p class="setup">Sophie and Ryan work at Glowhaus, a fictional beauty store. Replies to customer reviews used to follow a fixed workflow; now an AI agent handles them. Ryan explains what changed. Listen first. Only open the script if you need it.</p>
+<div class="audio"
+data-src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2404941411&amp;color=%23d97757&amp;inverse=false&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;show_teaser=false&amp;visual=false"
+data-track="Dialogue_AI agents in the store"
+data-track-url="https://soundcloud.com/english2impact/dialogue_ai-agents-in-the"
+data-artist="English2impact"
+data-artist-url="https://soundcloud.com/english2impact"></div>
+<div class="rev"><button type="button" data-hide="Hide the script">Show the script</button><div class="body bare">
+<div class="script">
+<p><span class="sp">Sophie</span><span>Ryan, you said our review replies are handled by an agent now. What actually changed?</span></p>
+<p><span class="sp">Ryan</span><span>First, the agent reads each new review. Then it decides what kind of reply is needed. Finally, it drafts one and checks it against our tone guide.</span></p>
+<p><span class="sp">Sophie</span><span>And if the draft isn’t good enough?</span></p>
+<p><span class="sp">Ryan</span><span>The draft is critiqued by a second model, and the reply is rewritten until every criterion is met.</span></p>
+<p><span class="sp">Sophie</span><span>So nobody sets the steps any more?</span></p>
+<p><span class="sp">Ryan</span><span>We still set the goal. But the decisions are made by the agent now, so it’s an agent rather than a workflow.</span></p>
+</div>
+</div></div>
+<div class="bank" style="margin-top:18px">Listen again and rebuild Ryan’s three moves. Word bank: <b>are made · first · is critiqued · is rewritten · rather than · then</b></div>
+<ul class="gap">
+<li><span class="mv">Move 1</span><span class="s"><input type="text" class="gapin track" data-k="sb1" data-a="first">, the agent reads each new review. <input type="text" class="gapin track" data-k="sb2" data-a="then"> it decides what kind of reply is needed.</span></li>
+<li><span class="mv">Move 2</span><span class="s">The draft <input type="text" class="gapin track" data-k="sb3" data-a="is critiqued"> by a second model, and the reply <input type="text" class="gapin track" data-k="sb4" data-a="is rewritten"> until every criterion is met.</span></li>
+<li><span class="mv">Move 3</span><span class="s">But the decisions <input type="text" class="gapin track" data-k="sb5" data-a="are made"> by the agent now, so it’s an agent <input type="text" class="gapin track" data-k="sb6" data-a="rather than"> a workflow.</span></li>
+</ul>
+<div class="checkbar"><button type="button" class="checkbtn">Check the six gaps</button><span class="res"></span></div>
+<p class="note">Ryan keeps the moves in order: the sequence, then the process, then who decides. Correct any phrase you missed, then explain the change without reading.</p>
+</div>
+</div>
+<div class="block step" data-step="Write your chain, then say it three times">
+<p class="tag"><b>Apply</b> · your turn</p>
+<h3>Build your own chain</h3>
+<p class="note" style="margin:0 0 12px">Your store’s restocking. Explain how it runs in three sentences, one per move, then say whether it is a workflow or an agent. Say each sentence before you type it. For move 2, use <b>is / are + past participle</b>, with <b>by</b> when the doer matters.</p>
+<div class="lines">
+<input type="text" class="track save" data-k="mv1" data-goal="sequence" placeholder="Move 1 — First, … Then … Finally, …" aria-label="Move 1 — Sequence: the steps of your restocking process in order">
+<input type="text" class="track save" data-k="mv2" data-goal="passive" placeholder="Move 2 — The stock report is … by …, and the purchase order is …" aria-label="Move 2 — Process: two steps in the passive">
+<input type="text" class="track save" data-k="mv3" data-goal="decider" placeholder="Move 3 — The decisions are made by …, so it’s … rather than …" aria-label="Move 3 — Decision maker: who decides, and so workflow or agent">
+</div>
+<div class="rev"><button type="button" data-hide="Hide the example">Compare with one possible chain</button><div class="body">
+<p style="margin:0 0 6px">First, we export the stock report. Then the AI flags every product with less than two weeks of stock. Finally, it drafts a purchase order.</p>
+<p style="margin:0 0 6px">The stock report is exported by our operations team every Monday, and the purchase order is approved by the category manager.</p>
+<p style="margin:0">The decisions are made by us, so it’s an AI workflow rather than an agent. It would become an agent if the AI decided when to check stock and what to reorder.</p>
+</div></div>
+<p class="note">Say your chain three times: carefully, at a natural pace, then without reading.</p>
+<ul class="ck">
+<li><input type="checkbox" class="track save" data-k="ld1" id="ld1"><label for="ld1">Said it carefully</label></li>
+<li><input type="checkbox" class="track save" data-k="ld2" id="ld2"><label for="ld2">Said it again at a natural pace</label></li>
+<li><input type="checkbox" class="track save" data-k="ld3" id="ld3"><label for="ld3">All three moves, clearly, without reading them</label></li>
+</ul>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage skill-listen" id="s4">
+<div class="sh"><span class="spine"></span><span class="num">4</span><div class="txt"><span class="skill">Listening</span><span class="clr">cleared</span><h2>Media decode</h2></div><span class="time">20 min</span></div>
+<p class="lead">Now the video, in three parts. Watch one part, answer everything in its task, then press Check. Nothing is marked until you do, so you can change your mind and you never find out mid-task whether you are on the right track. The timestamp beside each item tells you where the answer sits. Answer according to the speaker.</p>
+<div class="block video-stage">
+<div class="video"><iframe data-media-src="https://www.youtube-nocookie.com/embed/FwOTs4UxQS4" title="AI Agents, Clearly Explained" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+<p class="note"><span class="note-lbl">Video: </span>Jeff Su · 9 min</p>
+</div>
+<div class="block step" data-group="p1" data-step="Part 1 · six true-or-false calls">
+<p class="part">Part 1 · 0:00 – 3:40 · chatbots and AI workflows</p>
+<p class="tag"><b>Understand</b> · true or false</p>
+<ul class="tf numbered track" data-k="tf" data-a="T,T,F,T,F,F">
+<li><span class="ts">0:39</span><span class="s">The video builds up to agents from something viewers already know: chatbots.</span></li>
+<li><span class="ts">1:02</span><span class="s">ChatGPT, Gemini and Claude are applications built on top of large language models.</span></li>
+<li><span class="ts">1:30</span><span class="s">When he asks when his next coffee chat is, the chatbot finds the answer in his calendar.</span></li>
+<li><span class="ts">1:48</span><span class="s">He says LLMs are passive: they wait for a prompt, then respond.</span></li>
+<li><span class="ts">2:32</span><span class="s">Once it has been told to search his calendar, the LLM can also answer the weather question.</span></li>
+<li><span class="ts">3:20</span><span class="s">Adding enough steps to a workflow eventually turns it into an AI agent.</span></li>
+</ul>
+<div class="checkbar"><button type="button" class="checkbtn">Check part 1</button><span class="res"></span></div>
+<div class="rev"><button type="button" data-hide="Hide the explanation">Why those answers</button><div class="body">
+<p style="margin:0 0 6px">1 is true. The learning path goes from chatbots to AI workflows to AI agents (0:39).</p>
+<p style="margin:0 0 6px">2 is true. They are applications built on LLMs, which are good at generating and editing text (1:02).</p>
+<p style="margin:0 0 6px">3 is false. It fails, because it has no access to his calendar (1:30).</p>
+<p style="margin:0 0 6px">4 is true. The second key trait: they wait for our prompt and then respond (1:48).</p>
+<p style="margin:0 0 6px">5 is false. The path always goes to the calendar, which has no weather information. A workflow can only follow the path humans set (2:32).</p>
+<p style="margin:0">6 is false. Even with thousands of steps, if a human is the decision maker, there is no agent involvement (3:20).</p>
+</div></div>
+</div>
+<div class="block step" data-group="p2" data-step="Part 2 · four questions on a real workflow">
+<p class="part">Part 2 · 3:40 – 5:44 · RAG and a real workflow</p>
+<p class="tag"><b>Remember</b> · multiple choice</p>
+<div class="mcq track" data-k="md2a">
+<p class="q"><span class="qn">1.</span><span class="ts">3:40</span><span>How does he explain RAG in simple terms?</span></p>
+<div class="opts" data-a="0">
+<button type="button">A process that helps AI models look things up before they answer.</button>
+<button type="button">A type of agent that makes its own decisions.</button>
+<button type="button">A way of training a model on your company’s data.</button>
+<button type="button">A tool that turns text answers into audio.</button>
+</div>
+<p class="why">Checking the calendar or a weather service before answering. And he adds that RAG is essentially just a type of AI workflow.</p>
+</div>
+<div class="mcq track" data-k="md2b">
+<p class="q"><span class="qn">2.</span><span class="ts">4:15</span><span>In his make.com workflow, what is Perplexity used for?</span></p>
+<div class="opts" data-a="2">
+<button type="button">Compiling links to the news articles.</button>
+<button type="button">Drafting the LinkedIn and Instagram posts.</button>
+<button type="button">Summarising the news articles.</button>
+<button type="button">Scheduling the workflow for 8 a.m.</button>
+</div>
+<p class="why">Google Sheets compiles the links, Perplexity summarises, Claude drafts the posts, and the whole thing runs daily at 8 a.m.</p>
+</div>
+<div class="mcq track" data-k="md2c">
+<p class="q"><span class="qn">3.</span><span class="ts">4:50</span><span>Why is this set-up still an AI workflow?</span></p>
+<div class="opts" data-a="1">
+<button type="button">It uses more than one AI tool.</button>
+<button type="button">It follows a predefined path that he set: step one, step two, step three.</button>
+<button type="button">It runs automatically every morning.</button>
+<button type="button">It uses Google Sheets instead of Excel.</button>
+</div>
+<p class="why">Several tools and a daily schedule don’t change the verdict. The path was set by him, step by step.</p>
+</div>
+<div class="mcq track" data-k="md2d">
+<p class="q"><span class="qn">4.</span><span class="ts">5:15</span><span>What does he have to do when the LinkedIn post isn’t funny enough?</span></p>
+<div class="opts" data-a="3">
+<button type="button">Ask Perplexity for a better summary.</button>
+<button type="button">Add more articles to the Google Sheet.</button>
+<button type="button">Wait for the workflow to fix it the next day.</button>
+<button type="button">Go back and rewrite the prompt for Claude himself.</button>
+</div>
+<p class="why">The trial-and-error iteration is being done by him, a human. Keep that in mind: it is exactly what an agent takes over in part 3.</p>
+</div>
+<div class="checkbar"><button type="button" class="checkbtn">Check part 2</button><span class="res"></span></div>
+</div>
+<div class="block step" data-group="p3" data-step="Part 3 · six gaps on AI agents">
+<p class="part">Part 3 · 5:44 – end · AI agents</p>
+<p class="tag"><b>Apply</b> · fill the gaps</p>
+<p class="bank">Word bank: <b>decision maker · goal · iterate · ReAct · reason · tools</b></p>
+<ul class="gap numbered">
+<li><span class="ts">5:44</span><span class="s">For the workflow to become an agent, the human <input type="text" class="gapin track" data-k="d1" data-a="decision maker|decision-maker"> has to be replaced by an LLM.</span></li>
+<li><span class="ts">6:05</span><span class="s">First, the agent must <input type="text" class="gapin track" data-k="d2" data-a="reason">: is it easier to compile links than to copy each article?</span></li>
+<li><span class="ts">6:35</span><span class="s">Second, it must act, which means doing things via <input type="text" class="gapin track" data-k="d3" data-a="tools">.</span></li>
+<li><span class="ts">6:55</span><span class="s">Because every agent must reason and act, the most common configuration is the <input type="text" class="gapin track" data-k="d4" data-a="ReAct|re-act|re act"> framework.</span></li>
+<li><span class="ts">7:10</span><span class="s">A third key trait: an agent can <input type="text" class="gapin track" data-k="d5" data-a="iterate"> autonomously, adding another model to critique its own post.</span></li>
+<li><span class="ts">9:05</span><span class="s">At level 3, the agent receives a <input type="text" class="gapin track" data-k="d6" data-a="goal"> and works out how best to achieve it.</span></li>
+</ul>
+<div class="checkbar"><button type="button" class="checkbtn">Check part 3</button><span class="res"></span></div>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage skill-speak" id="s5">
+<div class="sh"><span class="spine"></span><span class="num">5</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Pushback lab</h2></div><span class="time">18 min</span></div>
+<p class="lead">Three statements that are vague, careless or simply wrong about AI. Answer each one using <b>one term from section 2</b> and <b>the move it asks for</b> from section 3. Expect to be interrupted and asked “why?”</p>
+<div class="block step" data-step="Round 1 — it’ll work it out">
+<div class="push">
+<p class="rd">Round 1 · sequence it</p>
+<p class="said">“Just tell the AI to ‘do our social posts’. It’ll work out the steps itself.”</p>
+<textarea class="track save" data-k="p1" data-goal="sequence" placeholder="Your counter — one term, move 1." aria-label="Your counter to round 1 — one term, move 1."></textarea>
+<ul class="ck"><li><input type="checkbox" class="save" data-k="p1a" id="p1a"><label for="p1a">Used a target term</label></li><li><input type="checkbox" class="save" data-k="p1b" id="p1b"><label for="p1b">Put the steps in order with first, then and finally</label></li></ul>
+<div class="rev"><button type="button" data-hide="Hide the model answer">Model answer</button><div class="body">Only if it’s a real agent, and ours is a workflow. It follows a predefined path, so we have to give it one. First, we list the products we’re promoting this week. Then the AI drafts a post for each one. Finally, we schedule them. If we can’t put the steps in order, we can’t tell which one broke.</div></div>
+</div>
+</div>
+<div class="block step" data-step="Round 2 — nobody needs to know how">
+<div class="push">
+<p class="rd">Round 2 · describe the process</p>
+<p class="said">“Nobody needs to know how the replies are made. The customer just sees a reply.”</p>
+<textarea class="track save" data-k="p2" data-goal="passive" placeholder="Your counter — one term, move 2." aria-label="Your counter to round 2 — one term, move 2."></textarea>
+<ul class="ck"><li><input type="checkbox" class="save" data-k="p2a" id="p2a"><label for="p2a">Used a target term</label></li><li><input type="checkbox" class="save" data-k="p2b" id="p2b"><label for="p2b">Described at least two steps in the passive</label></li></ul>
+<div class="rev"><button type="button" data-hide="Hide the model answer">Model answer</button><div class="body">We need to know the moment a reply goes wrong. Here’s the process: each review is read by the agent, the interim result is checked against our tone guide, and anything about a skin reaction is sent to a person. If we can’t describe the process, we can’t fix it.</div></div>
+</div>
+</div>
+<div class="block step" data-step="Round 3 — forty steps make an agent">
+<div class="push">
+<p class="rd">Round 3 — hardest · name the decision maker</p>
+<p class="said">“We’ve added forty steps to our make.com flow, so we’ve basically built an AI agent.”</p>
+<textarea class="track save" data-k="p3" data-goal="decider" placeholder="Your counter — one term, move 3." aria-label="Your counter to round 3 — one term, move 3."></textarea>
+<ul class="ck"><li><input type="checkbox" class="save" data-k="p3a" id="p3a"><label for="p3a">Used a target term</label></li><li><input type="checkbox" class="save" data-k="p3b" id="p3b"><label for="p3b">Said who makes the decisions, and what that makes it</label></li></ul>
+<div class="rev"><button type="button" data-hide="Hide the model answer">Model answer</button><div class="body">More steps don’t make it an agent. Every one of those forty steps was set by us, so the decisions are made by us, and it’s a workflow rather than an agent. It becomes an agent when the LLM is the decision maker: it reasons about the approach, acts with the tools and iterates on its own result.</div></div>
+</div>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<section class="stage skill-write" id="s6">
+<div class="sh"><span class="spine"></span><span class="num">6</span><div class="txt"><span class="skill">Writing</span><span class="clr">cleared</span><h2>Output &amp; recap</h2></div><span class="time">10 min</span></div>
+<p class="lead">Same question as the start. Then go back and read what you wrote in section 1.</p>
+<div class="block step" data-step="Answer the opening question again">
+<p class="tag"><b>Apply</b> · say it again</p>
+<div class="prompt"><p class="q">Pick one repetitive task in your store. How does it run now, and what would change if an AI agent ran it?</p></div>
+<p class="note">Second run: walk a colleague through it: the steps in order, what happens at each step, and who makes the decisions. All three moves, about a minute.</p>
+<ul class="ck" style="margin-top:10px">
+<li><input type="checkbox" class="track save" data-k="s6said" id="s6said"><label for="s6said">Said it again — all three moves, no notes</label></li>
+</ul>
+</div>
+<div class="block step" data-step="Four self-checks">
+<p class="tag"><b>Remember</b> · self-check</p>
+<ul class="ck">
+<li><input type="checkbox" class="track save" data-k="sc1" data-goal="sequence" id="sc1"><label for="sc1">I can walk someone through a process with first, then and finally</label></li>
+<li><input type="checkbox" class="track save" data-k="sc2" data-goal="passive" id="sc2"><label for="sc2">I can describe the steps of a process in the passive</label></li>
+<li><input type="checkbox" class="track save" data-k="sc3" data-goal="decider" id="sc3"><label for="sc3">I can tell a workflow from an agent by who makes the decisions</label></li>
+<li><input type="checkbox" class="track save" data-k="sc4" id="sc4"><label for="sc4">I used all three moves without reading them</label></li>
+</ul>
+<p class="note">Homework: re-watch the clip without subtitles. Then map one task in your own store in four steps with first, then and finally; describe two of the steps in the passive; and say whether it is a workflow or an agent, and why. Say it aloud and bring it to Session 04.</p>
+</div>
+<div class="block">
+<p class="tag"><b>Result</b> · what today actually moved</p>
+<div class="results" id="results">
+<p class="big" id="rTotal">0/0</p>
+<p class="sub" id="rSub">Nothing checked yet</p>
+<div class="stats" id="rStats"></div>
+<div class="tvn">
+<div class="col"><h4>At the start you wrote</h4><div id="tvnThen"><p class="empty">Section 1 is still empty — write your draft answer there and it appears here.</p></div></div>
+<div class="col now"><h4>By the end you said</h4><div id="tvnNow"><p class="empty">Your move chain from section 3 lands here.</p></div></div>
+</div>
+<p class="arrowline" id="tvnLine"></p>
+<div class="fin-banner" id="finBanner">
+<h3>Session complete</h3>
+<p id="finText"></p>
+</div>
+</div>
+</div>
+<div class="strip" data-strip></div>
+</section>
+<p class="end lesson-end" id="lessonEnd">Session 3 complete. Your answers are saved in this browser, on this device.</p>
+<p class="brandline lesson-end" id="lessonBrandline"><b>English2impact</b> · Bạn giỏi nghề. Giờ giỏi cả tiếng Anh.</p>
+</main>
+<div class="railwrap">
+<nav class="rail" id="rail" aria-label="Lesson progress">
+<h4>Lesson parts</h4>
+<p class="rail-caption">6 parts · 90 minutes</p>
+<ol id="railList"></ol>
+<div class="rail-summary">
+<p class="rail-label">Stages complete</p>
+<p class="rail-count"><b id="stagesComplete">0</b><span>/ 6</span></p>
+<div class="track2 railbar"><i id="railBar"></i></div>
+<p class="railpct" id="railPct">0% complete</p>
+<p class="railsc" id="railSc">0/0 correct</p>
+<button type="button" class="reset" data-reset>Reset progress</button>
+</div>
+</nav>
+</div>
+</div>
+</div>
+
+<nav class="page-navigation" aria-label="Lesson pages">
+<button type="button" class="page-prev" id="previousPage"><span aria-hidden="true">←</span><span>Previous</span></button>
+<button type="button" class="page-parts" id="partsToggle" aria-haspopup="dialog" aria-controls="partsDialog" aria-expanded="false"><small id="pageCount">1/6</small><span id="partsLabel">Parts</span></button>
+<button type="button" class="page-next" id="nextPage"><span id="nextPageLabel">Next</span><span aria-hidden="true">→</span></button>
+</nav>
+<p class="sr-only page-announcement" id="pageAnnouncement" role="status" aria-live="polite" aria-atomic="true"></p>
+</div>
+
+<dialog class="parts-dialog" id="partsDialog" aria-labelledby="partsTitle">
+<div class="parts-dialog-header"><div><p>Session 03 · 90 minutes</p><h2 id="partsTitle">Your lesson, in six parts.</h2></div><button type="button" class="parts-close" id="closeParts" aria-label="Close lesson parts">×</button></div>
+<nav aria-label="Choose a lesson part"><ol class="part-menu-list" id="partMenuList"></ol></nav>
+<p class="parts-summary" id="partsSummary">Choose any part. Your answers stay saved as you move.</p>
+</dialog>
+<noscript><p style="padding:20px">Enable JavaScript for page navigation, exercises and saved progress. All six lesson parts are displayed below the header.</p></noscript>
+<script>
+(function(){
+"use strict";
+/* term, VN, EN definition, example from the video (term blanked), correct, distractors */
+var TERMS = [["mô hình ngôn ngữ lớn", "The AI model behind chatbots, trained on huge amounts of text to generate and edit it.", "Popular chatbots like ChatGPT, Gemini and Claude are applications built on top of a ___.", "large language model", ["control logic", "decision maker"]],
+["thông tin nội bộ, độc quyền", "Private data, such as personal or internal company information, that a model was not trained on.", "LLMs have limited knowledge of ___, like our personal information or internal company data.", "proprietary information", ["interim result", "predefined path"]],
+["quy trình AI", "A series of AI steps that follows a path a person has set.", "This is an ___ because it follows a predefined path set by me: step one, step two, step three.", "AI workflow", ["AI agent", "interim result"]],
+["lộ trình định sẵn", "A fixed sequence of steps decided in advance.", "AI workflows can only follow a ___ set by humans.", "predefined path", ["decision maker", "large language model"]],
+["logic điều khiển", "The rules that decide which step happens next in a workflow.", "If you want to get technical, the path we told the model to follow is also called the ___.", "control logic", ["proprietary information", "interim result"]],
+["người (bên) ra quyết định", "The one who decides what to do and how; in an agent, this is the LLM.", "If a human is the ___, there is no AI agent involvement.", "decision maker", ["control logic", "predefined path"]],
+["tạo sinh tăng cường truy xuất", "A process that lets an AI model look information up before it answers.", "In simple terms, ___ is a process that helps AI models look things up before they answer.", "retrieval-augmented generation", ["ReAct framework", "control logic"]],
+["tác nhân AI", "An AI system in which the LLM decides how to reach a goal, acts with tools and improves its own result.", "For this workflow to become an ___, the human decision maker has to be replaced by an LLM.", "AI agent", ["AI workflow", "interim result"]],
+["khung ReAct (suy luận + hành động)", "The most common agent set-up: reason about the best approach, then act using tools.", "All AI agents must reason and act, so the most common configuration is the ___.", "ReAct framework", ["predefined path", "control logic"]],
+["lặp lại để cải thiện", "To repeat a cycle of trying, checking and improving until the result is good enough.", "A third key trait of AI agents is their ability to ___: draft, critique, and repeat until the criteria are met.", "iterate", ["autonomously", "decision maker"]],
+["một cách tự chủ", "Without a person directing or checking each step.", "I had to rewrite the prompt myself; an AI agent can do the same thing ___.", "autonomously", ["iterate", "proprietary information"]],
+["kết quả tạm thời", "An in-between output that is checked before the final one is produced.", "The agent takes action using tools, observes the ___, and decides whether more iterations are required.", "interim result", ["predefined path", "large language model"]]];
+
+var PAIRS = {"m1": [["follow", "a predefined path"], ["replace", "the decision maker"], ["look up", "proprietary information"], ["reason about", "the best approach"], ["act", "using tools"], ["observe", "the interim result"]], "m2": [["retrieval-augmented generation", "A process that lets an AI model look information up before it answers."], ["AI agent", "An AI system in which the LLM decides how to reach a goal, acts with tools and improves its own result."], ["ReAct framework", "The most common agent set-up: reason about the best approach, then act using tools."], ["iterate", "To repeat a cycle of trying, checking and improving until the result is good enough."], ["autonomously", "Without a person directing or checking each step."], ["interim result", "An in-between output that is checked before the final one is produced."]]};
+var GOALS = {};
+GOALS["sequence"] = "Sequence the steps";
+GOALS["passive"] = "Describe the process";
+GOALS["decider"] = "Name the decision maker";
+/* Unique per session — two sessions sharing a key share their progress. */
+var KEY = "e2i-ef3-s03", store = {}, t = null, RESETTERS = [], PAINTERS = [];
+try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ store = {}; }
+function flush(){
+if (typeof sessionElapsed === "function" && typeof sessionSeconds === "number") store.sessionSeconds = sessionElapsed();
+var msg = document.getElementById("saveMessage"), bar = document.getElementById("savebar");
+try {
+localStorage.setItem(KEY, JSON.stringify(store));
+if (msg) msg.textContent = "Saved · " + new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+if (bar) bar.classList.remove("save-error");
+return true;
+} catch(e){
+if (msg) msg.textContent = "Saving is unavailable in this browser";
+if (bar) bar.classList.add("save-error");
+return false;
+}
+}
+function save(){ clearTimeout(t); t = setTimeout(flush, 250); }
+function set(k,v){ store[k] = v; save(); }
+function get(k){ return store[k]; }
+function each(sel, fn, root){ Array.prototype.forEach.call((root||document).querySelectorAll(sel), fn); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+var lessonViewport = document.getElementById("lessonViewport");
+var FE = null;
+try { FE = window.frameElement; } catch(e){ FE = null; }
+function vTop(el){
+return el.getBoundingClientRect().top - lessonViewport.getBoundingClientRect().top;
+}
+function goTo(el){
+if (!el) return;
+var sec = el.closest ? el.closest(".stage") : null;
+if (sec && sections && currentPage !== sections.indexOf(sec)){
+showPage(sec.id, {history:"push", focus:true, target:el});
+return;
+}
+if (el.classList && el.classList.contains("head")){
+document.getElementById("lessonGoals").open = true;
+}
+lessonViewport.scrollBy({top:vTop(el) - 16,
+behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+}
+/* ---------- toast + streak (the quiet reward layer) ---------- */
+var toastEl = document.getElementById("toast"), toastT = null;
+function toast(msg){
+if (!toastEl) return;
+toastEl.textContent = msg;
+toastEl.className = "toast on";
+clearTimeout(toastT);
+toastT = setTimeout(function(){ toastEl.className = "toast"; }, 2300);
+}
+var streak = 0, best = get("best"); if (typeof best !== "number") best = 0;
+var streakEl = document.getElementById("topStreak");
+function paintStreak(){
+if (!streakEl) return;
+if (streak >= 2){ streakEl.textContent = streak + " in a row"; streakEl.className = "streak on"; }
+else { streakEl.textContent = ""; streakEl.className = "streak"; }
+}
+function hit(ok){
+if (ok){
+streak++;
+if (streak > best){ best = streak; set("best", best); }
+if (streak === 3 || streak === 5 || streak === 8 || streak === 12) toast(streak + " correct in a row");
+} else { streak = 0; }
+paintStreak();
+}
+/* ---------- session controls ---------- */
+var sessionSeconds = Number(get("sessionSeconds")) || 0, sessionStarted = null;
+var timerButton = document.getElementById("sessionToggle"), timerReadout = document.getElementById("sessionTime");
+function sessionElapsed(){ return sessionSeconds + (sessionStarted === null ? 0 : Math.max(0, (Date.now() - sessionStarted) / 1000)); }
+function paintTimer(){
+var total = Math.floor(sessionElapsed()), mins = Math.floor(total / 60), secs = total % 60;
+timerReadout.textContent = (mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs;
+timerButton.textContent = sessionStarted !== null ? "Pause session" : (sessionSeconds > 0 ? "Resume session" : "Start session");
+timerButton.setAttribute("aria-pressed", String(sessionStarted !== null));
+}
+function pauseSession(){
+if (sessionStarted !== null){ sessionSeconds = sessionElapsed(); sessionStarted = null; }
+store.sessionSeconds = sessionSeconds; paintTimer(); flush();
+}
+timerButton.addEventListener("click", function(){
+if (sessionStarted !== null){ pauseSession(); return; }
+var first = sessionSeconds === 0;
+sessionStarted = Date.now(); paintTimer();
+if (first) goTo(sections[currentPage] || document.getElementById("s1"));
+});
+setInterval(function(){ if (sessionStarted !== null) paintTimer(); }, 1000);
+setInterval(function(){ if (sessionStarted !== null) flush(); }, 10000);
+document.addEventListener("visibilitychange", function(){ if (document.hidden) pauseSession(); });
+window.addEventListener("pagehide", pauseSession);
+document.getElementById("saveNow").addEventListener("click", function(){ clearTimeout(t); toast(flush() ? "Progress saved" : "Could not save in this browser"); });
+RESETTERS.push(function(){ sessionSeconds = 0; sessionStarted = null; paintTimer(); flush(); });
+paintTimer();
+
+/* ---------- audio slot: soundcloud url, direct mp3, or pending ---------- */
+function credit(box){
+var t = box.getAttribute("data-track"), u = box.getAttribute("data-track-url");
+var who = box.getAttribute("data-artist") || "English2impact";
+var whoUrl = box.getAttribute("data-artist-url") || "https://soundcloud.com/english2impact";
+if (!t) return;
+var p = document.createElement("p");
+p.className = "credit";
+p.innerHTML = '<a href="' + whoUrl + '" target="_blank" rel="noopener">' + esc(who) + '</a> · ' +
+(u ? '<a href="' + u + '" target="_blank" rel="noopener">' + esc(t) + '</a>' : esc(t));
+box.appendChild(p);
+}
+each(".audio", function(box){
+var src = (box.getAttribute("data-src") || "").trim();
+var placeholder = (!src || src.indexOf("SOUNDCLOUD_URL") === 0 || src.indexOf("AUDIO_URL") === 0);
+if (placeholder){
+var d = document.createElement("div");
+d.className = "pending";
+d.textContent = "Audio not attached yet — have it read aloud, or open the script below.";
+box.appendChild(d);
+return;
+}
+if (src.indexOf("w.soundcloud.com/player") > -1){
+var fw = document.createElement("iframe");
+fw.setAttribute("allow", "autoplay; encrypted-media");
+fw.setAttribute("scrolling", "no");
+fw.setAttribute("title", "Scenario audio");
+fw.setAttribute("data-media-src", src);
+box.appendChild(fw);
+credit(box);
+return;
+}
+if (src.indexOf("soundcloud.com") > -1){
+var f = document.createElement("iframe");
+f.setAttribute("allow", "autoplay; encrypted-media");
+f.setAttribute("scrolling", "no");
+f.setAttribute("title", "Scenario audio");
+f.setAttribute("data-media-src", "https://w.soundcloud.com/player/?url=" + encodeURIComponent(src) +
+"&color=%23d97757&auto_play=false&hide_related=true&show_comments=false" +
+"&show_user=false&show_reposts=false&show_teaser=false&visual=false");
+box.appendChild(f);
+credit(box);
+} else {
+var a = document.createElement("audio");
+a.controls = true; a.preload = "none"; a.src = src;
+box.appendChild(a);
+credit(box);
+}
+});
+/* ---------- the player's transport (same as English Reflex 2) ----------
+   SoundCloud's widget drops its scrubber at small heights, which leaves no
+   way to replay a phrase — the thing a listening exercise needs most. So
+   the widget is kept 1px and invisible, and we drive it: one row with play,
+   elapsed, a draggable seek bar, total and an answered chip, open or docked.
+   No ±5s buttons — the arrow keys on the seek bar jump five seconds. If the
+   API never answers, SoundCloud's own player stays visible instead. */
+var SC_READY = null;
+function soundcloudApi(){
+if (SC_READY) return SC_READY;
+SC_READY = new Promise(function(resolve, reject){
+if (window.SC && window.SC.Widget) return resolve(window.SC);
+var tag = document.createElement("script");
+tag.src = "https://w.soundcloud.com/player/api.js";
+tag.async = true;
+tag.onload = function(){ (window.SC && window.SC.Widget) ? resolve(window.SC) : reject(); };
+tag.onerror = reject;
+document.head.appendChild(tag);
+setTimeout(reject, 8000);
+});
+SC_READY.catch(function(){});
+return SC_READY;
+}
+function clock(ms){
+var t = Math.max(0, Math.round(ms / 1000));
+return Math.floor(t / 60) + ":" + (t % 60 < 10 ? "0" : "") + (t % 60);
+}
+var PLAY_PATH = "M8 5v14l11-7z", PAUSE_PATH = "M7 5h4v14H7zM13 5h4v14h-4z";
+function transport(box, dock, media){
+if (!media || media.tagName !== "IFRAME") return;
+var src = media.getAttribute("data-media-src") || media.getAttribute("src") || "";
+if (src.indexOf("w.soundcloud.com/player") < 0) return;
+var scn = box.closest ? box.closest(".scn") : null;
+var gaps = scn ? Array.prototype.slice.call(scn.querySelectorAll("input.gapin")) : [];
+
+var bar = document.createElement("div");
+bar.className = "transport";
+bar.innerHTML =
+'<button type="button" class="tbtn" aria-label="Play the dialogue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + PLAY_PATH + '"></path></svg></button>' +
+'<span class="t-time t-now">0:00</span>' +
+'<div class="seek" role="slider" tabindex="0" aria-label="Playback position — drag to scrub, arrow keys jump five seconds" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">' +
+'<span class="rail-bg"></span><span class="rail-fill"></span><span class="knob"></span></div>' +
+'<span class="t-time t-dur">—:—</span>' +
+(gaps.length ? '<span class="qchip" title="Gaps filled">0/' + gaps.length + '</span>' : '');
+dock.insertBefore(bar, dock.firstChild);
+
+var toggle = bar.querySelector(".tbtn"), icon = toggle.querySelector("path"),
+seek = bar.querySelector(".seek"), fill = bar.querySelector(".rail-fill"), knob = bar.querySelector(".knob"),
+now = bar.querySelector(".t-now"), dur = bar.querySelector(".t-dur"), chip = bar.querySelector(".qchip");
+var widget = null, duration = 0, dragging = false;
+
+function paintChip(){
+if (!chip) return;
+var n = gaps.filter(function(g){ return (g.value || "").trim(); }).length;
+chip.textContent = n + "/" + gaps.length;
+}
+if (scn) scn.addEventListener("input", paintChip);
+PAINTERS.push(paintChip);
+paintChip();
+
+function paint(ms){
+var pct = duration ? Math.min(100, ms / duration * 100) : 0;
+fill.style.width = pct + "%"; knob.style.left = pct + "%";
+now.textContent = clock(ms);
+seek.setAttribute("aria-valuenow", String(Math.round(pct)));
+seek.setAttribute("aria-valuetext", clock(ms) + " of " + clock(duration));
+}
+function playing(on){
+box.classList.toggle("playing", on);
+icon.setAttribute("d", on ? PAUSE_PATH : PLAY_PATH);
+toggle.setAttribute("aria-label", on ? "Pause the dialogue" : "Play the dialogue");
+}
+function wire(SC){
+widget = SC.Widget(media);
+widget.bind(SC.Widget.Events.READY, function(){
+widget.getDuration(function(ms){
+duration = ms || 0; dur.textContent = clock(duration); paint(0);
+box.classList.add("has-transport");
+reserveLater();
+});
+});
+widget.bind(SC.Widget.Events.PLAY, function(){ playing(true); });
+widget.bind(SC.Widget.Events.PAUSE, function(){ playing(false); });
+widget.bind(SC.Widget.Events.FINISH, function(){ playing(false); paint(duration); });
+widget.bind(SC.Widget.Events.PLAY_PROGRESS, function(e){ if (!dragging) paint(e.currentPosition); });
+}
+function reserveLater(){ window.requestAnimationFrame(function(){ resize(); }); }
+
+toggle.addEventListener("click", function(){ if (widget) widget.toggle(); });
+function jump(delta){
+if (!widget) return;
+widget.getPosition(function(p){ widget.seekTo(Math.max(0, Math.min(duration || p, p + delta))); });
+}
+function ratio(e){
+var r = seek.getBoundingClientRect();
+return Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+}
+function apply(e){
+if (!duration) return;
+var ms = ratio(e) * duration;
+paint(ms); if (widget) widget.seekTo(Math.round(ms));
+}
+seek.addEventListener("pointerdown", function(e){
+if (!duration) return;
+dragging = true; try { seek.setPointerCapture(e.pointerId); } catch(err){}
+apply(e); e.preventDefault();
+});
+seek.addEventListener("pointermove", function(e){ if (dragging) apply(e); });
+function endDrag(e){ dragging = false; try { seek.releasePointerCapture(e.pointerId); } catch(err){} }
+seek.addEventListener("pointerup", endDrag);
+seek.addEventListener("pointercancel", endDrag);
+seek.addEventListener("keydown", function(e){
+if (e.key === "ArrowRight"){ jump(5000); e.preventDefault(); }
+else if (e.key === "ArrowLeft"){ jump(-5000); e.preventDefault(); }
+else if (e.key === "Home" && widget){ widget.seekTo(0); e.preventDefault(); }
+});
+/* The src is attached lazily when this part becomes the visible one. */
+function whenSourced(){
+if (media.getAttribute("src")) {
+soundcloudApi().then(wire, function(){});
+return true;
+}
+return false;
+}
+if (!whenSourced() && window.MutationObserver){
+var mo = new MutationObserver(function(){ if (whenSourced()) mo.disconnect(); });
+mo.observe(media, {attributes:true, attributeFilter:["src"]});
+}
+}
+/* ---------- when does a sticky thing count as docked? ----------
+   An IntersectionObserver was the obvious answer and it was wrong: move the
+   scroller past the sentinel in one step — a part change, a "next step"
+   jump, a restored scroll position — and no notification arrives, so the
+   bar never docks and never recovers, because the state it missed never
+   changes again. Measuring on scroll always agrees with what is on screen.
+   The work is one getBoundingClientRect per frame, and only while the
+   learner is actually scrolling. */
+function follows(sentinel, apply){
+var queued = false, last = null;
+function measure(){
+queued = false;
+var top = lessonViewport ? lessonViewport.getBoundingClientRect().top : 0;
+var past = sentinel.getBoundingClientRect().bottom < top + 7;
+if (past !== last){ last = past; apply(past); }
+}
+function schedule(){
+if (queued) return;
+queued = true;
+window.requestAnimationFrame(measure);
+}
+if (lessonViewport) lessonViewport.addEventListener("scroll", schedule, {passive:true});
+window.addEventListener("scroll", schedule, {passive:true});
+window.addEventListener("resize", schedule);
+schedule();
+return schedule;
+}
+/* ---------- dock the player while its scenario is on screen ----------
+   The player is sticky inside its own .scn, so it follows the learner
+   down through the gap-fill and lets go at the end of the scenario.
+   The box keeps the height it had before it docked, so shrinking the
+   player to a bar never shifts the exercise underneath it. */
+each(".audio", function(box){
+var media = box.querySelector("iframe, audio");
+var scn = box.closest ? box.closest(".scn") : null;
+if (!media || !scn) return;                 /* nothing to dock, or not in a scenario */
+var dock = document.createElement("div");
+dock.className = "audio-dock";
+box.insertBefore(dock, media);
+dock.appendChild(media);
+/* the attribution rides inside the card, or it would float over the
+   exercise once the player docks */
+var credit = box.querySelector(".credit");
+if (credit) dock.appendChild(credit);
+function reserve(){
+if (box.classList.contains("stuck")) return;
+var h = dock.offsetHeight;                  /* the dock, not the box: the box carries the old min-height. 0 while hidden — keep the last good value */
+if (h > 20) box.style.setProperty("--audio-h", h + "px");
+}
+var sentinel = document.createElement("div");
+sentinel.className = "audio-sentinel";
+box.parentNode.insertBefore(sentinel, box);
+follows(sentinel, function(past){ box.classList.toggle("stuck", past); });
+if (window.ResizeObserver) new ResizeObserver(reserve).observe(dock);
+window.requestAnimationFrame(reserve);
+transport(box, dock, media);
+});
+/* ---------- keep the video with the questions about it ----------
+   Same idea as the audio dock, one level up: the player stays with the
+   learner for the whole of part 4. On a phone it shrinks and sticks to the
+   top; on a wide screen it lifts into a corner, because a 16:9 player
+   pinned to the top of a 900px column would leave nothing to read.
+
+   Nothing is reparented. Moving an iframe in the DOM reloads it, and this
+   one may be playing. */
+each(".video-stage", function(stage){
+var video = stage.querySelector(".video");
+if (!video) return;
+var dismissed = false;
+
+/* One move, at load, before anything can be playing. */
+var dock = document.createElement("div");
+dock.className = "video-dock";
+stage.insertBefore(dock, video);
+dock.appendChild(video);
+var note = stage.querySelector(".note");
+if (note) dock.appendChild(note);
+
+var close = document.createElement("button");
+close.type = "button";
+close.className = "video-close";
+close.setAttribute("aria-label", "Stop the video following me");
+close.innerHTML = "&times;";
+close.addEventListener("click", function(){
+dismissed = true;
+stage.classList.remove("stuck");
+});
+dock.appendChild(close);
+
+/* The grip that makes the corner player movable. */
+var grab = document.createElement("button");
+grab.type = "button";
+grab.className = "video-grab";
+grab.title = "Drag the player anywhere · double-click to send it back to the corner";
+grab.setAttribute("aria-label", "Move the video player");
+grab.innerHTML = '<span class="vg-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="vg-lbl">Video · drag to move</span>';
+dock.appendChild(grab);
+
+/* The block holds the height it had before the player shrank or lifted,
+   so the questions never jump while you are reading them. */
+function reserve(){
+if (stage.classList.contains("stuck")) return;
+var h = stage.offsetHeight;             /* 0 while part 4 is hidden — keep the last good value */
+if (h > 40) stage.style.setProperty("--video-h", h + "px");
+}
+
+var sentinel = document.createElement("div");
+sentinel.className = "video-sentinel";
+stage.parentNode.insertBefore(sentinel, stage);
+
+follows(sentinel, function(past){
+if (!past) dismissed = false;           /* scrolled back to it — offer it again */
+stage.classList.toggle("stuck", past && !dismissed);
+window.requestAnimationFrame(placePip);
+});
+/* Where the corner player goes. The window's bottom-right is the right
+   answer when it is free; on a short window the parts rail reaches down
+   into it, and covering the navigation is better than covering the
+   question, so it tucks against the reading column instead.
+
+   Once the learner has dragged it, that choice wins over both — it is only
+   clamped back inside the window when the window changes size. */
+var wide = function(){ return !!(window.matchMedia && window.matchMedia("(min-width:900px)").matches); };
+var moved = false, px = 0, py = 0;
+function pipSize(){
+var w = video.offsetWidth || 0;
+return [w, video.offsetHeight || Math.round(w * 9 / 16)];
+}
+function clampPip(x, y){
+var s = pipSize(), gap = 8;
+var maxX = Math.max(gap, window.innerWidth - s[0] - gap);
+var top = 32 + gap;                     /* room for the title bar above the picture */
+var maxY = Math.max(top, window.innerHeight - s[1] - gap);
+return [Math.min(Math.max(gap, x), maxX), Math.min(Math.max(top, y), maxY)];
+}
+function defaultPip(){
+var gap = 22, s = pipSize();
+var x = window.innerWidth - gap - s[0], y = window.innerHeight - gap - s[1];
+var rail = document.querySelector(".rail");
+if (rail){
+var rr = rail.getBoundingClientRect();
+if (rr.height && rr.bottom > y && rr.right > x)
+x = Math.min(x, Math.round(stage.getBoundingClientRect().right - s[0]));
+}
+return clampPip(x, y);
+}
+function applyPip(){
+stage.style.setProperty("--pip-x", Math.round(px) + "px");
+stage.style.setProperty("--pip-y", Math.round(py) + "px");
+}
+function placePip(){
+if (!stage.classList.contains("stuck")) return;
+if (!wide()) return;
+var p = moved ? clampPip(px, py) : defaultPip();
+px = p[0]; py = p[1];
+applyPip();
+}
+/* Pointer drag. The handle keeps the pointer for the whole gesture, so the
+   player does not get dropped when the cursor crosses the iframe. */
+var dragFrom = null;
+grab.addEventListener("pointerdown", function(e){
+if (!stage.classList.contains("stuck") || !wide()) return;
+e.preventDefault();
+placePip();
+dragFrom = { x:e.clientX, y:e.clientY, px:px, py:py };
+stage.classList.add("dragging");
+try { grab.setPointerCapture(e.pointerId); } catch(err){}
+});
+grab.addEventListener("pointermove", function(e){
+if (!dragFrom) return;
+e.preventDefault();
+var p = clampPip(dragFrom.px + (e.clientX - dragFrom.x), dragFrom.py + (e.clientY - dragFrom.y));
+px = p[0]; py = p[1]; moved = true;
+applyPip();
+});
+function endDrag(e){
+if (!dragFrom) return;
+dragFrom = null;
+stage.classList.remove("dragging");
+try { grab.releasePointerCapture(e.pointerId); } catch(err){}
+}
+grab.addEventListener("pointerup", endDrag);
+grab.addEventListener("pointercancel", endDrag);
+grab.addEventListener("dblclick", function(){ moved = false; placePip(); });
+
+if (window.ResizeObserver) new ResizeObserver(reserve).observe(stage);
+window.addEventListener("resize", placePip);
+window.requestAnimationFrame(function(){ reserve(); placePip(); });
+});
+/* ---------- saved fields ---------- */
+each(".save", function(el){
+var k = el.getAttribute("data-k"), v = get(k);
+if (el.type === "checkbox"){
+if (v === true) el.checked = true;
+el.addEventListener("change", function(){ set(k, el.checked); refresh(); });
+RESETTERS.push(function(){ el.checked = false; });
+} else {
+if (typeof v === "string") el.value = v;
+el.addEventListener("input", function(){ set(k, el.value); refresh(); });
+RESETTERS.push(function(){ el.value = ""; });
+}
+});
+/* ---------- the three answer lines get a filled dot each ---------- */
+each(".lines", function(box){
+Array.prototype.forEach.call(box.querySelectorAll("input"), function(inp){
+var ln = document.createElement("div"); ln.className = "ln";
+var dn = document.createElement("span"); dn.className = "dn";
+box.insertBefore(ln, inp);
+ln.appendChild(dn); ln.appendChild(inp);
+PAINTERS.push(function(){
+if ((inp.value || "").trim().length > 1) ln.classList.add("filled");
+else ln.classList.remove("filled");
+});
+});
+});
+each(".ck li", function(li){
+var inp = li.querySelector("input");
+if (!inp) return;
+PAINTERS.push(function(){ li.classList[inp.checked ? "add" : "remove"]("on"); });
+});
+each("[data-group] .mcq, [data-group] .tf, [data-group] .gapin, [data-group] .match", function(el){
+el.deferred = true;
+el.graded = get("chk:" + el.closest("[data-group]").getAttribute("data-group")) === true;
+});
+/* ---------- gap fill ---------- */
+each(".gapin", function(inp){
+var k = inp.getAttribute("data-k"), v0 = get(k);
+if (typeof v0 === "string") inp.value = v0;
+function ok(){
+var ans = (inp.getAttribute("data-a")||"").toLowerCase().split("|");
+var val = inp.value.trim().toLowerCase().replace(/\s+/g," ").replace(/[.,]$/,"");
+return ans.indexOf(val) > -1;
+}
+inp.correct = ok;
+function mark(){
+inp.className = inp.className.replace(/ ?(hit|miss|pend)/g,"");
+if (inp.deferred && !inp.graded){
+if (inp.value.trim()) inp.className += " pend";
+refresh(); return;
+}
+if (inp.value.trim()){
+var good = ok();
+inp.className += good ? " hit" : " miss";
+if (!inp.counted){ inp.counted = true; hit(good); }
+}
+refresh();
+}
+inp.grade = function(){ inp.graded = true; mark(); };
+inp.render = mark;
+inp.addEventListener("input", function(){
+set(k, inp.value);
+if (/\b(hit|miss)\b/.test(inp.className)) mark(); else refresh();
+});
+inp.addEventListener("blur", mark);
+inp.addEventListener("keydown", function(e){
+if (e.key !== "Enter") return;
+e.preventDefault(); mark();
+var list = inp.closest ? inp.closest("ul") : null;
+if (!list) return;
+var all = Array.prototype.slice.call(list.querySelectorAll(".gapin"));
+var n = all[all.indexOf(inp) + 1];
+if (n) n.focus();
+else { var b = (inp.closest(".block")||document).querySelector(".checkbtn"); if (b && !b.disabled) b.focus(); }
+});
+RESETTERS.push(function(){
+inp.value = ""; inp.graded = false; inp.counted = false;
+inp.className = inp.className.replace(/ ?(hit|miss|pend)/g,"");
+});
+if (inp.value){ inp.counted = true; mark(); }
+});
+/* ---------- multiple choice ---------- */
+each(".mcq", function(box){
+var k = box.getAttribute("data-k");
+var opts = box.querySelector(".opts");
+var correct = parseInt(opts.getAttribute("data-a"), 10);
+var why = box.querySelector(".why");
+var btns = opts.querySelectorAll("button");
+box.correctIndex = correct;
+function pick(i, quiet){
+if (box.deferred && !box.graded){
+if (why) why.className = "why";
+Array.prototype.forEach.call(btns, function(b,j){ b.className = (j === i) ? "sel" : ""; b.disabled = false; });
+if (!quiet){ set(k, i); refresh(); }
+return;
+}
+Array.prototype.forEach.call(btns, function(b,j){
+b.className = (j === correct) ? "hit" : (j === i ? "miss" : "");
+b.disabled = true;
+});
+if (why) why.className = "why show";
+if (!quiet){ set(k, i); refresh(); }
+if (!box.counted){ box.counted = true; hit(i === correct); }
+}
+box.grade = function(){
+box.graded = true;
+var v = get(k);
+if (typeof v === "number") pick(v, true);
+};
+box.render = function(){
+var v = get(k);
+if (typeof v === "number"){ pick(v, true); return; }
+Array.prototype.forEach.call(btns, function(b){ b.className = ""; b.disabled = false; });
+if (why) why.className = "why";
+};
+Array.prototype.forEach.call(btns, function(b,i){ b.addEventListener("click", function(){ pick(i,false); }); });
+RESETTERS.push(function(){
+box.graded = false; box.counted = false;
+Array.prototype.forEach.call(btns, function(b){ b.className = ""; b.disabled = false; });
+if (why) why.className = "why";
+});
+var prev = get(k);
+if (typeof prev === "number"){ box.counted = true; pick(prev, true); }
+});
+/* ---------- true / false ---------- */
+each(".tf", function(box){
+var k = box.getAttribute("data-k");
+var key = (box.getAttribute("data-a")||"").split(",");
+var saved = get(k);
+if (!(saved instanceof Array)) saved = [];
+function paint(li, i){
+var chosen = saved[i];
+each("button", function(b){
+var v = b.getAttribute("data-v");
+if (!chosen){ b.className = ""; b.disabled = false; return; }
+if (box.deferred && !box.graded){ b.className = (v === chosen) ? "sel" : ""; b.disabled = false; return; }
+b.disabled = true;
+b.className = (v === key[i]) ? "hit" : (v === chosen ? "miss" : "");
+}, li);
+}
+function repaint(){ Array.prototype.forEach.call(box.querySelectorAll("li"), function(li,i){ paint(li,i); }); }
+box.grade = function(){
+box.graded = true;
+if (!box.counted){
+box.counted = true;
+for (var i = 0; i < key.length; i++){ if (saved[i]) hit(saved[i] === key[i]); }
+}
+repaint();
+};
+box.render = repaint;
+Array.prototype.forEach.call(box.querySelectorAll("li"), function(li, i){
+var bts = document.createElement("span");
+bts.className = "bts";
+["T","F"].forEach(function(v){
+var b = document.createElement("button");
+b.type = "button"; b.textContent = v; b.setAttribute("data-v", v);
+b.addEventListener("click", function(){
+if (saved[i] && !(box.deferred && !box.graded)) return;
+saved[i] = v; set(k, saved); paint(li, i); refresh();
+});
+bts.appendChild(b);
+});
+li.appendChild(bts);
+paint(li, i);
+});
+box.score = function(){
+var c = 0, a = 0;
+for (var i = 0; i < key.length; i++){ if (saved[i]){ a++; if (saved[i] === key[i]) c++; } }
+return [c, a, key.length];
+};
+RESETTERS.push(function(){ saved = []; box.graded = false; box.counted = false; repaint(); });
+});
+/* ---------- matching ----------
+   Two modes. Free-standing: a pair snaps green the moment it is right, which
+   is the arcade version. Inside a [data-group]: you link all six first and
+   nothing is coloured until Check, so the round is a decision, not a
+   guess-until-it-sticks. */
+each(".match", function(box){
+var k = box.getAttribute("data-k"), pairs = PAIRS[k];
+if (!pairs) return;
+var deferred = !!box.deferred;
+var done = get(k);
+if (!(done instanceof Array)) done = [];
+var link = get(k + ":lk");
+if (!(link instanceof Array)) link = [];
+var misses = 0, colL, colR, sel = null, bar, grid, fix = null, btns = [];
+function linkCount(){
+var n = 0;
+for (var i = 0; i < pairs.length; i++) if (typeof link[i] === "number") n++;
+return n;
+}
+function linkRight(){
+var n = 0;
+for (var i = 0; i < pairs.length; i++) if (link[i] === i) n++;
+return n;
+}
+function partnerOf(side, i){
+if (side === "L") return (typeof link[i] === "number") ? link[i] : null;
+for (var l = 0; l < pairs.length; l++) if (link[l] === i) return l;
+return null;
+}
+function slotOf(side, i){                       /* the badge number on a linked button */
+var l = (side === "L") ? i : partnerOf("R", i);
+if (l === null || typeof link[l] !== "number") return null;
+var n = 0;
+for (var j = 0; j <= l; j++) if (typeof link[j] === "number") n++;
+return n;
+}
+box.score = function(){
+if (!deferred) return [done.length, done.length, pairs.length];
+if (!box.graded) return [0, linkCount(), pairs.length];
+return [linkRight(), linkCount(), pairs.length];
+};
+function paintBar(){
+var pips = "", filled = deferred ? linkCount() : done.length;
+for (var i = 0; i < pairs.length; i++) pips += '<i class="' + (i < filled ? "on" : "") + '"></i>';
+var all = filled >= pairs.length;
+var label;
+if (deferred){
+if (box.graded){
+var r = linkRight();
+label = r + ' of ' + pairs.length + ' right';
+} else label = filled + ' of ' + pairs.length + ' paired';
+} else label = done.length + ' of ' + pairs.length + ' matched';
+var flag = "";
+if (deferred && box.graded) flag = (linkRight() >= pairs.length)
+? '<span class="perfect">✓ all six</span>' : '';
+else if (!deferred && all) flag = '<span class="perfect">' + (misses ? "✓ done" : "✓ perfect round") + '</span>';
+bar.innerHTML = '<span class="pips">' + pips + '</span><span>' + label + '</span>' + flag +
+'<button type="button" class="redeal">Shuffle</button>';
+bar.querySelector(".redeal").addEventListener("click", function(){
+done = []; link = []; misses = 0; set(k, done); set(k + ":lk", link); deal(); refresh();
+});
+}
+box.paintMatch = function(){ paintBar(); btns.forEach(paintBtn); paintFix(); };
+function paintBtn(b){
+var i = parseInt(b.getAttribute("data-i"), 10), side = b.getAttribute("data-s");
+if (!deferred){ b.className = (done.indexOf(i) > -1) ? "hit" : (b === sel ? "sel" : ""); return; }
+var p = partnerOf(side, i);
+var badge = b.querySelector(".pn");
+if (p === null){
+b.className = (b === sel) ? "sel" : "";
+if (badge) badge.textContent = "";
+return;
+}
+var right = (side === "L") ? (link[i] === i) : (p === i);
+b.className = box.graded ? (right ? "hit" : "miss") : "pair";
+/* The badge stays on a wrong pair: two red boxes with nothing joining
+   them do not tell you what you actually put together. */
+if (badge) badge.textContent = (box.graded && right) ? "" : String(slotOf(side, i) || "");
+}
+function paintFix(){
+if (!fix) return;
+if (!deferred || !box.graded){ fix.innerHTML = ""; return; }
+var rows = "";
+for (var i = 0; i < pairs.length; i++){
+if (typeof link[i] === "number" && link[i] !== i)
+rows += '<li><b>' + esc(pairs[i][0]) + '</b> → ' + esc(pairs[i][1]) + '</li>';
+}
+fix.innerHTML = rows ? '<p class="fixlbl">What the missed ones pair with</p><ul>' + rows + '</ul>' : "";
+}
+function unlink(side, i){
+var l = (side === "L") ? i : partnerOf("R", i);
+if (l === null) return;
+link[l] = undefined;
+set(k + ":lk", link);
+}
+function make(item, col, side){
+var b = document.createElement("button");
+b.type = "button";
+b.innerHTML = '<span class="pn"></span><span class="tx">' + esc(item.t) + '</span>';
+b.setAttribute("data-i", item.i); b.setAttribute("data-s", side);
+btns.push(b);
+b.addEventListener("click", function(){
+if (deferred){
+if (box.graded) return;
+var p = partnerOf(side, item.i);
+if (p !== null){ unlink(side, item.i); sel = null; box.paintMatch(); refresh(); return; }
+if (!sel){ sel = b; box.paintMatch(); return; }
+if (sel === b){ sel = null; box.paintMatch(); return; }
+if (sel.getAttribute("data-s") === side){ sel = b; box.paintMatch(); return; }
+var li = (side === "L") ? item.i : parseInt(sel.getAttribute("data-i"), 10);
+var ri = (side === "L") ? parseInt(sel.getAttribute("data-i"), 10) : item.i;
+link[li] = ri;
+set(k + ":lk", link);
+sel = null; box.paintMatch(); refresh();
+if (linkCount() >= pairs.length) toast("All six paired — press Check");
+return;
+}
+if (b.className.indexOf("hit") > -1) return;
+if (!sel){ sel = b; b.className = "sel"; return; }
+if (sel === b){ sel = null; b.className = ""; return; }
+if (sel.getAttribute("data-s") === side){ sel.className = ""; sel = b; b.className = "sel"; return; }
+if (sel.getAttribute("data-i") === b.getAttribute("data-i")){
+sel.className = "hit"; b.className = "hit";
+done.push(parseInt(b.getAttribute("data-i"),10));
+set(k, done); sel = null; hit(true); paintBar();
+if (done.length >= pairs.length) toast(misses ? "Round matched" : "Perfect round — no misses");
+refresh();
+} else {
+var a = sel; b.className = "miss"; a.className = "miss"; sel = null;
+misses++; hit(false); paintBar();
+setTimeout(function(){ if(a.className==="miss") a.className=""; if(b.className==="miss") b.className=""; }, 420);
+}
+});
+col.appendChild(b);
+}
+function deal(){
+box.innerHTML = ""; btns = [];
+bar = document.createElement("div"); bar.className = "matchbar";
+grid = document.createElement("div"); grid.className = "mgrid";
+box.appendChild(bar); box.appendChild(grid);
+colL = document.createElement("div"); colR = document.createElement("div");
+colL.style.display = colR.style.display = "grid";
+colL.style.gap = colR.style.gap = "8px";
+grid.appendChild(colL); grid.appendChild(colR);
+fix = document.createElement("div"); fix.className = "matchfix";
+box.appendChild(fix);
+sel = null;
+var right = pairs.map(function(p,i){ return {t:p[1], i:i}; });
+for (var i = right.length - 1; i > 0; i--){
+var j = Math.floor(Math.random()*(i+1)), tmp = right[i]; right[i] = right[j]; right[j] = tmp;
+}
+pairs.forEach(function(p,i){ make({t:p[0], i:i}, colL, "L"); });
+right.forEach(function(x){ make(x, colR, "R"); });
+box.setAttribute("data-total", pairs.length);
+box.paintMatch();
+}
+box.grade = function(){
+box.graded = true;
+if (!box.counted){
+box.counted = true;
+for (var i = 0; i < pairs.length; i++) if (typeof link[i] === "number") hit(link[i] === i);
+}
+box.paintMatch();
+};
+box.render = function(){ box.paintMatch(); };
+deal();
+RESETTERS.push(function(){
+done = []; link = []; misses = 0;
+box.graded = false; box.counted = false;
+store[k + ":lk"] = undefined;
+deal();
+});
+});
+/* ---------- term lab: guess, then drill the misses to mastery ---------- */
+each(".guess", function(box){
+var k = box.getAttribute("data-k"), items = TERMS;
+var res = get(k + ":res"); if (!(res instanceof Array)) res = [];
+var mode = get(k + ":mode"); if (mode !== "drill") mode = "main";
+var queue = get(k + ":q");
+var at = get(k + ":at"); if (typeof at !== "number") at = 0;
+if (!(queue instanceof Array) || !queue.length){
+queue = items.map(function(_, i){ return i; }); mode = "main"; if (at > queue.length) at = 0;
+}
+var card = document.createElement("div");
+card.className = "card";
+card.innerHTML =
+'<div class="pips"></div>' +
+'<div class="drillbar" style="display:none"></div>' +
+'<div class="top"><span class="ix"></span><span class="tally"></span></div>' +
+'<p class="vn"></p><p class="def"></p><p class="eg"></p><div class="opts"></div>' +
+'<div class="verdict"><span class="badge"></span><span class="txt"></span></div>';
+var nav = document.createElement("div");
+nav.className = "nav";
+nav.innerHTML = '<button type="button" class="prev">Back</button>' +
+'<button type="button" class="go next">Next</button>' +
+'<span class="hint">1 2 3 to answer · Enter for next</span>';
+var fin = document.createElement("div");
+fin.className = "fin";
+box.appendChild(card); box.appendChild(nav); box.appendChild(fin);
+var pipsEl = card.querySelector(".pips"), drillEl = card.querySelector(".drillbar");
+var ix = card.querySelector(".ix"), tal = card.querySelector(".tally");
+var vn = card.querySelector(".vn"), def = card.querySelector(".def"), eg = card.querySelector(".eg");
+var opts = card.querySelector(".opts"), verd = card.querySelector(".verdict");
+var badge = verd.querySelector(".badge"), txt = verd.querySelector(".txt");
+var prevB = nav.querySelector(".prev"), nextB = nav.querySelector(".next");
+function counts(){
+var kn = 0, rc = 0, ms = 0;
+res.forEach(function(r){ if (r === 1) kn++; else if (r === 2) rc++; else if (r === 0) ms++; });
+return [kn, rc, ms];
+}
+box.termStats = counts;
+function order(i, salt){
+var all = [TERMS[i][3]].concat(TERMS[i][4]);
+var s = (i * 5 + 2 + (salt || 0)) % 3;
+return [all[s], all[(s+1)%3], all[(s+2)%3]];
+}
+function pips(cur){
+var h = "";
+for (var i = 0; i < items.length; i++){
+var c = (i === cur) ? "at" : (res[i] === 1 ? "k" : res[i] === 2 ? "r" : res[i] === 0 ? "m" : "");
+h += '<i class="' + c + '"></i>';
+}
+pipsEl.innerHTML = h;
+}
+function draw(){
+if (at >= queue.length){ finish(); return; }
+box.className = "guess track";
+var i = queue[at], it = items[i], c = counts();
+pips(i);
+if (mode === "drill"){
+drillEl.style.display = "inline-block";
+drillEl.textContent = "Drill round · " + queue.length + " term" + (queue.length > 1 ? "s" : "") + " to recover";
+} else { drillEl.style.display = "none"; }
+ix.textContent = (at + 1) + " of " + queue.length;
+tal.innerHTML = '<span class="k">Known ' + (c[0] + c[1]) + '</span> · <span class="m">To drill ' + c[2] + '</span>';
+vn.textContent = it[0];
+def.textContent = it[1];
+var answered = (res[i] === 0 || res[i] === 1 || res[i] === 2);
+eg.innerHTML = '<span class="src">From the video</span>' +
+esc(it[2]).replace("___", answered ? '<b>' + esc(it[3]) + '</b>' : '<u></u>');
+opts.innerHTML = "";
+var chosen = get(k + ":pick" + i);
+order(i, mode === "drill" ? 1 : 0).forEach(function(label, n){
+var b = document.createElement("button");
+b.type = "button";
+b.innerHTML = '<span class="kb">' + (n+1) + '</span><span>' + esc(label) + '</span>';
+if (answered){
+b.disabled = true;
+b.className = (label === it[3]) ? "hit" : (label === chosen ? "miss" : "");
+}
+b.addEventListener("click", function(){ answer(label); });
+opts.appendChild(b);
+});
+if (answered){
+verd.className = "verdict show";
+if (res[i] === 0){
+badge.className = "badge m"; badge.textContent = "To drill";
+txt.textContent = "Correct term: " + it[3];
+} else {
+badge.className = "badge k";
+badge.textContent = (res[i] === 2) ? "Recovered" : "Knew it";
+txt.textContent = (res[i] === 2) ? "Second time lucky — that one is yours now."
+: "No drilling needed on this one.";
+}
+} else { verd.className = "verdict"; }
+prevB.disabled = (at === 0);
+nextB.disabled = !answered;
+nextB.textContent = (at === queue.length - 1) ? "See result" : "Next";
+if (answered && wantFocus){ wantFocus = false; try { nextB.focus({preventScroll:true}); } catch(e){} }
+resize();
+}
+var wantFocus = false;
+function answer(label){
+wantFocus = true;
+var i = queue[at], it = items[i];
+if (res[i] === 0 || res[i] === 1 || res[i] === 2) return;
+var good = (label === it[3]);
+res[i] = good ? (mode === "drill" ? 2 : 1) : 0;
+set(k + ":res", res); set(k + ":pick" + i, label);
+hit(good);
+draw(); refresh();
+}
+function finish(){
+box.className = "guess track finished";
+var c = counts(), miss = [];
+items.forEach(function(it,i){ if (res[i] === 0) miss.push([it,i]); });
+var known = c[0] + c[1], html = "";
+if (!miss.length && known >= items.length){
+html += '<p class="sc mastered">' + items.length + ' of ' + items.length + ' mastered</p>' +
+'<p class="note" style="margin:0">Knew ' + c[0] + ' cold, recovered ' + c[1] +
+' in the drill. Every term is now one you can produce, not just recognise.</p>';
+} else {
+html += '<p class="sc">' + known + ' of ' + items.length + ' known</p>' +
+'<p class="note" style="margin:0">' +
+(miss.length ? 'These ' + miss.length + ' are not yours yet. Drill them now — it takes a minute.'
+: 'Nothing missed so far.') + '</p>';
+}
+if (miss.length){
+html += '<ul class="missed">';
+miss.forEach(function(m){ html += '<li><b>' + esc(m[0][3]) + '</b> <span>— ' + esc(m[0][0]) + '</span></li>'; });
+html += '</ul>';
+}
+html += '<div class="nav">';
+if (miss.length) html += '<button type="button" class="go drill">Drill these ' + miss.length + '</button>';
+html += '<button type="button" class="again">Start again</button></div>';
+fin.innerHTML = html;
+var dB = fin.querySelector(".drill");
+if (dB) dB.addEventListener("click", function(){
+queue = miss.map(function(m){ return m[1]; });
+miss.forEach(function(m){ res[m[1]] = undefined; set(k + ":pick" + m[1], null); });
+mode = "drill"; at = 0;
+set(k + ":res", res); set(k + ":q", queue); set(k + ":mode", mode); set(k + ":at", at);
+draw(); refresh();
+});
+fin.querySelector(".again").addEventListener("click", function(){
+res = []; at = 0; mode = "main"; queue = items.map(function(_,i){ return i; });
+set(k + ":res", res); set(k + ":at", at); set(k + ":mode", mode); set(k + ":q", queue);
+items.forEach(function(_,i){ set(k + ":pick" + i, null); });
+draw(); refresh();
+});
+if (!miss.length && known >= items.length && !get(k + ":done")){
+set(k + ":done", true); toast("All twelve terms mastered");
+}
+resize();
+}
+box.addEventListener("keydown", function(e){
+var n = ["1","2","3"].indexOf(e.key);
+if (n > -1){
+var b = opts.children[n];
+if (b && !b.disabled){ e.preventDefault(); b.click(); }
+return;
+}
+if (e.key === "Enter" && !nextB.disabled && box.className.indexOf("finished") < 0){
+e.preventDefault(); nextB.click();
+}
+});
+prevB.addEventListener("click", function(){ if (at > 0){ at--; set(k+":at", at); draw(); } });
+nextB.addEventListener("click", function(){ at++; set(k+":at", at); draw(); refresh(); });
+box.score = function(){ var c = counts(); return [c[0] + c[1], c[0] + c[1] + c[2], items.length]; };
+RESETTERS.push(function(){
+res = []; at = 0; mode = "main"; queue = items.map(function(_,i){ return i; });
+store[k + ":done"] = undefined;
+draw();
+});
+draw();
+});
+/* ---------- reveals ---------- */
+var REVEAL_N = 0;
+each(".rev", function(r){
+var b = r.querySelector("button"), body = r.querySelector(".body");
+var showLabel = b.textContent, hideLabel = b.getAttribute("data-hide") || "Hide";
+if (body && !body.id){ body.id = "reveal" + (++REVEAL_N); b.setAttribute("aria-controls", body.id); }
+b.setAttribute("aria-expanded", "false");
+function paint(open){
+r.className = open ? "rev open" : "rev";
+b.textContent = open ? hideLabel : showLabel;
+b.setAttribute("aria-expanded", String(open));
+}
+b.paintReveal = paint;
+b.addEventListener("click", function(){
+paint(r.className.indexOf("open") < 0);
+resize();
+});
+});
+/* ---------- rail ---------- */
+var sections = Array.prototype.slice.call(document.querySelectorAll(".stage"));
+var list = document.getElementById("railList"), links = [];
+var lessonJump = document.getElementById("lessonJump");
+sections.forEach(function(sec){
+var li = document.createElement("li"), a = document.createElement("a");
+a.href = "#" + sec.id;
+a.innerHTML = '<span class="row"><span class="dot"></span><span class="ttl"></span>' +
+'<span class="rtime"></span><span class="ck">✓</span></span><span class="rbar"><i></i></span>';
+var numEl = sec.querySelector(".num");
+a.querySelector(".ttl").textContent =
+(numEl ? numEl.textContent + ". " : "") + sec.querySelector("h2").textContent;
+a.querySelector(".rtime").textContent = sec.querySelector(".time").textContent;
+var option = document.createElement("option"); option.value = sec.id; option.textContent = a.querySelector(".ttl").textContent;
+lessonJump.appendChild(option);
+a.style.setProperty("--c", getComputedStyle(sec).getPropertyValue("--c"));
+a.addEventListener("click", function(e){ e.preventDefault(); goTo(sec); });
+li.appendChild(a); list.appendChild(li); links.push(a);
+});
+lessonJump.addEventListener("change", function(){ goTo(document.getElementById(lessonJump.value)); });
+/* ---------- microsteps ---------- */
+var STEPS = [];
+sections.forEach(function(sec){
+var blocks = Array.prototype.slice.call(sec.querySelectorAll(".block.step"));
+var meter = document.createElement("p");
+meter.className = "meter";
+var anchor = sec.querySelector(".hold") || sec.querySelector(".lead") || sec.querySelector(".sh");
+if (blocks.length && anchor) anchor.parentNode.insertBefore(meter, anchor.nextSibling);
+sec.meterEl = blocks.length ? meter : null;
+blocks.forEach(function(b, i){
+var head = document.createElement("div");
+head.className = "sthead";
+/* a part with a single step gets no step number: there is nothing to count */
+head.innerHTML = (blocks.length > 1 ? '<span class="pin">' + (i+1) + '</span>' : '') + '<span class="lbl"></span><span class="st"></span>';
+head.querySelector(".lbl").textContent = b.getAttribute("data-step") || ("Step " + (i+1));
+b.insertBefore(head, b.firstChild);
+STEPS.push({ el:b, sec:sec, head:head, st:head.querySelector(".st"), n:i+1, was:false });
+});
+sec.steps = blocks;
+});
+function stepDone(b){
+var g = b.getAttribute("data-group");
+if (g) return !!(b.isGraded && b.isGraded());
+var s = tally(b);
+return s[1] > 0 && s[0] >= s[1];
+}
+function firstOpen(){
+for (var i = 0; i < STEPS.length; i++){ if (!STEPS[i].el.classList.contains("done")) return STEPS[i]; }
+return null;
+}
+/* ---------- scoring ---------- */
+function tally(sec){
+var d = 0, tt = 0, c = 0, at = 0;
+each(".track", function(el){
+var cl = " " + el.className + " ";
+var hidden = (el.deferred && !el.graded);   /* answered, but not checked yet */
+if (hidden){
+if (cl.indexOf(" match ") > -1){ var shm = el.score(); tt += shm[2]; d += shm[1]; return; }
+if (cl.indexOf(" tf ") > -1){ var sh = el.score(); tt += sh[2]; d += sh[1]; return; }
+if (cl.indexOf(" mcq ") > -1){ tt += 1; if (typeof get(el.getAttribute("data-k")) === "number") d += 1; return; }
+tt += 1; if ((el.value||"").trim()) d += 1; return;
+}
+if (cl.indexOf(" guess ") > -1){
+var s = el.score(); tt += s[2]; d += s[1]; c += s[0]; at += s[1];
+} else if (cl.indexOf(" match ") > -1){
+var sm2 = el.score ? el.score() : [0,0,0];
+tt += sm2[2]; d += sm2[1]; c += sm2[0]; at += sm2[1];
+} else if (cl.indexOf(" tf ") > -1){
+var s2 = el.score(); tt += s2[2]; d += s2[1]; c += s2[0]; at += s2[1];
+} else if (cl.indexOf(" mcq ") > -1){
+tt += 1;
+var v = get(el.getAttribute("data-k"));
+if (typeof v === "number"){ d += 1; at += 1; if (v === el.correctIndex) c += 1; }
+} else if (cl.indexOf(" gapin ") > -1){
+tt += 1;
+if ((el.value||"").trim()){ d += 1; at += 1; if (el.correct()) c += 1; }
+} else if (el.type === "checkbox"){
+tt += 1; if (el.checked) d += 1;
+} else {
+tt += 1; if ((el.value||"").trim().length > 1) d += 1;
+}
+}, sec);
+return [Math.round(d), tt, c, at];
+}
+/* ---------- the three targets in the header ---------- */
+var goalRows = Array.prototype.slice.call(document.querySelectorAll("#targets li"));
+function paintGoals(){
+goalRows.forEach(function(li){
+var g = li.getAttribute("data-goal"), ok = true, any = false;
+each('[data-goal="' + g + '"]', function(el){
+if (el === li) return;
+any = true;
+if (el.type === "checkbox"){ if (!el.checked) ok = false; }
+else if ((el.value || "").trim().length < 2) ok = false;
+});
+var on = any && ok;
+if (on && !li.classList.contains("hit")){
+li.classList.add("hit");
+if (booted) toast("Target reached — " + (GOALS[g] || g));
+} else if (!on){ li.classList.remove("hit"); }
+});
+}
+/* ---------- refresh everything ---------- */
+var booted = false;
+function refresh(){
+if (!sections) return;
+var D = 0, T = 0, C = 0, A = 0, rows = "";
+PAINTERS.forEach(function(f){ try { f(); } catch(e){} });
+STEPS.forEach(function(st){
+var s = tally(st.el);
+var done = stepDone(st.el);
+st.el.classList.remove("doing");
+if (done){
+st.el.classList.add("done");
+st.st.textContent = "done";
+if (!st.was && booted) { /* silent — the stage clear carries the reward */ }
+st.was = true;
+} else {
+st.el.classList.remove("done");
+st.st.textContent = s[1] ? (s[0] + "/" + s[1]) : "";
+st.was = false;
+}
+});
+var open = firstOpen();
+if (open) open.el.classList.add("doing");
+sections.forEach(function(sec,i){
+var s = tally(sec);
+D += s[0]; T += s[1]; C += s[2]; A += s[3];
+var pct = s[1] ? Math.round(s[0]/s[1]*100) : 0;
+var steps = sec.steps || [], sdone = 0;
+steps.forEach(function(b){ if (b.classList.contains("done")) sdone++; });
+var cleared = steps.length > 0 && sdone >= steps.length;
+if (cleared && !sec.classList.contains("cleared")){
+sec.classList.add("cleared");
+if (booted) toast("Stage " + (i+1) + " cleared — " + sec.querySelector("h2").textContent.toLowerCase());
+} else if (!cleared){ sec.classList.remove("cleared"); }
+if (sec.meterEl){
+var pipsH = "";
+steps.forEach(function(b,n){ pipsH += '<i class="' + (n < sdone ? "on" : "") + '"></i>'; });
+sec.meterEl.innerHTML = '<span class="pips">' + pipsH + '</span><span><b>' + sdone +
+'</b> of ' + steps.length + (steps.length === 1 ? ' step' : ' steps') + '</span>';
+}
+links[i].querySelector(".rbar i").style.width = pct + "%";
+links[i].classList.toggle("done", !!cleared);
+links[i].classList.toggle("part", !cleared && s[0] > 0);
+var strip = sec.querySelector("[data-strip]");
+if (strip){
+if (cleared){
+strip.innerHTML = '<span class="win">✓ Stage cleared</span>' +
+'<span class="bar"><i style="width:100%"></i></span>' +
+'<span>' + (s[3] ? '<b>' + s[2] + '/' + s[3] + '</b> correct' : 'all steps done') + '</span>' +
+(i < sections.length - 1 ? '<button type="button" class="jump" data-jump="' + (i+1) + '">Next part →</button>' : '');
+} else {
+strip.innerHTML = '<span><b>' + sdone + '</b> of ' + steps.length + (steps.length === 1 ? ' step' : ' steps') + ' done</span>' +
+'<span class="bar"><i style="width:' + (steps.length ? Math.round(sdone/steps.length*100) : 0) + '%"></i></span>' +
+'<span>' + (s[3] ? '<b>' + s[2] + '/' + s[3] + '</b> correct' : 'nothing checked yet') + '</span>';
+}
+var jb = strip.querySelector("[data-jump]");
+if (jb) jb.addEventListener("click", function(){ goTo(sections[parseInt(jb.getAttribute("data-jump"),10)]); });
+}
+var nEl = sec.querySelector(".num");
+rows += '<tr style="--c:' + getComputedStyle(sec).getPropertyValue("--c") + '">' +
+'<td class="n">' + (nEl ? nEl.textContent + ". " : "") +
+esc(sec.querySelector("h2").textContent) + '</td>' +
+'<td class="b"><span class="mini"><i style="width:' + (s[3] ? Math.round(s[2]/s[3]*100) : 0) + '%"></i></span></td>' +
+'<td class="v">' + (s[3] ? s[2] + '/' + s[3] : "—") + '</td></tr>';
+});
+each("[data-group]", function(g){ if (g.paintBar) g.paintBar(); });
+paintGoals();
+var pctAll = T ? Math.round(D/T*100) : 0;
+document.getElementById("topBar").style.width = pctAll + "%";
+document.getElementById("topPct").textContent = pctAll + "%";
+document.getElementById("headerProgress").setAttribute("aria-valuenow", String(pctAll));
+document.getElementById("headerProgress").setAttribute("aria-valuetext", pctAll + "% complete");
+document.getElementById("railBar").style.width = pctAll + "%";
+document.getElementById("railPct").textContent = pctAll + "% complete";
+document.getElementById("railSc").textContent = C + "/" + A + " correct";
+document.getElementById("stagesComplete").textContent = sections.filter(function(sec){ return sec.classList.contains("cleared"); }).length;
+document.getElementById("rTotal").textContent = C + "/" + A;
+document.getElementById("rSub").textContent = A ?
+("Checked answers so far · " + Math.round(C/A*100) + "% right") : "Nothing checked yet";
+
+paintNext(open);
+updatePageNav();
+report(C, A);
+resize();
+}
+var nextBtn = document.getElementById("nextBtn");
+function paintNext(open){
+if (!nextBtn) return;
+if (open){
+nextBtn.className = "nextbtn";
+nextBtn.textContent = booted ? "Next step ↓" : "Start ↓";
+nextBtn.title = open.sec.querySelector("h2").textContent + " — " + (open.el.getAttribute("data-step")||"");
+} else {
+nextBtn.className = "nextbtn done";
+nextBtn.textContent = "All steps done ✓";
+nextBtn.title = "See your result";
+}
+}
+if (nextBtn) nextBtn.addEventListener("click", function(){
+var open = firstOpen();
+goTo(open ? open.el : document.getElementById("results"));
+});
+/* ---------- the payoff report ---------- */
+function lines(keys){
+var out = [];
+keys.forEach(function(kk){ var v = (get(kk) || "").trim(); if (v.length > 1) out.push(v); });
+return out;
+}
+function report(C, A){
+var gbox = document.querySelector(".guess");
+var ts = (gbox && gbox.termStats) ? gbox.termStats() : [0,0,0];
+var mastery = A ? Math.round(C/A*100) : 0;
+var statsEl = document.getElementById("rStats");
+if (statsEl){
+statsEl.innerHTML =
+'<div class="stat"><b>' + mastery + '%</b><span>right on everything you checked</span></div>' +
+'<div class="stat"><b>' + A + '</b><span>answers marked today</span></div>' +
+'<div class="stat"><b>' + best + '</b><span>longest correct run</span></div>' +
+'<div class="stat"><b>' + (ts[0] + ts[1]) + '/12</b><span>terms known · ' + ts[1] + ' recovered by drilling</span></div>';
+}
+var then = lines(["draft1"]), now = lines(["mv1","mv2","mv3"]);
+var thenEl = document.getElementById("tvnThen"), nowEl = document.getElementById("tvnNow");
+if (thenEl){
+thenEl.innerHTML = then.length
+? '<p class="said">' + esc(then[0]) + '</p>'
+: '<p class="empty">Section 1 is still empty — write your draft answer there and it appears here.</p>';
+}
+if (nowEl){
+nowEl.innerHTML = now.length
+? '<ol><li>' + now.map(esc).join('</li><li>') + '</li></ol>'
+: '<p class="empty">Your move chain from section 3 lands here.</p>';
+}
+var lineEl = document.getElementById("tvnLine");
+if (lineEl){
+lineEl.textContent = (then.length && now.length)
+? "Read your draft, then the three moves out loud. Ninety minutes is the whole distance between them."
+: "Fill both sides and this turns into the shortest proof of progress you own.";
+}
+var doneAll = sections.every(function(sec){ return sec.classList.contains("cleared"); });
+var banner = document.getElementById("finBanner"), ft = document.getElementById("finText");
+if (banner && ft){
+if (doneAll){
+if (!banner.classList.contains("on")){
+banner.classList.add("on");
+if (booted) toast("Session complete — all six stages");
+}
+ft.textContent = "All six stages cleared. " + C + " of " + A + " marked answers right, " +
+(ts[0] + ts[1]) + " of 12 terms yours, longest correct run " + best +
+". Read the draft you wrote at the start against the three moves you can run now — that gap is the session.";
+} else { banner.classList.remove("on"); }
+}
+}
+/* ---------- page navigation: one visible part, shared answers ---------- */
+var currentPage = -1, pageReady = false, pageFrame = 0;
+var pagePrev = document.getElementById("previousPage"), pageNext = document.getElementById("nextPage");
+var partsToggle = document.getElementById("partsToggle"), partsDialog = document.getElementById("partsDialog");
+var menuList = document.getElementById("partMenuList"), menuLinks = [], restoreMenuFocus = true;
+sections.forEach(function(sec, i){
+var heading = sec.querySelector("h2");
+heading.id = sec.id + "Title"; heading.tabIndex = -1;
+sec.setAttribute("aria-labelledby", heading.id);
+var li = document.createElement("li"), link = document.createElement("a");
+link.href = "#" + sec.id;
+link.innerHTML = '<span class="part-number">' + (i+1) + '</span><span class="part-name">' +
+esc(heading.textContent) + '</span><span class="part-meta">' + esc(sec.querySelector(".time").textContent) +
+'<span class="part-state"></span></span>';
+link.addEventListener("click", function(e){
+e.preventDefault(); closeParts(false); showPage(sec.id, {history:"push",focus:true});
+});
+li.appendChild(link); menuList.appendChild(li); menuLinks.push(link);
+});
+function pageIndex(id){
+return sections.findIndex(function(sec){ return sec.id === id; });
+}
+function routeFromHash(hash){
+var id = (typeof hash === "string" ? hash : window.location.hash).slice(1);
+if (pageIndex(id) !== -1) return {id:id};
+var target = id ? document.getElementById(id) : null;
+var sec = target && target.closest ? target.closest(".stage") : null;
+return sec ? {id:sec.id,target:target} : null;
+}
+function syncPageMedia(){
+sections.forEach(function(sec, i){
+each("iframe[data-media-src]", function(frame){
+if (i === currentPage){
+if (!frame.hasAttribute("src")) frame.setAttribute("src",frame.getAttribute("data-media-src"));
+} else if (frame.hasAttribute("src")){ frame.removeAttribute("src"); }
+},sec);
+if (i !== currentPage) each("audio, video", function(media){ media.pause(); },sec);
+});
+}
+function updatePageNav(){
+if (!pageReady || currentPage < 0) return;
+var sec = sections[currentPage], last = currentPage === sections.length - 1;
+document.getElementById("pagePosition").textContent = "PART " + String(currentPage+1).padStart(2,"0") + " / 06";
+document.getElementById("pageCount").textContent = (currentPage+1) + "/" + sections.length;
+document.getElementById("partsLabel").textContent = sec.querySelector("h2").textContent;
+partsToggle.setAttribute("aria-label", "Choose a lesson part. Current part " + (currentPage+1) + " of " + sections.length + ": " + sec.querySelector("h2").textContent);
+pagePrev.disabled = currentPage === 0;
+pagePrev.setAttribute("aria-label", currentPage > 0 ? "Previous part: " + sections[currentPage-1].querySelector("h2").textContent : "Previous part, you are at the beginning");
+pageNext.setAttribute("aria-label", last ? "View your session results" : "Next part: " + sections[currentPage+1].querySelector("h2").textContent);
+document.getElementById("nextPageLabel").textContent = last ? "Results" : "Next";
+document.getElementById("lessonEnd").hidden = !last;
+document.getElementById("lessonBrandline").hidden = !last;
+links.forEach(function(a,i){
+a.classList.toggle("on",i === currentPage);
+if (i === currentPage) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+});
+menuLinks.forEach(function(a,i){
+var done = sections[i].classList.contains("cleared");
+a.classList.toggle("done",done);
+a.querySelector(".part-number").textContent = done ? "✓" : String(i+1);
+a.querySelector(".part-state").textContent = done ? "Complete" : (i === currentPage ? "Current" : "");
+if (i === currentPage) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+});
+lessonJump.value = sec.id;
+var count = sections.filter(function(s){return s.classList.contains("cleared");}).length;
+document.getElementById("partsSummary").textContent = count + " of 6 parts complete. You can move between parts at any time.";
+}
+function showPage(id, options){
+options = options || {};
+var index = pageIndex(id);
+if (index < 0) index = 0;
+var changed = index !== currentPage;
+currentPage = index;
+var sec = sections[index];
+sections.forEach(function(s,i){ s.hidden = i !== index; });
+document.getElementById("lessonGoals").open = false;
+store["navigation:page"] = sec.id;
+save();
+if (options.history){
+var hash = "#" + sec.id;
+try {
+if (options.history === "replace") window.history.replaceState(null,"",hash);
+else if (window.location.hash !== hash) window.history.pushState(null,"",hash);
+} catch(e){ if (window.location.hash !== hash) window.location.hash = hash; }
+}
+document.title = "Part " + (index+1) + " · " + sec.querySelector("h2").textContent + " — Session 03 · E-com Fluency 3";
+updatePageNav();
+syncPageMedia();
+if (!options.initial && (changed || options.focus)){
+document.getElementById("pageAnnouncement").textContent = "Part " + (index+1) + " of 6. " + sec.querySelector("h2").textContent;
+if (pageFrame) window.cancelAnimationFrame(pageFrame);
+pageFrame = window.requestAnimationFrame(function(){
+pageFrame = 0;
+if (options.focus){
+var target = options.target || sec;
+var focusTarget = options.target && options.target.id === "results" ? options.target : sec.querySelector("h2");
+focusTarget.setAttribute("tabindex","-1");
+focusTarget.focus({preventScroll:true});
+lessonViewport.scrollTo({top:Math.max(0,lessonViewport.scrollTop + vTop(target) - 16),behavior:"auto"});
+} else { lessonViewport.scrollTo({top:0,behavior:"auto"}); }
+resize();
+});
+}
+}
+/* Anchor the parts dropdown to its button: above it when there is room,
+   flipped below when there isn't, clamped inside the viewport either way. */
+function placeParts(){
+var r = partsToggle.getBoundingClientRect();
+var vw = document.documentElement.clientWidth, vh = window.innerHeight;
+var w = partsDialog.offsetWidth, h = partsDialog.offsetHeight;
+if (!r.width && !r.height){
+partsDialog.style.left = Math.max(10, Math.round((vw - w) / 2)) + "px";
+partsDialog.style.top = Math.max(10, Math.round((vh - h) / 2)) + "px";
+partsDialog.setAttribute("data-placement","center");
+return;
+}
+var left = Math.round(r.left + r.width / 2 - w / 2);
+partsDialog.style.left = Math.max(10, Math.min(left, vw - w - 10)) + "px";
+var above = r.top - 10 - h, below = r.bottom + 10;
+if (above >= 10){ partsDialog.style.top = Math.round(above) + "px"; partsDialog.setAttribute("data-placement","above"); }
+else if (below + h <= vh - 10){ partsDialog.style.top = Math.round(below) + "px"; partsDialog.setAttribute("data-placement","below"); }
+else { partsDialog.style.top = Math.max(10, Math.round((vh - h) / 2)) + "px"; partsDialog.setAttribute("data-placement","center"); }
+}
+function openParts(){
+restoreMenuFocus = true;
+updatePageNav();
+partsToggle.setAttribute("aria-expanded","true");
+partsDialog.showModal();
+placeParts();
+menuLinks[currentPage].focus();
+}
+function closeParts(restore){
+restoreMenuFocus = restore !== false;
+if (partsDialog.open) partsDialog.close();
+}
+partsToggle.addEventListener("click",openParts);
+document.getElementById("closeParts").addEventListener("click",function(){closeParts(true);});
+partsDialog.addEventListener("close",function(){
+partsToggle.setAttribute("aria-expanded","false");
+if (restoreMenuFocus) partsToggle.focus({preventScroll:true});
+});
+partsDialog.addEventListener("click",function(e){
+if (e.target !== partsDialog) return;
+var r = partsDialog.getBoundingClientRect();
+if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeParts(true);
+});
+window.addEventListener("resize",function(){ if (partsDialog.open) placeParts(); });
+lessonViewport.addEventListener("scroll",function(){ if (partsDialog.open) placeParts(); },{passive:true});
+pagePrev.addEventListener("click",function(){
+if (currentPage > 0) showPage(sections[currentPage-1].id,{history:"push",focus:true});
+});
+pageNext.addEventListener("click",function(){
+if (currentPage < sections.length-1) showPage(sections[currentPage+1].id,{history:"push",focus:true});
+else {
+var result = document.getElementById("results");
+result.setAttribute("tabindex","-1"); result.focus({preventScroll:true}); goTo(result);
+}
+});
+function followHistory(){
+var route = routeFromHash();
+var entryPage = !window.location.hash && window.history.state && window.history.state.lessonPage;
+closeParts(false);
+showPage(route ? route.id : (pageIndex(entryPage) >= 0 ? entryPage : sections[0].id),{focus:true,target:route && route.target});
+}
+window.addEventListener("popstate",followHistory);
+window.addEventListener("hashchange",followHistory);
+document.querySelector(".skip-link").addEventListener("click",function(e){
+e.preventDefault(); showPage(sections[currentPage].id,{focus:true});
+});
+function editingState(){
+var el = document.activeElement;
+document.documentElement.classList.toggle("editing-answer",!!(el && (el.matches("input[type=text], textarea") || el.isContentEditable)));
+}
+document.addEventListener("focusin",editingState);
+document.addEventListener("focusout",function(){window.requestAnimationFrame(editingState);});
+function active(){ /* Page selection is explicit; scrolling cannot change it. */ }
+function initPages(){
+if (pageReady) return;
+pageReady = true;
+var root = document.documentElement;
+var entryHash = root.getAttribute("data-lesson-entry-hash");
+var route = routeFromHash(entryHash === null ? window.location.hash : entryHash);
+var saved = get("navigation:page");
+var id = route ? route.id : (pageIndex(saved) >= 0 ? saved : sections[0].id);
+showPage(id,{initial:true,focus:false});
+// Keep the initial URL free of a fragment so the browser cannot jump after paint.
+// Remember this entry's part for Back navigation without changing its position.
+try {
+var state = Object.assign({},window.history.state || {},{lessonPage:id});
+window.history.replaceState(state,"",window.location.href.split("#")[0]);
+} catch(e){}
+lessonViewport.scrollTo({top:0,behavior:"auto"});
+resize();
+root.removeAttribute("data-lesson-entry-hash");
+root.classList.remove("lesson-booting");
+}
+/* ---------- native sticky layout: measure only when dimensions change ---------- */
+var rail = document.getElementById("rail");
+var lessonWrap = document.getElementById("e2iLesson");
+var lastViewportH = 0, layoutFrame = 0, layoutDirty = false;
+function fitHostFrame(){
+// Older versions expanded same-origin iframes to the entire lesson height.
+// Keep the lesson viewport bounded so the browser can handle sticky scrolling.
+// This runs on load/host resize only, never in response to scroll events.
+if (!FE) return;
+try {
+var hostHeight = window.parent.visualViewport ? window.parent.visualViewport.height : window.parent.innerHeight;
+var desiredHeight = Math.max(320, Math.round(hostHeight - 24)) + "px";
+if (FE.style.height !== desiredHeight) FE.style.height = desiredHeight;
+} catch(e){}
+}
+function resize(){
+var viewH = lessonViewport.clientHeight;
+if (viewH !== lastViewportH){
+lastViewportH = viewH;
+document.documentElement.style.setProperty("--viewport-height", viewH + "px");
+}
+}
+function scheduleLayout(needsMeasure){
+if (needsMeasure) layoutDirty = true;
+if (layoutFrame) return;
+layoutFrame = window.requestAnimationFrame(function(){
+layoutFrame = 0;
+if (layoutDirty){ layoutDirty = false; resize(); }
+active();
+});
+}
+/* ---------- deferred check groups (Media Decode) ---------- */
+each("[data-group]", function(group){
+var gk = "chk:" + group.getAttribute("data-group");
+var btn = group.querySelector(".checkbtn"), res = group.querySelector(".res");
+var members = [];
+each(".mcq, .tf, .gapin, .match", function(el){ el.deferred = true; members.push(el); }, group);
+group.members = members;
+function graded(){ return get(gk) === true; }
+group.isGraded = graded;
+function score(){
+var c = 0, tot = 0, ans = 0;
+members.forEach(function(el){
+if (el.score){ var s = el.score(); c += s[0]; ans += s[1]; tot += s[2]; }
+else if (el.correctIndex !== undefined){
+tot += 1;
+var v = get(el.getAttribute("data-k"));
+if (typeof v === "number"){ ans += 1; if (v === el.correctIndex) c += 1; }
+} else {
+tot += 1;
+if ((el.value||"").trim()){ ans += 1; if (el.correct()) c += 1; }
+}
+});
+return [c, ans, tot];
+}
+group.groupScore = score;
+function paintBar(){
+var s = score();
+if (graded()){
+btn.disabled = true;
+btn.className = "checkbtn";
+btn.textContent = "Checked";
+res.innerHTML = '<b>' + s[0] + '/' + s[2] + '</b> correct' +
+(s[1] < s[2] ? ' · ' + (s[2]-s[1]) + ' left blank' : '');
+} else {
+var ready = (s[1] >= s[2]);
+btn.disabled = !ready;                      /* no peeking part-way through */
+btn.className = ready ? "checkbtn ready" : "checkbtn";
+btn.textContent = btn.getAttribute("data-label") || btn.textContent;
+res.textContent = ready ? "All answered — ready to check"
+: (s[1] + " of " + s[2] + " answered");
+}
+}
+group.paintBar = paintBar;
+btn.setAttribute("data-label", btn.textContent);
+btn.addEventListener("click", function(){
+set(gk, true);
+members.forEach(function(el){ if (el.grade) el.grade(); });
+var s = score();
+paintBar(); refresh();
+toast(s[0] + " of " + s[2] + " right — " + (group.getAttribute("data-step")||"part checked"));
+});
+members.forEach(function(el){ if (graded()){ if (el.grade){ el.counted = true; el.grade(); } } else if (el.render) el.render(); });
+RESETTERS.push(function(){
+store[gk] = undefined;
+members.forEach(function(el){ el.graded = false; el.counted = false; });
+btn.disabled = false;
+btn.className = "checkbtn";
+btn.textContent = btn.getAttribute("data-label");
+paintBar();
+});
+paintBar();
+});
+/* ---------- reset progress (two clicks, no browser dialog) ---------- */
+each("[data-reset]", function(btn){
+var armed = false, back = null;
+btn.addEventListener("click", function(){
+if (!armed){
+armed = true;
+btn.className = "reset arm";
+btn.textContent = "Tap again to erase everything";
+back = setTimeout(function(){ armed = false; btn.className = "reset"; btn.textContent = "Reset progress"; }, 5000);
+return;
+}
+clearTimeout(back);
+store = {};
+try { localStorage.removeItem(KEY); } catch(e){}
+RESETTERS.forEach(function(f){ try { f(); } catch(e){} });
+each("[data-reset]", function(b){ b.className = "reset"; b.textContent = "Reset progress"; });
+each(".rev", function(r){
+var b = r.querySelector("button");
+if (b && b.paintReveal) b.paintReveal(false); else r.className = "rev";
+});
+STEPS.forEach(function(st){ st.was = false; });
+sections.forEach(function(s){ s.classList.remove("cleared"); });
+streak = 0; best = 0; paintStreak();
+armed = false;
+refresh();
+showPage("s1",{history:"replace",focus:true});
+});
+});
+function onScroll(){ scheduleLayout(false); }
+lessonViewport.addEventListener("scroll", onScroll, { passive:true });
+if (FE){
+try {
+window.parent.addEventListener("resize", function(){ fitHostFrame(); scheduleLayout(true); });
+} catch(e){}
+}
+window.addEventListener("resize", function(){ scheduleLayout(true); });
+window.addEventListener("beforeunload", flush);
+if (window.ResizeObserver){
+var layoutObserver = new ResizeObserver(function(){ scheduleLayout(true); });
+layoutObserver.observe(lessonViewport);
+}
+fitHostFrame();
+refresh(); initPages(); resize(); paintStreak();
+booted = true;
+paintNext(firstOpen());
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ scheduleLayout(true); });
+window.addEventListener("load", function(){ scheduleLayout(true); });
+scheduleLayout(true);
+})();
+</script>
+</body>
+</html>
