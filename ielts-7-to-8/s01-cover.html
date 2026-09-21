@@ -1,266 +1,34 @@
-<!-- =========================================================================
-     ODOO LESSON LAUNCH CARD — IELTS 78, Session 01
+<!-- English2impact lesson cover · IELTS 7.0 → 8.0 · Session 01
+     Plain HTML only — no script, no stylesheet — so Odoo's editor keeps it intact.
+     Paste into an Embed Code block. To repoint it, change the href on the Start link. -->
+<div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-weight:400;max-width:760px;margin:0 auto;background:#f4f3ef;border:1px solid #d9dcd3;border-radius:16px;overflow:hidden;font-size:16px;line-height:1.6;color:#1d2a36">
 
-     Paste into the Odoo article or eLearning slide using an Embed Code block.
-
-     Nothing to change — the lesson link below is already filled in.
-
-     Everything is inside one uniquely-named box, so nothing here can affect
-     the rest of your Odoo page, and your Odoo theme cannot affect this card.
-
-     It sizes itself to the COLUMN it sits in, not the browser window — which
-     is why it stays right in Odoo's narrow lesson view, in fullscreen, and
-     on a phone.
-     ========================================================================= -->
-
-<div id="e2i-launch">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
-/* Everything is prefixed with #e2i-launch so it cannot leak into your Odoo
-   page, and Odoo's own styling cannot leak in here. */
-
-#e2i-launch{
-  --e2il-navy:#001b45;
-  --e2il-navy-2:#000c20;
-  --e2il-salmon:#d97757;
-  --e2il-salmon-d:#c3512b;
-  --e2il-ink:#1a1a19;
-  --e2il-ink-2:#56514b;
-  --e2il-ink-3:#847c73;
-  --e2il-paper:#ffffff;
-  --e2il-surface:#fbf8f5;
-  --e2il-line:#e8e0d8;
-  --e2il-line-2:#d6cabd;
-
-  --e2il-display:"Playfair Display",Georgia,"Times New Roman",serif;
-  --e2il-body:"Be Vietnam Pro","Segoe UI",system-ui,-apple-system,sans-serif;
-  --e2il-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
-
-  container-type:inline-size;
-  display:block;
-  max-width:680px;
-  margin:0 auto;
-  font-family:var(--e2il-body);
-  line-height:1.6;
-  text-align:left;
-  box-sizing:border-box;
-}
-#e2i-launch *{box-sizing:border-box}
-
-#e2i-launch .e2il-card{
-  background:var(--e2il-paper);
-  border:1px solid var(--e2il-line);
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:0 1px 2px rgba(26,26,25,.04),0 10px 30px rgba(26,26,25,.07);
-}
-
-/* ---------- navy header band ---------- */
-#e2i-launch .e2il-band{
-  background:linear-gradient(135deg,var(--e2il-navy) 0%,var(--e2il-navy-2) 100%);
-  color:#fff;
-  padding:16px clamp(18px,4.4cqi,28px);
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-#e2i-launch .e2il-band-txt{min-width:0;flex:1}
-#e2i-launch .e2il-course{
-  font-family:var(--e2il-mono);
-  font-size:11px;
-  letter-spacing:.15em;
-  text-transform:uppercase;
-  color:#ffc9b3;
-  font-weight:600;
-  margin:0 0 2px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-#e2i-launch .e2il-sess{
-  font-family:var(--e2il-mono);
-  font-size:12px;
-  color:#a8bcdd;
-  margin:0;
-  letter-spacing:.04em;
-}
-#e2i-launch .e2il-num{
-  font-family:var(--e2il-display);
-  font-size:clamp(28px,7cqi,40px);
-  line-height:1;
-  color:rgba(255,255,255,.22);
-  font-weight:700;
-  flex:none;
-  font-variant-numeric:tabular-nums;
-}
-
-/* ---------- card body ---------- */
-#e2i-launch .e2il-body{
-  padding:clamp(20px,5cqi,30px) clamp(18px,4.4cqi,28px) clamp(20px,4.6cqi,28px);
-}
-#e2i-launch .e2il-title{
-  font-family:var(--e2il-display);
-  font-size:clamp(23px,6.4cqi,34px);
-  line-height:1.16;
-  letter-spacing:-.01em;
-  color:var(--e2il-navy);
-  font-weight:600;
-  margin:0;
-  text-wrap:balance;
-}
-#e2i-launch .e2il-title em{font-style:italic;color:var(--e2il-salmon-d)}
-
-#e2i-launch .e2il-blurb{
-  margin:12px 0 0;
-  font-size:clamp(14.5px,3.2cqi,15.5px);
-  line-height:1.62;
-  color:var(--e2il-ink-2);
-  max-width:56ch;
-}
-/* Odoo sometimes colours stray words. This forces them back. */
-#e2i-launch .e2il-blurb *{color:inherit;font-family:inherit}
-
-/* ---------- chips ---------- */
-#e2i-launch .e2il-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin:18px 0 0;
-  padding:0;
-  list-style:none;
-}
-#e2i-launch .e2il-chip{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  font-size:12.5px;
-  font-weight:500;
-  color:var(--e2il-ink-2);
-  background:var(--e2il-surface);
-  border:1px solid var(--e2il-line-2);
-  border-radius:999px;
-  padding:5px 12px;
-  white-space:nowrap;
-}
-#e2i-launch .e2il-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--e2il-salmon);
-  flex:none;
-}
-
-/* ---------- call to action ---------- */
-#e2i-launch .e2il-go{
-  margin:22px 0 0;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  flex-wrap:wrap;
-}
-#e2i-launch .e2il-cta{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-  background:var(--e2il-salmon);
-  border:1px solid var(--e2il-salmon);
-  color:#fff !important;
-  font-family:var(--e2il-body);
-  font-size:16px;
-  font-weight:600;
-  text-decoration:none !important;
-  padding:14px 26px;
-  border-radius:9px;
-  line-height:1.2;
-  transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
-  box-shadow:0 2px 6px rgba(217,119,87,.28);
-}
-#e2i-launch .e2il-cta:hover{
-  background:var(--e2il-salmon-d);
-  border-color:var(--e2il-salmon-d);
-  transform:translateY(-1px);
-  box-shadow:0 5px 14px rgba(217,119,87,.34);
-  text-decoration:none !important;
-}
-#e2i-launch .e2il-cta:focus-visible{
-  outline:3px solid var(--e2il-navy);
-  outline-offset:2px;
-}
-#e2i-launch .e2il-arrow{font-size:17px;line-height:1;transition:transform .15s ease}
-#e2i-launch .e2il-cta:hover .e2il-arrow{transform:translateX(3px)}
-
-#e2i-launch .e2il-aside{
-  font-size:12.5px;
-  color:var(--e2il-ink-3);
-  line-height:1.5;
-  margin:0;
-  flex:1 1 220px;
-  min-width:0;
-}
-
-/* ---------- narrow column / phone ---------- */
-@container (max-width:430px){
-  #e2i-launch .e2il-num{display:none}
-  #e2i-launch .e2il-cta{width:100%}
-  #e2i-launch .e2il-aside{flex:1 1 100%}
-  #e2i-launch .e2il-go{gap:12px}
-}
-/* Fallback for older browsers with no container-query support */
-@media (max-width:430px){
-  #e2i-launch .e2il-title{font-size:23px}
-  #e2i-launch .e2il-num{display:none}
-  #e2i-launch .e2il-cta{width:100%}
-}
-
-@media (prefers-reduced-motion:reduce){
-  #e2i-launch .e2il-cta,#e2i-launch .e2il-arrow{transition:none}
-  #e2i-launch .e2il-cta:hover{transform:none}
-}
-</style>
-
-<div class="e2il-card">
-
-  <!-- CHANGE 2: course name and session number -->
-  <div class="e2il-band">
-    <div class="e2il-band-txt">
-      <p class="e2il-course">English2impact · IELTS 78</p>
-      <p class="e2il-sess">Session 01 of 24 · Calibrate</p>
+  <div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:22px 24px;background:#061c37;border-bottom:3px solid #dd7958">
+    <img src="data:image/png;base64,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" width="59" height="56" alt="English2impact" style="display:block;width:auto;height:56px;flex:0 0 auto;border:0">
+    <div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 240px;min-width:0">
+      <p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#9fb2c8;line-height:1.5;margin:0 0 6px">English2impact &middot; <span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#f0a687">IELTS 7.0 &rarr; 8.0</span> &middot; Session 01 / 24</p>
+      <p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;font-size:clamp(24px,4.4vw,32px);line-height:1.2;letter-spacing:-.015em;color:#ffffff;margin:0">AI&rsquo;s energy <span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;font-style:italic !important;color:#f0a687">appetite</span></p>
     </div>
-    <div class="e2il-num">01</div>
   </div>
 
-  <div class="e2il-body">
+  <div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;gap:8px;padding:12px 24px;background:#0c2740;border-top:1px solid #1d3a57"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;font-weight:400;color:#dbe6f2;border:1px solid #2b4763;display:inline-block;line-height:1.5;padding:5px 13px;border-radius:20px;white-space:nowrap">Exam prep</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;font-weight:400;color:#dbe6f2;border:1px solid #2b4763;display:inline-block;line-height:1.5;padding:5px 13px;border-radius:20px;white-space:nowrap">Advanced</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;font-weight:400;color:#dbe6f2;border:1px solid #2b4763;display:inline-block;line-height:1.5;padding:5px 13px;border-radius:20px;white-space:nowrap">IELTS Academic</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;font-weight:600;color:#f6b79c;border:1px solid #8a4a33;background:rgba(221,121,88,.12);display:inline-block;line-height:1.5;padding:5px 13px;border-radius:20px;white-space:nowrap">90 minutes</span></div>
 
-    <!-- CHANGE 3: the title. <em> makes a phrase salmon and italic. -->
-    <h2 class="e2il-title">AI’s Energy <em>Appetite</em></h2>
+  <div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;padding:24px">
+    <p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;font-size:22px;line-height:1.3;letter-spacing:-.015em;color:#061c37;margin:0 0 8px">Find the marks you already lose.</p>
+    <p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;line-height:1.65;color:#59635e;margin:0;max-width:60ch">One topic, all four skills, in micro-steps. Set your exam screen once, work through listening, reading, speaking and writing, and leave with the baseline every later session is measured against.</p>
 
-    <!-- CHANGE 3: one or two sentences -->
-    <p class="e2il-blurb">
-      Microsteps for IELTS preparation — listening, reading, speaking and writing on one topic. Work through the page and the session is done.
-    </p>
+    <p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#636c66;line-height:1.5;margin:26px 0 12px">By the end you can</p>
+    <div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;align-items:center;gap:13px;padding:11px 0;"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;flex:0 0 auto;display:inline-block;width:31px;height:31px;line-height:29px;text-align:center !important;border-radius:9px;background:#eef3ea;border:1px solid #cfdcc9;font-size:12px;font-weight:700;color:#42624a">01</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;flex:1 1 auto;min-width:0;font-size:15px;line-height:1.55;color:#1d2a36">Stop losing marks you actually heard in Listening Part 1 — the silent tax.</span></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;align-items:center;gap:13px;padding:11px 0;border-top:1px solid #e9ebe4"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;flex:0 0 auto;display:inline-block;width:31px;height:31px;line-height:29px;text-align:center !important;border-radius:9px;background:#eef3ea;border:1px solid #cfdcc9;font-size:12px;font-weight:700;color:#42624a">02</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;flex:1 1 auto;min-width:0;font-size:15px;line-height:1.55;color:#1d2a36">Tell True, False and Not Given apart, and prove each one from the text.</span></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;align-items:center;gap:13px;padding:11px 0;border-top:1px solid #e9ebe4"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;flex:0 0 auto;display:inline-block;width:31px;height:31px;line-height:29px;text-align:center !important;border-radius:9px;background:#eef3ea;border:1px solid #cfdcc9;font-size:12px;font-weight:700;color:#42624a">03</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;flex:1 1 auto;min-width:0;font-size:15px;line-height:1.55;color:#1d2a36">Answer every Speaking Part 1 question in at least two full sentences.</span></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;align-items:center;gap:13px;padding:11px 0;border-top:1px solid #e9ebe4"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;flex:0 0 auto;display:inline-block;width:31px;height:31px;line-height:29px;text-align:center !important;border-radius:9px;background:#eef3ea;border:1px solid #cfdcc9;font-size:12px;font-weight:700;color:#42624a">04</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;flex:1 1 auto;min-width:0;font-size:15px;line-height:1.55;color:#1d2a36">Write a Task 2 thesis that reads as band 8, not band 7.</span></div></div>
 
-    <!-- CHANGE 4: the chips. Delete any you do not need. -->
-    <ul class="e2il-meta">
-      <li class="e2il-chip"><span class="e2il-dot"></span>90 minutes</li>
-      <li class="e2il-chip">All four skills</li>
-      <li class="e2il-chip">Two-take recorder</li>
-    </ul>
+    <p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#636c66;line-height:1.5;margin:26px 0 12px">The six parts</p>
+    <div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;gap:9px"><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 190px;min-width:0;padding:11px 13px 12px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:1px"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.35;color:#061c37"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:inline-block;width:9px;height:9px;border-radius:50%;background:#1d2a36;margin-right:9px;vertical-align:1px"></span>1. Ignition</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;line-height:1.5;color:#59635e;white-space:nowrap">Set-up &middot; 5 min</span></div></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 190px;min-width:0;padding:11px 13px 12px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:1px"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.35;color:#061c37"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:inline-block;width:9px;height:9px;border-radius:50%;background:#006838;margin-right:9px;vertical-align:1px"></span>2. Listening</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;line-height:1.5;color:#59635e;white-space:nowrap">Listening &middot; 20 min</span></div></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 190px;min-width:0;padding:11px 13px 12px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:1px"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.35;color:#061c37"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:inline-block;width:9px;height:9px;border-radius:50%;background:#407d0d;margin-right:9px;vertical-align:1px"></span>3. Reading</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;line-height:1.5;color:#59635e;white-space:nowrap">Reading &middot; 20 min</span></div></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 190px;min-width:0;padding:11px 13px 12px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:1px"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.35;color:#061c37"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:inline-block;width:9px;height:9px;border-radius:50%;background:#1e7c1e;margin-right:9px;vertical-align:1px"></span>4. Speaking</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;line-height:1.5;color:#59635e;white-space:nowrap">Speaking &middot; 22 min</span></div></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 190px;min-width:0;padding:11px 13px 12px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:1px"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.35;color:#061c37"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:inline-block;width:9px;height:9px;border-radius:50%;background:#547b16;margin-right:9px;vertical-align:1px"></span>5. Writing</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;line-height:1.5;color:#59635e;white-space:nowrap">Writing &middot; 20 min</span></div></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 190px;min-width:0;padding:11px 13px 12px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:1px"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.35;color:#061c37"><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:inline-block;width:9px;height:9px;border-radius:50%;background:#59635e;margin-right:9px;vertical-align:1px"></span>6. Close</span><span style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12.5px;line-height:1.5;color:#59635e;white-space:nowrap">Review &middot; 3 min</span></div></div></div>
 
-    <div class="e2il-go">
-      <!-- CHANGE 1: the lesson link -->
-      <a class="e2il-cta"
-         href="https://english2impact.github.io/e2i-lessons-html/ielts-7-to-8/s01.html"
-         target="_blank" rel="noopener">
-        Bắt đầu buổi học
-        <span class="e2il-arrow" aria-hidden="true">→</span>
-      </a>
+    <p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#636c66;line-height:1.5;margin:26px 0 12px">What&rsquo;s inside</p>
+    <div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;gap:9px"><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 130px;min-width:0;padding:12px 14px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;font-size:26px;line-height:1.1;color:#061c37;margin:0">10</p><p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:13px;line-height:1.45;color:#59635e;margin:3px 0 0">listening gaps</p></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 130px;min-width:0;padding:12px 14px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;font-size:26px;line-height:1.1;color:#061c37;margin:0">13</p><p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:13px;line-height:1.45;color:#59635e;margin:3px 0 0">reading questions</p></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 130px;min-width:0;padding:12px 14px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;font-size:26px;line-height:1.1;color:#061c37;margin:0">2</p><p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:13px;line-height:1.45;color:#59635e;margin:3px 0 0">recorded speaking takes</p></div><div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;flex:1 1 130px;min-width:0;padding:12px 14px;background:#ffffff;border:1px solid #e9ebe4;border-radius:10px"><p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;font-size:26px;line-height:1.1;color:#061c37;margin:0">3</p><p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:13px;line-height:1.45;color:#59635e;margin:3px 0 0">Task 2 theses</p></div></div>
 
-      <p class="e2il-aside">
-        Mở trong tab mới. Tiến độ được lưu trên thiết bị này —
-        đóng tab và quay lại lúc khác vẫn còn nguyên.
-      </p>
+    <div style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin:26px 0 0">
+      <a href="https://english2impact.github.io/e2i-lessons-html/ielts-7-to-8/s01.html" target="_blank" rel="noopener" style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;flex:0 0 auto;background:#dd7958;color:#ffffff !important;font-size:16px;font-weight:600;line-height:1.2;text-decoration:none !important;padding:14px 26px;border-radius:10px;border:1px solid #dd7958;min-height:44px">Start the session &rarr;</a>
+      <p style="font-style:normal;letter-spacing:normal;word-spacing:normal;text-align:left;text-transform:none;text-indent:0;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;flex:1 1 240px;min-width:0;font-size:13px;line-height:1.55;color:#59635e;margin:0">Opens in a new tab. One part at a time; your answers save in this browser, on this device, so you can close the tab and come back.</p>
     </div>
-
   </div>
-</div>
 </div>
