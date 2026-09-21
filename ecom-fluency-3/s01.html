@@ -79,6 +79,10 @@ html.lesson-booting .lesson-viewport{visibility:hidden}
   --tap:48px;              /* minimum touch target               */
   --viewport-height:100dvh;
 
+  /* --- page frame (same as English Reflex 2) ----------------- */
+  --page-max:1120px;                  /* content width cap */
+  --gutter:clamp(16px, 5vw, 56px);    /* side margin, grows with the window */
+
   /* stage accent default; every .stage sets its own via a skill class */
   --c:var(--speak);
   --ct:var(--speak-tint);
@@ -114,7 +118,7 @@ body{
   scrollbar-gutter:stable;
   outline:none;
 }
-.wrap{width:100%;max-width:1240px;margin:0 auto;padding:12px 16px 88px}
+.wrap{width:100%;max-width:calc(var(--page-max) + 2 * var(--gutter));margin:0 auto;padding:12px var(--gutter) 88px}
 
 h1,h2,h3,h4{font-family:"Playfair Display",Georgia,"Times New Roman",serif;font-weight:600;margin:0;letter-spacing:-.015em}
 p{margin:0 0 .8em}
@@ -529,12 +533,30 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 .missed li b{font-weight:600}
 .missed li span{color:var(--mute)}
 
-/* quizlet embed */
-.quizlet-practice{margin:18px 0 0;background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm)}
-.quizlet-practice>summary{min-height:var(--tap);display:flex;align-items:center;padding:12px 16px;font-size:var(--fs-small);font-weight:600;color:var(--salmon-ink);cursor:pointer}
-.quizlet-practice .quizlet-body{padding:0 14px 14px}
-.quizlet-practice .note a{display:inline-block;padding:12px 0;min-height:var(--tap)}
-.quizlet-practice iframe{display:block;width:100%;height:480px;border:0;border-radius:var(--radius-sm);background:#fff}
+/* part 1: the two moves inside one step */
+.flow{list-style:none;margin:16px 0 10px;padding:0}
+.flow li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;max-width:var(--measure);font-size:var(--fs-small);line-height:1.6;color:var(--mute)}
+.flow li b{color:var(--ink);font-weight:600}
+.flow .fn{display:grid;place-items:center;width:26px;height:26px;margin-top:-1px;border-radius:50%;background:var(--ct);color:var(--c);font-size:var(--fs-meta);font-weight:700}
+.flow+textarea{margin-bottom:6px}
+
+/* part 2: the Quizlet speed round closes the term lab */
+.quizlet-board{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.qz-head{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--navy);color:#fff}
+.qz-badge{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#4255ff;font-weight:700;font-size:1rem;color:#fff}
+.qz-title{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;font-weight:600;font-size:var(--fs-small);line-height:1.3}
+.qz-title small{font-weight:400;font-size:var(--fs-micro);color:#b9c6d6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qz-out{flex:none;display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:0 12px;border:1px solid rgba(255,255,255,.28);border-radius:999px;color:#fff;font-size:var(--fs-meta);font-weight:600;text-decoration:none;white-space:nowrap}
+.qz-out:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5)}
+.qz-frame{background:#f6f7fb;padding:0}
+.qz-frame iframe{display:block;width:100%;height:500px;border:0;background:#f6f7fb}
+@media (max-width:599.98px){
+  .qz-frame iframe{height:440px}
+  .qz-out{padding:0 10px}
+  .qz-out .qz-more{display:none}
+  .qz-title{white-space:nowrap}
+  .qz-title small{display:none}
+}
 
 /* ============================================================
    8 · Vocabulary table
@@ -664,90 +686,61 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 .script p:last-child{margin-bottom:0}
 .script .sp{display:block;margin-bottom:2px;font-size:var(--fs-meta);font-weight:700;letter-spacing:.04em;color:#4d6046}
 
-/* --- the scenario player, and its docked state ---------------------
-   .audio is sticky inside its .scn, so the player follows the learner
-   through the exercise below it and releases at the end of the card.
+/* --- the scenario player (same player as English Reflex 2) ---------
+   One row: play · elapsed · seek bar · total · answered chip. 92px open,
+   54px docked. .audio is sticky inside its .scn, so it follows the
+   learner through the gap-fill and lets go at the end of the card.
    --audio-h is written by the script: the height the box had before it
-   docked, held so that shrinking the player shifts nothing underneath.
-   --audio-dock-h is the docked player height — the one number to tune
-   if the embed's compact layout wants more room. */
-.audio{position:sticky;top:6px;z-index:20;min-height:var(--audio-h,0px)}
+   docked, held so that shrinking the bar shifts nothing underneath. */
+.audio{position:sticky;top:6px;z-index:20;min-height:var(--audio-h,0px);margin:0 0 14px}
 .audio-sentinel{height:1px;margin-bottom:-1px}
 .audio audio{display:block;width:100%;height:44px}
-.audio iframe{display:block;width:100%;height:120px;border:0;border-radius:var(--radius-sm)}
-.audio .credit{margin:6px 0 0;font-size:var(--fs-meta);color:var(--faint);line-height:1.5;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.audio .credit a{color:var(--faint)}
 .audio .pending{margin-bottom:12px;padding:11px 14px;border:1px dashed var(--line);border-radius:var(--radius-sm);font-size:var(--fs-small);color:var(--mute)}
-
-/* Docked: a compact bar. The reserved box is taller than the bar, so the
-   rest of it must not swallow taps meant for the exercise beneath. */
-.audio.stuck{pointer-events:none}
-.audio.stuck .audio-dock{
+.audio-dock{
   position:relative;pointer-events:auto;
-  padding:7px;background:var(--card);
-  border:1px solid var(--line);border-radius:11px;
-  box-shadow:0 8px 20px rgba(6,28,55,.13);
+  background:var(--navy);color:#eef2f7;
+  border-radius:var(--radius);padding:10px 12px;box-shadow:var(--shadow);
 }
-/* Without the widget API we fall back to SoundCloud's own player, left tall
-   enough that its scrubber is still there. */
-.audio.stuck iframe{height:var(--audio-dock-h,110px);border-radius:6px}
-.audio.stuck audio{height:40px}
-.audio.stuck .credit{display:none}
-
-/* --- our own transport, used once the widget API answers -------------- */
-.audio-controls{display:none;align-items:center;gap:6px}
-.audio.stuck.has-transport .audio-controls{display:flex}
-.audio.stuck.has-transport .credit{
-  display:block;margin:6px 2px 0;font-size:var(--fs-micro);line-height:1.4;
-}
-.audio-dock{margin-bottom:12px}
+.audio iframe{display:block;width:100%;height:120px;border:0;border-radius:var(--radius-sm)}
+.audio .credit{margin:7px 0 0;font-size:var(--fs-micro);line-height:1.5;color:#9fb2c8;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.audio .credit a{color:#cfdcea}
 /* Kept rendered, never display:none — a hidden iframe can have its media
    suspended, and this one is the thing that is playing. */
-.audio.stuck.has-transport iframe{
-  position:absolute;width:1px;height:1px;top:0;left:0;
-  opacity:0;pointer-events:none;
+.audio.has-transport iframe{position:absolute;width:1px;height:1px;top:0;left:0;opacity:0;pointer-events:none}
+
+/* Docked: the reserved box is taller than the bar, so the rest of it must
+   not swallow taps meant for the exercise beneath. */
+.audio.stuck{pointer-events:none}
+.audio.stuck .audio-dock{padding:7px 11px;box-shadow:0 10px 26px rgba(6,28,55,.28)}
+.audio.stuck .credit{display:none}   /* a control strip when docked; the attribution shows undocked */
+.audio.stuck:not(.has-transport) iframe{height:110px}   /* fallback keeps SoundCloud's own scrubber */
+
+.transport{display:none;align-items:center;gap:13px}
+.audio.has-transport .transport{display:flex}
+.tbtn{
+  flex:none;display:grid;place-items:center;padding:0;font:inherit;cursor:pointer;
+  width:46px;height:46px;border-radius:50%;
+  color:#fff;background:var(--salmon);border:1.5px solid var(--salmon);
 }
-.audio-controls .ac{
-  flex:0 0 auto;display:grid;place-items:center;
-  min-width:36px;height:36px;padding:0 7px;
-  font-size:var(--fs-meta);font-weight:700;font-variant-numeric:tabular-nums;
-  color:var(--navy);background:#fff;
-  border:1px solid var(--line);border-radius:8px;cursor:pointer;
-}
-.audio-controls .ac:hover{border-color:var(--navy);background:#f3f6f0}
-.audio-controls .ac-toggle{min-width:40px;background:var(--navy);border-color:var(--navy)}
-.audio-controls .ac-toggle:hover{background:var(--navy-2);border-color:var(--navy-2)}
-.audio-controls .ac-toggle svg{width:13px;height:15px;fill:#fff}
-.audio-controls .ac-toggle svg:nth-child(2){display:none}
-.audio.playing .ac-toggle svg:nth-child(1){display:none}
-.audio.playing .ac-toggle svg:nth-child(2){display:block}
-.audio-controls .ac-time{
-  flex:0 0 auto;min-width:3.2em;text-align:right;
-  font-size:var(--fs-meta);color:var(--mute);font-variant-numeric:tabular-nums;
-}
-.ac-seek{
-  flex:1 1 auto;min-width:40px;height:36px;margin:0;padding:0;
-  background:transparent;cursor:pointer;-webkit-appearance:none;appearance:none;
-}
-.ac-seek::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--line-2)}
-.ac-seek::-moz-range-track{height:6px;border-radius:3px;background:var(--line-2)}
-.ac-seek::-moz-range-progress{height:6px;border-radius:3px;background:var(--salmon)}
-.ac-seek::-webkit-slider-thumb{
-  -webkit-appearance:none;appearance:none;
-  width:18px;height:18px;margin-top:-6px;border-radius:50%;
-  background:var(--salmon);border:2px solid #fff;box-shadow:0 1px 4px rgba(6,28,55,.3);
-}
-.ac-seek::-moz-range-thumb{
-  width:16px;height:16px;border-radius:50%;
-  background:var(--salmon);border:2px solid #fff;box-shadow:0 1px 4px rgba(6,28,55,.3);
-}
-.ac-seek:focus-visible{outline:3px solid var(--salmon);outline-offset:3px;border-radius:6px}
-@media (max-width:360px){
-  .audio-controls{gap:4px}
-  .audio-controls .ac{min-width:32px;padding:0 5px}
-  .audio-controls .ac-time{min-width:2.8em}
-}
-@media print{.audio{position:static}.audio.stuck .credit{display:block}}
+.tbtn:hover{background:#cf6a49;border-color:#cf6a49}
+.tbtn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.tbtn svg{width:18px;height:18px;fill:currentColor}
+.audio.stuck .tbtn{width:40px;height:40px}
+.audio.stuck .tbtn svg{width:16px;height:16px}
+.audio.stuck .transport{gap:11px}
+.t-time{flex:none;font-size:var(--fs-micro);color:#9fb2c8;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+/* gap:13px is not arbitrary — the knob is translateX(-8px), so at 0 it
+   overhangs the rail and a tighter gap collides with the elapsed time */
+.seek{flex:1 1 auto;min-width:60px;position:relative;height:26px;display:flex;align-items:center;cursor:pointer;touch-action:none;border-radius:6px}
+.audio.stuck .seek{height:20px}
+.seek .rail-bg,.seek .rail-fill{position:absolute;left:0;top:50%;transform:translateY(-50%);height:7px;border-radius:999px}
+.seek .rail-bg{right:0;background:rgba(255,255,255,.2)}
+.seek .rail-fill{width:0;background:var(--salmon)}
+.seek .knob{position:absolute;left:0;top:50%;width:16px;height:16px;border-radius:50%;background:#fff;transform:translate(-8px,-50%);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.seek:focus-visible{outline:3px solid var(--salmon);outline-offset:6px}
+.qchip{flex:none;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font-size:var(--fs-micro);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+@media (max-width:419px){ .qchip{display:none} }
+@media print{.audio{position:static}.audio-dock{background:none;color:inherit;padding:0}.transport{display:none!important}.audio .credit{display:block;color:var(--faint)}}
 
 .video{position:relative;width:100%;aspect-ratio:16/9;margin-top:6px;background:#eceee8;border-radius:var(--radius-sm);overflow:hidden}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -796,6 +789,14 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
   /* Capped, or a tablet gets a 190px-tall bar for a thumbnail it does not
      need any bigger than a phone's. */
   .video-stage.stuck .video{flex:0 0 52%;max-width:190px;margin:0;overflow:hidden}
+  /* the close button sits inside the bar, never over its corner */
+  .video-stage.stuck .video-dock{padding-right:46px}
+  .video-stage.stuck .video-close{
+    top:50%;right:8px;transform:translateY(-50%);
+    width:30px;height:30px;color:var(--mute);background:var(--warm);
+    border:1px solid var(--line);box-shadow:none;
+  }
+  .video-stage.stuck .video-close:hover{color:#fff;background:var(--navy);border-color:var(--navy)}
   .video-stage.stuck .note{
     flex:1 1 auto;min-width:0;margin:0;
     font-size:var(--fs-meta);line-height:1.45;color:var(--faint);
@@ -819,33 +820,49 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
     --pip-x:calc(100vw - var(--pip-w) - var(--pip-gap) - 10px);
     --pip-y:calc(100vh - (var(--pip-w) * 9 / 16) - var(--pip-gap));
   }
+  /* One card: a 32px navy title bar (the grip, with the close button at
+     its right end) sitting flush on the picture. Both are fixed and both
+     read the same --pip-w / --pip-x / --pip-y, so their edges line up
+     exactly — the bar is the full width of the picture, square where it
+     meets it, rounded only on the outside corners. */
+  .video-stage.stuck{--pip-bar:32px}
   .video-stage.stuck .video{
     position:fixed;left:var(--pip-x);top:var(--pip-y);right:auto;bottom:auto;
-    z-index:90;width:var(--pip-w);margin:0;overflow:visible;
-    box-shadow:0 16px 38px rgba(6,28,55,.32);
+    z-index:90;width:var(--pip-w);margin:0;overflow:hidden;
+    border-radius:0 0 12px 12px;background:#000;
+    box-shadow:0 18px 40px rgba(6,28,55,.30),0 2px 6px rgba(6,28,55,.12);
   }
   .video-stage.stuck .video-close{
     position:fixed;z-index:92;right:auto;bottom:auto;
-    top:calc(var(--pip-y) - 13px);
-    left:calc(var(--pip-x) + var(--pip-w) - 13px);
+    top:calc(var(--pip-y) - var(--pip-bar) + 4px);
+    left:calc(var(--pip-x) + var(--pip-w) - 28px);
+    width:24px;height:24px;font-size:16px;
+    background:transparent;border:0;box-shadow:none;color:#cfdcea;border-radius:6px;
   }
+  .video-stage.stuck .video-close:hover{background:rgba(255,255,255,.14);color:#fff}
+  .video-stage.stuck .video-close:focus-visible{outline:2px solid var(--salmon);outline-offset:1px}
   /* The grip. An iframe swallows every pointer event inside it, so the player
      cannot be dragged by its own picture — it gets a bar of its own, just
      above, which is also where a person reaches for a window anyway. */
   .video-stage.stuck .video-grab{
     display:flex;position:fixed;z-index:91;
-    left:var(--pip-x);top:calc(var(--pip-y) - 19px);
-    width:calc(var(--pip-w) - 16px);height:19px;
-    align-items:center;justify-content:center;gap:3px;
-    padding:0;border:0;border-radius:9px 9px 0 0;
-    background:var(--navy);cursor:grab;touch-action:none;
+    left:var(--pip-x);top:calc(var(--pip-y) - var(--pip-bar));
+    width:var(--pip-w);height:var(--pip-bar);
+    align-items:center;gap:9px;padding:0 36px 0 12px;
+    border:0;border-radius:12px 12px 0 0;
+    font:inherit;font-size:var(--fs-micro);font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:#b9c6d6;background:var(--navy);cursor:grab;touch-action:none;
+    box-shadow:0 -6px 18px rgba(6,28,55,.16);
   }
-  .video-stage.stuck .video-grab i{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.72)}
-  .video-stage.stuck .video-grab:hover{background:var(--navy-2)}
+  .video-stage.stuck .video-grab .vg-dots{display:grid;grid-template-columns:repeat(3,3px);gap:3px}
+  .video-stage.stuck .video-grab .vg-dots i{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.62)}
+  .video-stage.stuck .video-grab .vg-lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .video-stage.stuck .video-grab:hover{background:var(--navy-2);color:#fff}
+  .video-stage.stuck .video-grab:focus-visible{outline:2px solid var(--salmon);outline-offset:2px}
   .video-stage.dragging .video-grab{cursor:grabbing}
   /* While a drag is running the iframe must not eat the pointer. */
   .video-stage.dragging .video iframe{pointer-events:none}
-  .video-stage.stuck .video iframe{border-radius:var(--radius-sm)}
+  .video-stage.stuck .video iframe{border-radius:0}
   .video-stage.stuck .note{display:none}
   .video-stage.stuck::after{
     content:"Video playing in the corner";
@@ -1055,7 +1072,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
    16 · Very narrow phones (≤360px)
    ============================================================ */
 @media (max-width:360px){
-  .wrap{padding:10px 10px 104px}
+  .wrap{padding:10px var(--gutter) 104px}
   .stage{padding:20px 15px 18px}
   .rail ol{grid-template-columns:minmax(0,1fr)}
   .page-navigation{gap:6px;padding-left:8px;padding-right:8px}
@@ -1093,7 +1110,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
   .tf .bts button{flex:0 0 auto;width:58px}
 
   :root{--fs-body:1.0625rem;--fs-lead:1.1875rem}
-  .wrap{padding:16px 24px 92px}
+  .wrap{padding:16px var(--gutter) 92px}
   .lesson-banner{flex-wrap:nowrap;padding:18px 24px 22px;gap:18px}
   .lesson-brand{width:60px;height:60px}
   .lesson-actions{flex:0 0 auto;width:auto}
@@ -1122,7 +1139,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 }
 
 @media (min-width:900px){
-  .wrap{padding:18px 28px 32px}
+  .wrap{padding:18px var(--gutter) 32px}
   .cols{grid-template-columns:minmax(0,1fr) 224px;gap:22px;padding-top:20px}
   /* back to a sticky one-column sidebar beside the lesson */
   .railwrap{align-self:stretch;padding-top:26px;margin-top:0}
@@ -1182,7 +1199,7 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
   .lesson-goals:not([open])>*:not(summary){display:block!important}
   .lesson-actions,.savebar,.railwrap,.skip-link,.page-navigation,
   .parts-dialog,.page-context,.lesson-goals>summary,.header-progress,
-  .toastwrap,.quizlet-practice,.reset{display:none!important}
+  .toastwrap,.quizlet-board,.reset{display:none!important}
   .lesson-banner{background:var(--navy)!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
   .cols{display:block}
   .stage{box-shadow:none;margin-bottom:18px;break-inside:auto}
@@ -1240,36 +1257,30 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <div class="page-context" id="pageContext"><strong id="pagePosition">PART 01 / 06</strong><span>E-com Fluency 3 · Session 01</span></div>
 <section class="stage skill-speak" id="s1">
 <div class="sh"><span class="spine"></span><span class="num">1</span><div class="txt"><span class="skill">Speaking</span><span class="clr">cleared</span><h2>Say it cold</h2></div><span class="time">8 min</span></div>
-<p class="lead">No preparation. Talk for about a minute, then write the same answer down. That draft is the thing you measure yourself against at the end.</p>
-<div class="block step" data-step="Talk for a minute, with nothing prepared">
-<div class="prompt"><p class="q">Which AI tool do you actually use at work, and what do you use it for?</p></div>
-<ul class="ck" style="margin-top:12px">
-<li><input type="checkbox" class="track save" data-k="s1said" id="s1said"><label for="s1said">Said it out loud — about a minute, no notes</label></li>
-</ul>
-</div>
-<div class="block step" data-step="Draft the answer you just tried to say">
+<p class="lead">Write first, then say it. Draft your honest answer in English, then talk it through out loud from that draft. The draft is the thing you measure yourself against at the end.</p>
+<div class="block step" data-step="Draft your answer, then say it">
 <p class="tag"><b>Understand</b> · where you are now</p>
-<h3>Now write that answer down</h3>
-<p class="note" style="margin:0 0 12px">Same question, in writing, with the time you didn't have while talking. Write in Vietnamese wherever the English doesn't come — those gaps are what the next 80 minutes are for.</p>
-<textarea class="track save" data-k="draft1" placeholder="Which AI tool do you actually use at work, and what do you use it for?" aria-label="Draft your answer to the question above"></textarea>
+<div class="prompt"><p class="q">Which AI tool do you actually use at work, and what do you use it for?</p></div>
+<ol class="flow">
+<li><span class="fn">1</span><div><b>Draft it.</b> Five or six sentences, in English, the way you would actually say them. Don't polish. The gaps you notice are what the next 80 minutes are for.</div></li>
+</ol>
+<textarea class="track save" data-k="draft1" placeholder="The AI tool I use most at work is… I use it to…" aria-label="Draft your answer to the question above"></textarea>
+<ol class="flow" start="2">
+<li><span class="fn">2</span><div><b>Say it.</b> Glance at your draft, then look away and talk for about a minute. Keep the ideas, not the exact words.</div></li>
+</ol>
+<ul class="ck">
+<li><input type="checkbox" class="track save" data-k="s1said" id="s1said"><label for="s1said">Said it out loud from my draft, about a minute</label></li>
+</ul>
 <p class="note">This draft comes back at the end, next to what you can say by then.</p>
 </div>
 <div class="strip" data-strip></div>
 </section>
 <section class="stage skill-read" id="s2">
 <div class="sh"><span class="spine"></span><span class="num">2</span><div class="txt"><span class="skill">Reading</span><span class="clr">cleared</span><h2>Term lab</h2></div><span class="time">18 min</span></div>
-<p class="lead">Twelve terms, all from the video. Guess each one, then drill only the ones you miss until all twelve are yours.</p>
+<p class="lead">Twelve terms, all from the video. Guess each one and drill only the ones you miss, then close the part by racing all twelve against the clock.</p>
 <div class="block step" data-step="Guess twelve terms, then drill the misses">
 <p class="tag"><b>Understand</b> · guess the term</p>
 <div class="guess track" data-k="guess"></div>
-<details class="quizlet-practice">
-<summary>Quizlet Match · practise the vocabulary</summary>
-<div class="quizlet-body">
-<p class="note">Match the terms with their examples. Repeat this practice as often as you like.</p>
-<iframe id="quizletMatch" data-media-src="https://quizlet.com/1210644883/match/embed?i=4y577v&amp;x=1jj1" height="500" width="100%" style="border:0" title="Quizlet Match — The three kinds of AI tool" loading="lazy" allowfullscreen></iframe>
-<p class="note"><a href="https://quizlet.com/1210644883/match/embed?i=4y577v&amp;x=1jj1" target="_blank" rel="noopener noreferrer">Open Quizlet Match in a new tab</a></p>
-</div>
-</details>
 </div>
 <div class="block">
 <div class="rev"><button type="button" data-hide="Hide the list">Show all twelve as a list</button><div class="body bare">
@@ -1295,33 +1306,17 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
 <p class="legend"><i></i>Marked terms are the six you will say out loud in section 3.</p>
 </div></div>
 </div>
-<div class="block step" data-group="m1" data-step="Match the six you'll say">
-<p class="tag"><b>Remember</b> · match, round 1</p>
-<h3>The six you'll produce</h3>
-<p class="note" style="margin:0 0 12px">Pair all six, changing your mind as often as you like. Nothing is marked until you press Check.</p>
-<div class="match track" data-k="m1"></div>
-<div class="checkbar"><button type="button" class="checkbtn">Check round 1</button><span class="res"></span></div>
+<div class="block step" data-step="Match all twelve against the clock">
+<p class="tag"><b>Remember</b> · speed round</p>
+<h3>Match all twelve against the clock</h3>
+<p class="note" style="margin:0 0 14px">Quizlet Match, same twelve terms. Play until you can clear the board without a wrong pair. The clock on the board is your score, so it isn't marked here. Tick the box when you've done a clean round.</p>
+<div class="quizlet-board">
+<div class="qz-head"><span class="qz-badge" aria-hidden="true">Q</span><span class="qz-title">Quizlet Match<small>12 terms · The three kinds of AI tool</small></span><a class="qz-out" href="https://quizlet.com/1210644883/match/embed?i=4y577v&amp;x=1jj1" target="_blank" rel="noopener noreferrer" aria-label="Open Quizlet Match in a new tab">Open<span class="qz-more"> in a new tab</span> <span aria-hidden="true">↗</span></a></div>
+<div class="qz-frame"><iframe id="quizletMatch" data-media-src="https://quizlet.com/1210644883/match/embed?i=4y577v&amp;x=1jj1" title="Quizlet Match — The three kinds of AI tool" loading="lazy" allowfullscreen></iframe></div>
 </div>
-<div class="block step" data-group="m2" data-step="Match the six you'll recognise">
-<p class="tag"><b>Remember</b> · match, round 2</p>
-<h3>The six you'll recognise</h3>
-<p class="note" style="margin:0 0 12px">Same rule: pair all six first, then check.</p>
-<div class="match track" data-k="m2"></div>
-<div class="checkbar"><button type="button" class="checkbtn">Check round 2</button><span class="res"></span></div>
-</div>
-<div class="block step" data-group="coll" data-step="Six collocations, one word each">
-<p class="tag"><b>Remember</b> · collocations from the video</p>
-<h3>One word per gap</h3>
-<p class="bank">Word bank: <b>surface · double · tailor · cutoff · curated · ingest</b></p>
-<ul class="gap numbered">
-<li><span class="s">You have to <input type="text" class="gapin track" data-k="g1" data-a="surface"> the implied context before you write the prompt.</span></li>
-<li><span class="s">For a high-stakes task you want to <span style="white-space:nowrap"><input type="text" class="gapin track" data-k="g2" data-a="double">-check</span> the answer.</span></li>
-<li><span class="s">A custom solution is <span style="white-space:nowrap"><input type="text" class="gapin track" data-k="g3" data-a="tailor">-made</span> for one problem.</span></li>
-<li><span class="s">The model has a <input type="text" class="gapin track" data-k="g4" data-a="cutoff"> date, so recent events are missing.</span></li>
-<li><span class="s">The course ends with a <input type="text" class="gapin track" data-k="g5" data-a="curated"> list of tools for beginners.</span></li>
-<li><span class="s">The system can <input type="text" class="gapin track" data-k="g6" data-a="ingest"> all the information about 200 clients.</span></li>
+<ul class="ck" style="margin-top:14px">
+<li><input type="checkbox" class="track save" data-k="qz1" id="qz1"><label for="qz1">Cleared the board with no wrong pairs</label></li>
 </ul>
-<div class="checkbar"><button type="button" class="checkbtn">Check the six gaps</button><span class="res"></span></div>
 </div>
 <div class="strip" data-strip></div>
 </section>
@@ -1574,12 +1569,10 @@ data-artist-url="https://soundcloud.com/english2impact"></div>
 <div class="col now"><h4>By the end you said</h4><div id="tvnNow"><p class="empty">Your move chain from section 3 lands here.</p></div></div>
 </div>
 <p class="arrowline" id="tvnLine"></p>
-<table style="margin-top:18px"><tbody id="rRows"></tbody></table>
 <div class="fin-banner" id="finBanner">
 <h3>Session complete</h3>
 <p id="finText"></p>
 </div>
-<button type="button" class="reset" data-reset>Reset progress</button>
 </div>
 </div>
 <div class="strip" data-strip></div>
@@ -1821,12 +1814,13 @@ box.appendChild(a);
 credit(box);
 }
 });
-/* ---------- a transport for the docked player ----------
-   SoundCloud's own layout drops its scrubber at the docked height, which
-   leaves no way to replay a phrase — the thing a listening exercise needs
-   most. So we drive the widget ourselves: play/pause, a seek bar and two
-   5-second jumps. If the widget API never answers, the fallback is simply
-   SoundCloud's own player left tall enough to show its scrubber. */
+/* ---------- the player's transport (same as English Reflex 2) ----------
+   SoundCloud's widget drops its scrubber at small heights, which leaves no
+   way to replay a phrase — the thing a listening exercise needs most. So
+   the widget is kept 1px and invisible, and we drive it: one row with play,
+   elapsed, a draggable seek bar, total and an answered chip, open or docked.
+   No ±5s buttons — the arrow keys on the seek bar jump five seconds. If the
+   API never answers, SoundCloud's own player stays visible instead. */
 var SC_READY = null;
 function soundcloudApi(){
 if (SC_READY) return SC_READY;
@@ -1847,75 +1841,95 @@ function clock(ms){
 var t = Math.max(0, Math.round(ms / 1000));
 return Math.floor(t / 60) + ":" + (t % 60 < 10 ? "0" : "") + (t % 60);
 }
-var PLAY_SVG = '<svg viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1l9.5 6-9.5 6z"/></svg>';
-var PAUSE_SVG = '<svg viewBox="0 0 12 14" aria-hidden="true"><rect x="1.5" y="1" width="3.4" height="12" rx="1"/><rect x="7.1" y="1" width="3.4" height="12" rx="1"/></svg>';
+var PLAY_PATH = "M8 5v14l11-7z", PAUSE_PATH = "M7 5h4v14H7zM13 5h4v14h-4z";
 function transport(box, dock, media){
 if (!media || media.tagName !== "IFRAME") return;
 var src = media.getAttribute("data-media-src") || media.getAttribute("src") || "";
 if (src.indexOf("w.soundcloud.com/player") < 0) return;
+var scn = box.closest ? box.closest(".scn") : null;
+var gaps = scn ? Array.prototype.slice.call(scn.querySelectorAll("input.gapin")) : [];
 
 var bar = document.createElement("div");
-bar.className = "audio-controls";
+bar.className = "transport";
 bar.innerHTML =
-'<button type="button" class="ac ac-toggle" aria-label="Play">' + PLAY_SVG + PAUSE_SVG + '</button>' +
-'<button type="button" class="ac ac-step" data-step="-5000" aria-label="Back 5 seconds">&minus;5</button>' +
-'<input type="range" class="ac-seek" min="0" max="1000" value="0" aria-label="Position in the dialogue" aria-valuetext="0:00">' +
-'<button type="button" class="ac ac-step" data-step="5000" aria-label="Forward 5 seconds">+5</button>' +
-'<span class="ac-time">0:00</span>';
-var creditLine = dock.querySelector(".credit");
-if (creditLine) dock.insertBefore(bar, creditLine); else dock.appendChild(bar);
+'<button type="button" class="tbtn" aria-label="Play the dialogue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + PLAY_PATH + '"></path></svg></button>' +
+'<span class="t-time t-now">0:00</span>' +
+'<div class="seek" role="slider" tabindex="0" aria-label="Playback position — drag to scrub, arrow keys jump five seconds" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">' +
+'<span class="rail-bg"></span><span class="rail-fill"></span><span class="knob"></span></div>' +
+'<span class="t-time t-dur">—:—</span>' +
+(gaps.length ? '<span class="qchip" title="Gaps filled">0/' + gaps.length + '</span>' : '');
+dock.insertBefore(bar, dock.firstChild);
 
-var toggle = bar.querySelector(".ac-toggle"),
-seek = bar.querySelector(".ac-seek"),
-time = bar.querySelector(".ac-time");
-var widget = null, duration = 0, scrubbing = false;
+var toggle = bar.querySelector(".tbtn"), icon = toggle.querySelector("path"),
+seek = bar.querySelector(".seek"), fill = bar.querySelector(".rail-fill"), knob = bar.querySelector(".knob"),
+now = bar.querySelector(".t-now"), dur = bar.querySelector(".t-dur"), chip = bar.querySelector(".qchip");
+var widget = null, duration = 0, dragging = false;
+
+function paintChip(){
+if (!chip) return;
+var n = gaps.filter(function(g){ return (g.value || "").trim(); }).length;
+chip.textContent = n + "/" + gaps.length;
+}
+if (scn) scn.addEventListener("input", paintChip);
+PAINTERS.push(paintChip);
+paintChip();
 
 function paint(ms){
-if (!scrubbing && duration) seek.value = String(Math.round(ms / duration * 1000));
-time.textContent = clock(ms);
+var pct = duration ? Math.min(100, ms / duration * 100) : 0;
+fill.style.width = pct + "%"; knob.style.left = pct + "%";
+now.textContent = clock(ms);
+seek.setAttribute("aria-valuenow", String(Math.round(pct)));
 seek.setAttribute("aria-valuetext", clock(ms) + " of " + clock(duration));
 }
 function playing(on){
 box.classList.toggle("playing", on);
-toggle.setAttribute("aria-label", on ? "Pause" : "Play");
+icon.setAttribute("d", on ? PAUSE_PATH : PLAY_PATH);
+toggle.setAttribute("aria-label", on ? "Pause the dialogue" : "Play the dialogue");
 }
-
 function wire(SC){
 widget = SC.Widget(media);
 widget.bind(SC.Widget.Events.READY, function(){
-widget.getDuration(function(ms){ duration = ms || 0; paint(0); });
+widget.getDuration(function(ms){
+duration = ms || 0; dur.textContent = clock(duration); paint(0);
 box.classList.add("has-transport");
 reserveLater();
+});
 });
 widget.bind(SC.Widget.Events.PLAY, function(){ playing(true); });
 widget.bind(SC.Widget.Events.PAUSE, function(){ playing(false); });
 widget.bind(SC.Widget.Events.FINISH, function(){ playing(false); paint(duration); });
-widget.bind(SC.Widget.Events.PLAY_PROGRESS, function(e){ paint(e.currentPosition); });
+widget.bind(SC.Widget.Events.PLAY_PROGRESS, function(e){ if (!dragging) paint(e.currentPosition); });
 }
 function reserveLater(){ window.requestAnimationFrame(function(){ resize(); }); }
 
 toggle.addEventListener("click", function(){ if (widget) widget.toggle(); });
-each(".ac-step", function(b){
-b.addEventListener("click", function(){
+function jump(delta){
 if (!widget) return;
-var by = parseInt(b.getAttribute("data-step"), 10);
-widget.getPosition(function(ms){
-widget.seekTo(Math.max(0, Math.min(duration || ms + by, ms + by)));
-});
-});
-}, bar);
-seek.addEventListener("input", function(){
-scrubbing = true;
-if (duration) time.textContent = clock(seek.value / 1000 * duration);
-});
-function commit(){
-if (!scrubbing) return;
-scrubbing = false;
-if (widget && duration) widget.seekTo(seek.value / 1000 * duration);
+widget.getPosition(function(p){ widget.seekTo(Math.max(0, Math.min(duration || p, p + delta))); });
 }
-seek.addEventListener("change", commit);
-seek.addEventListener("blur", commit);
-
+function ratio(e){
+var r = seek.getBoundingClientRect();
+return Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+}
+function apply(e){
+if (!duration) return;
+var ms = ratio(e) * duration;
+paint(ms); if (widget) widget.seekTo(Math.round(ms));
+}
+seek.addEventListener("pointerdown", function(e){
+if (!duration) return;
+dragging = true; try { seek.setPointerCapture(e.pointerId); } catch(err){}
+apply(e); e.preventDefault();
+});
+seek.addEventListener("pointermove", function(e){ if (dragging) apply(e); });
+function endDrag(e){ dragging = false; try { seek.releasePointerCapture(e.pointerId); } catch(err){} }
+seek.addEventListener("pointerup", endDrag);
+seek.addEventListener("pointercancel", endDrag);
+seek.addEventListener("keydown", function(e){
+if (e.key === "ArrowRight"){ jump(5000); e.preventDefault(); }
+else if (e.key === "ArrowLeft"){ jump(-5000); e.preventDefault(); }
+else if (e.key === "Home" && widget){ widget.seekTo(0); e.preventDefault(); }
+});
 /* The src is attached lazily when this part becomes the visible one. */
 function whenSourced(){
 if (media.getAttribute("src")) {
@@ -1975,7 +1989,7 @@ var credit = box.querySelector(".credit");
 if (credit) dock.appendChild(credit);
 function reserve(){
 if (box.classList.contains("stuck")) return;
-var h = box.offsetHeight;                   /* 0 while its part is hidden — keep the last good value */
+var h = dock.offsetHeight;                  /* the dock, not the box: the box carries the old min-height. 0 while hidden — keep the last good value */
 if (h > 20) box.style.setProperty("--audio-h", h + "px");
 }
 var sentinel = document.createElement("div");
@@ -2024,7 +2038,7 @@ grab.type = "button";
 grab.className = "video-grab";
 grab.title = "Drag the player anywhere · double-click to send it back to the corner";
 grab.setAttribute("aria-label", "Move the video player");
-grab.innerHTML = "<i></i><i></i><i></i><i></i>";
+grab.innerHTML = '<span class="vg-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="vg-lbl">Video · drag to move</span>';
 dock.appendChild(grab);
 
 /* The block holds the height it had before the player shrank or lifted,
@@ -2060,8 +2074,9 @@ return [w, video.offsetHeight || Math.round(w * 9 / 16)];
 function clampPip(x, y){
 var s = pipSize(), gap = 8;
 var maxX = Math.max(gap, window.innerWidth - s[0] - gap);
-var maxY = Math.max(28, window.innerHeight - s[1] - gap);
-return [Math.min(Math.max(gap, x), maxX), Math.min(Math.max(28, y), maxY)];
+var top = 32 + gap;                     /* room for the title bar above the picture */
+var maxY = Math.max(top, window.innerHeight - s[1] - gap);
+return [Math.min(Math.max(gap, x), maxX), Math.min(Math.max(top, y), maxY)];
 }
 function defaultPip(){
 var gap = 22, s = pipSize();
@@ -2792,7 +2807,7 @@ if (sec.meterEl){
 var pipsH = "";
 steps.forEach(function(b,n){ pipsH += '<i class="' + (n < sdone ? "on" : "") + '"></i>'; });
 sec.meterEl.innerHTML = '<span class="pips">' + pipsH + '</span><span><b>' + sdone +
-'</b> of ' + steps.length + ' steps</span>';
+'</b> of ' + steps.length + (steps.length === 1 ? ' step' : ' steps') + '</span>';
 }
 links[i].querySelector(".rbar i").style.width = pct + "%";
 links[i].classList.toggle("done", !!cleared);
@@ -2805,7 +2820,7 @@ strip.innerHTML = '<span class="win">✓ Stage cleared</span>' +
 '<span>' + (s[3] ? '<b>' + s[2] + '/' + s[3] + '</b> correct' : 'all steps done') + '</span>' +
 (i < sections.length - 1 ? '<button type="button" class="jump" data-jump="' + (i+1) + '">Next part →</button>' : '');
 } else {
-strip.innerHTML = '<span><b>' + sdone + '</b> of ' + steps.length + ' steps done</span>' +
+strip.innerHTML = '<span><b>' + sdone + '</b> of ' + steps.length + (steps.length === 1 ? ' step' : ' steps') + ' done</span>' +
 '<span class="bar"><i style="width:' + (steps.length ? Math.round(sdone/steps.length*100) : 0) + '%"></i></span>' +
 '<span>' + (s[3] ? '<b>' + s[2] + '/' + s[3] + '</b> correct' : 'nothing checked yet') + '</span>';
 }
@@ -2833,7 +2848,7 @@ document.getElementById("stagesComplete").textContent = sections.filter(function
 document.getElementById("rTotal").textContent = C + "/" + A;
 document.getElementById("rSub").textContent = A ?
 ("Checked answers so far · " + Math.round(C/A*100) + "% right") : "Nothing checked yet";
-document.getElementById("rRows").innerHTML = rows;
+
 paintNext(open);
 updatePageNav();
 report(C, A);
