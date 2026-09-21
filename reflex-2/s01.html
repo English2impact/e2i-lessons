@@ -72,11 +72,8 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .masthead{background:var(--navy); color:#eef2f7; padding:22px 0 24px; border-bottom:3px solid var(--terra)}
 .shell{max-width:1200px; margin:0 auto; padding:0 16px}
 .topline{display:flex; gap:13px; align-items:center; margin:0 0 12px}
-.brand{
-  flex:none; display:block; line-height:0; padding:5px 7px; border-radius:11px;
-  background:#fff; border:1px solid rgba(255,255,255,.55); text-decoration:none;
-}
-.brand:hover{background:#fffdfb; border-color:var(--terra)}
+.brand{flex:none; display:block; line-height:0; text-decoration:none; border-radius:8px}
+.brand:hover{opacity:.82}
 .brand img{display:block; width:auto; height:46px}
 .eyebrow{
   font-size:var(--fs-micro); letter-spacing:.13em; text-transform:uppercase;
@@ -93,8 +90,7 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
   font-size:var(--fs-micro); letter-spacing:.02em; color:#d7e1ed;
   border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:5px 11px; white-space:nowrap;
 }
-.chip.now{border-color:var(--terra); color:#fff; background:rgba(221,121,88,.18); font-weight:500}
-.chip.coach{border-color:rgba(255,255,255,.4); background:rgba(255,255,255,.1); color:#fff; font-weight:500}
+.chip.now{border-color:var(--terra); color:#fff; background:rgba(221,121,88,.18); font-weight:600}
 .structure{
   margin:14px 0 0; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16);
   border-radius:10px; padding:11px 13px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -139,7 +135,7 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .block-head h3{font-size:var(--fs-h3)}
 .block-head .sub{display:block; font-size:var(--fs-small); color:var(--mute); margin-top:5px; max-width:var(--measure)}
 
-/* rule + teacher note cards */
+/* guide boxes */
 .rule{
   background:var(--card); border:1px solid var(--line); border-left:4px solid var(--terra);
   border-radius:0 var(--radius) var(--radius) 0; padding:14px 16px; margin:0 0 16px;
@@ -165,23 +161,6 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .yes{color:var(--ok); font-weight:600}
 .no{color:var(--no); font-weight:600}
 
-.teach{
-  background:#f3f6fa; border:1px solid #d8e2ee; border-radius:var(--radius);
-  margin:0 0 18px; overflow:hidden;
-}
-.teach>summary{
-  cursor:pointer; list-style:none; padding:12px 15px; min-height:48px; display:flex; align-items:center; gap:9px;
-  font-size:var(--fs-small); font-weight:600; color:var(--navy-2);
-}
-.teach>summary::-webkit-details-marker{display:none}
-.teach>summary::before{
-  content:"COACH"; font-size:10px; letter-spacing:.12em; background:var(--navy); color:#fff;
-  padding:3px 6px; border-radius:4px; flex:none;
-}
-.teach>summary::after{content:"▾"; margin-left:auto; color:var(--mute); transition:transform .2s}
-.teach[open]>summary::after{transform:rotate(180deg)}
-.teach .inner{padding:0 15px 13px; font-size:var(--fs-small); color:#243b56}
-.teach .inner p{margin:0 0 .7em}
 .tag{
   display:inline-block; font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-micro);
   background:#fff; border:1px solid #d8e2ee; border-radius:5px; padding:1px 6px; color:var(--navy-2);
@@ -591,7 +570,6 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
   .subline{font-size:var(--fs-meta); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
   .chips{gap:6px; margin-top:12px}
   .chip{padding:4px 10px}
-  .chip.extra{display:none}
   .structure{padding:9px 11px; margin-top:12px}
   .credit{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .lede{font-size:var(--fs-body)}
@@ -626,7 +604,7 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 }
 
 @media print{
-  .pagenav,.rail,.teach,.toast{display:none}
+  .pagenav,.rail,.toast{display:none}
   .stage[hidden]{display:block !important}
 }
 </style>
@@ -647,12 +625,10 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
     <h1>“We rolled out the new system <em>last quarter</em>.”</h1>
     <p class="subline">Ten terms, four forms, seven measured parts and a report. Guess the terms, drill each form until it arrives without translating, then decode the dialogue at full speed — finish every part and you have finished the session.</p>
     <ul class="chips">
-      <li class="chip now">Stage 1 · Time Control</li>
-      <li class="chip">Finished Past</li>
-      <li class="chip">Intermediate · B1–B2</li>
-      <li class="chip">90 minutes</li>
-      <li class="chip coach">Coaching edition</li>
-      <li class="chip extra">10 terms · 5 daily + 5 workplace</li>
+      <li class="chip">Everyday</li>
+      <li class="chip">Intermediate</li>
+      <li class="chip">English Reflex</li>
+      <li class="chip now">90 minutes</li>
     </ul>
     <p class="structure"><span>Structure</span>S + V (Past Simple) + O + [Finished Time Reference]</p>
   </div>
@@ -702,7 +678,13 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
    1 · CONTENT — everything a learner reads lives here
    ================================================================ */
 
-var SC_URL   = "https://soundcloud.com/english2impact/dialogue_finished-past_we";
+/* Paste the url= value straight out of SoundCloud's own embed code. It is
+   already query-encoded (soundcloud%253Atracks%253A…), so it must NOT be
+   encoded again — encodeURIComponent here would double-encode it and the
+   player would load nothing. SC_PAGE is the human permalink, used only for
+   the attribution links. */
+var SC_EMBED = "https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2401494390";
+var SC_PAGE  = "https://soundcloud.com/english2impact/dialogue_finished-past_we";
 var SC_TITLE = "Dialogue · Finished Past · We rolled out the new system last quarter";
 var SC_USER  = "https://soundcloud.com/english2impact";
 
@@ -964,9 +946,6 @@ function rule(title, lines){
     return '<p class="ln"><span class="'+(l.ok?'yes':'no')+'">'+(l.ok?'✓':'✗')+'</span><span>'+l.t+'</span></p>';
   }).join('')+'</div></div>';
 }
-function teach(label, body){
-  return '<details class="teach"><summary>'+label+'</summary><div class="inner">'+body+'</div></details>';
-}
 function checkbar(group, label){
   return '<div class="checkbar" data-bar="'+group+'">'+
     '<button type="button" class="btn accent" data-check="'+group+'" disabled>'+label+'</button>'+
@@ -993,10 +972,7 @@ function buildWarm(){
     '<div class="pool" id="sort-pool">'+pool+'</div>'+
     '<div class="sort-grid" id="sort-grid">'+buckets+'</div>'+
     checkbar("sort","Check the sort")+
-    '<div class="toolbar"><button type="button" class="btn quiet sm" id="sort-show">Show the answers</button></div>'+
-    teach("Teacher — run this as a board race, 4 minutes",
-      "<p>Three columns on the board plus a fourth for the irregulars. Call the verb, the class says the past form and points.</p>"+
-      "<p>The payoff line to say out loud: <b>the ending is easiest when the next word starts with a vowel</b> — and particles usually do. <span class='tag'>rolled_out</span> <span class='tag'>sorted_it_out</span> <span class='tag'>ended_up</span> <span class='tag'>signed_off</span>.</p>"));
+    '<div class="toolbar"><button type="button" class="btn quiet sm" id="sort-show">Show the answers</button></div>');
 }
 
 /* ---------------- part 2 · term lab (immediate by design) ---------------- */
@@ -1034,11 +1010,7 @@ function buildLab(){
       {ok:false, t:"I ran <b>him</b> into."},
       {k:"Splits", t:"roll out · sort out · wrap up · kick off"},
       {k:"Never splits", t:"run into · get around to · come in under · sign off on"}
-    ])+
-    teach("Teacher — the error that survives the whole course",
-      "<p>✗ <i>We rolled out it.</i> Correct it out loud every single time it appears today, or you will still be correcting it in Session 12.</p>"+
-      "<p>Two columns on the board — <b>SPLITS</b> / <b>NEVER SPLITS</b> — left up for the full ninety minutes. Run the two hardest pairs back to back until nobody hesitates: <i>rolled it out / ran into him</i> and <i>signed it off / signed off on it</i>.</p>"+
-      "<p>Say the rule as one line: <b>a pronoun goes in the middle when the middle exists.</b></p>"));
+    ]));
 }
 
 /* ---------------- parts 3–5 · written drills ---------------- */
@@ -1150,7 +1122,7 @@ function buildDecode(){
           '</div>'+
           '<iframe class="sc-frame" id="sc-frame" title="Dialogue audio" allow="autoplay" scrolling="no" frameborder="no"></iframe>'+
           '<p class="credit"><a href="'+SC_USER+'" target="_blank" rel="noopener">English2impact</a> · '+
-          '<a href="'+SC_URL+'" target="_blank" rel="noopener">'+SC_TITLE+'</a></p>'+
+          '<a href="'+SC_PAGE+'" target="_blank" rel="noopener">'+SC_TITLE+'</a></p>'+
         '</div>'+
       '</div>'+
       '<p class="lede"><b>Before you listen:</b> Clara missed last quarter and has heard the rollout went badly. Every answer Adam gives is a finished event with a finished time attached. Listen once, books closed, then answer. The player stays with you as you scroll — use <b>−5s</b> to replay the line you missed.</p>'+
@@ -1159,12 +1131,7 @@ function buildDecode(){
     '</div>'+
     '<div class="toolbar"><button type="button" class="btn quiet sm" id="show-script" aria-expanded="false" aria-controls="transcript">Show the transcript</button>'+
     '<span class="hint">Read it only after you have answered all eight.</span></div>'+
-    '<div class="rev-panel" id="transcript"><div class="dlg">'+script+'</div></div>'+
-    teach("Teacher — what to replay",
-      "<p>Stop at line 6: <i>The old data did not transfer cleanly, so we sorted it out by hand.</i> The whole grammar of the session in one breath — <i>did not</i> + base form on the left, past with a split phrasal verb on the right. Rebuild it orally before moving on.</p>"+
-      "<p>Line 2 vs line 14: <i>wrapped <b>it</b> up</i> / <i>wrapped up</i>. Same term, split once and whole once — ask the class why.</p>"+
-      "<p>Lines 15 and 16: <i>sign <b>it</b> off</i> / <i>signed <b>off on</b> it</i>. Play both back to back. Two terms sharing one verb; drill both, explain neither.</p>"+
-      "<p>Line 1 vs line 11: <i>rolled out</i> (verb, two words) vs <i>the rollout</i> (noun, one word).</p>"));
+    '<div class="rev-panel" id="transcript"><div class="dlg">'+script+'</div></div>');
 }
 
 /* ---------------- part 7 · exit ---------------- */
@@ -1180,10 +1147,7 @@ function buildExit(){
       {k:"[−]",     tag:true, t:"We didn’t roll it out last quarter."},
       {k:"[Y/N ?]", tag:true, t:"Did you roll it out last quarter?"},
       {k:"[Wh- ?]", tag:true, t:"When did you roll it out?"}
-    ])+
-    teach("Teacher — how to run the exit ticket",
-      "<p>Round the room, one line each, no notes. A learner who reaches for the page has not finished the session.</p>"+
-      "<p>Listen for the ending and for the pronoun position — those two are the whole of Stage 1. Everything else can wait.</p>"));
+    ]));
 }
 
 /* ---------------- part 8 · report ---------------- */
@@ -1217,11 +1181,7 @@ main.innerHTML =
       {ok:false, t:"We <b>did not rolled</b> out the system."},
       {k:"Why", t:"<i>did</i> carries the past, so the verb goes back to its base form."}
     ]),
-    buildExchangeBlock(),
-    teach("Teacher — items 4, 5, 8, 9, 10",
-      "<p><b>4 and 9:</b> the pronoun stays in the middle even in the negative — ✓ <i>did not wrap <b>it</b> up</i>. Expect ✗ <i>did not wrap up it</i>.</p>"+
-      "<p><b>5 and 8:</b> the irregulars. ✓ <i>did not <b>run</b> into</i>, ✓ <i>did not <b>come</b> in under budget</i> — this is where most of the class slips.</p>"+
-      "<p><b>10:</b> <i>end up</i> takes -ing, always. Do not open verb patterns today — Session 19 does that properly.</p>"))+
+    buildExchangeBlock())+
   buildDrill(PARTS[3],"b",DRILL_B,true,
     '<p class="lede">Build the question from the prompt. Items 5 and 8 are <b>negative questions</b> — you are surprised, because you thought the opposite.</p>'+
     rule("Two rules, one line.",[
@@ -1231,10 +1191,7 @@ main.innerHTML =
       {ok:false, t:"<b>Did not</b> you wrap it up?"},
       {k:"Negative question", t:"only the contraction moves to the front — never the two words apart."}
     ]),
-    buildConvoBlock(),
-    teach("Teacher — the answer is where the terms live",
-      "<p>Vietnamese answers the <i>shape</i> of a negative question; English answers the <i>fact</i>. Let it happen once, then point at the board.</p>"+
-      "<p>The spoken block drills the bare reflex — <i>Yes, we did</i> / <i>No, they didn’t</i> — at speed. Once it is automatic, push the room one step further: short form <b>plus one clause</b>, <i>“Yes, we did — we finished two days early.”</i> Students allowed to answer in two words all term will still be answering in two words in Session 12.</p>"))+
+    buildConvoBlock())+
   buildDrill(PARTS[4],"c",DRILL_C,false,
     '<p class="lede">Take a Yes/No question, remove <b>one</b> piece, and put the Wh- word in front. When the Wh- word <b>is</b> the subject, there is no <i>did</i> — and the verb keeps its past form.</p>'+
     rule("Two shapes.",[
@@ -1242,10 +1199,7 @@ main.innerHTML =
       {k:"Subject",  tag:true, t:"<b>Who signed</b> off on the budget? — no <i>did</i>, and the verb keeps its past form."},
       {ok:false, t:"<b>Who did sign</b> off on the budget?"}
     ]),
-    "",
-    teach("Teacher — write 3, 6 and 10 on the board together",
-      "<p>Subject questions: no <i>did</i>, past form kept. Expect ✗ <i>Who did sign off…?</i> and ✗ <i>Who run into…?</i> from half the room.</p>"+
-      "<p>Drill <b>“When exactly?”</b> and <b>“How did it go?”</b> as terms — between them they open and close almost every professional conversation about something that has already happened.</p>"))+
+    "")+
   buildDecode()+buildExit()+buildReport();
 
 /* ================================================================
@@ -1796,7 +1750,7 @@ function setIcon(on){
 function initAudio(){
   if(audioStarted) return; audioStarted=true;
   var f=document.getElementById("sc-frame");
-  f.src="https://w.soundcloud.com/player/?url="+encodeURIComponent(SC_URL)+
+  f.src="https://w.soundcloud.com/player/?url="+SC_EMBED+
     "&color=%23dd7958&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false";
   var s=document.createElement("script");
   s.src="https://w.soundcloud.com/player/api.js"; s.async=true;
