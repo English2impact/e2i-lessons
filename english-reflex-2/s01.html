@@ -158,10 +158,18 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
   display:inline-block; margin-right:8px; font-size:var(--fs-micro); font-weight:600;
   letter-spacing:.09em; text-transform:uppercase; color:var(--faint);
 }
-.ln.tag{grid-template-columns:66px minmax(0,1fr)}
-.ln.tag .k{
+.ln.note.form{display:grid; grid-template-columns:84px minmax(0,1fr); gap:10px; align-items:baseline}
+.ln.form .k{
+  justify-self:start; margin:0; padding:2px 8px; border-radius:6px;
+  background:var(--terra-tint,#fbeee8); color:var(--terra-ink);
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:var(--fs-meta);
-  font-weight:600; color:var(--terra-ink); white-space:nowrap;
+  font-weight:600; letter-spacing:0; text-transform:none; white-space:nowrap;
+}
+.ln.form + .ln.form{margin-top:1px}
+.ln .say{
+  display:inline-block; margin-left:6px; padding:0 7px; border-radius:999px;
+  background:#eef2f7; color:var(--mute); font-size:var(--fs-micro); font-weight:600;
+  letter-spacing:.03em; vertical-align:1px;
 }
 .ln + .ln.note{margin-top:2px}
 .yes{color:var(--ok); font-weight:600}
@@ -549,16 +557,51 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .page-parts .caret{flex:none; color:var(--mute); transition:transform .2s}
 .page-parts[aria-expanded="true"] .caret{transform:rotate(180deg)}
 
+/* A wide, compact menu rather than a narrow scroller: nearly the full width
+   of the phone (capped at 460px), one 48px row per part — number, title and
+   count on one line — so all eight fit without scrolling on most phones.
+   Only the list scrolls, inside the panel's padding, so the scrollbar never
+   runs over the rounded corners. */
 .partsheet{
-  position:fixed; inset:auto; margin:0; padding:0; border:1px solid var(--line); border-radius:var(--radius);
-  background:var(--card); box-shadow:0 18px 44px rgba(6,28,55,.3); max-width:min(92vw,440px);
-  max-height:70vh; overflow-y:auto; color:var(--ink);
+  position:fixed; inset:auto; margin:0; padding:0; border:0; border-radius:16px;
+  width:min(calc(100vw - 16px), 460px); max-width:none; max-height:none;
+  background:var(--card); box-shadow:0 20px 50px rgba(6,28,55,.32), 0 0 0 1px rgba(6,28,55,.06);
+  overflow:hidden; color:var(--ink);
 }
-.partsheet::backdrop{background:rgba(6,28,55,.4)}
-.sheet-in{padding:13px}
-.sheet-in h3{margin:0 0 10px}
-.partsheet .toc{grid-template-columns:1fr}
-@media (max-height:520px) and (min-width:560px){ .partsheet .toc{grid-template-columns:1fr 1fr} }
+.partsheet::backdrop{background:rgba(6,28,55,.45)}
+.sheet-in{display:flex; flex-direction:column; max-height:min(calc(100dvh - var(--nav-h) - 24px), 640px)}
+.sheet-head{
+  flex:none; display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:14px 12px 12px 18px; border-bottom:1px solid var(--line-2);
+}
+.sheet-head h3{margin:0; font-size:var(--fs-h3); line-height:1.2}
+.sheet-sub{display:block; margin-top:2px; font-size:var(--fs-meta); color:var(--mute)}
+.sheet-close{
+  flex:none; width:40px; height:40px; display:grid; place-items:center; padding:0; cursor:pointer;
+  font-size:22px; line-height:1; color:var(--mute); background:var(--card-2);
+  border:1px solid var(--line-2); border-radius:50%;
+}
+.sheet-close:hover{color:var(--navy); border-color:var(--navy)}
+.partsheet .toc{
+  grid-template-columns:1fr; gap:2px; padding:8px; overflow-y:auto; overscroll-behavior:contain;
+  scrollbar-width:thin;
+}
+.partsheet .toc a{
+  grid-template-columns:28px minmax(0,1fr) auto; align-items:center; gap:12px;
+  min-height:48px; padding:8px 12px 8px 10px; border:0; border-radius:10px; background:transparent;
+  font-size:var(--fs-small);
+}
+.partsheet .toc a:hover{background:var(--card-2)}
+.partsheet .toc .n{width:28px; height:28px; border-radius:8px; font-size:var(--fs-meta)}
+.partsheet .toc .t{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.partsheet .toc .cnt{grid-column:3; font-size:var(--fs-meta); color:var(--mute)}
+.partsheet .toc a.active{background:#fdf1ec; box-shadow:inset 3px 0 0 var(--terra)}
+.partsheet .toc a.active .t{font-weight:600}
+.partsheet .toc a.done .cnt{color:var(--ok); font-weight:600}
+@media (max-height:520px) and (min-width:560px){
+  .partsheet{width:min(calc(100vw - 16px), 640px)}
+  .partsheet .toc{grid-template-columns:1fr 1fr}
+}
 
 .toast{
   position:fixed; left:50%; transform:translateX(-50%); bottom:calc(var(--nav-h) + 14px); z-index:70;
@@ -688,7 +731,11 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 </div>
 
 <dialog class="partsheet" id="partsheet" aria-label="Jump to a part">
-  <div class="sheet-in"><h3>Jump to a part</h3><ul class="toc" id="sheet-toc"></ul></div>
+  <div class="sheet-in">
+    <div class="sheet-head"><div><h3>Jump to a part</h3><span class="sheet-sub" id="sheet-sub">0 of 7 parts complete</span></div>
+    <button type="button" class="sheet-close" id="sheet-close" aria-label="Close the parts list">&times;</button></div>
+    <ul class="toc" id="sheet-toc"></ul>
+  </div>
 </dialog>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -966,10 +1013,12 @@ function footStrip(p){
 }
 /* A guide box. Every line gets its own row with the mark in its own column,
    so a wrapped example hangs under its own text — and an inline <b> stays inline.
-   ok:true/false → ✓/✗ · k:"label" → a labelled note · tag:true → a mono form tag */
+   ok:true/false → ✓/✗ · k:"label" → a labelled note · tag:true → a mono form tag.
+   The form row is .ln.form, never .ln.tag: .tag is the global mono chip, and
+   sharing that class shrank the whole row to 12px monospace inside a border. */
 function rule(title, lines){
   return '<div class="rule"><b>'+title+'</b><div class="ex">'+lines.map(function(l){
-    if(l.k) return '<p class="ln note'+(l.tag?' tag':'')+'"><span class="k">'+l.k+'</span><span>'+l.t+'</span></p>';
+    if(l.k) return '<p class="ln note'+(l.tag?' form':'')+'"><span class="k">'+l.k+'</span><span>'+l.t+'</span></p>';
     return '<p class="ln"><span class="'+(l.ok?'yes':'no')+'">'+(l.ok?'✓':'✗')+'</span><span>'+l.t+'</span></p>';
   }).join('')+'</div></div>';
 }
@@ -1215,8 +1264,9 @@ main.innerHTML =
   buildDrill(PARTS[2],"a",DRILL_A,false,
     '<p class="lede">The past moves <b>off</b> the verb and <b>onto</b> <i>did</i>, and the verb goes back to its base form. Write the full form — the contraction is for speaking.</p>'+
     rule("One tense marker at a time.",[
-      {ok:true,  t:"We <b>did not roll</b> out the system."},
-      {ok:false, t:"We <b>did not rolled</b> out the system."},
+      {ok:true,  t:"We <b>did not roll</b> out the system. <span class=\"say\">written</span>"},
+      {ok:true,  t:"We <b>didn’t roll</b> out the system. <span class=\"say\">spoken · didn’t = did not</span>"},
+      {ok:false, t:"We <b>did not rolled</b> out the system. · We <b>didn’t rolled</b> …"},
       {k:"Why", t:"<i>did</i> carries the past, so the verb goes back to its base form."}
     ]),
     buildExchangeBlock())+
@@ -1274,6 +1324,7 @@ function refresh(){
   document.getElementById("ring-bar").setAttribute("stroke-dasharray",(C*pct/100).toFixed(1)+" "+C.toFixed(1));
   document.getElementById("ring-num").textContent=pct+"%";
   document.getElementById("prog-sub").textContent=full+" of "+scored+" parts complete";
+  var ss=document.getElementById("sheet-sub"); if(ss) ss.textContent=full+" of "+scored+" parts complete";
   var qc=document.getElementById("qchip");
   if(qc){
     var qn=COMPREHENSION.filter(function(_,i){return isDone("q-"+i);}).length;
@@ -1335,6 +1386,7 @@ btnParts.onclick=function(){
 };
 sheet.addEventListener("close",function(){ btnParts.setAttribute("aria-expanded","false"); });
 sheet.addEventListener("click",function(e){ if(e.target===sheet) sheet.close(); });
+document.getElementById("sheet-close").onclick=function(){ sheet.close(); btnParts.focus(); };
 window.addEventListener("resize",function(){ if(sheet.open) placeSheet(); });
 window.addEventListener("scroll",function(){ if(sheet.open) placeSheet(); },{passive:true});
 
