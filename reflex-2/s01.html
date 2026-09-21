@@ -280,6 +280,12 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .vocab .vi{font-size:var(--fs-small); color:var(--mute)}
 .vocab .ipa{font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-small); color:var(--mute)}
 .vocab .ex{font-size:var(--fs-small)}
+.embed{
+  border:1px solid var(--line); border-radius:var(--radius); background:var(--card);
+  overflow:hidden; margin:0 0 10px;
+}
+.embed iframe{display:block; width:100%; height:500px; border:0}
+@media (max-width:599px){ .embed iframe{height:440px} }
 .export{
   width:100%; min-height:150px; margin-top:11px; padding:11px; border-radius:10px;
   border:1px solid var(--line); background:var(--card-2); font-family:ui-monospace,Menlo,monospace;
@@ -351,40 +357,36 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .audio{position:sticky; top:calc(8px + var(--host-offset)); z-index:30; min-height:var(--audio-h,auto); margin:0 0 16px}
 .audio.stuck{pointer-events:none}
 .audio-dock{
-  position:relative; background:var(--navy); color:#eef2f7; border-radius:var(--radius); padding:13px 14px;
+  position:relative; background:var(--navy); color:#eef2f7; border-radius:var(--radius); padding:10px 12px;
   box-shadow:var(--shadow); pointer-events:auto;
 }
 .audio.stuck .audio-dock{box-shadow:0 10px 26px rgba(6,28,55,.28)}
-.audio-title{
-  font-size:var(--fs-micro); letter-spacing:.11em; text-transform:uppercase; color:#9fb2c8;
-  margin:0 0 9px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;
-}
-.audio.stuck .audio-title{display:none}
-.audio.stuck .audio-dock{padding:8px 11px}
-.audio.stuck .transport{gap:8px}
+.audio.stuck .audio-dock{padding:7px 11px}
+.audio.stuck .transport{gap:11px}
 .audio.stuck .tbtn.play{width:40px; height:40px}
 .audio.stuck .tbtn.play svg{width:16px; height:16px}
-.audio.stuck .tbtn.jump{width:38px; height:38px}
-.audio.stuck .seek{height:18px}
-.audio.stuck .times{margin-top:0}
+.audio.stuck .seek{height:20px}
 .qchip{
   flex:none; font-size:var(--fs-micro); background:rgba(255,255,255,.12); border-radius:999px;
   padding:4px 9px; color:#fff; letter-spacing:.04em; font-variant-numeric:tabular-nums;
 }
 @media (max-width:419px){ .qchip{display:none} }
-.transport{display:flex; align-items:center; gap:10px}
+.transport{display:flex; align-items:center; gap:13px}
 .tbtn{
   flex:none; font:inherit; cursor:pointer; border-radius:50%; border:1.5px solid rgba(255,255,255,.3);
-  background:rgba(255,255,255,.08); color:#fff; width:48px; height:48px; display:grid; place-items:center;
+  background:rgba(255,255,255,.08); color:#fff; display:grid; place-items:center;
 }
 .tbtn:hover{background:rgba(255,255,255,.18)}
-.tbtn.play{background:var(--terra); border-color:var(--terra); width:52px; height:52px}
+.tbtn.play{background:var(--terra); border-color:var(--terra); width:46px; height:46px}
 .tbtn.play:hover{background:#cf6a49}
-.tbtn.jump{width:44px; height:44px; font-size:var(--fs-micro); font-weight:600; letter-spacing:-.02em}
-.tbtn svg{width:19px; height:19px; fill:currentColor}
-.seek-wrap{flex:1 1 auto; min-width:0}
+.tbtn svg{width:18px; height:18px; fill:currentColor}
+.time{
+  flex:none; font-size:var(--fs-micro); color:#9fb2c8; font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;
+}
 .seek{
-  position:relative; height:26px; display:flex; align-items:center; cursor:pointer; touch-action:none;
+  flex:1 1 auto; min-width:60px; position:relative; height:26px; display:flex; align-items:center;
+  cursor:pointer; touch-action:none;
 }
 .seek .rail-bg{position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); height:7px; border-radius:999px; background:rgba(255,255,255,.2)}
 .seek .rail-fill{position:absolute; left:0; top:50%; transform:translateY(-50%); height:7px; border-radius:999px; background:var(--terra); width:0}
@@ -393,11 +395,7 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
   transform:translate(-8px,-50%); box-shadow:0 1px 4px rgba(0,0,0,.4);
 }
 .seek:focus-visible{outline-offset:6px}
-.times{
-  display:flex; justify-content:space-between; font-size:var(--fs-micro); color:#9fb2c8;
-  font-variant-numeric:tabular-nums; margin-top:1px;
-}
-.credit{font-size:var(--fs-micro); color:#9fb2c8; margin:9px 0 0}
+.credit{font-size:var(--fs-micro); color:#9fb2c8; margin:7px 0 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .credit a{color:#cfdcea}
 .audio.stuck .credit{display:none}   /* the bar is a control strip; the attribution shows undocked */
 .sc-frame{width:100%; height:120px; border:0; border-radius:10px; display:block}
@@ -684,6 +682,10 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
    player would load nothing. SC_PAGE is the human permalink, used only for
    the attribution links. */
 var SC_EMBED = "https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2401494390";
+/* Quizlet Match. The src is attached only when part 2 opens, so the page makes
+   no third-party request until a learner actually reaches the speed round. */
+var QUIZLET      = "https://quizlet.com/1211295576/match/embed?i=4y577v&x=1jj1";
+var QUIZLET_PAGE = "https://quizlet.com/1211295576";
 var SC_PAGE  = "https://soundcloud.com/english2impact/dialogue_finished-past_we";
 var SC_TITLE = "Dialogue · Finished Past · We rolled out the new system last quarter";
 var SC_USER  = "https://soundcloud.com/english2impact";
@@ -1010,7 +1012,14 @@ function buildLab(){
       {ok:false, t:"I ran <b>him</b> into."},
       {k:"Splits", t:"roll out · sort out · wrap up · kick off"},
       {k:"Never splits", t:"run into · get around to · come in under · sign off on"}
-    ]));
+    ])+
+    '<div class="block-head"><h3>Match the ten against the clock</h3>'+
+    '<span class="sub">Quizlet Match — drag each term onto its meaning, as fast as you can. '+
+    'This one is not scored on the page: it is the speed round, and the clock is the score.</span></div>'+
+    '<div class="embed"><iframe id="quizlet" title="Quizlet Match — the ten terms of this session" '+
+    'loading="lazy" allowfullscreen></iframe></div>'+
+    '<p class="hint"><a href="'+QUIZLET_PAGE+'" target="_blank" rel="noopener">Open the set on Quizlet</a>'+
+    ' if the board does not load, or to run Learn and Test on the same ten terms.</p>');
 }
 
 /* ---------------- parts 3–5 · written drills ---------------- */
@@ -1106,18 +1115,14 @@ function buildDecode(){
       '<div class="audio-sentinel" aria-hidden="true"></div>'+
       '<div class="audio" id="audio">'+
         '<div class="audio-dock" id="audio-dock">'+
-          '<p class="audio-title"><span>Dialogue — full speed</span></p>'+
           '<div class="transport" id="transport" hidden>'+
             '<button type="button" class="tbtn play" id="t-play" aria-label="Play the dialogue">'+
               '<svg viewBox="0 0 24 24" aria-hidden="true"><path id="t-icon" d="M8 5v14l11-7z"></path></svg></button>'+
-            '<button type="button" class="tbtn jump" id="t-back" aria-label="Back five seconds">−5s</button>'+
-            '<button type="button" class="tbtn jump" id="t-fwd" aria-label="Forward five seconds">+5s</button>'+
-            '<div class="seek-wrap">'+
-              '<div class="seek" id="seek" role="slider" tabindex="0" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">'+
-                '<span class="rail-bg"></span><span class="rail-fill" id="seek-fill"></span><span class="knob" id="seek-knob"></span>'+
-              '</div>'+
-              '<div class="times"><span id="t-now">0:00</span><span id="t-dur">—:—</span></div>'+
+            '<span class="time" id="t-now">0:00</span>'+
+            '<div class="seek" id="seek" role="slider" tabindex="0" aria-label="Playback position — drag to scrub, arrow keys jump five seconds" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">'+
+              '<span class="rail-bg"></span><span class="rail-fill" id="seek-fill"></span><span class="knob" id="seek-knob"></span>'+
             '</div>'+
+            '<span class="time" id="t-dur">—:—</span>'+
             '<span class="qchip" id="qchip" title="Questions answered">0/8</span>'+
           '</div>'+
           '<iframe class="sc-frame" id="sc-frame" title="Dialogue audio" allow="autoplay" scrolling="no" frameborder="no"></iframe>'+
@@ -1125,7 +1130,7 @@ function buildDecode(){
           '<a href="'+SC_PAGE+'" target="_blank" rel="noopener">'+SC_TITLE+'</a></p>'+
         '</div>'+
       '</div>'+
-      '<p class="lede"><b>Before you listen:</b> Clara missed last quarter and has heard the rollout went badly. Every answer Adam gives is a finished event with a finished time attached. Listen once, books closed, then answer. The player stays with you as you scroll — use <b>−5s</b> to replay the line you missed.</p>'+
+      '<p class="lede"><b>Before you listen:</b> Clara missed last quarter and has heard the rollout went badly. Every answer Adam gives is a finished event with a finished time attached. Listen once, books closed, then answer. The player stays with you as you scroll — drag the bar back to replay the line you missed.</p>'+
       '<div class="drill">'+qs+'</div>'+
       checkbar("decode","Show the eight model answers")+
     '</div>'+
@@ -1279,6 +1284,7 @@ function goTo(n, opts){
     var y = n===1 ? 0 : Math.max(0, main.getBoundingClientRect().top + window.pageYOffset - 12);
     window.scrollTo({top:y, behavior: reduced ? "auto" : "smooth"});
   }
+  if(n===2) initQuizlet();
   if(n===6) initAudio();
   if(measureDock) measureDock();
   var h=$('.stage:not([hidden]) h2'); if(h && opts.focus!==false){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
@@ -1697,6 +1703,13 @@ scriptBtn.onclick=function(){
    12 · THE STICKY AUDIO DOCK
    ================================================================ */
 
+var quizletStarted=false;
+function initQuizlet(){
+  if(quizletStarted) return; quizletStarted=true;
+  var f=document.getElementById("quizlet");
+  if(f && !f.src) f.src=QUIZLET;
+}
+
 var audioEl=document.getElementById("audio"), dockEl=document.getElementById("audio-dock");
 var widget=null, transportLive=false, duration=0, playing=false, audioStarted=false, measureDock=null;
 
@@ -1777,12 +1790,11 @@ function initAudio(){
   setTimeout(function(){ if(!transportLive) setTimeout(reserve,0); }, 8000);
 }
 document.getElementById("t-play").onclick=function(){ if(widget) widget.toggle(); };
+/* no ±5s buttons — the bar is the scrubber, and the arrow keys jump 5s */
 function jump(delta){
   if(!widget) return;
   widget.getPosition(function(p){ widget.seekTo(Math.max(0,Math.min(duration||p, p+delta))); });
 }
-document.getElementById("t-back").onclick=function(){ jump(-5000); };
-document.getElementById("t-fwd").onclick=function(){ jump(5000); };
 (function(){
   var seek=document.getElementById("seek"), dragging=false;
   function ratio(e){
