@@ -320,6 +320,12 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 }
 .item.ok .idx{background:var(--ok)} .item.no .idx{background:var(--no)}
 .cue{font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-small)}
+.polchip{
+  display:inline-block; min-width:34px; text-align:center; margin-right:4px; padding:1px 7px; border-radius:7px;
+  font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-small); font-weight:600; line-height:1.5;
+  color:var(--ok); background:var(--ok-bg); border:1px solid currentColor; white-space:nowrap;
+}
+.polchip.neg{color:var(--no); background:#fdf0ee}
 .answer-row{margin-top:10px}
 .answer-row input{
   width:100%; font:inherit; font-size:var(--fs-body); min-height:50px; padding:10px 13px;
@@ -431,9 +437,38 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .credit{font-size:var(--fs-micro); color:#9fb2c8; margin:7px 0 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .credit a{color:#cfdcea}
 .audio.stuck .credit{display:none}   /* the bar is a control strip; the attribution shows undocked */
-.sc-frame{width:100%; height:120px; border:0; border-radius:10px; display:block}
-.has-transport .sc-frame{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none}
+/* The iframe is never shown unless the Widget API fails (.sc-fallback after 8s): the one-row bar is
+   on screen from the first paint, in a loading state, so nothing swaps or jumps when the track arrives. */
+.sc-frame{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; border:0}
+.sc-fallback .sc-frame{position:static; width:100%; height:120px; opacity:1; pointer-events:auto; border-radius:10px; display:block}
+.sc-fallback .transport{display:none}
 .has-transport .sc-fallback-note{display:none}
+/* loading: the bar is laid out at full size; the rail shimmers and the play button spins */
+.transport .time, .seek, .qchip{transition:opacity .25s ease}
+.is-loading .seek{cursor:progress}
+.is-loading .seek .knob{opacity:0}
+.is-loading .time{opacity:.55}
+.is-loading .seek .rail-bg{
+  background:linear-gradient(90deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.34) 50%, rgba(255,255,255,.14) 100%);
+  background-size:200% 100%; animation:e2i-shimmer 1.3s linear infinite;
+}
+@keyframes e2i-shimmer{from{background-position:100% 0} to{background-position:-100% 0}}
+.tbtn.play{position:relative}
+.tbtn .spin{
+  position:absolute; inset:-4px; border-radius:50%; border:2.5px solid transparent; border-top-color:#fff;
+  opacity:0; transition:opacity .2s ease; pointer-events:none;
+}
+.is-loading .tbtn .spin, .is-buffering .tbtn .spin{opacity:.9; animation:e2i-spin .8s linear infinite}
+.is-loading .tbtn.play{cursor:progress; background:#b8664a; border-color:#b8664a}
+.is-loading .tbtn.play svg{opacity:.55}
+@keyframes e2i-spin{to{transform:rotate(360deg)}}
+/* one custom property drives the fill and the knob; it is updated every frame while playing */
+.seek .rail-fill{width:calc(var(--p,0) * 100%)}
+.seek .knob{left:calc(var(--p,0) * 100%)}
+/* docking eases instead of snapping */
+.audio-dock{transition:padding .2s ease, box-shadow .2s ease}
+.tbtn.play{transition:width .2s ease, height .2s ease, background-color .2s ease}
+.seek{transition:height .2s ease}
 
 .qa{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:13px; margin:0 0 11px}
 .qa.ok{border-color:var(--ok); background:var(--ok-bg)}
@@ -844,16 +879,18 @@ var DIALOGUE = [
   ["Adam","They signed off on it the same week. We did not hear a single complaint after that."]
 ];
 
+/* Seven questions, asked in the order the dialogue answers them (the line numbers are for editors only). */
 var COMPREHENSION = [
-  ["When did the team kick off the project?","In early January."],
-  ["How long did the rollout take?","About three weeks."],
-  ["Did the board sign off on the extra budget?","Yes, they did — and the team still came in under budget."],
-  ["What problem did the team run into?","The old data did not transfer cleanly."],
-  ["How did they solve it in the end?","They sorted some of it out by hand, then ended up writing a script, which saved about ten days."],
-  ["Why did Adam not tell Clara about the problem?","He never got around to it — the project moved too fast."],
-  ["What did Peter tell Clara, and why was he wrong?","That the rollout failed. He left the project in February and did not see the second phase."],
-  ["When exactly did the team finish, and when did the client sign off?","On the last Friday of March, two days before the deadline; the client signed off on it the same week."]
+  ["When did the team kick off the project, and how long did it take?","In early January — they wrapped it up three weeks later.", "lines 1–2"],
+  ["Did the board sign off on the extra budget?","Yes, they did — and the team still came in under budget.", "lines 3–4"],
+  ["What problem did the team run into during the migration?","The old data did not transfer cleanly.", "lines 5–6"],
+  ["How did they solve it in the end?","They sorted some of it out by hand, then ended up writing a script, which saved about ten days.", "lines 6–8"],
+  ["Why did Adam not tell Clara about the problem?","He never got around to it — the project moved too fast.", "lines 9–10"],
+  ["What did Peter tell Clara, and why was he wrong?","That the rollout failed. He left the project in February and did not see the second phase.", "lines 11–12"],
+  ["When exactly did the team finish, and when did the client sign off?","On the last Friday of March, two days before the deadline; the client signed off on it the same week.", "lines 13–16"]
 ];
+var NQ = COMPREHENSION.length;
+var NUMW = ["zero","one","two","three","four","five","six","seven","eight","nine","ten"];
 
 var DRILL_A = [
   {cue:"We rolled out the new system last quarter.", acc:["We did not roll out the new system last quarter."], trap:""},
@@ -869,16 +906,17 @@ var DRILL_A = [
 ];
 
 var DRILL_B = [
-  {cue:"you / roll out / the new system / last quarter", acc:["Did you roll out the new system last quarter?"], trap:""},
-  {cue:"the board / sign off on / the extra budget / in February", acc:["Did the board sign off on the extra budget in February?"], trap:""},
-  {cue:"they / run into / any problems / during the migration", acc:["Did they run into any problems during the migration?"], trap:"Trap: ✗ Did they ran into…"},
-  {cue:"the team / come in under budget / last quarter", acc:["Did the team come in under budget last quarter?"], trap:"Trap: ✗ Did the team came…"},
-  {cue:"you / wrap it up / before the deadline — surprised, you thought they did", acc:["Didn't you wrap it up before the deadline?"], trap:"Negative question: only the contraction goes to the front."},
-  {cue:"she / get around to / the supplier list / on Friday", acc:["Did she get around to the supplier list on Friday?"], trap:""},
-  {cue:"you / kick off / the project / in early January", acc:["Did you kick off the project in early January?"], trap:""},
-  {cue:"he / tell / Clara / about the delay — surprised, you thought he did", acc:["Didn't he tell Clara about the delay?"], trap:"Negative question."},
-  {cue:"they / sort it out / by hand", acc:["Did they sort it out by hand?"], trap:"Trap: the pronoun does not move. ✗ Did they sort out it?"},
-  {cue:"you / run into / Peter / the other day", acc:["Did you run into Peter the other day?"], trap:""}
+  /* pol "+" → a plain question: Did …?   pol "−" → a negative question: Didn't …? */
+  {pol:"+", cue:"you / roll out / the new system / last quarter", acc:["Did you roll out the new system last quarter?"], trap:""},
+  {pol:"−", cue:"the board / sign off on / the extra budget / in February", acc:["Didn't the board sign off on the extra budget in February?","Did the board not sign off on the extra budget in February?"], trap:"Negative question: only the contraction goes to the front — ✗ Did not the board sign off…"},
+  {pol:"+", cue:"they / run into / any problems / during the migration", acc:["Did they run into any problems during the migration?"], trap:"Trap: ✗ Did they ran into…"},
+  {pol:"−", cue:"the team / come in under budget / last quarter", acc:["Didn't the team come in under budget last quarter?","Did the team not come in under budget last quarter?"], trap:"Trap: base form after didn't — ✗ Didn't the team came…"},
+  {pol:"−", cue:"you / wrap it up / before the deadline", acc:["Didn't you wrap it up before the deadline?","Did you not wrap it up before the deadline?"], trap:"Negative question: only the contraction goes to the front — ✗ Did not you wrap…"},
+  {pol:"+", cue:"she / get around to / the supplier list / on Friday", acc:["Did she get around to the supplier list on Friday?"], trap:"Trap: ✗ Did she got around to…"},
+  {pol:"+", cue:"you / kick off / the project / in early January", acc:["Did you kick off the project in early January?"], trap:""},
+  {pol:"−", cue:"he / tell / Clara / about the delay", acc:["Didn't he tell Clara about the delay?","Did he not tell Clara about the delay?"], trap:"Negative question: ✗ Did not he tell…"},
+  {pol:"+", cue:"they / sort it out / by hand", acc:["Did they sort it out by hand?"], trap:"Trap: the pronoun does not move. ✗ Did they sort out it?"},
+  {pol:"−", cue:"you / run into / Peter / the other day", acc:["Didn't you run into Peter the other day?","Did you not run into Peter the other day?"], trap:"Trap: irregular — base form after didn't. ✗ Didn't you ran into…"}
 ];
 
 var DRILL_C = [
@@ -974,7 +1012,7 @@ var PARTS = [
    title:"Drill C — [Wh- ?] Wh- question", goal:"Ten questions. When is the signature question of Stage 1.",
    keys:DRILL_C.map(function(_,i){return "c-"+i;})},
   {n:6, id:"decode", short:"Dialogue decode",     skill:"Listening", color:"var(--listen)", time:"≈ 18 min",
-   title:"Dialogue decode", goal:"Listen at full speed with the player following you down the page, then answer eight questions.",
+   title:"Dialogue decode", goal:"Listen at full speed with the player following you down the page, then answer seven questions, in the order you hear them.",
    keys:COMPREHENSION.map(function(_,i){return "q-"+i;})},
   {n:7, id:"exit",   short:"Exit ticket",         skill:"Speaking",  color:"var(--speak)",  time:"≈ 8 min",
    title:"Exit ticket", goal:"Five things to produce out loud before you leave.",
@@ -1101,6 +1139,7 @@ function drillList(key, items, mono){
   return items.map(function(it,i){
     var start = it.start ? ' <span class="tag">start with '+it.start+'</span>' : "";
     var cue = mono ? '<span class="cue">'+it.cue+'</span>' : it.cue;
+    if(it.pol) cue = '<span class="polchip'+(it.pol==="−"?" neg":"")+'" title="'+(it.pol==="−"?"Negative question: Didn’t …?":"Plain question: Did …?")+'">['+it.pol+']</span> '+cue;
     return '<div class="item" data-item="'+key+'-'+i+'">'+
       '<div class="prompt"><span class="idx">'+(i+1)+'</span><span>'+cue+start+'</span></div>'+
       '<div class="answer-row"><label class="sr-only" for="'+key+'-'+i+'">Item '+(i+1)+'</label>'+
@@ -1198,29 +1237,29 @@ function buildDecode(){
   return stage(PARTS[5],
     '<div class="scn">'+
       '<div class="audio-sentinel" aria-hidden="true"></div>'+
-      '<div class="audio" id="audio">'+
+      '<div class="audio is-loading" id="audio">'+
         '<div class="audio-dock" id="audio-dock">'+
-          '<div class="transport" id="transport" hidden>'+
+          '<div class="transport" id="transport">'+
             '<button type="button" class="tbtn play" id="t-play" aria-label="Play the dialogue">'+
-              '<svg viewBox="0 0 24 24" aria-hidden="true"><path id="t-icon" d="M8 5v14l11-7z"></path></svg></button>'+
+              '<svg viewBox="0 0 24 24" aria-hidden="true"><path id="t-icon" d="M8 5v14l11-7z"></path></svg><span class="spin" aria-hidden="true"></span></button>'+
             '<span class="time" id="t-now">0:00</span>'+
             '<div class="seek" id="seek" role="slider" tabindex="0" aria-label="Playback position — drag to scrub, arrow keys jump five seconds" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">'+
               '<span class="rail-bg"></span><span class="rail-fill" id="seek-fill"></span><span class="knob" id="seek-knob"></span>'+
             '</div>'+
             '<span class="time" id="t-dur">—:—</span>'+
-            '<span class="qchip" id="qchip" title="Questions answered">0/8</span>'+
+            '<span class="qchip" id="qchip" title="Questions answered">0/'+NQ+'</span>'+
           '</div>'+
           '<iframe class="sc-frame" id="sc-frame" title="Dialogue audio" allow="autoplay" scrolling="no" frameborder="no"></iframe>'+
           '<p class="credit"><a href="'+SC_USER+'" target="_blank" rel="noopener">English2impact</a> · '+
           '<a href="'+SC_PAGE+'" target="_blank" rel="noopener">'+SC_TITLE+'</a></p>'+
         '</div>'+
       '</div>'+
-      '<p class="lede"><b>Before you listen:</b> Clara missed last quarter and has heard the rollout went badly. Every answer Adam gives is a finished event with a finished time attached. Listen once, books closed, then answer. The player stays with you as you scroll — drag the bar back to replay the line you missed.</p>'+
+      '<p class="lede"><b>Before you listen:</b> Clara missed last quarter and has heard the rollout went badly. Every answer Adam gives is a finished event with a finished time attached. The seven questions follow the dialogue in order — question 1 is answered first, question 7 last. Listen once, books closed, then answer. The player stays with you as you scroll — drag the bar back to replay the line you missed.</p>'+
       '<div class="drill">'+qs+'</div>'+
-      checkbar("decode","Show the eight model answers")+
+      checkbar("decode","Show the "+NUMW[NQ]+" model answers")+
     '</div>'+
     '<div class="toolbar"><button type="button" class="btn quiet sm" id="show-script" aria-expanded="false" aria-controls="transcript">Show the transcript</button>'+
-    '<span class="hint">Read it only after you have answered all eight.</span></div>'+
+    '<span class="hint">Read it only after you have answered all '+NUMW[NQ]+'.</span></div>'+
     '<div class="rev-panel" id="transcript"><div class="dlg">'+script+'</div></div>');
 }
 
@@ -1271,8 +1310,10 @@ main.innerHTML =
     ]),
     buildExchangeBlock())+
   buildDrill(PARTS[3],"b",DRILL_B,true,
-    '<p class="lede">Build the question from the prompt. Items 5 and 8 are <b>negative questions</b> — you are surprised, because you thought the opposite.</p>'+
-    rule("Two rules, one line.",[
+    '<p class="lede">Build the question from the prompt. The tag in front tells you which kind: <b>[+]</b> asks a plain question — <i>Did …?</i> — and <b>[−]</b> asks a <b>negative question</b> — <i>Didn’t …?</i> — because you are surprised: you thought the opposite was true.</p>'+
+    rule("Two kinds of question — and the pronoun never moves.",[
+      {k:"[+]", tag:true, t:"<b>Did</b> the board sign off on the budget?"},
+      {k:"[−]", tag:true, t:"<b>Didn’t</b> the board sign off on the budget? <span class=\"say\">spoken</span> · <b>Did</b> the board <b>not</b> sign off …? <span class=\"say\">formal</span>"},
       {ok:true,  t:"Did they sign <b>it</b> off?"},
       {ok:false, t:"Did they sign off <b>it</b>?"},
       {ok:true,  t:"<b>Didn’t</b> you wrap it up?"},
@@ -1328,7 +1369,7 @@ function refresh(){
   var qc=document.getElementById("qchip");
   if(qc){
     var qn=COMPREHENSION.filter(function(_,i){return isDone("q-"+i);}).length;
-    qc.textContent=qn+"/8"; qc.title=qn+" of 8 questions answered";
+    qc.textContent=qn+"/"+NQ; qc.title=qn+" of "+NQ+" questions answered";
   }
 }
 
@@ -1362,6 +1403,7 @@ function goTo(n, opts){
     window.scrollTo({top:y, behavior: reduced ? "auto" : "smooth"});
   }
   if(n===2) initQuizlet();
+  if(n===5) warmAudio();
   if(n===6) initAudio();
   if(measureDock) measureDock();
   var h=$('.stage:not([hidden]) h2'); if(h && opts.focus!==false){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
@@ -1473,6 +1515,8 @@ function checkBank(k){
     var key=k+"-"+i, inp=$('[data-answer="'+key+'"]');
     if(!inp || inp.value.trim()==="") return;
     var good=matches(inp.value, BANKS[k][i].acc);
+    /* a negative question fronts the contraction only — "Did not you…?" is wrong even though norm() reads didn't as did not */
+    if(good && BANKS[k][i].pol==="−" && /^\s*did\s+not\b/i.test(inp.value)) good=false;
     S.chk[key]=1; if(!good && first===null) first=i;
     mark(key, good);
   });
@@ -1730,7 +1774,7 @@ document.addEventListener("change",function(e){
 });
 
 /* ================================================================
-   11 · DECODE — models stay hidden until all eight are answered
+   11 · DECODE — models stay hidden until all seven are answered
    ================================================================ */
 
 function decodeFilled(){
@@ -1741,13 +1785,13 @@ function decodeFilled(){
 function updateDecode(){
   var f=decodeFilled(), btn=$('[data-check="decode"]'), res=$('[data-res="decode"]');
   if(btn){
-    btn.disabled = f<8 || !!S.chk.decode;
-    btn.textContent = S.chk.decode ? "Model answers are showing" : (f<8 ? f+" of 8 answered" : "Show the eight model answers");
+    btn.disabled = f<NQ || !!S.chk.decode;
+    btn.textContent = S.chk.decode ? "Model answers are showing" : (f<NQ ? f+" of "+NQ+" answered" : "Show the "+NUMW[NQ]+" model answers");
   }
   if(res){
     var n=COMPREHENSION.filter(function(_,i){return isDone("q-"+i);}).length;
-    res.textContent = S.chk.decode ? n+" / 8 self-marked" : "";
-    res.className="res"+(n===8?" good":" part");
+    res.textContent = S.chk.decode ? n+" / "+NQ+" self-marked" : "";
+    res.className="res"+(n===NQ?" good":" part");
   }
   refresh();
 }
@@ -1797,8 +1841,9 @@ function fmt(ms){
   var s=Math.floor(ms/1000), m=Math.floor(s/60);
   s=s%60; return m+":"+(s<10?"0":"")+s;
 }
+var settling=0;
 function reserve(){
-  if(!audioEl||!dockEl||audioEl.classList.contains("stuck")) return;
+  if(!audioEl||!dockEl||audioEl.classList.contains("stuck")||settling) return;
   var h=dockEl.offsetHeight;
   if(h>20) audioEl.style.setProperty("--audio-h", h+"px");
 }
@@ -1822,25 +1867,59 @@ function follows(sentinel, cb){
   measureDock = follows(sentinel, function(on){
     if(on) reserve();
     audioEl.classList.toggle("stuck", on);
+    if(!on){ clearTimeout(settling); settling=setTimeout(function(){ settling=0; reserve(); }, 260); }
   });
   if(window.ResizeObserver){ new ResizeObserver(reserve).observe(dockEl); }
 })();
 
+var seekEl=null;
+var lastSec=-1;
 function paintSeek(ms){
-  var pct = duration ? Math.min(100, ms/duration*100) : 0;
-  document.getElementById("seek-fill").style.width=pct+"%";
-  document.getElementById("seek-knob").style.left=pct+"%";
-  document.getElementById("t-now").textContent=fmt(ms);
-  var s=document.getElementById("seek");
-  s.setAttribute("aria-valuenow", Math.round(pct));
-  s.setAttribute("aria-valuetext", fmt(ms)+" of "+fmt(duration));
+  if(!seekEl) seekEl=document.getElementById("seek");
+  var r = duration ? Math.max(0, Math.min(1, ms/duration)) : 0;
+  seekEl.style.setProperty("--p", r.toFixed(5));
+  var sec=Math.floor(ms/1000);
+  if(sec!==lastSec){          /* text and ARIA once a second, not sixty times */
+    lastSec=sec;
+    document.getElementById("t-now").textContent=fmt(ms);
+    seekEl.setAttribute("aria-valuenow", Math.round(r*100));
+    seekEl.setAttribute("aria-valuetext", fmt(ms)+" of "+fmt(duration));
+  }
 }
+/* PLAY_PROGRESS arrives a few times a second; between reports the bar runs on the clock,
+   so it glides instead of stepping. Each report re-anchors it. */
+var anchorPos=0, anchorAt=0, rafId=0, dragging=false;
+function anchor(ms){ anchorPos=ms; anchorAt=performance.now(); }
+function tick(){
+  rafId=0;
+  if(!playing || dragging) return;
+  var ms=anchorPos + (performance.now()-anchorAt);
+  if(duration) ms=Math.min(ms, duration);
+  paintSeek(ms);
+  rafId=requestAnimationFrame(tick);
+}
+function run(){ if(!rafId && !reduced) rafId=requestAnimationFrame(tick); }
 function setIcon(on){
   document.getElementById("t-icon").setAttribute("d", on ? "M7 5h4v14H7zM13 5h4v14h-4z" : "M8 5v14l11-7z");
   document.getElementById("t-play").setAttribute("aria-label", on ? "Pause the dialogue" : "Play the dialogue");
 }
+var bufTimer=0;
+function buffering(on){
+  clearTimeout(bufTimer);
+  audioEl.classList.toggle("is-buffering", on);
+  if(on) bufTimer=setTimeout(function(){ audioEl.classList.remove("is-buffering"); }, 6000);
+}
+/* a hint that part 6 is next: open the connection early, fetch nothing */
+var warmed=false;
+function warmAudio(){
+  if(warmed) return; warmed=true;
+  ["https://w.soundcloud.com","https://api-widget.soundcloud.com"].forEach(function(h){
+    var l=document.createElement("link"); l.rel="preconnect"; l.href=h; l.crossOrigin="anonymous"; document.head.appendChild(l);
+  });
+}
 function initAudio(){
   if(audioStarted) return; audioStarted=true;
+  warmAudio(); reserve();
   var f=document.getElementById("sc-frame");
   f.src="https://w.soundcloud.com/player/?url="+SC_EMBED+
     "&color=%23dd7958&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false";
@@ -1855,27 +1934,47 @@ function initAudio(){
           document.getElementById("t-dur").textContent=fmt(duration);
           transportLive=true;
           audioEl.classList.add("has-transport");
-          document.getElementById("transport").hidden=false;
+          audioEl.classList.remove("is-loading","sc-fallback");
+          lastSec=-1; paintSeek(0);
           setTimeout(reserve,60);
         });
       });
-      widget.bind(window.SC.Widget.Events.PLAY_PROGRESS,function(e){ paintSeek(e.currentPosition); });
-      widget.bind(window.SC.Widget.Events.PLAY,function(){ playing=true; setIcon(true); });
-      widget.bind(window.SC.Widget.Events.PAUSE,function(){ playing=false; setIcon(false); });
-      widget.bind(window.SC.Widget.Events.FINISH,function(){ playing=false; setIcon(false); });
+      widget.bind(window.SC.Widget.Events.PLAY_PROGRESS,function(e){
+        anchor(e.currentPosition);
+        if(!playing || reduced) paintSeek(e.currentPosition);
+      });
+      widget.bind(window.SC.Widget.Events.PLAY,function(){
+        playing=true; buffering(false); setIcon(true);
+        widget.getPosition(function(p){ anchor(p); run(); });
+      });
+      widget.bind(window.SC.Widget.Events.PAUSE,function(e){
+        playing=false; buffering(false); setIcon(false);
+        if(e && typeof e.currentPosition==="number"){ anchor(e.currentPosition); paintSeek(e.currentPosition); }
+      });
+      widget.bind(window.SC.Widget.Events.FINISH,function(){ playing=false; buffering(false); setIcon(false); paintSeek(duration); });
     }catch(err){}
   };
   document.head.appendChild(s);
-  setTimeout(function(){ if(!transportLive) setTimeout(reserve,0); }, 8000);
+  /* no answer in 8s: SoundCloud's own player (it has a scrubber) takes the bar's place */
+  setTimeout(function(){
+    if(transportLive) return;
+    audioEl.classList.remove("is-loading");
+    audioEl.classList.add("sc-fallback");
+    setTimeout(reserve,0);
+  }, 8000);
 }
-document.getElementById("t-play").onclick=function(){ if(widget) widget.toggle(); };
+document.getElementById("t-play").onclick=function(){
+  if(!widget || !transportLive) return;
+  if(!playing){ buffering(true); setIcon(true); } /* answer the tap at once; PLAY confirms it */
+  widget.toggle();
+};
 /* no ±5s buttons — the bar is the scrubber, and the arrow keys jump 5s */
 function jump(delta){
   if(!widget) return;
-  widget.getPosition(function(p){ widget.seekTo(Math.max(0,Math.min(duration||p, p+delta))); });
+  widget.getPosition(function(p){ var t=Math.max(0,Math.min(duration||p, p+delta)); anchor(t); paintSeek(t); widget.seekTo(t); });
 }
 (function(){
-  var seek=document.getElementById("seek"), dragging=false;
+  var seek=document.getElementById("seek");
   function ratio(e){
     var r=seek.getBoundingClientRect();
     return Math.max(0, Math.min(1, (e.clientX-r.left)/r.width));
@@ -1883,18 +1982,20 @@ function jump(delta){
   function apply(e){
     if(!duration) return;
     var ms=ratio(e)*duration;
-    paintSeek(ms); if(widget) widget.seekTo(Math.round(ms));
+    anchor(ms); paintSeek(ms); if(widget) widget.seekTo(Math.round(ms));
   }
   seek.addEventListener("pointerdown",function(e){
     if(!duration) return;
     dragging=true; seek.setPointerCapture(e.pointerId); apply(e); e.preventDefault();
   });
   seek.addEventListener("pointermove",function(e){ if(dragging) apply(e); });
-  seek.addEventListener("pointerup",function(e){ dragging=false; try{ seek.releasePointerCapture(e.pointerId); }catch(err){} });
+  function release(e){ if(!dragging) return; dragging=false; try{ seek.releasePointerCapture(e.pointerId); }catch(err){} anchor(anchorPos); run(); }
+  seek.addEventListener("pointerup",release);
+  seek.addEventListener("pointercancel",release);
   seek.addEventListener("keydown",function(e){
     if(e.key==="ArrowRight"){ jump(5000); e.preventDefault(); }
     else if(e.key==="ArrowLeft"){ jump(-5000); e.preventDefault(); }
-    else if(e.key==="Home" && widget){ widget.seekTo(0); e.preventDefault(); }
+    else if(e.key==="Home" && widget){ anchor(0); paintSeek(0); widget.seekTo(0); e.preventDefault(); }
   });
 })();
 
