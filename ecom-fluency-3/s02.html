@@ -613,10 +613,13 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--salmon);outline-of
    answers, the same for every gap so the width gives nothing away, and
    narrow enough that the sentence still reads as a sentence on a phone.
    (Left to itself an <input> takes the browser default of 20 characters,
-   about 200px, which breaks the line apart.) */
+   about 200px, which breaks the line apart.)
+   Height: the input would inherit the sentence's 1.75 line-height and sit
+   its underline ~10px below the words; a tight line-height and 1px bottom
+   padding keep the line just under the baseline, like a written blank. */
 .gap input{
   display:inline-block;width:11ch;min-width:0;max-width:100%;
-  padding:3px 8px;text-align:center;font-size:var(--fs-body);
+  padding:0 8px 1px;line-height:1.2;height:auto;text-align:center;font-size:var(--fs-body);
   border:0;border-bottom:2px solid var(--salmon);border-radius:0;background:transparent;
 }
 .gap input:focus{outline:0;background:#fdf2ec;border-radius:4px 4px 0 0}
