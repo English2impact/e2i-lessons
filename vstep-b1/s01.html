@@ -408,6 +408,65 @@ h2[tabindex="-1"]:focus{outline:none}   /* focus moves to the part title on a pa
 }
 .toast.show{opacity:1}
 
+/* folds: closed until the learner opens them */
+.rev-panel{display:none; margin-top:12px}
+.rev-panel.show{display:block}
+
+/* part 2 · guess the chunk, then drill the misses (from type d's term lab) */
+.gs{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 15px; box-shadow:var(--shadow); max-width:44rem}
+.gs-pips{display:flex; gap:3px; margin:0 0 14px}
+.gs-pips i{flex:1 1 0; height:5px; border-radius:3px; background:var(--line-2); transition:background .25s}
+.gs-pips i.k{background:var(--ok)} .gs-pips i.r{background:var(--speak)} .gs-pips i.m{background:#d99182}
+.gs-pips i.at{background:var(--navy); height:7px; margin-top:-1px}
+.gs-drill{display:inline-block; margin:0 0 12px; padding:5px 11px; border-radius:7px; background:var(--terra-tint); font-size:var(--fs-meta); font-weight:600; color:var(--terra-ink)}
+.gs-top{display:flex; justify-content:space-between; align-items:baseline; gap:6px 12px; flex-wrap:wrap; margin:0 0 10px; font-size:var(--fs-meta); color:var(--mute); font-variant-numeric:tabular-nums}
+.gs-top .k{color:var(--ok); font-weight:600} .gs-top .m{color:var(--no); font-weight:600}
+.gs-vn{margin:0 0 12px; font-family:"Playfair Display",Georgia,serif; font-size:clamp(22px,5.4vw,26px); line-height:1.25; color:var(--navy)}
+.gs-eg{margin:0 0 14px; padding:11px 14px; background:var(--card-2); border-left:3px solid var(--terra); border-radius:0 10px 10px 0; font-size:var(--fs-body); line-height:1.55; overflow-wrap:anywhere}
+.gs-eg .src{display:block; margin:0 0 3px; font-size:var(--fs-micro); letter-spacing:.1em; text-transform:uppercase; color:var(--faint); font-weight:600}
+.gs-eg u{text-decoration:none; display:inline-block; min-width:4.5em; border-bottom:2px solid var(--terra); vertical-align:-2px}
+.gs-eg b{color:var(--ok)}
+.gs-opts{display:grid; gap:7px}
+.gs-opt{
+  font:inherit; font-size:var(--fs-body); cursor:pointer; text-align:left; line-height:1.35;
+  min-height:48px; padding:8px 12px; border-radius:11px; border:1.5px solid var(--line); background:var(--card-2); color:var(--ink);
+  display:grid; grid-template-columns:26px minmax(0,1fr); gap:8px; align-items:center;
+}
+.gs-opt:hover:not([disabled]){border-color:var(--navy); background:#eef2f7}
+.gs-opt .l{width:26px; height:26px; border-radius:7px; display:grid; place-items:center; background:var(--card); border:1px solid var(--line); font-size:var(--fs-meta); font-weight:600; color:var(--mute)}
+.gs-opt[disabled]{cursor:default}
+.gs-opt.hit{border-color:var(--ok); background:var(--ok-bg); color:var(--ok); font-weight:600}
+.gs-opt.hit .l{background:var(--ok); border-color:var(--ok); color:#fff}
+.gs-opt.miss{border-color:var(--no); background:var(--no-bg); color:var(--no)}
+.gs-opt.miss .l{background:var(--no); border-color:var(--no); color:#fff}
+.gs-verdict{display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; margin:12px 0 0; font-size:var(--fs-small); color:var(--mute)}
+.gs-badge{padding:4px 10px; border-radius:7px; font-size:var(--fs-meta); font-weight:600}
+.gs-badge.k{background:var(--ok-bg); color:var(--ok)} .gs-badge.m{background:var(--no-bg); color:var(--no)}
+.gs-verdict .say{margin-left:auto}
+.gs-nav{display:flex; flex-wrap:wrap; align-items:center; gap:9px; margin:16px 0 0}
+.gs-nav .hint{display:none; margin:0 0 0 auto; font-size:var(--fs-meta); color:var(--faint)}
+.gs-sc{margin:0 0 6px; font-family:"Playfair Display",Georgia,serif; font-size:26px; color:var(--navy)}
+.gs-sc.all{color:var(--ok)}
+.gs-missed{list-style:none; margin:12px 0 0; padding:0; font-size:var(--fs-body)}
+.gs-missed li{padding:8px 0; border-bottom:1px solid var(--line-2)}
+.gs-missed li span{color:var(--mute)}
+@media (min-width:900px){ .gs-nav .hint{display:block} }
+
+/* part 2 · the Quizlet speed round */
+.qz{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); margin:0 0 12px}
+.qz-head{display:flex; align-items:center; gap:12px; padding:11px 14px; background:var(--navy); color:#fff}
+.qz-badge{flex:none; display:grid; place-items:center; width:34px; height:34px; border-radius:9px; background:#4255ff; font-weight:700; font-size:16px; color:#fff}
+.qz-title{flex:1 1 auto; min-width:0; display:flex; flex-direction:column; font-weight:600; font-size:var(--fs-small); line-height:1.3}
+.qz-title small{font-weight:400; font-size:var(--fs-micro); color:#b9c6d6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.qz-out{flex:none; display:inline-flex; align-items:center; gap:5px; min-height:40px; padding:0 12px; border:1px solid rgba(255,255,255,.3); border-radius:999px; color:#fff; font-size:var(--fs-meta); font-weight:600; text-decoration:none; white-space:nowrap}
+.qz-out:hover{background:rgba(255,255,255,.1)}
+.qz-frame{background:#f6f7fb}
+.qz-frame iframe{display:block; width:100%; height:500px; border:0; background:#f6f7fb}
+@media (max-width:599px){
+  .qz-frame iframe{height:440px}
+  .qz-out .more, .qz-title small{display:none}
+}
+
 /* ============================ type f · VSTEP pieces ============================ */
 
 /* support level — ●●●● full · ●●●○ high · ●●○○ checklist · ●○○○ light · ○○○○ exam */
@@ -762,6 +821,24 @@ var VOCAB = [
   ["go to bed",         "đi ngủ",             "I usually go to bed at eleven."]
 ];
 
+/* part 2 — guess the chunk: [nghĩa tiếng Việt, example with ___, answer (= a VOCAB chunk), [two distractors]]
+   Answers and distractors are all chunks from VOCAB, so the guess, the list and Quizlet share one set. */
+var TERMS = [
+  ["thức dậy",          "Every morning I ___ at six, when my alarm rings.",                 "get up",             ["go to bed","finish work"]],
+  ["ăn sáng",           "We ___ at home — usually bread and eggs.",                          "have breakfast",     ["have lunch","do the housework"]],
+  ["đi làm / đi học",   "I ___ by motorbike. It takes twenty minutes.",                      "go to work / school",["go to the gym","go to bed"]],
+  ["bắt xe buýt",       "I ___ at the stop outside my house at a quarter past seven.",       "catch the bus",      ["start work","have breakfast"]],
+  ["bắt đầu làm việc",  "We ___ at eight o’clock, so I leave home at half past seven.",       "start work",         ["finish work","get up"]],
+  ["ăn trưa",           "At twelve o’clock my colleagues and I ___ in the canteen.",         "have lunch",         ["have breakfast","catch the bus"]],
+  ["tan làm",           "I ___ at half past five and then I go home.",                       "finish work",        ["start work","do the housework"]],
+  ["làm việc nhà",      "On Sundays I ___: I wash the clothes and clean the kitchen.",       "do the housework",   ["go to the gym","have lunch"]],
+  ["đi tập gym",        "I ___ twice a week to keep fit.",                                   "go to the gym",      ["go to work / school","get up"]],
+  ["đi ngủ",            "I’m always tired at night, so I ___ at ten o’clock.",               "go to bed",          ["get up","finish work"]]
+];
+
+/* part 2 — Quizlet Match, same ten chunks */
+var QUIZLET = "https://quizlet.com/1212070529/match/embed?i=4y577v&x=1jj1";
+
 /* part 2 — present simple gaps. a = answer; acc = other accepted forms
    (n't and not are read as the same, so "doesn't go" also accepts "does not go") */
 var GAPS = [
@@ -953,8 +1030,8 @@ var PARTS = [
    goal:"Một câu hỏi Speaking Part 1: xem bài mẫu, viết nháp theo khung, rồi nói to.",
    keys:["wu-0","wu-1"]},
   {n:2, id:"lang",  short:"Language input",   vi:"Thì hiện tại đơn và câu hỏi Do / Does / Wh-", skill:"Ngữ pháp", color:"var(--terra)", min:15,
-   goal:"Mười cụm từ về một ngày của bạn, rồi hai bài luyện: chia động từ và đặt câu hỏi.",
-   keys:keysOf("g-",GAPS).concat(keysOf("q-",QB))},
+   goal:"Mười cụm từ về một ngày của bạn: đoán nghĩa, chơi Quizlet, rồi hai bài luyện: chia động từ và đặt câu hỏi.",
+   keys:keysOf("gs-",TERMS).concat(["qz"],keysOf("g-",GAPS),keysOf("q-",QB))},
   {n:3, id:"map",   short:"Micro-steps 1–2",  vi:"Làm quen đề thi · bài nghe chẩn đoán", skill:"Nghe", color:"var(--listen)", min:20,
    goal:"Bước 1: đi một vòng quanh đề thi. Bước 2: làm Listening Part 1 — tám thông báo ngắn.",
    keys:keysOf("m-",MAP).concat(keysOf("l-",LIS))},
@@ -1101,8 +1178,17 @@ function buildLang(){
   return stage(PARTS[1],
     '<p class="lede">Mọi phần của đề thi đều cần nói về thói quen và việc làm hằng ngày. Hôm nay bạn ôn lại <b>thì hiện tại đơn</b> — nền của cả khoá học.</p>'+
     voicebar()+
-    head(cap(numw(VOCAB.length))+" cụm từ về một ngày của bạn","Bấm loa để nghe. Cột giữa là nghĩa tiếng Việt.")+
-    '<table class="vt"><thead><tr><th>Cụm từ</th><th>Nghĩa tiếng Việt</th><th>Ví dụ</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    head(cap(numw(TERMS.length))+" cụm từ về một ngày của bạn","Đoán trước khi xem danh sách: đọc nghĩa tiếng Việt và câu ví dụ, rồi chọn cụm từ đúng. Cụm nào sai sẽ được luyện lại cho đến khi bạn nhớ.","Bước 1")+
+    '<div class="gs" id="gs" tabindex="-1" aria-live="polite"></div>'+
+    fold("vt-list","Show the list","Hide the list",
+      '<p class="hint">Bấm loa để nghe. Cột giữa là nghĩa tiếng Việt.</p>'+
+      '<table class="vt"><thead><tr><th>Cụm từ</th><th>Nghĩa tiếng Việt</th><th>Ví dụ</th></tr></thead><tbody>'+rows+'</tbody></table>')+
+    head("Quizlet Match","Cùng mười cụm từ. Ghép thật nhanh cho đến khi bạn xoá sạch bảng mà không ghép sai cặp nào — đồng hồ trên bảng là điểm của bạn.","Bước 2")+
+    '<div class="qz"><div class="qz-head"><span class="qz-badge" aria-hidden="true">Q</span>'+
+      '<span class="qz-title">Quizlet Match<small>'+TERMS.length+' cụm từ · Một ngày của bạn</small></span>'+
+      '<a class="qz-out" href="'+esc(QUIZLET)+'" target="_blank" rel="noopener noreferrer" aria-label="Mở Quizlet Match trong thẻ mới">Open<span class="more"> in a new tab</span> <span aria-hidden="true">↗</span></a></div>'+
+      '<div class="qz-frame"><iframe src="'+esc(QUIZLET)+'" title="Quizlet Match — Một ngày của bạn" loading="lazy" allowfullscreen></iframe></div></div>'+
+    checkline("qz","Mình đã xoá sạch bảng một lần mà không ghép sai cặp nào")+
     head("Chia động từ","")+
     rule("Thì hiện tại đơn — việc làm hằng ngày",[
       {k:"I / you / we / they", tag:true, t:"<b>get up</b> at six."},
@@ -1847,6 +1933,119 @@ document.addEventListener("change",function(e){
 });
 
 /* ================================================================
+   GUESS THE CHUNK — guess all ten, then drill only the misses
+   (the type d term lab, on this page's state). A chunk counts as
+   done once it is right: first time ("Đã biết") or in a drill
+   ("Nhớ lại được"). A miss stays open until it is recovered.
+   ================================================================ */
+S.gs = S.gs || {};
+function gsState(){
+  var g=S.gs;
+  if(!(g.res instanceof Array)) g.res=[];
+  if(!g.pick) g.pick={};
+  if(g.mode!=="drill") g.mode="main";
+  if(!(g.q instanceof Array) || !g.q.length){ g.q=range(TERMS.length); g.mode="main"; }
+  if(typeof g.at!=="number" || g.at>g.q.length) g.at=0;
+  return g;
+}
+function gsCounts(){
+  var r=gsState().res, c=[0,0,0];
+  r.forEach(function(v){ if(v===1) c[0]++; else if(v===2) c[1]++; else if(v===0) c[2]++; });
+  return c;
+}
+function gsOrder(i, salt){
+  var all=[TERMS[i][2]].concat(TERMS[i][3]), s=(i*5+2+(salt||0))%3;
+  return [all[s], all[(s+1)%3], all[(s+2)%3]];
+}
+function gsSync(){
+  var r=gsState().res;
+  TERMS.forEach(function(_,i){ if(r[i]===1||r[i]===2) S.done["gs-"+i]=1; else delete S.done["gs-"+i]; });
+  save(); refresh();
+}
+function gsDraw(focusNext){
+  var box=document.getElementById("gs"); if(!box) return;
+  var g=gsState(), c=gsCounts();
+  if(g.at>=g.q.length){ gsFinish(box); return; }
+  var i=g.q[g.at], t=TERMS[i], r=g.res[i], answered=(r===0||r===1||r===2), pick=g.pick[i];
+  var pips=TERMS.map(function(_,j){
+    return '<i class="'+(j===i?"at":r2c(g.res[j]))+'"></i>';
+  }).join("");
+  function r2c(v){ return v===1?"k":v===2?"r":v===0?"m":""; }
+  var eg=esc(t[1]).replace("___", answered ? '<b>'+esc(t[2])+'</b>' : '<u aria-label="chỗ trống"></u>');
+  var opts=gsOrder(i, g.mode==="drill"?1:0).map(function(lab,n){
+    var cls = answered ? (lab===t[2] ? " hit" : (lab===pick ? " miss" : "")) : "";
+    return '<button type="button" class="gs-opt'+cls+'" data-gsopt="'+esc(lab)+'"'+(answered?" disabled":"")+'><span class="l">'+(n+1)+'</span><span>'+esc(lab)+'</span></button>';
+  }).join("");
+  var verdict="";
+  if(answered){
+    var badge = r===0 ? '<span class="gs-badge m">Cần luyện</span>' : '<span class="gs-badge k">'+(r===2?"Nhớ lại được":"Đã biết")+'</span>';
+    var msg = r===0 ? "Đáp án: <b>"+esc(t[2])+"</b>. Cụm này sẽ quay lại ở vòng luyện." :
+              r===2 ? "Lần này đúng rồi — cụm này đã là của bạn." : "Cụm này không cần luyện thêm.";
+    verdict='<div class="gs-verdict">'+badge+'<span>'+msg+'</span>'+sayBtn(t[2].replace(" / "," or "),"Play","soft","Nghe: "+t[2])+'</div>';
+  }
+  var last = g.at===g.q.length-1;
+  box.innerHTML =
+    '<div class="gs-pips" aria-hidden="true">'+pips+'</div>'+
+    (g.mode==="drill" ? '<span class="gs-drill">Vòng luyện lại · '+g.q.length+' cụm cần nhớ</span>' : '')+
+    '<div class="gs-top"><span>Cụm '+(g.at+1)+' / '+g.q.length+'</span><span><span class="k">Đã biết '+(c[0]+c[1])+'</span> · <span class="m">Cần luyện '+c[2]+'</span></span></div>'+
+    '<p class="gs-vn">'+esc(t[0])+'</p>'+
+    '<p class="gs-eg"><span class="src">Ví dụ</span>'+eg+'</p>'+
+    '<div class="gs-opts" role="group" aria-label="Chọn cụm từ đúng">'+opts+'</div>'+verdict+
+    '<div class="gs-nav"><button type="button" class="btn quiet sm" data-gsnav="-1"'+(g.at===0?" disabled":"")+'>Back</button>'+
+      '<button type="button" class="btn sm" data-gsnav="1"'+(answered?"":" disabled")+'>'+(last?"See result":"Next")+' →</button>'+
+      '<span class="hint">Phím 1 2 3 để chọn · Enter để sang cụm tiếp</span></div>';
+  if(focusNext){ var nb=box.querySelector('[data-gsnav="1"]'); if(nb) try{ nb.focus({preventScroll:true}); }catch(e){} }
+}
+function gsFinish(box){
+  var g=gsState(), c=gsCounts(), known=c[0]+c[1], miss=[];
+  TERMS.forEach(function(t,i){ if(g.res[i]===0) miss.push(i); });
+  var h;
+  if(!miss.length && known>=TERMS.length){
+    h='<p class="gs-sc all">'+TERMS.length+' / '+TERMS.length+' cụm đã thuộc</p>'+
+      '<p class="hint" style="margin:0">Biết ngay '+c[0]+' cụm, nhớ lại '+c[1]+' cụm ở vòng luyện. Giờ mở danh sách để nghe lại, rồi chơi Quizlet.</p>';
+  } else {
+    h='<p class="gs-sc">'+known+' / '+TERMS.length+' cụm đã biết</p>'+
+      '<p class="hint" style="margin:0">'+(miss.length ? numw(miss.length).replace(/^./,function(x){return x.toUpperCase();})+' cụm dưới đây chưa phải của bạn. Luyện lại ngay — chỉ mất một phút.' : 'Chưa có cụm nào sai.')+'</p>';
+  }
+  if(miss.length) h+='<ul class="gs-missed">'+miss.map(function(i){ return '<li><b>'+esc(TERMS[i][2])+'</b> <span>— '+esc(TERMS[i][0])+'</span></li>'; }).join("")+'</ul>';
+  h+='<div class="gs-nav">'+(miss.length ? '<button type="button" class="btn accent" data-gsact="drill">Drill these '+miss.length+'</button>' : '')+
+     '<button type="button" class="btn quiet" data-gsact="again">Start again</button></div>';
+  box.innerHTML=h;
+}
+document.addEventListener("click",function(e){
+  var o=e.target.closest("[data-gsopt]");
+  if(o && !o.disabled){
+    var g=gsState(), i=g.q[g.at], r=g.res[i];
+    if(r===0||r===1||r===2) return;
+    var lab=o.getAttribute("data-gsopt"), good=(lab===TERMS[i][2]);
+    g.res[i] = good ? (g.mode==="drill"?2:1) : 0; g.pick[i]=lab;
+    gsSync(); gsDraw(true);
+    var c=gsCounts();
+    if(c[0]+c[1]===TERMS.length && !g.toasted){ g.toasted=1; save(); toast("Đã thuộc cả "+numw(TERMS.length)+" cụm từ"); }
+    return;
+  }
+  var n=e.target.closest("[data-gsnav]");
+  if(n && !n.disabled){ var g2=gsState(); g2.at=Math.max(0,g2.at+(+n.getAttribute("data-gsnav"))); save(); gsDraw(); return; }
+  var a=e.target.closest("[data-gsact]"); if(!a) return;
+  var g3=gsState();
+  if(a.getAttribute("data-gsact")==="drill"){
+    g3.q=[]; TERMS.forEach(function(_,i){ if(g3.res[i]===0){ g3.q.push(i); delete g3.res[i]; delete g3.pick[i]; } });
+    g3.mode="drill"; g3.at=0;
+  } else {
+    S.gs={}; g3=gsState(); g3.toasted=0;
+  }
+  gsSync(); gsDraw();
+  var box=document.getElementById("gs"); if(box) try{ box.focus({preventScroll:true}); }catch(err){}
+});
+document.addEventListener("keydown",function(e){
+  var box=document.getElementById("gs");
+  if(!box || !box.contains(document.activeElement) || e.altKey || e.ctrlKey || e.metaKey) return;
+  var k=["1","2","3"].indexOf(e.key);
+  if(k>-1){ var b=box.querySelectorAll(".gs-opt")[k]; if(b && !b.disabled){ e.preventDefault(); b.click(); } return; }
+  if(e.key==="Enter"){ var nb=box.querySelector('[data-gsnav="1"]'); if(nb && !nb.disabled && document.activeElement.tagName!=="BUTTON"){ e.preventDefault(); nb.click(); } }
+});
+
+/* ================================================================
    14 · RESET + BOOT
    ================================================================ */
 
@@ -1876,7 +2075,7 @@ $$("[data-flag]").forEach(function(el){
 });
 paintVoicebars();
 Object.keys(GROUPS).forEach(paintGroup);
-paintPlays(); paintTa("wu"); paintTa("wr"); paintSpeak(); paintYn(); paintGoals(); paintLog(); paintMiss(); refresh();
+gsDraw(); paintPlays(); paintTa("wu"); paintTa("wr"); paintSpeak(); paintYn(); paintGoals(); paintLog(); paintMiss(); refresh();
 
 var m=/^#p(\d+)$/.exec(location.hash||"");
 goTo(m ? +m[1] : (S.part||1), {push:false, scroll:false, focus:false});
