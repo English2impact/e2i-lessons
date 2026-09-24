@@ -459,6 +459,11 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 /* ============================ 6 · decode ============================ */
 
 .scn{position:relative}
+/* part 6 · the scene picture, between the context line and the listening instructions */
+.scene{margin:0 0 18px; max-width:var(--measure)}
+.scene-frame{position:relative; aspect-ratio:4/3; background:var(--navy); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden}
+.scene-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+.scene figcaption{font-size:var(--fs-meta); color:var(--mute); margin-top:6px}
 .audio-sentinel{height:1px; margin-bottom:-1px}
 .audio{position:sticky; top:calc(8px + var(--host-offset)); z-index:30; min-height:var(--audio-h,auto); margin:0 0 16px}
 .audio.stuck{pointer-events:none}
@@ -867,6 +872,12 @@ var QUIZLET_PAGE = "https://quizlet.com/1201879353";
 var SC_PAGE  = "https://soundcloud.com/english2impact/dialogue_i-will-give-it-to-him-9";
 var SC_TITLE = "Dialogue · I will give it to him";
 var SC_USER  = "https://soundcloud.com/english2impact";
+/* Part 6 · the scene before listening. SCENE is the context line; SCENE_IMG is the picture
+   Khoa supplies in the session's "embeded link.txt" — paste the Drive file id or the whole
+   preview URL (https://drive.google.com/file/d/<id>/preview). Leave it "" when a session has
+   no picture: the figure is then left out. The frame's src is attached only when part 6 opens. */
+var SCENE     = "chiều muộn ở văn phòng. Daniel đang hoàn thiện một bản đề xuất và cần Grace giúp trước khi quản lý đọc nó vào ngày mai.";
+var SCENE_IMG = "https://drive.google.com/file/d/1si2NZtkzW43rGLJE2SfjKTCyO03NZYej/preview";
 
 /* The Odoo page's vocabulary table, verbatim (term, gloss, IPA, example). */
 var VOCAB = [
@@ -1338,6 +1349,15 @@ function buildConvoBlock(){
 }
 
 /* ---------------- part 6 · decode ---------------- */
+/* the scene picture: a Drive preview frame, empty until the part opens (initScene) */
+function sceneId(){ var m=String(SCENE_IMG).match(/\/d\/([\w-]+)/); return m ? m[1] : String(SCENE_IMG).trim(); }
+function sceneFigure(){
+  if(!SCENE_IMG) return "";
+  return '<figure class="scene">'+
+    '<div class="scene-frame"><iframe id="scene-img" title="Hình minh họa tình huống của đoạn hội thoại" allow="autoplay" loading="lazy"></iframe></div>'+
+    '<figcaption>Hình không hiện? <a href="https://drive.google.com/file/d/'+sceneId()+'/view" target="_blank" rel="noopener">Mở hình trong tab mới ↗</a></figcaption>'+
+  '</figure>';
+}
 function buildDecode(){
   var qs = COMPREHENSION.map(function(q,i){
     return '<div class="qa" data-qa="'+i+'"><div class="q" lang="en"><b>'+(i+1)+'.</b> '+q[0]+'</div>'+
@@ -1372,7 +1392,9 @@ function buildDecode(){
           '<a href="'+SC_PAGE+'" target="_blank" rel="noopener">'+SC_TITLE+'</a></p>'+
         '</div>'+
       '</div>'+
-      '<p class="lede"><b>Trước khi nghe:</b> chiều muộn ở văn phòng. Daniel đang hoàn thiện một bản đề xuất và cần Grace giúp trước khi quản lý đọc nó vào ngày mai. Nghe một lần, không nhìn chữ, rồi trả lời. '+NUMW[NQ].charAt(0).toUpperCase()+NUMW[NQ].slice(1)+' câu hỏi đi theo đúng thứ tự của đoạn hội thoại — câu 1 được trả lời đầu tiên, câu '+NQ+' sau cùng. Trình phát đi theo bạn khi cuộn trang — kéo thanh phát về sau để nghe lại câu bạn bỏ lỡ.</p>'+
+      '<p class="lede"><b>Trước khi nghe:</b> '+SCENE+'</p>'+
+      sceneFigure()+
+      '<p class="lede">Nghe một lần, không nhìn chữ, rồi trả lời. '+NUMW[NQ].charAt(0).toUpperCase()+NUMW[NQ].slice(1)+' câu hỏi đi theo đúng thứ tự của đoạn hội thoại — câu 1 được trả lời đầu tiên, câu '+NQ+' sau cùng. Trình phát đi theo bạn khi cuộn trang — kéo thanh phát về sau để nghe lại câu bạn bỏ lỡ.</p>'+
       '<div class="drill">'+qs+'</div>'+
       checkbar("decode","Show the "+NQ+" model answers")+
     '</div>'+
@@ -1526,7 +1548,7 @@ function goTo(n, opts){
   }
   if(n===2) initQuizlet();
   if(n===5) warmAudio();
-  if(n===6) initAudio();
+  if(n===6){ initScene(); initAudio(); }
   if(measureDock) measureDock();
   var h=$('.stage:not([hidden]) h2'); if(h && opts.focus!==false){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
 }
@@ -2084,6 +2106,10 @@ scriptBtn.onclick=function(){
    12 · THE STICKY AUDIO DOCK
    ================================================================ */
 
+function initScene(){
+  var f=document.getElementById("scene-img");
+  if(f && !f.getAttribute("src")) f.src="https://drive.google.com/file/d/"+sceneId()+"/preview";
+}
 var quizletStarted=false;
 function initQuizlet(){
   if(quizletStarted) return; quizletStarted=true;
