@@ -506,6 +506,8 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .sc-frame{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; border:0}
 .sc-fallback .sc-frame{position:static; width:100%; height:120px; opacity:1; pointer-events:auto; border-radius:10px; display:block}
 .sc-fallback .transport{display:none}
+.sc-tap{display:none; margin:7px 0 0; font-size:var(--fs-micro); color:#cfdcea}
+.sc-tapmode .sc-tap{display:block}
 .has-transport .sc-fallback-note{display:none}
 /* loading: the bar is laid out at full size; the rail shimmers and the play button spins */
 .transport .time, .seek, .qchip{transition:opacity .25s ease}
@@ -1364,6 +1366,7 @@ function buildDecode(){
             '<span class="qchip" id="qchip" title="Số câu đã trả lời">0/'+NQ+'</span>'+
           '</div>'+
           '<iframe class="sc-frame" id="sc-frame" title="Dialogue audio" allow="autoplay" scrolling="no" frameborder="no"></iframe>'+
+          '<p class="sc-tap">Nhấn ▶ trong trình phát SoundCloud ở trên để nghe. Sau lần đầu, thanh phát gọn sẽ quay lại.</p>'+
           '<p class="credit"><a href="'+SC_USER+'" target="_blank" rel="noopener">English2impact</a> · '+
           '<a href="'+SC_PAGE+'" target="_blank" rel="noopener">'+SC_TITLE+'</a></p>'+
         '</div>'+
@@ -1972,27 +1975,35 @@ function setPlaying(btn){
 }
 function stopAll(){
   runId++;
-  if(synth){ try{ synth.cancel(); }catch(e){} }
+  if(synth && (synth.speaking || synth.pending)){ try{ synth.cancel(); }catch(e){} }
   setPlaying(null);
 }
+var liveUtter = null;   /* held so Chrome cannot garbage-collect a speaking utterance */
 function speak(text, btn){
+  var busy = !!(synth && (synth.speaking || synth.pending));
   stopAll();
   var my = runId;
   if(!synth){ toast("Trình duyệt này chưa có giọng đọc tiếng Anh. Hãy thử Chrome, Edge hoặc Safari."); return; }
   setPlaying(btn);
-  setTimeout(function(){   /* Chrome drops an utterance queued in the same tick as cancel() */
+  function go(){
     if(my!==runId) return;
     var u = new SpeechSynthesisUtterance(String(text).replace(/[‘’]/g,"'"));
     var v = voiceA();
-    if(v){ u.voice=v; u.lang=v.lang; } else { u.lang="en-US"; }
-    u.rate = rate();
+    if(v){ u.voice=v; u.lang=String(v.lang).replace("_","-"); } else { u.lang="en-US"; }
+    u.rate = rate(); u.volume = 1;
     var done=false;
-    function end(){ if(done) return; done=true; clearTimeout(guard); if(my===runId) setPlaying(null); }
+    function end(){ if(done) return; done=true; clearTimeout(guard); if(liveUtter===u) liveUtter=null; if(my===runId) setPlaying(null); }
     u.onend = end; u.onerror = end;
     /* some engines never fire onend: let go after a generous estimate */
     var guard = setTimeout(end, 1500 + text.length*140/u.rate);
+    liveUtter = u;
+    try{ synth.resume(); }catch(e){}   /* Chrome can sit "paused" after cancel() and stay silent */
     synth.speak(u);
-  }, 40);
+  }
+  /* Safari (iPhone, iPad, Mac) only speaks when speak() runs inside the tap itself, so a
+     line is spoken at once. The short wait is kept only when a line is being cut off:
+     Chrome drops an utterance queued in the same tick as cancel(). */
+  if(busy) setTimeout(go, 60); else go();
 }
 if(synth){
   loadVoices();
@@ -2191,7 +2202,12 @@ function initAudio(){
         if(!playing || reduced) paintSeek(e.currentPosition);
       });
       widget.bind(window.SC.Widget.Events.PLAY,function(){
-        playing=true; buffering(false); setIcon(true);
+        playing=true; buffering(false); setIcon(true); clearTimeout(tapTimer);
+        /* the learner started it inside SoundCloud's player: the one-row bar can take over again */
+        if(audioEl.classList.contains("sc-tapmode")){
+          audioEl.classList.remove("sc-tapmode","sc-fallback");
+          settling=0; audioEl.style.removeProperty("--audio-h"); setTimeout(reserve,60);
+        }
         widget.getPosition(function(p){ anchor(p); run(); });
       });
       widget.bind(window.SC.Widget.Events.PAUSE,function(e){
@@ -2210,10 +2226,27 @@ function initAudio(){
     setTimeout(reserve,0);
   }, 8000);
 }
+/* Safari (every iPhone/iPad browser, and Safari on Mac) will not start sound in the hidden
+   SoundCloud frame from a tap on OUR button — the tap has to land inside SoundCloud's own
+   player. So if Play has not started within 2.5 s, the SoundCloud player is shown with a
+   one-line note; the learner taps its ▶ once, and the bar comes back as soon as it plays. */
+var tapTimer=0;
+function showTapPlayer(){
+  if(playing) return;
+  buffering(false); setIcon(false);
+  audioEl.classList.add("sc-fallback","sc-tapmode");
+  settling=0; audioEl.style.removeProperty("--audio-h"); setTimeout(reserve,60);
+  toast("Nhấn ▶ trong trình phát SoundCloud để nghe.");
+}
 document.getElementById("t-play").onclick=function(){
   if(!widget || !transportLive) return;
-  if(!playing){ buffering(true); setIcon(true); } /* answer the tap at once; PLAY confirms it */
-  widget.toggle();
+  if(!playing){
+    buffering(true); setIcon(true);   /* answer the tap at once; PLAY confirms it */
+    widget.play();
+    clearTimeout(tapTimer); tapTimer=setTimeout(showTapPlayer, 2500);
+  } else {
+    widget.pause();
+  }
 };
 /* no ±5s buttons — the bar is the scrubber, and the arrow keys jump 5s */
 function jump(delta){
