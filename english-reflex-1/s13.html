@@ -460,9 +460,14 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 
 .scn{position:relative}
 /* part 6 · the scene picture, between the context line and the listening instructions */
-.scene{margin:0 0 18px; max-width:var(--measure)}
-.scene-frame{position:relative; aspect-ratio:4/3; background:var(--navy); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden}
+/* full column width, so its edges line up with the audio bar above it; the picture is a
+   plain <img> (Drive's thumbnail URL) so it fills the frame edge to edge with no Drive chrome */
+.scene{margin:0 0 18px}
+.scene-frame{position:relative; background:var(--card-2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; aspect-ratio:16/9}
+.scene-frame.loaded{aspect-ratio:auto; border-color:transparent}
+.scene-frame img{display:block; width:100%; height:auto}
 .scene-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+.scene-frame.as-frame{aspect-ratio:4/3; background:var(--navy)}
 .scene figcaption{font-size:var(--fs-meta); color:var(--mute); margin-top:6px}
 .audio-sentinel{height:1px; margin-bottom:-1px}
 .audio{position:sticky; top:calc(8px + var(--host-offset)); z-index:30; min-height:var(--audio-h,auto); margin:0 0 16px}
@@ -1349,12 +1354,13 @@ function buildConvoBlock(){
 }
 
 /* ---------------- part 6 · decode ---------------- */
-/* the scene picture: a Drive preview frame, empty until the part opens (initScene) */
+/* the scene picture: an <img> with no src until the part opens (initScene). If Drive's
+   thumbnail URL fails, it falls back to the Drive preview frame Khoa pasted. */
 function sceneId(){ var m=String(SCENE_IMG).match(/\/d\/([\w-]+)/); return m ? m[1] : String(SCENE_IMG).trim(); }
 function sceneFigure(){
   if(!SCENE_IMG) return "";
   return '<figure class="scene">'+
-    '<div class="scene-frame"><iframe id="scene-img" title="Hình minh họa tình huống của đoạn hội thoại" allow="autoplay" loading="lazy"></iframe></div>'+
+    '<div class="scene-frame" id="scene-frame"><img id="scene-img" alt="Hình minh họa tình huống của đoạn hội thoại" decoding="async"></div>'+
     '<figcaption>Hình không hiện? <a href="https://drive.google.com/file/d/'+sceneId()+'/view" target="_blank" rel="noopener">Mở hình trong tab mới ↗</a></figcaption>'+
   '</figure>';
 }
@@ -2107,8 +2113,14 @@ scriptBtn.onclick=function(){
    ================================================================ */
 
 function initScene(){
-  var f=document.getElementById("scene-img");
-  if(f && !f.getAttribute("src")) f.src="https://drive.google.com/file/d/"+sceneId()+"/preview";
+  var img=document.getElementById("scene-img"), box=document.getElementById("scene-frame");
+  if(!img || img.getAttribute("src")) return;
+  img.onload=function(){ box.classList.add("loaded"); };
+  img.onerror=function(){
+    box.classList.add("as-frame");
+    box.innerHTML='<iframe title="Hình minh họa tình huống của đoạn hội thoại" allow="autoplay" src="https://drive.google.com/file/d/'+sceneId()+'/preview"></iframe>';
+  };
+  img.src="https://drive.google.com/thumbnail?id="+sceneId()+"&sz=w1600";
 }
 var quizletStarted=false;
 function initQuizlet(){
