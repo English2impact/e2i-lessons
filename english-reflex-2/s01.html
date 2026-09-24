@@ -389,6 +389,70 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .say-btns{display:flex; gap:8px; margin-left:auto}
 .say-row .btn{min-height:44px}
 
+/* voiced A lines: the voice comes first, the words stay blurred until the
+   learner asks for them — listen, answer, then look */
+.turn.voiced{align-items:center; flex-wrap:wrap; row-gap:6px}
+.spk{
+  flex:none; width:40px; height:40px; border-radius:50%; cursor:pointer; padding:0;
+  display:grid; place-items:center; background:var(--card); color:var(--navy);
+  border:1.5px solid var(--navy);
+}
+.spk svg{width:19px; height:19px; fill:currentColor}
+.spk:hover{background:#eef2f7}
+.spk.is-playing{background:var(--terra); border-color:var(--terra); color:#fff}
+.spk.is-playing svg{animation:e2i-pulse .9s ease-in-out infinite}
+.spk.sm{width:34px; height:34px} .spk.sm svg{width:16px; height:16px}
+@keyframes e2i-pulse{50%{transform:scale(.82)}}
+.veil{
+  flex:1 1 180px; min-width:0; font:inherit; font-size:var(--fs-body); line-height:1.5; text-align:left;
+  cursor:pointer; background:transparent; border:0; border-radius:8px; padding:3px 6px; margin:0 0 0 -6px; color:var(--ink);
+  display:flex; align-items:center; gap:10px;
+}
+.veil .vt{flex:1 1 auto; min-width:0}
+.veil .vt{filter:blur(6px); user-select:none; -webkit-user-select:none; transition:filter .2s ease}
+.veil:hover .vt{filter:blur(5px)}
+.veil .veil-tip{
+  flex:none; font-size:var(--fs-micro); letter-spacing:.06em; text-transform:uppercase;
+  color:var(--faint); font-weight:600; white-space:nowrap;
+  border:1px solid var(--line); border-radius:999px; padding:3px 9px; background:var(--card-2);
+}
+.veil.open .vt{filter:none; user-select:text; -webkit-user-select:text}
+.veil.open .veil-tip{display:none}
+.veil .vi{display:block; font-size:var(--fs-small); color:var(--mute)}
+.ans .tx .spk{vertical-align:middle; margin-left:8px}
+.cue-vi{display:block; font-size:var(--fs-small); color:var(--mute); margin-top:2px}
+.cue-vi.top{display:inline; margin:0}
+/* Drill B spoken: two blurred rows, the hint above the question, opened one at a time —
+   tap 1 shows the hint, tap 2 the question, tap 3 blurs both again */
+.veil.stack{display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:10px; row-gap:1px; align-items:center}
+.veil.stack .vrow{grid-column:1; min-width:0}
+.veil.stack .vh{grid-row:1; font-size:var(--fs-small); color:var(--mute)}
+.veil.stack .vq{grid-row:2}
+.veil.stack .veil-tip{grid-column:2; grid-row:1 / span 2}
+.veil.stack[data-stage="1"] .vh .vt, .veil.stack[data-stage="2"] .vt{filter:none; user-select:text; -webkit-user-select:text}
+
+/* the voice bar — speed and voice, shared by every voiced line on the page */
+.voicebar{
+  display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center;
+  margin:0 0 14px; padding:10px 12px; background:var(--card); border:1px solid var(--line); border-radius:12px;
+  font-size:var(--fs-meta); color:var(--mute);
+}
+.voicebar .lbl{font-size:var(--fs-micro); letter-spacing:.1em; text-transform:uppercase; color:var(--faint); font-weight:600}
+.seg{display:inline-flex; border:1.5px solid var(--navy); border-radius:9px; overflow:hidden}
+.seg button{
+  font:inherit; font-size:var(--fs-meta); font-weight:600; min-height:38px; padding:0 12px; cursor:pointer;
+  background:var(--card); color:var(--navy); border:0;
+}
+.seg button + button{border-left:1.5px solid var(--navy)}
+.seg button[aria-pressed="true"]{background:var(--navy); color:#fff}
+.voicebar select{
+  font:inherit; font-size:16px; min-height:40px; max-width:100%; padding:0 8px; border-radius:9px;
+  border:1.5px solid var(--line); background:var(--card-2); color:var(--ink);
+}
+.voicebar .vb-field{display:inline-flex; align-items:center; gap:8px; min-width:0; max-width:100%}
+.voicebar .vb-field select{min-width:0; width:100%}
+.voicebar .vb-note{flex:1 1 100%; font-size:var(--fs-meta); color:var(--faint); margin:0}
+
 /* ============================ 6 · decode ============================ */
 
 .scn{position:relative}
@@ -705,7 +769,8 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 }
 
 @media print{
-  .pagenav,.rail,.toast{display:none}
+  .pagenav,.rail,.toast,.voicebar{display:none}
+  .veil .vt{filter:none}
   .stage[hidden]{display:block !important}
 }
 </style>
@@ -843,15 +908,15 @@ var TERMS = [
    opts:["ran into","wrapped up","ended up"], a:1}
 ];
 
+/* mixed on purpose — a pool grouped by sound gives the answer away */
 var SORT_WORDS = [
-  {w:"kick",past:"kicked",b:"t"},      {w:"wrap",past:"wrapped",b:"t"},
-  {w:"finish",past:"finished",b:"t"},  {w:"ask",past:"asked",b:"t"},
-  {w:"roll",past:"rolled",b:"d"},      {w:"sign",past:"signed",b:"d"},
+  {w:"roll",past:"rolled",b:"d"},      {w:"sort",past:"sorted",b:"id"},
+  {w:"kick",past:"kicked",b:"t"},      {w:"run",past:"ran",b:"irr"},
+  {w:"need",past:"needed",b:"id"},     {w:"wrap",past:"wrapped",b:"t"},
+  {w:"sign",past:"signed",b:"d"},      {w:"come",past:"came",b:"irr"},
+  {w:"finish",past:"finished",b:"t"},  {w:"end",past:"ended",b:"id"},
   {w:"transfer",past:"transferred",b:"d"},
-  {w:"sort",past:"sorted",b:"id"},     {w:"end",past:"ended",b:"id"},
-  {w:"need",past:"needed",b:"id"},
-  {w:"run",past:"ran",b:"irr"},        {w:"come",past:"came",b:"irr"},
-  {w:"get",past:"got",b:"irr"}
+  {w:"get",past:"got",b:"irr"},        {w:"ask",past:"asked",b:"t"}
 ];
 var SORT_BUCKETS = [
   {id:"t",  name:"/t/",  sub:"after a voiceless sound — k, p, s, f, ʃ, tʃ"},
@@ -945,17 +1010,19 @@ var EXCHANGES = [
   {a:"We rolled the new system out last quarter.",            b:"Really? We didn't roll it out last quarter."}
 ];
 
+/* Spoken Drill B: `a` = tag + cue words (the hint row), `q` = the full question
+   (what the voice reads, and the second blurred row) */
 var CONVOS = [
-  {a:"[?+] they / run into / any problems / during the migration", want:"+", b:"Yes, they did."},
-  {a:"[?+] the team / come in under budget / last quarter",        want:"−", b:"No, they didn't."},
-  {a:"[?−] you / wrap it up / before the deadline",                want:"+", b:"Yes, we did."},
-  {a:"[?+] she / get around to / the report / on Friday",          want:"−", b:"No, she didn't."},
-  {a:"[?+] you / sort it out / by hand",                           want:"+", b:"Yes, we did."},
-  {a:"[?−] he / tell / Clara / about the delay",                   want:"−", b:"No, he didn't."},
-  {a:"[?+] you / run into / Peter / the other day",                want:"+", b:"Yes, I did."},
-  {a:"[?+] they / kick off / the project / in January",            want:"−", b:"No, they didn't."},
-  {a:"[?+] your manager / sign off on / your last request",        want:"+", b:"Yes, she did."},
-  {a:"[?−] you / finish / the report / on Friday",                 want:"−", b:"No, I didn't."}
+  {a:"[?+] they / run into / any problems / during the migration", q:"Did they run into any problems during the migration?",  want:"+", b:"Yes, they did."},
+  {a:"[?+] the team / come in under budget / last quarter",        q:"Did the team come in under budget last quarter?",       want:"−", b:"No, they didn't."},
+  {a:"[?−] you / wrap it up / before the deadline",                q:"Didn't you wrap it up before the deadline?",            want:"+", b:"Yes, we did."},
+  {a:"[?+] she / get around to / the report / on Friday",          q:"Did she get around to the report on Friday?",           want:"−", b:"No, she didn't."},
+  {a:"[?+] you / sort it out / by hand",                           q:"Did you sort it out by hand?",                          want:"+", b:"Yes, we did."},
+  {a:"[?−] he / tell / Clara / about the delay",                   q:"Didn't he tell Clara about the delay?",                 want:"−", b:"No, he didn't."},
+  {a:"[?+] you / run into / Peter / the other day",                q:"Did you run into Peter the other day?",                 want:"+", b:"Yes, I did."},
+  {a:"[?+] they / kick off / the project / in January",            q:"Did they kick off the project in January?",             want:"−", b:"No, they didn't."},
+  {a:"[?+] your manager / sign off on / your last request",        q:"Did your manager sign off on your last request?",       want:"+", b:"Yes, she did."},
+  {a:"[?−] you / finish / the report / on Friday",                 q:"Didn't you finish the report on Friday?",               want:"−", b:"No, I didn't."}
 ];
 
 var EXIT = [
@@ -1066,6 +1133,27 @@ function checkbar(group, label){
     '<span class="res" data-res="'+group+'"></span></div>';
 }
 
+var ICON_SPK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+/* The voice: speed + voice picker. Default voice = the clearest English voice
+   on the device (see clarity()); the learner can change it here. */
+function voicebar(){
+  return '<div class="voicebar" data-voicebar>'+
+    '<span class="lbl">Voice</span>'+
+    '<span class="seg" role="group" aria-label="Reading speed"><button type="button" data-rate="n" aria-pressed="true">Normal</button><button type="button" data-rate="s" aria-pressed="false">Slow</button></span>'+
+    '<label class="vb-field"><span class="sr-only">Choose a voice</span><select data-voice aria-label="Choose the reading voice"><option value="">Clearest voice</option></select></label>'+
+    '<p class="vb-note" data-vbnote hidden></p>'+
+  '</div>';
+}
+/* a speaker button: data-speak holds exactly what the voice reads */
+function spk(text, aria, cls){
+  return '<button type="button" class="spk'+(cls?" "+cls:"")+'" data-speak="'+esc(text)+'" aria-label="'+esc(aria)+'">'+ICON_SPK+'</button>';
+}
+/* the blurred line: tap to show, tap again to blur it back */
+function veil(html){
+  return '<button type="button" class="veil" data-veil aria-expanded="false" aria-label="Show the text of this line">'+
+    '<span class="vt" aria-hidden="true">'+html+'</span><span class="veil-tip">Show text</span></button>';
+}
+
 /* ---------------- part 1 · sort ---------------- */
 function buildWarm(){
   var pool = SORT_WORDS.map(function(w){
@@ -1105,11 +1193,11 @@ function buildLab(){
   return stage(PARTS[1],
     '<p class="lede">Ten terms, each shown in the line where it actually appears. Guess it and it is yours; miss it and it comes back in the drill round — this is the one card that answers you straight away, because the guess is the whole mechanic.</p>'+
     '<div class="lab" id="lab">'+
-      '<div class="lab-top"><span id="lab-count">1 of 10</span>'+
+      '<div class="lab-top"><span id="lab-count">1 of '+TERMS.length+'</span>'+
       '<span><span class="known">Known <b id="lab-known">0</b></span> · <span class="todrill">To drill <b id="lab-drill">0</b></span></span></div>'+
       '<div class="ticks" id="lab-ticks"></div><div id="lab-card"></div>'+
     '</div>'+
-    '<div class="toolbar"><button type="button" class="btn quiet sm" id="lab-list">Show all ten as a list</button>'+
+    '<div class="toolbar"><button type="button" class="btn quiet sm" id="lab-list">Show all '+(NUMW[TERMS.length]||TERMS.length)+' as a list</button>'+
     '<button type="button" class="btn quiet sm" id="lab-restart">Start the lab again</button></div>'+
     '<div id="lab-table" hidden>'+
       '<table class="vocab"><thead><tr><th>Term — nghĩa</th><th>IPA</th><th>In the four forms</th></tr></thead><tbody>'+vocabRows()+'</tbody></table>'+
@@ -1125,13 +1213,13 @@ function buildLab(){
       {k:"Splits", t:"roll out · sort out · wrap up · kick off"},
       {k:"Never splits", t:"run into · get around to · come in under · sign off on"}
     ])+
-    '<div class="block-head"><h3>Match the ten against the clock</h3>'+
+    '<div class="block-head"><h3>Match the '+(NUMW[TERMS.length]||TERMS.length)+' against the clock</h3>'+
     '<span class="sub">Quizlet Match — drag each term onto its meaning, as fast as you can. '+
     'This one is not scored on the page: it is the speed round, and the clock is the score.</span></div>'+
-    '<div class="embed"><iframe id="quizlet" title="Quizlet Match — the ten terms of this session" '+
+    '<div class="embed"><iframe id="quizlet" title="Quizlet Match — the terms of this session" '+
     'loading="lazy" allowfullscreen></iframe></div>'+
     '<p class="hint"><a href="'+QUIZLET_PAGE+'" target="_blank" rel="noopener">Open the set on Quizlet</a>'+
-    ' if the board does not load, or to run Learn and Test on the same ten terms.</p>');
+    ' if the board does not load, or to run Learn and Test on the same terms.</p>');
 }
 
 /* ---------------- parts 3–5 · written drills ---------------- */
@@ -1154,10 +1242,24 @@ function turn(who,pol,text){
   return '<div class="turn"><span class="who-badge '+who+'">'+who.toUpperCase()+'</span><span>'+
     (pol ? '<span class="pol">'+pol+'</span>' : '')+text+'</span></div>';
 }
+/* A's voiced line: the speaker button first, then the tag, then the words under a blur */
+function voicedA(pol, say, html, hint){
+  return '<div class="turn voiced"><span class="who-badge a">A</span>'+
+    spk(say,"Listen to A")+
+    (pol ? '<span class="pol">'+pol+'</span>' : '')+(hint ? veilStack(hint, html) : veil(html))+'</div>';
+}
+/* hint above the question, each under its own blur, revealed one at a time */
+function veilStack(hint, html){
+  return '<button type="button" class="veil stack" data-veil data-stage="0" aria-expanded="false" aria-label="Show the hint">'+
+    '<span class="vrow vh"><span class="vt" aria-hidden="true">'+hint+'</span></span>'+
+    '<span class="vrow vq"><span class="vt" aria-hidden="true" lang="en">'+html+'</span></span>'+
+    '<span class="veil-tip">Show hint</span></button>';
+}
 /* A spoken item reads like a two-line script: the number sits quietly in a
    gutter, A and B are the only two speaker marks, and B's line starts as an
    instruction — never as a blurred answer, which leaks its length and can be
-   read by anyone who leans in. `cue(it)` says what B has to produce. */
+   read by anyone who leans in. `cue(it)` says what B has to produce. A's line
+   is voiced and blurred (Khoa, Sept 2026): listen first, look only if needed. */
 function sayList(key, items, render, cue){
   return items.map(function(it,i){
     var id = key+"-"+i;
@@ -1168,6 +1270,7 @@ function sayList(key, items, render, cue){
         '<button type="button" class="ans" data-say="'+id+'" aria-label="Reveal the model answer">'+
           '<span class="ph">'+cue(it)+'</span><span class="tx">'+it.b+'</span></button>'+
         '<span class="say-btns">'+
+          '<span data-bspk="'+id+'" hidden>'+spk(it.b,"Listen to the model answer","sm")+'</span>'+
           '<button type="button" class="btn sm" data-sayreveal="'+id+'">Reveal</button>'+
           '<button type="button" class="btn quiet sm" data-said="'+id+'" hidden>I said it</button>'+
           '<button type="button" class="btn quiet sm" data-again="'+id+'" hidden>Again</button>'+
@@ -1175,23 +1278,24 @@ function sayList(key, items, render, cue){
   }).join("");
 }
 function sayFoot(key,total){
-  return '<div class="toolbar"><button type="button" class="btn quiet sm" data-revealall="'+key+'">Reveal all ten</button>'+
+  return '<div class="toolbar"><button type="button" class="btn quiet sm" data-revealall="'+key+'">Reveal all '+total+'</button>'+
     '<button type="button" class="btn quiet sm" data-hideall="'+key+'">Hide them again</button>'+
     '<span class="spacer"></span><span class="tally" data-tally="'+key+'">0 / '+total+' said</span></div>';
 }
 function buildDrill(p, key, items, mono, intro, extra, note){
   return stage(p,
     intro+
-    '<p class="hint">Work through all ten first — the Check button stays locked until every line has something in it. Enter moves you to the next line.</p>'+
+    '<p class="hint">Work through all '+(NUMW[items.length]||items.length)+' first — the Check button stays locked until every line has something in it. Enter moves you to the next line.</p>'+
     '<div class="drill">'+drillList(key,items,mono)+'</div>'+
-    checkbar(key,"Check my 10 answers")+
+    checkbar(key,"Check my "+items.length+" answers")+
     '<div class="toolbar"><button type="button" class="btn quiet sm" data-showall="'+key+'">Show the answers</button>'+
-    '<span class="spacer"></span><span class="tally" data-tally="'+key+'">0 / 10 correct</span></div>'+
+    '<span class="spacer"></span><span class="tally" data-tally="'+key+'">0 / '+items.length+' correct</span></div>'+
     (extra||"")+(note||""));
 }
 function buildExchangeBlock(){
   return '<div class="block-head"><h3>Let’s reflex with these exchanges!</h3>'+
-    '<span class="sub"><b>Speaking task — nothing to type.</b> A states it. You are B: say the same sentence back in the negative, out loud, at speed. Then reveal and check yourself.</span></div>'+
+    '<span class="sub"><b>Speaking task — nothing to type.</b> Tap the speaker to hear A’s [+] sentence. You are B: say the same sentence back in the negative, out loud, at speed — then reveal and check yourself. A’s words are blurred; tap them only if you really need to.</span></div>'+
+    voicebar()+
     '<div class="worked"><span class="w">Two worked examples</span>'+
     turn("a","[+]","We rolled out the new system last quarter.")+
     turn("b","[−]","Really? We <b>didn’t roll out</b> the new system last quarter.")+
@@ -1199,25 +1303,32 @@ function buildExchangeBlock(){
     turn("b","[−]","Really? They <b>didn’t sign off on</b> it in February.")+
     '</div>'+
     '<div class="drill">'+sayList("ax",EXCHANGES,
-      function(it){ return turn("a","[+]",it.a); },
+      function(it){ return voicedA("[+]", it.a, it.a); },
       function(){ return 'Your turn — say it back in <b>[−]</b>'; })+'</div>'+
     sayFoot("ax",EXCHANGES.length)+
     '<p class="hint">Say it before you reveal. The ending has to be audible — <i>didn’t roll out</i>, <i>didn’t sign off on</i> — and a pronoun stays in the middle: <i>didn’t wrap <b>it</b> up</i>.</p>';
 }
 function buildConvoBlock(){
   return '<div class="block-head"><h3>Let’s tackle these exchanges!</h3>'+
-    '<span class="sub"><b>Speaking task — nothing to type.</b> A asks from the cue words. You are B: answer out loud with the short form only — <i>Yes, S + did</i> / <i>No, S + didn’t</i>. Then reveal and check yourself.</span></div>'+
+    '<span class="sub"><b>Speaking task — nothing to type.</b> Tap the speaker to hear A’s full question. You are B: answer out loud with the short form only — <i>Yes, S + did</i> / <i>No, S + didn’t</i> — as the Yes / No cue says. Then reveal and check yourself. A’s line is blurred: tap once for the cue words, again for the question.</span></div>'+
+    voicebar()+
     '<div class="worked"><span class="w">Two worked examples</span>'+
-    turn("a","[?+]","you / roll out / the system / last quarter")+
+    turn("a","[?+]","<span class=\"cue-vi top\">you / roll out / the system / last quarter</span><br>Did you roll out the system last quarter?")+
     turn("b","[+]","<b>Yes, we did.</b>")+
-    turn("a","[?−]","the board / sign off on / the budget")+
+    turn("a","[?−]","<span class=\"cue-vi top\">the board / sign off on / the budget</span><br>Didn’t the board sign off on the budget?")+
     turn("b","[−]","<b>No, they didn’t.</b>")+
     '</div>'+
     '<div class="drill">'+sayList("bx",CONVOS,
-      function(it){ return turn("a", it.a.slice(0,it.a.indexOf("]")+1), it.a.slice(it.a.indexOf("]")+2)); },
+      function(it){ return voicedA(it.a.slice(0,it.a.indexOf("]")+1), it.q, it.q, it.a.slice(it.a.indexOf("]")+2)); },
       function(it){ return 'Your turn — answer <b>'+(it.want==="+"?"Yes":"No")+'</b>, short form'; })+'</div>'+
     sayFoot("bx",CONVOS.length)+
-    '<p class="hint">Items 3, 6 and 10 are negative questions. Answer the <b>fact</b>, not the shape of the question — that is the one Vietnamese instinct reverses.</p>';
+    '<p class="hint">Items '+negItems()+' are negative questions. Answer the <b>fact</b>, not the shape of the question — that is the one Vietnamese instinct reverses.</p>';
+}
+
+/* "3, 6 and 10" — read off CONVOS, never typed */
+function negItems(){
+  var n=[]; CONVOS.forEach(function(c,i){ if(c.a.indexOf("[?−]")===0) n.push(i+1); });
+  return n.length<2 ? n.join("") : n.slice(0,-1).join(", ")+" and "+n[n.length-1];
 }
 
 /* ---------------- part 6 · decode ---------------- */
@@ -1397,6 +1508,7 @@ function goTo(n, opts){
   n = Math.min(Math.max(1,n|0), PARTS.length);
   stages.forEach(function(s){ s.hidden = (+s.getAttribute("data-part")!==n); });
   S.part=n; save(); updateNav();
+  if(typeof stopAll==="function" && synth) stopAll();
   if(opts.push!==false){ try{ history.pushState({p:n},"","#p"+n); }catch(e){} }
   if(opts.scroll!==false){
     var y = n===1 ? 0 : Math.max(0, main.getBoundingClientRect().top + window.pageYOffset - 12);
@@ -1497,7 +1609,7 @@ function updateBank(k){
   if(btn){
     var everGraded = st.pending.length < st.total;
     btn.disabled = st.pending.length===0 || st.filled < st.pending.length;
-    btn.textContent = st.pending.length===0 ? "All ten checked"
+    btn.textContent = st.pending.length===0 ? "All "+(NUMW[st.total]||st.total)+" checked"
       : (st.filled < st.pending.length ? st.typed+" of "+st.total+" answered"
       : (everGraded ? "Check the "+st.pending.length+" you fixed" : "Check my "+st.total+" answers"));
   }
@@ -1667,7 +1779,7 @@ function renderTicks(){
   document.getElementById("lab-known").textContent = TERMS.filter(function(_,i){return isDone("t-"+i);}).length;
   document.getElementById("lab-drill").textContent = Math.max(0, queue.length-qi);
   document.getElementById("lab-count").textContent = queue.length
-    ? (Math.min(qi+1,queue.length)+" of "+queue.length+(round>1?" · drill round":"")) : "10 of 10";
+    ? (Math.min(qi+1,queue.length)+" of "+queue.length+(round>1?" · drill round":"")) : TERMS.length+" of "+TERMS.length;
 }
 function renderLab(){
   var card=document.getElementById("lab-card");
@@ -1678,7 +1790,7 @@ function renderLab(){
       card.innerHTML='<div class="lab-banner">Drill round — '+missed.length+' term'+(missed.length>1?"s":"")+' to fix.</div>';
       setTimeout(renderLab,0); return;
     }
-    card.innerHTML='<div class="lab-done"><div class="big">All ten known.</div>'+
+    card.innerHTML='<div class="lab-done"><div class="big">All '+(NUMW[TERMS.length]||TERMS.length)+' known.</div>'+
       '<p class="hint">Say each one out loud in the past before you move on: roll out → rolled out · run into → <b>ran</b> into · come in under budget → <b>came</b> in under budget.</p></div>';
     renderTicks(); return;
   }
@@ -1721,7 +1833,7 @@ document.addEventListener("keydown",function(e){
 document.getElementById("lab-list").onclick=function(){
   var box=document.getElementById("lab-table");
   box.hidden=!box.hidden;
-  this.textContent = box.hidden ? "Show all ten as a list" : "Hide the list";
+  this.textContent = box.hidden ? "Show all "+(NUMW[TERMS.length]||TERMS.length)+" as a list" : "Hide the list";
 };
 document.getElementById("lab-restart").onclick=function(){
   TERMS.forEach(function(_,i){ delete S.done["t-"+i]; });
@@ -1745,11 +1857,35 @@ var SAY={ax:EXCHANGES,bx:CONVOS};
 function reveal(id,on){
   var b=$('[data-say="'+id+'"]'); if(!b) return;
   b.classList.toggle("show",on);
-  var said=$('[data-item="'+id+'"]').classList.contains("said");
+  var item=$('[data-item="'+id+'"]'), said=item.classList.contains("said");
   $('[data-sayreveal="'+id+'"]').hidden=on;
   $('[data-said="'+id+'"]').hidden=!on || said;   /* once said, only "Again" is left */
   $('[data-again="'+id+'"]').hidden=!on;
+  var bs=$('[data-bspk="'+id+'"]'); if(bs) bs.hidden=!on;   /* B's model can be heard once it is showing */
+  item.querySelectorAll("[data-veil]").forEach(function(v){ setVeil(v,on); });   /* the answer is out, so A's words are too */
 }
+function setStage(v,st){
+  v.setAttribute("data-stage",st);
+  v.classList.toggle("open",st===2);
+  v.setAttribute("aria-expanded",st===2?"true":"false");
+  v.setAttribute("aria-label",["Show the hint","Show the question","Blur it again"][st]);
+  var tip=v.querySelector(".veil-tip"); if(tip) tip.textContent = st===0 ? "Show hint" : "Show text";
+  var r=v.querySelectorAll(".vt");
+  if(r[0]){ if(st>=1) r[0].removeAttribute("aria-hidden"); else r[0].setAttribute("aria-hidden","true"); }
+  if(r[1]){ if(st===2) r[1].removeAttribute("aria-hidden"); else r[1].setAttribute("aria-hidden","true"); }
+}
+function setVeil(v,open){
+  if(v.classList.contains("stack")){ setStage(v, open?2:0); return; }
+  v.classList.toggle("open",open);
+  v.setAttribute("aria-expanded",open?"true":"false");
+  v.setAttribute("aria-label",open?"Blur this line again":"Show the text of this line");
+  var t=v.querySelector(".vt"); if(t){ if(open) t.removeAttribute("aria-hidden"); else t.setAttribute("aria-hidden","true"); }
+}
+document.addEventListener("click",function(e){
+  var v=e.target.closest("[data-veil]"); if(!v) return;
+  if(v.classList.contains("stack")){ setStage(v, ((+v.getAttribute("data-stage")||0)+1)%3); return; }
+  setVeil(v, !v.classList.contains("open"));
+});
 function sayTally(k){
   var n=SAY[k].filter(function(_,i){ return isDone(k+"-"+i); }).length;
   var el=$('[data-tally="'+k+'"]');
@@ -1771,6 +1907,106 @@ document.addEventListener("change",function(e){
   var cb=e.target.closest("[data-flag]"); if(!cb) return;
   mark(cb.getAttribute("data-flag"), cb.checked);
   var line=cb.closest(".checkline"); if(line) line.classList.toggle("done",cb.checked);
+});
+
+/* ================================================================
+   10b · THE VOICE — the browser's English voice reads A's lines (and B's
+   model once revealed). Default: the clearest English voice on the device.
+   ================================================================ */
+
+var synth = window.speechSynthesis || null;
+var VOICES = [];
+var playingBtn = null, runId = 0;
+/* higher = clearer: neural/online voices first, then the well-known clean
+   system voices; novelty and compact voices sink to the bottom */
+function clarity(v){
+  var n=v.name||"", sc=0;
+  if(/natural|neural/i.test(n)) sc+=60;
+  if(/online/i.test(n)) sc+=15;
+  if(/^Google US English$/i.test(n)) sc+=45; else if(/^Google UK English Female$/i.test(n)) sc+=40; else if(/Google/i.test(n)) sc+=30;
+  if(/premium|enhanced/i.test(n)) sc+=25;
+  if(/\b(Samantha|Ava|Allison|Susan|Zoe|Serena|Karen|Moira|Tessa|Daniel|Aria|Jenny|Guy|Libby|Sonia|Ryan|Emma|Brian|Andrew)\b/i.test(n)) sc+=20;
+  if(/compact|espeak|novelty|Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Deranged|Good News|Hysterical|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Ralph|Kathy|Grandma|Grandpa|Rocko|Shelley|Sandy|Flo|Eddy|Reed/i.test(n)) sc-=70;
+  if(/en[-_]US/i.test(v.lang)) sc+=8; else if(/en[-_]GB/i.test(v.lang)) sc+=6; else if(/en[-_](AU|CA|IE|NZ)/i.test(v.lang)) sc+=3;
+  return sc;
+}
+function shortName(v){ return v.name.replace(/^(Microsoft|Google)\s+/,"").replace(/\s*-\s*English.*$/,"").replace(/\s*\(.*?\)\s*/g," ").trim(); }
+function loadVoices(){
+  if(!synth) return;
+  var all = synth.getVoices() || [];
+  VOICES = all.filter(function(v){ return /^en[-_]/i.test(v.lang); });
+  VOICES.sort(function(a,b){ return clarity(b)-clarity(a); });
+  $$("[data-voice]").forEach(function(sel){
+    var cur = S.text.voice || "";
+    sel.innerHTML = '<option value="">Clearest voice'+(VOICES.length ? ' — '+esc(shortName(VOICES[0])) : '')+'</option>'+
+      VOICES.map(function(v){
+        return '<option value="'+esc(v.name)+'"'+(v.name===cur?" selected":"")+'>'+esc(shortName(v))+' · '+v.lang+'</option>';
+      }).join("");
+  });
+  $$("[data-vbnote]").forEach(function(n){
+    if(!VOICES.length){ n.hidden=false; n.textContent = synth ? "Looking for an English voice…" : "This browser has no reading voice. Try Chrome, Edge or Safari."; }
+    else n.hidden=true;
+  });
+}
+function voiceA(){
+  if(!VOICES.length) return null;
+  if(S.text.voice){ for(var i=0;i<VOICES.length;i++) if(VOICES[i].name===S.text.voice) return VOICES[i]; }
+  return VOICES[0];
+}
+function rate(){ return S.text.rate==="s" ? 0.7 : 0.92; }
+function setPlaying(btn){
+  if(playingBtn && playingBtn!==btn) playingBtn.classList.remove("is-playing");
+  playingBtn = btn || null;
+  if(btn) btn.classList.add("is-playing");
+}
+function stopAll(){
+  runId++;
+  if(synth){ try{ synth.cancel(); }catch(e){} }
+  setPlaying(null);
+}
+function speak(text, btn){
+  stopAll();
+  var my = runId;
+  if(!synth){ toast("This browser has no English reading voice yet. Try Chrome, Edge or Safari."); return; }
+  setPlaying(btn);
+  setTimeout(function(){   /* Chrome drops an utterance queued in the same tick as cancel() */
+    if(my!==runId) return;
+    var u = new SpeechSynthesisUtterance(String(text).replace(/[‘’]/g,"'"));
+    var v = voiceA();
+    if(v){ u.voice=v; u.lang=v.lang; } else { u.lang="en-US"; }
+    u.rate = rate();
+    var done=false;
+    function end(){ if(done) return; done=true; clearTimeout(guard); if(my===runId) setPlaying(null); }
+    u.onend = end; u.onerror = end;
+    /* some engines never fire onend: let go after a generous estimate */
+    var guard = setTimeout(end, 1500 + text.length*140/u.rate);
+    synth.speak(u);
+  }, 40);
+}
+if(synth){
+  loadVoices();
+  if(synth.addEventListener) synth.addEventListener("voiceschanged", loadVoices);
+  else synth.onvoiceschanged = loadVoices;
+  setTimeout(loadVoices, 600); setTimeout(loadVoices, 2000);
+}
+function paintVoicebars(){
+  $$("[data-rate]").forEach(function(b){ b.setAttribute("aria-pressed", String((S.text.rate||"n")===b.getAttribute("data-rate"))); });
+  $$("[data-voice]").forEach(function(s){ s.value = S.text.voice || ""; });
+}
+document.addEventListener("click",function(e){
+  var r=e.target.closest("[data-rate]");
+  if(r){ S.text.rate=r.getAttribute("data-rate"); save(); paintVoicebars(); return; }
+  var sp=e.target.closest("[data-speak]");
+  if(sp){
+    if(sp.classList.contains("is-playing")){ stopAll(); return; }
+    speak(sp.getAttribute("data-speak"), sp);
+  }
+});
+document.addEventListener("change",function(e){
+  if(e.target.hasAttribute && e.target.hasAttribute("data-voice")){
+    S.text.voice=e.target.value; save(); paintVoicebars();
+    speak("We rolled out the new system last quarter.", null);
+  }
 });
 
 /* ================================================================
@@ -2027,6 +2263,7 @@ paintSort();
 });
 paintDecode();
 labInit();
+paintVoicebars();
 refresh();
 
 var m=/^#p(\d+)$/.exec(location.hash||"");
