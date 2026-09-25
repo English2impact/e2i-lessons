@@ -949,19 +949,16 @@ var QUIZLET      = "https://quizlet.com/1213517698/match/embed?i=4y577v&x=1jj1";
 var QUIZLET_PAGE = "https://quizlet.com/1213517698/";
 
 /* term · Vietnamese · IPA (UK, as in the course's Odoo tables) · example · definition.
-   Example = Khoa's Quizlet sentence with the term put back. */
+   Example = Khoa's Quizlet sentence with the term put back.
+   The list matches the Quizlet set exactly (12 terms, Khoa 25 Sept 2026). */
 var VOCAB = [
   ["allergic rhinitis","viêm mũi dị ứng","/əˌlɜːdʒɪk raɪˈnaɪtɪs/","Frequent sneezing, an itchy nose and a clear runny nose with no fever often point to allergic rhinitis in children.","inflammation inside the nose caused by an allergic reaction, giving sneezing, itching and a clear runny nose"],
-  ["common cold","cảm lạnh thông thường","/ˌkɒmən ˈkəʊld/","A common cold is caused by a virus and usually clears up on its own within a week.","a mild viral infection of the nose and throat that usually clears up on its own within about a week"],
-  ["allergen","dị nguyên (chất gây dị ứng)","/ˈælədʒən/","Dust, pollen and pet hair are common allergens that can trigger sneezing and itchy eyes.","a normally harmless substance, such as dust mites or pollen, that triggers an allergic reaction"],
+  ["allergen","dị nguyên","/ˈælədʒən/","Dust, pollen and pet hair are common allergens that can trigger sneezing and itchy eyes.","a normally harmless substance, such as dust mites or pollen, that triggers an allergic reaction"],
   ["dust mites","mạt bụi nhà","/ˈdʌst maɪts/","Wash your child's bedding in hot water every week to kill dust mites.","tiny creatures living in bedding, carpets and soft toys; one of the most common indoor allergens"],
   ["sneezing fit","cơn hắt hơi liên tục","/ˈsniːzɪŋ fɪt/","Every morning he has a sneezing fit — five or six sneezes in a row.","a run of several sneezes, one straight after another"],
-  ["nasal congestion","nghẹt mũi","/ˌneɪzl kənˈdʒestʃən/","Long-term nasal congestion can make a child breathe through the mouth and snore at night.","a blocked or stuffy nose caused by swelling of the lining inside it"],
   ["clear rhinorrhea","chảy nước mũi trong","/ˌklɪə ˌraɪnəˈriːə/","Clear rhinorrhea that lasts for weeks without a fever is typical of an allergy.","the medical term for a runny nose with thin, clear, watery discharge"],
-  ["watery eyes","chảy nước mắt","/ˌwɔːtəri ˈaɪz/","Red, itchy, watery eyes are a common sign of an allergic reaction.","eyes that produce extra tears, often red and itchy in an allergic reaction"],
   ["allergic shiners","quầng thâm dưới mắt do dị ứng","/əˌlɜːdʒɪk ˈʃaɪnəz/","The dark circles under her eyes are allergic shiners, caused by a constantly blocked nose.","dark circles under the eyes caused by long-term nasal congestion"],
-  ["allergic salute","dấu chào dị ứng (đẩy mũi lên)","/əˌlɜːdʒɪk səˈluːt/","Rubbing the nose upward with the palm, known as the allergic salute, can leave a crease across the nose.","rubbing the nose upward with the palm to relieve itching, which can leave a crease across the nose"],
-  ["seasonal","theo mùa","/ˈsiːzənl/","His symptoms come back every dry season, so the allergy seems to be seasonal.","happening, or getting worse, at the same time each year"],
+  ["allergic salute","dụi mũi do dị ứng","/əˌlɜːdʒɪk səˈluːt/","Rubbing the nose upward with the palm, known as the allergic salute, can leave a crease across the nose.","rubbing the nose upward with the palm to relieve itching, which can leave a crease across the nose"],
   ["viral etiology","nguyên nhân do virus","/ˌvaɪrəl ˌiːtiˈɒlədʒi/","With no fever after three weeks of symptoms, a viral etiology is very unlikely.","a cause that is a virus"],
   ["self-limiting","tự khỏi","/ˌself ˈlɪmɪtɪŋ/","A cold is self-limiting, so it gets better without antibiotics.","getting better on its own, without specific treatment"],
   ["antihistamine","thuốc kháng histamin","/ˌæntiˈhɪstəmiːn/","The doctor prescribed an antihistamine once a day to relieve the sneezing and itching.","a medicine that blocks histamine and relieves allergy symptoms such as sneezing and itching"],
@@ -974,20 +971,16 @@ var NV = VOCAB.length;
    as distractors that cannot also fit. Order follows VOCAB. */
 var LAB = [
   ["A child who sneezes every morning, rubs an itchy nose and never runs a fever may have ___.",      ["saline nasal rinse","non-drowsy"]],
-  ["Her son caught a ___ from a classmate, but the fever and cough settled within a week.",          ["allergen","allergic salute"]],
   ["A skin-prick test shows which ___ the child's immune system reacts to.",                        ["sneezing fit","self-limiting"]],
   ["Old mattresses and soft toys are full of ___, so keep them out of an allergic child's bed.",    ["antihistamine","viral etiology"]],
-  ["The moment she walked into the dusty storeroom, she had a ___ and couldn't stop.",              ["allergic shiners","common cold"]],
-  ["Because of his ___, he breathes through his mouth and wakes up with a dry throat.",             ["allergen","seasonal"]],
+  ["The moment she walked into the dusty storeroom, she had a ___ and couldn't stop.",              ["allergic shiners","viral etiology"]],
   ["On the chart the doctor wrote “___”: a runny nose with thin, watery discharge.",               ["dust mites","non-drowsy"]],
-  ["After playing with the neighbour's cat, she had ___ and kept wiping her face.",                ["antihistamine","viral etiology"]],
   ["Those dark circles under his eyes aren't from late nights; they're ___.",                       ["dust mites","sneezing fit"]],
   ["His teacher noticed him pushing his nose upward with his palm: the classic ___.",               ["self-limiting","clear rhinorrhea"]],
-  ["Her symptoms flare up every spring and disappear in summer, so they seem ___.",                 ["non-drowsy","viral etiology"]],
   ["A fever, a sore throat and a cough spreading through the class all suggest a ___.",             ["saline nasal rinse","allergic salute"]],
   ["Most colds are ___, so the child needs rest, fluids and time rather than medicine.",            ["allergic shiners","dust mites"]],
   ["Cetirizine is an ___ that relieves sneezing and itching.",                                       ["allergen","allergic salute"]],
-  ["He has exams this week, so the doctor prescribed a ___ tablet.",                                 ["watery eyes","common cold"]],
+  ["He has exams this week, so the doctor prescribed a ___ tablet.",                                 ["allergen","sneezing fit"]],
   ["Before bed, his mother uses a ___ to wash the mucus and dust out of his nose.",                  ["sneezing fit","viral etiology"]]
 ];
 
@@ -1053,27 +1046,25 @@ var DIALOGUE = [
   ["M",["Clear, like water, and no fever at all. But he sneezes in fits — five or six in a row, especially first thing in the morning."]],
   ["W",["Have you noticed if it gets worse when someone is cleaning the house or shaking out the bedding?"]],
   ["M",["Actually, yes. When my mother sweeps the floor, he starts sneezing straight away. His eyes go red and watery, and he keeps rubbing his nose with his palm."]],
-  ["W",["That rubbing has a name — the ",{g:0},". Look at this faint crease across the bridge of his nose; that's where it comes from. And these dark circles under his eyes are ",{g:1},", caused by ",{g:2},"."]],
+  ["W",["That rubbing has a name — the ",{g:0},". Look at this faint crease across the bridge of his nose; that's where it comes from. And these dark circles under his eyes are ",{g:1},", caused by nasal congestion."]],
   ["M",["So it's not a virus?"]],
-  ["W",["I don't think so. The clear, watery discharge — what we call ",{g:3}," — the sneezing fits and the itchy, watery eyes all point toward allergic rhinitis rather than a common cold. With no fever after three weeks, a ",{g:4}," is very unlikely."]],
+  ["W",["I don't think so. The clear, watery discharge — what we call ",{g:2}," — the sneezing fits and the itchy, watery eyes all point toward allergic rhinitis rather than a common cold. With no fever after three weeks, a ",{g:3}," is very unlikely."]],
   ["M",["But they look exactly the same to me. How can you tell?"]],
-  ["W",["The main difference is that a cold is ",{g:5}," and clears up in about a week, whereas an allergy continues for as long as he's exposed to the ",{g:6}," — in Ben's case, probably ",{g:7},"."]],
+  ["W",["The main difference is that a cold is ",{g:4}," and clears up in about a week, whereas an allergy continues for as long as he's exposed to the ",{g:5}," — in Ben's case, probably ",{g:6},"."]],
   ["M",["Dust mites? But we sweep every day! Come to think of it, he had the same problem last dry season."]],
-  ["W",["Then there may be a ",{g:8}," pattern too, and sweeping actually stirs the dust up into the air. I'll start him on a non-drowsy ",{g:9}," once a day, so he won't feel sleepy at school. But the most effective thing you can do at home is to cut down his exposure — wash his bedding in hot water every week and wipe the floor with a damp cloth instead of sweeping."]],
+  ["W",["Then there may be a seasonal pattern too, and sweeping actually stirs the dust up into the air. I'll start him on a non-drowsy ",{g:7}," once a day, so he won't feel sleepy at school. But the most effective thing you can do at home is to cut down his exposure — wash his bedding in hot water every week and wipe the floor with a damp cloth instead of sweeping."]],
   ["M",["And his blocked nose at night? He's been snoring."]],
-  ["W",["A ",{g:10}," before bed will help him breathe and sleep. One more thing: if the discharge turns thick and green and he develops a fever or ear pain, that would suggest a secondary infection, so bring him back straight away."]],
+  ["W",["A ",{g:8}," before bed will help him breathe and sleep. One more thing: if the discharge turns thick and green and he develops a fever or ear pain, that would suggest a secondary infection, so bring him back straight away."]],
   ["M",["Got it. Clear and watery means allergy, but thick with a fever means we come back."]]
 ];
 var GAPS = [
   {a:["allergic salute"]},
   {a:["allergic shiners"]},
-  {a:["nasal congestion"]},
   {a:["clear rhinorrhea","clear rhinorrhoea"]},
   {a:["viral etiology","viral aetiology"]},
   {a:["self-limiting","self limiting"]},
   {a:["allergen"]},
   {a:["dust mites","dust-mites"]},
-  {a:["seasonal"]},
   {a:["antihistamine","anti-histamine"]},
   {a:["saline nasal rinse"]}
 ];
