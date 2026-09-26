@@ -767,6 +767,9 @@ u{text-decoration-color:var(--terra); text-underline-offset:3px}
 .tline:last-child{border-bottom:0}
 .tline .who{font-size:var(--fs-meta); font-weight:600; color:var(--terra-ink); line-height:2.3}
 .tline .who.m{color:var(--navy)}
+.tline .gkey{display:inline-block; margin:0 2px 0 6px; padding:0 8px; border-radius:6px; background:var(--ok-bg); color:#0f5a36; font-weight:600; line-height:1.7}
+.tline .gkey[hidden]{display:none}
+.tline .gkey::before{content:"✓ "; font-weight:700}
 .tline .gnum{font-size:var(--fs-micro); color:var(--faint); font-weight:600; margin-right:2px; vertical-align:super}
 .line .who.m{color:var(--navy)}
 
@@ -1376,7 +1379,8 @@ function dialogueLines(withGaps){
       var g=x.g;
       if(!withGaps) return '<b>'+GAPS[g].a[0]+'</b>';
       return '<span class="gapwrap"><span class="gnum">'+(g+1)+'</span><label class="sr-only" for="d-'+g+'">Gap '+(g+1)+'</label>'+
-        '<input type="text" class="tin" id="d-'+g+'" data-dgap="'+g+'" data-text="d-'+g+'" style="--w:'+GAPS[g].a[0].length+'" autocomplete="off" autocapitalize="off" spellcheck="false"></span>';
+        '<input type="text" class="tin" id="d-'+g+'" data-dgap="'+g+'" data-text="d-'+g+'" style="--w:'+GAPS[g].a[0].length+'" autocomplete="off" autocapitalize="off" spellcheck="false">'+
+        '<span class="gkey" data-gkey="'+g+'" hidden><span class="sr-only">Answer: </span>'+GAPS[g].a[0]+'</span></span>';
     }).join("");
     var cls = L[0]==="M" ? "who m" : "who";
     return withGaps ? '<div class="tline"><div class="'+cls+'">'+SPEAKERS[L[0]]+'</div><div>'+body+'</div></div>'
@@ -1403,15 +1407,12 @@ function buildDialogue(){
         '<ol class="flow"><li>First listen: focus on the main ideas.</li><li>Read the questions, then listen again to answer them.</li><li>Read the transcript with gaps and listen again to fill them.</li><li>Listen one last time without the text to check your understanding.</li></ol>'},
       {h:"Answer the questions", sub:"The questions follow the dialogue in order — the first is answered first, the last at the end. Answer briefly in English. When every answer is written, show the model answers and mark your own.",
        body:'<div class="drill">'+qs+'</div>'+checkbar("decode","Show the model answers")},
-      {h:"Fill the gaps", sub:"Listen again and type the word you hear in each gap. The small number before a box is the gap number.",
+      {h:"Fill the gaps", sub:"Listen again and type the word you hear in each gap. The small number before a box is the gap number. After you check, the right word appears beside any gap you missed, so you end with the whole transcript — read it aloud along with the recording.",
        body:'<div class="dlg">'+dialogueLines(true)+'</div>'+
         '<div class="toolbar"><button type="button" class="btn quiet sm" id="gap-bank-btn" aria-expanded="false" aria-controls="gap-bank">Need a hint? Show the words <span aria-hidden="true">▾</span></button></div>'+
         '<div class="bank" id="gap-bank" hidden><span class="k">Words for the gaps</span>'+bank.map(function(w){ return '<span>'+w+'</span>'; }).join("")+'</div>'+
         checkbar("dgap","Check")+
-        '<div class="toolbar"><button type="button" class="btn quiet sm" data-showall="dgap">Show the answers</button></div>'},
-      {h:"Last listen", sub:"Listen once more without the text. Then open the full transcript and read it aloud along with the recording.",
-       body:'<div class="toolbar"><button type="button" class="btn quiet sm" id="show-script" aria-expanded="false" aria-controls="transcript" data-hide="Hide the transcript">Show the transcript <span aria-hidden="true">▾</span></button></div>'+
-        '<div class="rev-panel" id="transcript"><div class="dlg">'+dialogueLines(false)+'</div></div>'}
+        '<div class="toolbar"><button type="button" class="btn quiet sm" data-showall="dgap">Show the answers</button></div>'}
     ])+'</div>');
 }
 
@@ -1740,6 +1741,9 @@ defGroup("dgap",{
     var i=+k.slice(2), inp=$('[data-dgap="'+i+'"]'), ok=graded(k)&&isDone(k), bad=graded(k)&&!isDone(k);
     inp.classList.toggle("ok",ok); inp.classList.toggle("no",bad); inp.readOnly=ok;
     inp.placeholder = S.chk["show-dgap"] ? GAPS[i].a[0] : "";
+    /* once a gap is checked wrong, its key answer stays beside it until the gap is right */
+    if(bad && !S.chk["key-"+k]){ S.chk["key-"+k]=1; save(); }
+    $('[data-gkey="'+i+'"]').hidden = ok || !S.chk["key-"+k];
   }
 });
 
@@ -1829,7 +1833,6 @@ function fold(btn, panel, openLabel, closedLabel){
     btn.innerHTML = (open?openLabel:closedLabel)+' <span aria-hidden="true">'+(open?"▴":"▾")+'</span>';
   };
 }
-fold(document.getElementById("show-script"), document.getElementById("transcript"), "Hide the transcript", "Show the transcript");
 fold(document.getElementById("lab-list"), document.getElementById("lab-table"), LIST_HIDE, LIST_SHOW);
 fold(document.getElementById("gap-bank-btn"), document.getElementById("gap-bank"), "Hide the words", "Need a hint? Show the words");
 fold(document.getElementById("info-hide"), document.getElementById("info-frame"), "Show the infographic", "Hide the infographic");
